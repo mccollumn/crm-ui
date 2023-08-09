@@ -33,6 +33,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CaseInfo: Story = {
+export const Comments: Story = {
   args: {},
 };

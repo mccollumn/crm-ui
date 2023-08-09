@@ -147,8 +147,6 @@ const Layout = ({
   let baseClassNames = ["base-application"];
   baseClassNames.push(open ? "expanded" : "contracted");
 
-  console.log(leftNavActions);
-
   return (
     <html>
       <body className={inter.className}>

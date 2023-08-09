@@ -3,6 +3,7 @@
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { ReactNode } from "react";
 
 const StyledItem = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,7 +34,7 @@ const InfoItem = ({ children, label }: InfoItemProps) => {
 };
 
 interface InfoItemProps {
-  children: any;
+  children: ReactNode;
   label: string;
 }
 
