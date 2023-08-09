@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";

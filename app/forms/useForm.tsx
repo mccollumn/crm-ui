@@ -27,5 +27,8 @@ export const useForm = ({ setData }: UseFormProps) => {
 };
 
 interface UseFormProps {
+  /**
+   * React useState setter function for form data
+   */
   setData: React.Dispatch<React.SetStateAction<NewCaseData>>;
 }

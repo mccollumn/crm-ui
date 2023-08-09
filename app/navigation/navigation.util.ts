@@ -1,4 +1,4 @@
-import { NavigationAction } from "./layout";
+import { NavigationAction } from "./navigationActions";
 
 /**
  * Navigation action filter based on Authorization

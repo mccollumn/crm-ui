@@ -1,17 +1,10 @@
-import { FormWrapper, FormWrapperProps } from "./FormWrapper";
+import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
+import { FormCheckbox } from "./FormCheckbox";
+import { FormDatePicker } from "./FormDatePicker";
+import { FormDropdownMenu } from "./FormDropdownMenu";
 import { useForm } from "@/app/forms/useForm";
-import {
-  Autocomplete,
-  Grid,
-  Stack,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Grid, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 export type NewCaseData = {
@@ -85,28 +78,23 @@ export const NewCaseForm = ({ setData, ...props }: NewCaseFormProps) => {
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
-            <Autocomplete
-              size="small"
-              options={STATUS_OPTIONS}
-              renderInput={(params) => (
-                <TextField {...params} label="Status" id="status" required />
-              )}
+            <FormDropdownMenu
+              label="Status"
+              id="status"
               onChange={(e, value) => updateFields({ status: value || "" })}
+              options={STATUS_OPTIONS}
+              required
             />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Hibernate End Date"
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(value: Date | null) =>
-                  updateFields({ hibernateDate: value })
-                }
-              />
-            </LocalizationProvider>
-            <FormControlLabel
-              control={
-                <Checkbox id="isTamCase" onChange={handleCheckboxChange} />
+            <FormDatePicker
+              label="Hibernate End Date"
+              onChange={(value: Date | null) =>
+                updateFields({ hibernateDate: value })
               }
+            />
+            <FormCheckbox
+              id="isTamCase"
               label="Is TAM Case"
+              onChange={handleCheckboxChange}
             />
           </Stack>
         </Grid>

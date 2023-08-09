@@ -11,7 +11,7 @@ const columns: GridColDef[] = [
     headerName: "Case Number",
     width: 130,
     renderCell: (params) => {
-      return <Link href="\cases\view">{params.value}</Link>;
+      return <Link href={`/cases/view/${params.value}`}>{params.value}</Link>;
     },
   },
   { field: "subject", headerName: "Subject", width: 250 },

@@ -13,7 +13,7 @@ import {
   Collapse,
   Tooltip,
 } from "@mui/material";
-import { NavigationAction } from "./layout";
+import { NavigationAction } from "./navigationActions";
 import { filterNavigationActions } from "./navigation.util";
 
 export const LeftNavDrawer = ({

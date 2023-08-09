@@ -4,67 +4,47 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Link from "next/link";
 import CaseComments from "@/app/components/CaseComments";
 import CaseInformation from "@/app/components/CaseInformation";
 
-const CaseView = () => {
-  const caseInfoLeft = [
-    { label: "Subject", value: "We're confused" },
-    { label: "Account Name", value: <Link href="/">Kaiser</Link> },
-    {
-      label: "Description",
-      value:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-    },
-  ];
-  const caseInfoRight = [
-    { label: "Status", value: "Open" },
-    { label: "Sub Status", value: "Waiting on customer" },
-    {
-      label: "Date/Time Opened",
-      value: "8/2/2023 10:12 AM",
-    },
-  ];
+const CaseView = ({ params }: { params: { caseNumber: string } }) => {
+  const caseNumber = params.caseNumber;
 
   return (
     <div>
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          aria-controls="case-info-content"
+          id="case-info-header"
         >
           <Typography variant="h6">Case Information</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <CaseInformation
-            caseInfoLeft={caseInfoLeft}
-            caseInfoRight={caseInfoRight}
-          />
+        <AccordionDetails id="case-info-content">
+          <CaseInformation caseNumber={caseNumber} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+          aria-controls="case-comments-content"
+          id="case-comments-header"
         >
           <Typography variant="h6">Case Comments</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails id="case-comments-content">
           <CaseComments />
         </AccordionDetails>
       </Accordion>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3a-content"
-          id="panel3a-header"
+          aria-controls="case-emails-content"
+          id="case-emails-header"
         >
           <Typography variant="h6">Emails</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails id="case-emails-content">
           <Typography>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
             malesuada lacus ex, sit amet blandit leo lobortis eget.
