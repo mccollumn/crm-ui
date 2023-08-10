@@ -1,48 +1,56 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import { ButtonNav } from "./ButtonNav";
 import InfoList from "./InfoList";
+import { CaseData } from "../types/cases";
 
 import { cases } from "../../mockData/cases";
-import Link from "next/link";
 
 const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
   const caseData = cases.find((item) => item.id.toString() === caseNumber);
+  if (!caseData) return null;
 
-  const caseInfoLeft = [
-    { label: "Subject", value: caseData?.subject },
-    { label: "Account Name", value: <Link href="/">{caseData?.account}</Link> },
-    {
-      label: "Description",
-      value:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-    },
-  ];
-  const caseInfoRight = [
-    { label: "Status", value: caseData?.status },
-    { label: "Sub Status", value: "Waiting on customer" },
-    {
-      label: "Date/Time Opened",
-      value: caseData?.opened,
-    },
-  ];
+  const caseInfo = getCaseInfo(caseData);
+
   return (
     <>
-      <Button variant="contained" size="small" sx={{ m: 1 }}>
+      <ButtonNav size="small" path={`/cases/edit/${caseData.id}`}>
         Edit
-      </Button>
+      </ButtonNav>
       <Grid container>
         <Grid item xs={6}>
-          <InfoList items={caseInfoLeft} />
+          <InfoList items={caseInfo.left} />
         </Grid>
         <Grid item xs={6}>
-          <InfoList items={caseInfoRight} />
+          <InfoList items={caseInfo.right} />
         </Grid>
       </Grid>
     </>
   );
 };
 
-export default CaseInformation;
+const getCaseInfo = (caseData: CaseData) => {
+  return {
+    left: [
+      { label: "Subject", value: caseData?.subject },
+      { label: "Account Name", value: caseData?.accountName },
+      {
+        label: "Description",
+        value: caseData.description,
+      },
+    ],
+    right: [
+      { label: "Status", value: caseData?.status },
+      { label: "Sub Status", value: "Waiting on customer" },
+      {
+        label: "Date/Time Opened",
+        value: caseData?.opened,
+      },
+    ],
+  };
+};
 
 interface CaseInformationProps {
   caseNumber: string;
 }
+
+export default CaseInformation;

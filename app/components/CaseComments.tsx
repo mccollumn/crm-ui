@@ -1,62 +1,63 @@
 "use client";
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
-import Button from "@mui/material/Button";
+import { useRouter } from "next/navigation";
 import { CheckBox } from "@mui/icons-material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import { ButtonNav } from "./ButtonNav";
 
-const columns: GridColDef[] = [
-  {
-    field: "user",
-    headerName: "User",
-    renderCell: (params) => {
-      return <Link href="\contacts">{params.value}</Link>;
-    },
-  },
-  {
-    field: "public",
-    headerName: "Public",
-    renderCell: (params) => {
-      return <CheckBox />;
-    },
-  },
-  { field: "createDate", headerName: "Created Date" },
-  { field: "comment", headerName: "Comment", flex: 1 },
-  {
-    field: "editLink",
-    headerName: "Edit",
-    renderCell: (params) => {
-      return <Link href="\cases\edit_comment">Edit</Link>;
-    },
-  },
-];
+import { cases } from "@/mockData/cases";
 
-const rows = [
-  {
-    id: 1,
-    user: "Nick",
-    public: "",
-    createDate: new Date(),
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-  },
-  {
-    id: 2,
-    user: "Nick",
-    public: "",
-    createDate: new Date(),
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-  },
-];
+export default function CaseComments({ caseNumber }: CaseCommentsProps) {
+  const router = useRouter();
+  const thisCase = cases.find((item) => item.id.toString() === caseNumber);
 
-export default function CaseComments() {
+  const columns: GridColDef[] = [
+    {
+      field: "user",
+      headerName: "User",
+      renderCell: (params) => {
+        return <Link href="\contacts">{params.value}</Link>;
+      },
+    },
+    {
+      field: "public",
+      headerName: "Public",
+      renderCell: (params) => {
+        let publicComment;
+        if (thisCase?.comments) {
+          const comment = thisCase?.comments.find(
+            (comment) => comment.id === params.row.id
+          );
+          publicComment = comment?.public || false;
+        }
+        return publicComment ? <CheckBox /> : <CheckBoxOutlineBlankIcon />;
+      },
+    },
+    { field: "createDate", headerName: "Created Date" },
+    { field: "comment", headerName: "Comment", flex: 1 },
+    {
+      field: "editLink",
+      headerName: "Edit",
+      renderCell: (params) => {
+        return (
+          <Link href={`/cases/view/${thisCase?.id}/comment/${params.row.id}`}>
+            Edit
+          </Link>
+        );
+      },
+    },
+  ];
+
+  const rows = thisCase?.comments || [];
+
   return (
     <div>
-      <Button variant="contained" size="small" sx={{ m: 1 }}>
+      <ButtonNav size="small" path={`/cases/view/${caseNumber}/comment/new`}>
         New
-      </Button>
+      </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
@@ -67,10 +68,14 @@ export default function CaseComments() {
             },
           }}
           pageSizeOptions={[5, 10]}
-          onRowClick={() => console.log("click")}
+          // onRowClick={() => console.log("click")}
           // checkboxSelection
         />
       </div>
     </div>
   );
+}
+
+interface CaseCommentsProps {
+  caseNumber: string;
 }

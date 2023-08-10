@@ -3,7 +3,10 @@
 import * as React from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
+
+import { cases } from "../../mockData/cases";
 
 const columns: GridColDef[] = [
   {
@@ -15,7 +18,7 @@ const columns: GridColDef[] = [
     },
   },
   { field: "subject", headerName: "Subject", width: 250 },
-  { field: "account", headerName: "Account Name", width: 250 },
+  { field: "accountName", headerName: "Account Name", width: 250 },
   {
     field: "status",
     headerName: "Status",
@@ -29,44 +32,23 @@ const columns: GridColDef[] = [
     type: "dateTime",
     // valueGetter: (params: GridValueGetterParams) =>
     //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    valueGetter: (params: GridValueGetterParams) => new Date(params.value),
   },
 ];
 
-const rows = [
-  {
-    id: 735109,
-    subject: "We're confused",
-    account: "Kaiser",
-    status: "Open",
-    opened: new Date("8/2/2023 10:12 AM"),
-  },
-  {
-    id: 744068,
-    subject: "Stuff is broken",
-    account: "Needy Customer",
-    status: "Closed",
-    opened: new Date("5/19/2021 1:40 PM"),
-  },
-  {
-    id: 758711,
-    subject: "Help!",
-    account: "Cool customer",
-    status: "Open",
-    opened: new Date("7/17/2023 6:58 AM"),
-  },
-  {
-    id: 721906,
-    subject: "Upgrade to 9.5",
-    account: "Microsoft",
-    status: "Open",
-    opened: new Date("8/4/2023 11:10 AM"),
-  },
-];
+const rows = cases;
 
 export default function DataTable() {
+  const router = useRouter();
+
   return (
     <div>
-      <Button variant="contained" size="small" sx={{ m: 1 }}>
+      <Button
+        variant="contained"
+        size="small"
+        sx={{ m: 1 }}
+        onClick={() => router.push("/cases/new")}
+      >
         New
       </Button>
       <div style={{ height: 400, width: "100%" }}>
@@ -79,7 +61,8 @@ export default function DataTable() {
             },
           }}
           pageSizeOptions={[5, 10]}
-          onRowClick={() => console.log("click")}
+          paginationMode="server"
+          // onRowClick={() => console.log("click")}
           // checkboxSelection
         />
       </div>

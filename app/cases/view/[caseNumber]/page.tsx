@@ -33,7 +33,7 @@ const CaseView = ({ params }: { params: { caseNumber: string } }) => {
           <Typography variant="h6">Case Comments</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-comments-content">
-          <CaseComments />
+          <CaseComments caseNumber={caseNumber} />
         </AccordionDetails>
       </Accordion>
       <Accordion>

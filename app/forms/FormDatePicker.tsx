@@ -3,6 +3,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export const FormDatePicker = ({
   label,
+  value = null,
   onChange,
   ...props
 }: FormDatePicker) => {
@@ -10,6 +11,7 @@ export const FormDatePicker = ({
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label={label}
+        value={value}
         slotProps={{ textField: { size: "small" } }}
         onChange={onChange}
         {...props}
@@ -23,6 +25,10 @@ interface FormDatePicker {
    * Label displayed in the UI
    */
   label: string;
+  /**
+   * Default date
+   */
+  value?: Date | null;
   /**
    * onChange event handler
    */

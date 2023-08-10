@@ -1,8 +1,9 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, AutocompleteProps, TextField } from "@mui/material";
 
 export const FormDropdownMenu = ({
   label,
   id,
+  value = "",
   onChange,
   options,
   required = false,
@@ -12,6 +13,7 @@ export const FormDropdownMenu = ({
     <Autocomplete
       size="small"
       options={options}
+      value={value}
       renderInput={(params) => (
         <TextField {...params} label={label} id={id} required={required} />
       )}
@@ -30,6 +32,10 @@ interface FormDropdownMenuProps {
    * Element ID
    */
   id?: string;
+  /**
+   * Default value. Must match one of the options.
+   */
+  value?: string;
   /**
    * onChange event handler
    */

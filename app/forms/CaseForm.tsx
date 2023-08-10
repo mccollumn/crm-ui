@@ -7,18 +7,18 @@ import { useForm } from "@/app/forms/useForm";
 import { Grid, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export type NewCaseData = {
+export type CaseFormData = {
   subject: string;
   accountName: string;
   status: string;
-  hibernateDate: any;
+  hibernateDate: string | null;
   isTamCase: boolean;
   description: string;
 };
 
-type NewCaseFormProps = NewCaseData & {
+type CaseFormProps = CaseFormData & {
   setData: any;
-  // updateFields: (fields: Partial<NewCaseData>) => void;
+  formTitle: string;
 };
 
 export const INITIAL_DATA = {
@@ -32,7 +32,7 @@ export const INITIAL_DATA = {
 
 const STATUS_OPTIONS = ["Open", "Closed", "Hibernate"];
 
-export const NewCaseForm = ({ setData, ...props }: NewCaseFormProps) => {
+export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
   const router = useRouter();
 
   const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
@@ -40,16 +40,15 @@ export const NewCaseForm = ({ setData, ...props }: NewCaseFormProps) => {
   );
 
   const handleCancel = () => {
-    router.push("/cases");
+    router.back();
   };
 
   return (
     <FormWrapper
-      title="New Case"
+      title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
       onCancel={handleCancel}
-      {...props}
     >
       <Grid container spacing={1}>
         <FormDivider>Case Information</FormDivider>
@@ -81,19 +80,20 @@ export const NewCaseForm = ({ setData, ...props }: NewCaseFormProps) => {
             <FormDropdownMenu
               label="Status"
               id="status"
+              value={props.status}
               onChange={(e, value) => updateFields({ status: value || "" })}
               options={STATUS_OPTIONS}
               required
             />
             <FormDatePicker
               label="Hibernate End Date"
-              onChange={(value: Date | null) =>
-                updateFields({ hibernateDate: value })
-              }
+              value={props.hibernateDate ? new Date(props.hibernateDate) : null}
+              onChange={(value) => updateFields({ hibernateDate: value })}
             />
             <FormCheckbox
               id="isTamCase"
               label="Is TAM Case"
+              checked={props.isTamCase}
               onChange={handleCheckboxChange}
             />
           </Stack>

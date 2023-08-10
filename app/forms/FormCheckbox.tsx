@@ -27,6 +27,10 @@ interface FormCheckboxProps {
    */
   id?: string;
   /**
+   * Is box checked?
+   */
+  checked?: boolean;
+  /**
    * onChange event handler
    */
   onChange: (event: any) => void;

@@ -2,9 +2,9 @@
 
 import React from "react";
 import { FormEvent } from "react";
-import { CaseForm, INITIAL_DATA } from "@/app/forms/CaseForm";
+import { CaseCommentForm, INITIAL_DATA } from "@/app/forms/CaseCommentForm";
 
-const NewCase = () => {
+const NewCaseComment = () => {
   const [data, setData] = React.useState(INITIAL_DATA);
 
   const handleSubmit = (e: FormEvent) => {
@@ -18,9 +18,9 @@ const NewCase = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CaseForm {...data} setData={setData} formTitle="New Case" />
+      <CaseCommentForm {...data} setData={setData} />
     </form>
   );
 };
 
-export default NewCase;
+export default NewCaseComment;

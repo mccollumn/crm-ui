@@ -1,10 +1,11 @@
-import { NewCaseData } from "@/app/forms/NewCaseForm";
+// import { CaseData } from "../types/cases";
+import { CaseFormData } from "./CaseForm";
 
-type AllFormData = NewCaseData;
+type AllFormData = CaseFormData;
 
 export const useForm = ({ setData }: UseFormProps) => {
   const updateFields = (fields: Partial<AllFormData>) => {
-    setData((prev) => {
+    setData((prev: CaseFormData) => {
       return { ...prev, ...fields };
     });
   };
@@ -30,5 +31,5 @@ interface UseFormProps {
   /**
    * React useState setter function for form data
    */
-  setData: React.Dispatch<React.SetStateAction<NewCaseData>>;
+  setData: React.Dispatch<React.SetStateAction<CaseFormData>>;
 }
