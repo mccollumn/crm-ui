@@ -3,7 +3,6 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { CheckBox } from "@mui/icons-material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { ButtonNav } from "./ButtonNav";
@@ -11,7 +10,6 @@ import { ButtonNav } from "./ButtonNav";
 import { cases } from "@/mockData/cases";
 
 export default function CaseComments({ caseNumber }: CaseCommentsProps) {
-  const router = useRouter();
   const thisCase = cases.find((item) => item.id.toString() === caseNumber);
 
   const columns: GridColDef[] = [
@@ -43,7 +41,7 @@ export default function CaseComments({ caseNumber }: CaseCommentsProps) {
       headerName: "Edit",
       renderCell: (params) => {
         return (
-          <Link href={`/cases/view/${thisCase?.id}/comment/${params.row.id}`}>
+          <Link href={`/cases/edit/${thisCase?.id}/comment/${params.row.id}`}>
             Edit
           </Link>
         );
@@ -55,7 +53,7 @@ export default function CaseComments({ caseNumber }: CaseCommentsProps) {
 
   return (
     <div>
-      <ButtonNav size="small" path={`/cases/view/${caseNumber}/comment/new`}>
+      <ButtonNav size="small" path={`/cases/new/${caseNumber}/comment/`}>
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
@@ -68,8 +66,6 @@ export default function CaseComments({ caseNumber }: CaseCommentsProps) {
             },
           }}
           pageSizeOptions={[5, 10]}
-          // onRowClick={() => console.log("click")}
-          // checkboxSelection
         />
       </div>
     </div>
