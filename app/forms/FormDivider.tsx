@@ -6,6 +6,8 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   borderRadius: "4px",
   padding: ".5rem",
   margin: "auto",
+  marginTop: "1rem",
+  marginBottom: "1rem",
 }));
 
 export const FormDivider = ({ children, ...props }: any) => {

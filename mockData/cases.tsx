@@ -10,7 +10,7 @@ export const cases: CaseData[] = [
     hibernateDate: "8/20/2023",
     isTamCase: true,
     description:
-      "Another crazy case... You explained it to us and we said we understood but we did something different than what you said to do. It didn't work. Please tell us how to do this.",
+      "Another crazy case... You explained it to us and we said we understood but we did something different than what you said to do. The thing we did didn't work even though you said that it wouldn't. Please tell us how to do this.",
     comments: [
       {
         id: 1,

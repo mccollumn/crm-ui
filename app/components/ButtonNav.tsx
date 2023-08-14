@@ -7,7 +7,11 @@ import { useRouter } from "next/navigation";
 export const ButtonNav = ({ path, children, ...props }: ButtonNavProps) => {
   const router = useRouter();
   return (
-    <ButtonStyled onClick={() => router.push(path)} {...props}>
+    <ButtonStyled
+      onClick={() => router.push(path)}
+      sx={{ mb: ".5em" }}
+      {...props}
+    >
       {children}
     </ButtonStyled>
   );

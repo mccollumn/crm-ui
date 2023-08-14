@@ -5,7 +5,8 @@ const InfoList = ({ items }: InfoListProps) => {
   return (
     <Box
       sx={{
-        m: "2rem",
+        ml: "2rem",
+        mr: "2rem",
         // height: "100vh",
       }}
     >

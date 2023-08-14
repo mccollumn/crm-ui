@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
       return <Link href={`/cases/view/${params.value}`}>{params.value}</Link>;
     },
   },
-  { field: "subject", headerName: "Subject", width: 250 },
+  { field: "subject", headerName: "Subject", flex: 1 },
   { field: "accountName", headerName: "Account Name", width: 250 },
   {
     field: "status",
