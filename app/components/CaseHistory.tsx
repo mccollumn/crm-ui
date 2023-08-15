@@ -1,53 +1,31 @@
-"use client";
-
-import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useRouter } from "next/navigation";
+import React from "react";
+import { DataTable } from "./DataTable";
 
 import { cases } from "@/mockData/cases";
 
-export default function CaseHistory({ caseNumber }: CaseHistoryProps) {
-  const router = useRouter();
-  const thisCase = cases.find((item) => item.id.toString() === caseNumber);
+const getCaseHistory = async (caseNumber: string) => {
+  const res = await fetch("https://dev.to/api/articles");
 
-  const columns: GridColDef[] = [
-    {
-      field: "date",
-      headerName: "Date",
-      type: "dateTime",
-    },
-    {
-      field: "field",
-      headerName: "Field",
-    },
-    { field: "user", headerName: "User" },
-    { field: "original", headerName: "Original Value", flex: 1 },
-    {
-      field: "new",
-      headerName: "New Value",
-      flex: 1,
-    },
-  ];
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
+export default async function CaseHistory({ caseNumber }: CaseHistoryProps) {
+  const thisCase = cases.find((item) => item.id.toString() === caseNumber);
 
   const rows = thisCase?.comments || [];
 
   return (
-    <div>
+    <>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          // onRowClick={() => console.log("click")}
-          // checkboxSelection
-        />
+        <React.Suspense fallback={<p>Loading case history...</p>}>
+          <DataTable rows={rows} columnDefType="caseHistory" />
+        </React.Suspense>
       </div>
-    </div>
+    </>
   );
 }
 

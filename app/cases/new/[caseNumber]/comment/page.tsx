@@ -20,7 +20,11 @@ const NewCaseComment = ({ params }: { params: { caseNumber: string } }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CaseCommentForm {...data} setData={setData} />
+      <CaseCommentForm
+        {...data}
+        setData={setData}
+        formTitle="New Case Comment"
+      />
     </form>
   );
 };

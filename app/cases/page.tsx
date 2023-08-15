@@ -1,71 +1,32 @@
-"use client";
-
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Button from "@mui/material/Button";
+import { ButtonNav } from "../components/ButtonNav";
+import { DataTable } from "../components/DataTable";
+import "server-only";
 
 import { cases } from "../../mockData/cases";
 
-const columns: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "Case Number",
-    width: 130,
-    renderCell: (params) => {
-      return <Link href={`/cases/view/${params.value}`}>{params.value}</Link>;
-    },
-  },
-  { field: "subject", headerName: "Subject", flex: 1 },
-  { field: "accountName", headerName: "Account Name", width: 250 },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 90,
-  },
-  {
-    field: "opened",
-    headerName: "Opened",
-    description: "This column has a value getter and is not sortable.",
-    width: 180,
-    type: "dateTime",
-    // valueGetter: (params: GridValueGetterParams) =>
-    //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    valueGetter: (params: GridValueGetterParams) => new Date(params.value),
-  },
-];
+const getCases = async () => {
+  const res = await fetch("https://dev.to/api/articles");
 
-const rows = cases;
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
-export default function DataTable() {
-  const router = useRouter();
+  // return res.json();
+  return cases;
+};
+
+export default async function Cases() {
+  const casesList = await getCases();
 
   return (
-    <div>
-      <Button
-        variant="contained"
-        size="small"
-        sx={{ m: 1 }}
-        onClick={() => router.push("/cases/new")}
-      >
-        New
-      </Button>
+    <>
+      <ButtonNav path="/cases/new">New</ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          paginationMode="server"
-          // onRowClick={() => console.log("click")}
-          // checkboxSelection
-        />
+        <React.Suspense fallback={<p>Loading cases...</p>}>
+          <DataTable rows={casesList} columnDefType="casesList" />
+        </React.Suspense>
       </div>
-    </div>
+    </>
   );
 }

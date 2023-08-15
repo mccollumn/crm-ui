@@ -1,59 +1,30 @@
-"use client";
-
-import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React from "react";
+import { DataTable } from "./DataTable";
 
 import { cases } from "@/mockData/cases";
 
-export default function CaseEmails({ caseNumber }: CaseEmailsProps) {
-  const router = useRouter();
+const getCaseEmails = async (caseNumber: string) => {
+  const res = await fetch("https://dev.to/api/articles");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
+export default async function CaseEmails({ caseNumber }: CaseEmailsProps) {
   const thisCase = cases.find((item) => item.id.toString() === caseNumber);
-
-  const columns: GridColDef[] = [
-    {
-      field: "subject",
-      headerName: "Subject",
-      renderCell: (params) => {
-        return <Link href="\contacts">{params.value}</Link>;
-      },
-      flex: 1,
-    },
-    {
-      field: "from",
-      headerName: "From Address",
-      renderCell: (params) => {
-        return <Link href={`mailto:${params.value}`}>{params.value}</Link>;
-      },
-    },
-    { field: "to", headerName: "To Adress" },
-    { field: "date", headerName: "Message Date", type: "dateTime" },
-    {
-      field: "status",
-      headerName: "Status",
-    },
-  ];
-
   const rows = thisCase?.comments || [];
 
   return (
-    <div>
+    <>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          // onRowClick={() => console.log("click")}
-          // checkboxSelection
-        />
+        <React.Suspense fallback={<p>Loading case emails...</p>}>
+          <DataTable rows={rows} columnDefType="caseEmails" />
+        </React.Suspense>
       </div>
-    </div>
+    </>
   );
 }
 

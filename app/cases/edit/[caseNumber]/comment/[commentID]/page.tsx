@@ -30,7 +30,11 @@ const EditCaseComment = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <CaseCommentForm {...data} setData={setData} />
+      <CaseCommentForm
+        {...data}
+        setData={setData}
+        formTitle="Edit Case Comment"
+      />
     </form>
   );
 };

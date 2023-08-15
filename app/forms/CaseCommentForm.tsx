@@ -12,6 +12,7 @@ export type CaseCommentFormData = {
 
 type CaseCommentFormProps = CaseCommentFormData & {
   setData: any;
+  formTitle: string;
 };
 
 export const INITIAL_DATA = {
@@ -21,6 +22,7 @@ export const INITIAL_DATA = {
 
 export const CaseCommentForm = ({
   setData,
+  formTitle,
   ...props
 }: CaseCommentFormProps) => {
   const router = useRouter();
@@ -35,7 +37,7 @@ export const CaseCommentForm = ({
   console.log(props);
   return (
     <FormWrapper
-      title="New Case Comment"
+      title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
       onCancel={handleCancel}
