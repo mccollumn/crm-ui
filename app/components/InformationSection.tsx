@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import InfoList from "./InfoList";
 
-export const CaseInformationSection = ({
+export const InformationSection = ({
   itemsLeft = [],
   itemsRight = [],
   itemsFullWidth = [],

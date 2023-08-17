@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import CaseComments from "../app/components/CaseComments";
+import CaseComments from "../app/components/cases/CaseComments";
 
 const caseInfoLeft = [
   { label: "Subject", value: "We're confused" },

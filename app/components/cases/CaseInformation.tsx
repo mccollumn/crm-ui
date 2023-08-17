@@ -1,16 +1,15 @@
 import {
-  Grid,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ButtonNav } from "./ButtonNav";
-import { CaseInformationSection } from "./CaseInformationSection";
-import { CaseData } from "../types/cases";
+import { ButtonNav } from "../ButtonNav";
+import { InformationSection } from "../InformationSection";
+import { CaseData } from "../../types/cases";
 
-import { cases } from "../../mockData/cases";
+import { cases } from "../../../mockData/cases";
 
 const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
   const caseData = cases.find((item) => item.id.toString() === caseNumber);
@@ -32,7 +31,7 @@ const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
           <Typography variant="h6">Case Information</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-info-section-content">
-          <CaseInformationSection
+          <InformationSection
             itemsLeft={caseInfo.info.left}
             itemsRight={caseInfo.info.right}
           />
@@ -47,7 +46,7 @@ const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
           <Typography variant="h6">Case Profile</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-profile-section-content">
-          <CaseInformationSection
+          <InformationSection
             itemsLeft={caseInfo.profile.left}
             itemsRight={caseInfo.profile.right}
             itemsFullWidth={caseInfo.profile.fullWidth}
@@ -63,7 +62,7 @@ const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
           <Typography variant="h6">Case Escalation Details</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-escalation-section-content">
-          <CaseInformationSection
+          <InformationSection
             itemsLeft={caseInfo.escalation.left}
             itemsRight={caseInfo.escalation.right}
           />
@@ -78,7 +77,7 @@ const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
           <Typography variant="h6">System Information</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-system-section-content">
-          <CaseInformationSection
+          <InformationSection
             itemsLeft={caseInfo.system.left}
             itemsRight={caseInfo.system.right}
           />

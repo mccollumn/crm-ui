@@ -30,6 +30,10 @@ interface FormDatePicker {
    */
   value?: Date | null;
   /**
+   * Is this field required?
+   */
+  required?: boolean;
+  /**
    * onChange event handler
    */
   onChange: (value: any) => void;

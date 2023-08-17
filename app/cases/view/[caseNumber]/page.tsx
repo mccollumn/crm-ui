@@ -4,10 +4,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CaseComments from "@/app/components/CaseComments";
-import CaseInformation from "@/app/components/CaseInformation";
-import CaseEmails from "@/app/components/CaseEmails";
-import CaseHistory from "@/app/components/CaseHistory";
+import CaseComments from "@/app/components/cases/CaseComments";
+import CaseInformation from "@/app/components/cases/CaseInformation";
+import CaseEmails from "@/app/components/cases/CaseEmails";
+import CaseHistory from "@/app/components/cases/CaseHistory";
 
 const CaseView = ({ params }: { params: { caseNumber: string } }) => {
   const caseNumber = params.caseNumber;

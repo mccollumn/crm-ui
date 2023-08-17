@@ -56,7 +56,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
           <Stack spacing={1}>
             {/* Subject */}
             <TextField
-              autoFocus
               required
               type="text"
               size="small"
@@ -96,7 +95,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Case Site */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Case Site"
@@ -114,7 +112,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Reference Case ID */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Reference Case ID"
@@ -212,7 +209,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Bug Number */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Bug Number"
@@ -222,7 +218,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Bug Description */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Bug Description"
@@ -373,7 +368,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
           <Stack spacing={1}>
             {/* Web Company */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Web Company"
@@ -383,7 +377,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Web Name */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Web Name"
@@ -397,7 +390,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
           <Stack spacing={1}>
             {/* Web Phone */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Web Phone"
@@ -407,7 +399,6 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
             />
             {/* Web Email */}
             <TextField
-              autoFocus
               type="text"
               size="small"
               label="Web Email"

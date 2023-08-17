@@ -1,9 +1,9 @@
 import React from "react";
-import { DataTable } from "./DataTable";
+import { DataTable } from "../DataTable";
 
 import { cases } from "@/mockData/cases";
 
-const getCaseEmails = async (caseNumber: string) => {
+const getCaseHistory = async (caseNumber: string) => {
   const res = await fetch("https://dev.to/api/articles");
 
   if (!res.ok) {
@@ -13,21 +13,22 @@ const getCaseEmails = async (caseNumber: string) => {
   return res.json();
 };
 
-export default async function CaseEmails({ caseNumber }: CaseEmailsProps) {
+export default async function CaseHistory({ caseNumber }: CaseHistoryProps) {
   const thisCase = cases.find((item) => item.id.toString() === caseNumber);
+
   const rows = thisCase?.comments || [];
 
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading case emails...</p>}>
-          <DataTable rows={rows} columnDefType="caseEmails" />
+        <React.Suspense fallback={<p>Loading case history...</p>}>
+          <DataTable rows={rows} columnDefType="caseHistory" />
         </React.Suspense>
       </div>
     </>
   );
 }
 
-interface CaseEmailsProps {
+interface CaseHistoryProps {
   caseNumber: string;
 }

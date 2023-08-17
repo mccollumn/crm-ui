@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Title } from "../components/Title";
 import { ButtonNav } from "../components/ButtonNav";
 import { DataTable } from "../components/DataTable";
 import "server-only";
@@ -16,17 +17,28 @@ const getCases = async () => {
   return cases;
 };
 
-export default async function Cases() {
+export default async function Cases({ contactID = "" }: CasesProps) {
   const casesList = await getCases();
 
   return (
     <>
+      <Title title="Cases" />
       <ButtonNav path="/cases/new">New</ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
         <React.Suspense fallback={<p>Loading cases...</p>}>
-          <DataTable rows={casesList} columnDefType="casesList" />
+          <DataTable
+            rows={casesList}
+            columnDefType="casesList"
+            // TODO: Update this filed name with correct value for account number
+            queryField="id"
+            queryValue={contactID}
+          />
         </React.Suspense>
       </div>
     </>
   );
+}
+
+interface CasesProps {
+  contactID?: string;
 }
