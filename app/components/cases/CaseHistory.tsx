@@ -3,7 +3,7 @@ import { DataTable } from "../DataTable";
 
 import { cases } from "@/mockData/cases";
 
-const getCaseHistory = async (caseNumber: string) => {
+const getCaseHistory = async (caseID: string) => {
   const res = await fetch("https://dev.to/api/articles");
 
   if (!res.ok) {
@@ -13,8 +13,8 @@ const getCaseHistory = async (caseNumber: string) => {
   return res.json();
 };
 
-export default async function CaseHistory({ caseNumber }: CaseHistoryProps) {
-  const thisCase = cases.find((item) => item.id.toString() === caseNumber);
+export default async function CaseHistory({ caseID }: CaseHistoryProps) {
+  const thisCase = cases.find((item) => item.id.toString() === caseID);
 
   const rows = thisCase?.comments || [];
 
@@ -30,5 +30,5 @@ export default async function CaseHistory({ caseNumber }: CaseHistoryProps) {
 }
 
 interface CaseHistoryProps {
-  caseNumber: string;
+  caseID: string;
 }

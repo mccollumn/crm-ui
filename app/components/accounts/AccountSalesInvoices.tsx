@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../ButtonNav";
 
-const getSalesInvoices = async (accountNumber: string) => {
+const getSalesInvoices = async (accountID: string) => {
   // TODO: Retrieve sales invoices for provided account
   const res = await fetch("https://dev.to/api/articles");
 
@@ -14,15 +14,15 @@ const getSalesInvoices = async (accountNumber: string) => {
 };
 
 export default async function AccountSalesInvoices({
-  accountNumber,
+  accountID,
 }: AccountSalesInvoicesProps) {
-  const accountSalesInvoices = (await getSalesInvoices(accountNumber)) || [];
+  const accountSalesInvoices = (await getSalesInvoices(accountID)) || [];
 
   return (
     <>
       <ButtonNav
         size="small"
-        path={`/accounts/new/${accountNumber}/sales-invoice/`}
+        path={`/accounts/new/${accountID}/sales-invoice/`}
       >
         New
       </ButtonNav>
@@ -33,7 +33,7 @@ export default async function AccountSalesInvoices({
             columnDefType="accountSalesInvoices"
             // TODO: Update field name for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -42,5 +42,5 @@ export default async function AccountSalesInvoices({
 }
 
 interface AccountSalesInvoicesProps {
-  accountNumber: string;
+  accountID: string;
 }

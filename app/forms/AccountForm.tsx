@@ -1,344 +1,194 @@
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
-import { FormCheckbox } from "./FormCheckbox";
-import { FormDatePicker } from "./FormDatePicker";
-import { FormDropdownMenu } from "./FormDropdownMenu";
-import { useForm } from "@/app/forms/useForm";
-import { Grid, Stack, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import { Grid, Stack } from "@mui/material";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type AccountFormData = {
-  accountType: string;
-  accountName: string;
-};
-
-type CaseFormProps = AccountFormData & {
-  setData: any;
+type CaseFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
-  accountType: "",
-  accountName: "",
-};
-
-const ACCOUNT_RECORD_TYPE_OPTIONS = [
-  "Prospect/Customer Account",
-  "Partner Account",
-];
+const initialValues = {};
 
 export const AccountForm = ({
-  setData,
   formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
   ...props
 }: CaseFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Account Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Account Owner */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Account Owner"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Account Name */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Account Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
             {/* Alternate Account Name */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Alternate Account Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Parent Account */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Parent Account"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Account Record Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Account Record Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
-              options={ACCOUNT_RECORD_TYPE_OPTIONS}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Account Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Account Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
-              options={ACCOUNT_RECORD_TYPE_OPTIONS}
+              name=""
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Type Last Change Date */}
-            <FormDatePicker
-              label="Type Last Change Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Type Last Change Date" name="" />
+            </DateFnsProvider>
             {/* Vertical */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Vertical"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
-              options={ACCOUNT_RECORD_TYPE_OPTIONS}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Website */}
-            <TextField
-              type="text"
-              size="small"
-              label="Website"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Website" name="" size="small" />
             {/* Misc. Info */}
-            <TextField
-              type="text"
-              size="small"
-              label="Misc. Info"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Misc. Info" name="" size="small" />
             {/* Migrate to New Org */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Migrate to New Org"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Migration External ID */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Migration External ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Client Health */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Client Health"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Client Unhealthy Reason */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Client Unhealthy Reason"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Client Unhealthy Reason Other */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Client Unhealthy Reason Other"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Fax */}
-            <TextField
-              type="text"
-              size="small"
-              label="Fax"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Fax" name="" size="small" />
             {/* Phone */}
-            <TextField
-              type="text"
-              size="small"
-              label="Phone"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Phone" name="" size="small" />
             {/* Target Account Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Target Account Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Global Account */}
-            <FormCheckbox
-              label="Global Account"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Global Account" name="" size="small" />
             {/* USD Total Order Value */}
-            <TextField
-              type="number"
-              size="small"
+            <TextFieldElement
               label="USD Total Order Value"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Is Federal */}
-            <FormCheckbox
-              label="Is Federal"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Is Federal" name="" size="small" />
             {/* Is State */}
-            <FormCheckbox
-              label="Is State"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Is State" name="" size="small" />
             {/* Territory */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Territory"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Region */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Region"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Super Region */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Super Region"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
               required
             />
             {/* MSA */}
-            <FormCheckbox
-              label="MSA"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="MSA" name="" size="small" />
             {/* Partner Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Partner Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -350,53 +200,28 @@ export const AccountForm = ({
               <b>Billing Address</b>
             </p>
             {/* Billing Street */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Billing Street"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Billing City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Billing City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Billing City" name="" size="small" />
             {/* Billing State/Province */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Billing State/Province"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Billing Zip/Postal Code */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Billing Zip/Postal Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Billing Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Billing Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Billing Country" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -405,182 +230,113 @@ export const AccountForm = ({
               <b>Shipping Address</b>
             </p>
             {/* Shipping Street */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Shipping Street"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Shipping City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Shipping City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Shipping City" name="" size="small" />
             {/* Shipping State/Province */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Shipping State/Province"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Shipping Zip/Postal Code */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Shipping Zip/Postal Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Shipping Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Shipping Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Shipping Country" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Account Credit Status</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Credit Last Modified */}
-            <FormDatePicker
-              label="Credit Last Modified"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Credit Last Modified" name="" />
+            </DateFnsProvider>
             {/* Credit Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Credit Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Credit Denied Reason */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Credit Denied Reason"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Credit Global Fortune 500 */}
-            <FormCheckbox
+            <CheckboxElement
               label="Credit Global Fortune 500"
-              // id="<fill>"
-              //   checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
             {/* Auto Renew */}
-            <FormCheckbox
+            <CheckboxElement
               label="Credit Global Fortune 500"
-              // id="<fill>"
-              //   checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
             {/* Cancellation Notice */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Cancellation Notice"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Auto Renew Notes */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Auto Renew Notes"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Credit Limit */}
-            <TextField
+            <TextFieldElement
+              label="Credit Limit"
+              name=""
               type="number"
               size="small"
-              label="Credit Limit"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* PO Required */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="PO Required"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* PO Required Notes */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="PO Required Notes"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Credit Notes */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Credit Notes"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* No Accounting Communication */}
-            <FormCheckbox
+            <CheckboxElement
               label="No Accounting Communication"
-              // id="<fill>"
-              //   checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
@@ -588,131 +344,79 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Collections Contact */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Collections Contact"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Collection Status */}
-            <TextField
-              type="text"
-              size="small"
-              label="Collection Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Collection Status" name="" size="small" />
             {/* Collection Past Due Amount */}
-            <TextField
+            <TextFieldElement
+              label="Collection Status"
+              name=""
               type="number"
               size="small"
-              label="Collection Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Anticipated Suspension Date */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Anticipated Suspension Date"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Passed to Debt Collection Date */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Passed to Debt Collection Date"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Collections Correspondence */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Collections Correspondence"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Credit Hold */}
-            <FormCheckbox
-              label="Credit Hold"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Credit Hold" name="" size="small" />
             {/* Support Account Alert */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Support Account Alert"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* No Technical Support */}
-            <FormCheckbox
+            <CheckboxElement
               label="No Technical Support"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
             {/* Service Suspended */}
-            <FormCheckbox
-              label="Service Suspended"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Service Suspended" name="" size="small" />
             {/* Services to be Suspended */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Passed to Debt Collection Date"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Services Suspension Date */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Services Suspension Date"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Last Conversation Note */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Last Conversation Note"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -720,176 +424,116 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Analytics Vendor */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Analytics Vendor"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Optimize Vendor */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Optimize Vendor"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Big Data Connector */}
-            <TextField
-              type="text"
-              size="small"
-              label="Big Data Connector"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Big Data Connector" name="" size="small" />
             {/* Email Vendor */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Email Vendor"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Description */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Description"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Analytics Vendor Contract End */}
-            <FormDatePicker
-              label="Analytics Vendor Contract End"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Analytics Vendor Contract End"
+                name=""
+              />
+            </DateFnsProvider>
             {/* Optimize Vendor Contract End */}
-            <FormDatePicker
-              label="Optimize Vendor Contract End"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Optimize Vendor Contract End" name="" />
+            </DateFnsProvider>
             {/* Health Check */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Health Check"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* SharePoint Site */}
-            <FormCheckbox
-              label="SharePoint Site"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="SharePoint Site" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Total Order Value of Products Owned</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* USD Total Analytics */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Analytics"
+              name=""
               type="number"
               size="small"
-              label="USD Total Analytics"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* USD Total VDM */}
-            <TextField
+            <TextFieldElement
+              label="USD Total VDM"
+              name=""
               type="number"
               size="small"
-              label="USD Total VDM"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* USD Total Optimize */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Optimize"
+              name=""
               type="number"
               size="small"
-              label="USD Total Optimize"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* USD Total Services */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Services"
+              name=""
               type="number"
               size="small"
-              label="USD Total Services"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* USD Total Ads */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Ads"
+              name=""
               type="number"
               size="small"
-              label="USD Total Ads"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* USD Total Apps */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Apps"
+              name=""
               type="number"
               size="small"
-              label="USD Total Apps"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* USD Total Other */}
-            <TextField
+            <TextFieldElement
+              label="USD Total Other"
+              name=""
               type="number"
               size="small"
-              label="USD Total Other"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
@@ -897,95 +541,67 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* OP Customer */}
-            <FormCheckbox
-              label="OP Customer"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="OP Customer" name="" size="small" />
             {/* Annual Server Calls */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Annual Server Calls"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Alexa Ranking */}
-            <TextField
+            <TextFieldElement
+              label="Alexa Ranking"
+              name=""
               type="number"
               size="small"
-              label="Alexa Ranking"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Alexa Ranking Top 10,000 */}
-            <FormCheckbox
+            <CheckboxElement
               label="Alexa Ranking Top 10,000"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
             {/* eCommerce */}
-            <FormCheckbox
-              label="eCommerce"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="eCommerce" name="" size="small" />
             {/* Monthly Ad Spend */}
-            <TextField
+            <TextFieldElement
+              label="Monthly Ad Spend"
+              name=""
               type="number"
               size="small"
-              label="Monthly Ad Spend"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* comScore Annual Page Views */}
-            <TextField
+            <TextFieldElement
+              label="comScore Annual Page Views"
+              name=""
               type="number"
               size="small"
-              label="comScore Annual Page Views"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* comScore Daily Visitors */}
-            <TextField
+            <TextFieldElement
+              label="comScore Daily Visitors"
+              name=""
               type="number"
               size="small"
-              label="comScore Daily Visitors"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* comScore Ranking */}
-            <TextField
+            <TextFieldElement
+              label="comScore Ranking"
+              name=""
               type="number"
               size="small"
-              label="comScore Ranking"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* comScore Unique Monthly Visitors */}
-            <TextField
+            <TextFieldElement
+              label="comScore Unique Monthly Visitors"
+              name=""
               type="number"
               size="small"
-              label="comScore Unique Monthly Visitors"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
@@ -993,63 +609,40 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Legal Name */}
-            <TextField
+            <TextFieldElement
+              label="Legal Name"
+              name=""
               type="number"
               size="small"
-              label="Legal Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Industry */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Industry"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Annual Revenue */}
-            <TextField
+            <TextFieldElement
+              label="Annual Revenue"
+              name=""
               type="number"
               size="small"
-              label="Annual Revenue"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Employees */}
-            <TextField
+            <TextFieldElement
+              label="Employees"
+              name=""
               type="number"
               size="small"
-              label="Employees"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Location Type */}
-            <TextField
-              type="text"
-              size="small"
-              label="Location Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Location Type" name="" size="small" />
             {/* Ownership */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Ownership"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -1057,108 +650,59 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Tax Exempt */}
-            <FormCheckbox
-              label="Tax Exempt"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Tax Exempt" name="" size="small" />
             {/* Tax Exempt ID */}
-            <TextField
-              type="text"
-              size="small"
-              label="Tax Exempt ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Tax Exempt ID" name="" size="small" />
             {/* Ticker Symbol */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ticker Symbol"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ticker Symbol" name="" size="small" />
             {/* SIC Code */}
-            <TextField
-              type="text"
-              size="small"
-              label="SIC Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="SIC Code" name="" size="small" />
             {/* SIC Description */}
-            <TextField
-              type="text"
-              size="small"
-              label="SIC Description"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="SIC Description" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Customer Contract Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* On Demand Max Contract End Date */}
-            <FormDatePicker
-              label="On Demand Max Contract End Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="On Demand Max Contract End Date"
+                name=""
+              />
+            </DateFnsProvider>
             {/* Ads Max Contract End Date */}
-            <FormDatePicker
-              label="Ads Max Contract End Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Ads Max Contract End Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Optimize Max Contract End Date */}
-            <FormDatePicker
-              label="Optimize Max Contract End Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Optimize Max Contract End Date"
+                name=""
+              />
+            </DateFnsProvider>
             {/* Streams Max Contract End Date */}
-            <FormDatePicker
-              label="Streams Max Contract End Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Streams Max Contract End Date"
+                name=""
+              />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>MyWebtrends</FormDivider>
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* Support Override for Entitlement */}
-            <FormCheckbox
+            <CheckboxElement
               label="Support Override for Entitlement"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
@@ -1166,147 +710,100 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Software Entitled Server Calls */}
-            <TextField
+            <TextFieldElement
+              label="Software Entitled Server Calls"
+              name=""
               type="number"
               size="small"
-              label="Software Entitled Server Calls"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Software Entitled Events */}
-            <TextField
+            <TextFieldElement
+              label="Software Entitled Events"
+              name=""
               type="number"
               size="small"
-              label="Software Entitled Events"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Software Installations */}
-            <TextField
+            <TextFieldElement
+              label="Software Installations"
+              name=""
               type="number"
               size="small"
-              label="Software Installations"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Software Term License */}
-            <FormCheckbox
+            <CheckboxElement
               label="Software Term License"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Software Base Mnt Expiration Date */}
-            <FormDatePicker
-              label="Software Base Mnt Expiration Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Software Base Mnt Expiration Date"
+                name=""
+              />
+            </DateFnsProvider>
             {/* Software Mnt Expiration Date */}
-            <FormDatePicker
-              label="Software Mnt Expiration Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Software Mnt Expiration Date" name="" />
+            </DateFnsProvider>
             {/* Software Most Recent Activated Version */}
-            <TextField
+            <TextFieldElement
+              label="Software Most Recent Activated Version"
+              name=""
               type="number"
               size="small"
-              label="Software Most Recent Activated Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Extended Maintenance for Legacy End Date */}
-            <FormDatePicker
-              label="Extended Maintenance for Legacy End Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Extended Maintenance for Legacy End Date"
+                name=""
+              />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>Other Product Details</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* EPS Customer */}
-            <FormCheckbox
-              label="EPS Customer"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="EPS Customer" name="" size="small" />
             {/* EPS Assigned TAM */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="EPS Assigned TAM"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* EPS Hours Per Week */}
-            <TextField
+            <TextFieldElement
+              label="EPS Hours Per Week"
+              name=""
               type="number"
               size="small"
-              label="EPS Hours Per Week"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* EPS Contract End */}
-            <FormDatePicker
-              label="EPS Contract End"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="EPS Contract End" name="" />
+            </DateFnsProvider>
             {/* EPS Contract Start */}
-            <FormDatePicker
-              label="EPS Contract Start"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="EPS Contract Start" name="" />
+            </DateFnsProvider>
             {/* EPS Hours Per Month */}
-            <TextField
+            <TextFieldElement
+              label="EPS Hours Per Month"
+              name=""
               type="number"
               size="small"
-              label="EPS Hours Per Month"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
@@ -1314,11 +811,10 @@ export const AccountForm = ({
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* ODUI Notification Processed */}
-            <FormCheckbox
+            <CheckboxElement
               label="ODUI Notification Processed"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>

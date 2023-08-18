@@ -11,13 +11,13 @@ import { AccountData } from "../../types/accounts";
 
 import { cases } from "../../../mockData/cases";
 
-const getAccountData = (accountNumber: string) => {
+const getAccountData = (accountID: string) => {
   // TODO: Retreive account data
   return { id: "0018Z00002eltWLQAY", accountName: "Super Awesome Account" };
 };
 
-const AccountInformation = ({ accountNumber }: AccountInformationProps) => {
-  const accountData = getAccountData(accountNumber);
+const AccountInformation = ({ accountID }: AccountInformationProps) => {
+  const accountData = getAccountData(accountID);
   if (!accountData) return null;
 
   const accountInfo = getAccountInfo(accountData);
@@ -485,7 +485,7 @@ const getAccountInfo = (accountData: AccountData) => {
 };
 
 interface AccountInformationProps {
-  accountNumber: string;
+  accountID: string;
 }
 
 export default AccountInformation;

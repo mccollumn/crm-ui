@@ -1,189 +1,120 @@
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
-import { FormCheckbox } from "./FormCheckbox";
-import { FormDatePicker } from "./FormDatePicker";
-import { FormDropdownMenu } from "./FormDropdownMenu";
-import { useForm } from "@/app/forms/useForm";
-import { Grid, Stack, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Grid, Stack } from "@mui/material";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type LicenseKeyFormData = {
-  id: string;
-};
-
-type LicenseKeyFormProps = LicenseKeyFormData & {
-  setData: any;
+type LicenseKeyFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
-  id: "",
-};
+const initialValues = {};
 
 export const LicenseKeyForm = ({
-  setData,
   formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
   ...props
 }: LicenseKeyFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* License Key */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="License Key"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
             {/* Account */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Account"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Key Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Key Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Page Views */}
-            <TextField
+            <TextFieldElement
+              label="Page Views"
+              name=""
               type="number"
               size="small"
-              label="Page Views"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Events */}
-            <TextField
+            <TextFieldElement
+              label="Events"
+              name=""
               type="number"
               size="small"
-              label="Events"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Maintenance Expiration Date */}
-            <FormDatePicker
-              label="Maintenance Expiration Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Maintenance Expiration Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Parent Key */}
-            <TextField
-              type="text"
-              size="small"
-              label="Parent Key"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Parent Key" name="" size="small" />
             {/* Original Version */}
-            <TextField
-              type="text"
-              size="small"
-              label="Original Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Original Version" name="" size="small" />
             {/* Version */}
-            <TextField
-              type="text"
-              size="small"
-              label="Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Version" name="" size="small" />
             {/* Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* System Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="System Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Notes */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Notes"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Migration External ID */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Migration External ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
@@ -191,99 +122,59 @@ export const LicenseKeyForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Anniversary Date */}
-            <FormDatePicker
-              label="Anniversary Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Anniversary Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>AddOn Key Related Info</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Is Applied */}
-            <FormCheckbox
-              label="Is Applied"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Is Applied" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Last Applied Date */}
-            <FormDatePicker
-              label="Last Applied Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Last Applied Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>Activation Info</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Activated Version */}
-            <TextField
-              type="text"
-              size="small"
-              label="Activated Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Activated Version" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Activation Date */}
-            <FormDatePicker
-              label="Activation Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Activation Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>System Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Key Created By */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Key Created By"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Key Created Date */}
-            <FormDatePicker
-              required
-              label="Key Created Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Key Created Date" name="" required />
+            </DateFnsProvider>
           </Stack>
         </Grid>
       </Grid>

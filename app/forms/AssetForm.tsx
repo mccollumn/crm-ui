@@ -1,116 +1,88 @@
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
-import { FormCheckbox } from "./FormCheckbox";
-import { FormDatePicker } from "./FormDatePicker";
-import { FormDropdownMenu } from "./FormDropdownMenu";
-import { useForm } from "@/app/forms/useForm";
-import { Grid, Stack, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Grid, Stack } from "@mui/material";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type AssetFormData = {
-  id: string;
-};
-
-type AssetFormProps = AssetFormData & {
-  setData: any;
+type AssetFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
-  id: "",
-};
+const initialValues = {};
 
-export const AssetForm = ({ setData, formTitle, ...props }: AssetFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
+export const AssetForm = ({
+  formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
+  ...props
+}: AssetFormProps) => {
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Asset Name */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Asset Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
             {/* Product */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Product"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Serial Number */}
-            <TextField
+            <TextFieldElement
+              label="Serial Number"
+              name=""
               type="number"
               size="small"
-              label="Serial Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Account */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Account"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Opportunity */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Opportunity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Contact */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Contact"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -118,74 +90,43 @@ export const AssetForm = ({ setData, formTitle, ...props }: AssetFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Quantity */}
-            <TextField
+            <TextFieldElement
+              label="Quantity"
+              name=""
               type="number"
               size="small"
-              label="Quantity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Is Term License */}
-            <FormCheckbox
-              label="Is Term License"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Is Term License" name="" size="small" />
             {/* Purchase Date */}
-            <FormDatePicker
-              label="Purchase Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Purchase Date" name="" />
+            </DateFnsProvider>
             {/* Has Master */}
-            <FormCheckbox
-              label="Has Master"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Has Master" name="" size="small" />
             {/* Migration External ID */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Migration External ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* Description */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Description"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -193,30 +134,19 @@ export const AssetForm = ({ setData, formTitle, ...props }: AssetFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Anniversary Date */}
-            <FormDatePicker
-              label="Anniversary Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Anniversary Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>Activation Info</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Support Plan Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Support Plan Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -224,39 +154,20 @@ export const AssetForm = ({ setData, formTitle, ...props }: AssetFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Support Plan Begin */}
-            <FormDatePicker
-              label="Support Plan Begin"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Support Plan Begin" name="" />
+            </DateFnsProvider>
             {/* Support Plan End */}
-            <FormDatePicker
-              label="Support Plan End"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Support Plan End" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>System Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* PV */}
-            <TextField
-              type="number"
-              size="small"
-              label="PV"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="PV" name="" type="number" size="small" />
           </Stack>
         </Grid>
       </Grid>

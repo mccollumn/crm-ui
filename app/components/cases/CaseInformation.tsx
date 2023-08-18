@@ -11,8 +11,8 @@ import { CaseData } from "../../types/cases";
 
 import { cases } from "../../../mockData/cases";
 
-const CaseInformation = ({ caseNumber }: CaseInformationProps) => {
-  const caseData = cases.find((item) => item.id.toString() === caseNumber);
+const CaseInformation = ({ caseID }: CaseInformationProps) => {
+  const caseData = cases.find((item) => item.id.toString() === caseID);
   if (!caseData) return null;
 
   const caseInfo = getCaseInfo(caseData);
@@ -162,7 +162,7 @@ const getCaseInfo = (caseData: CaseData) => {
 };
 
 interface CaseInformationProps {
-  caseNumber: string;
+  caseID: string;
 }
 
 export default CaseInformation;

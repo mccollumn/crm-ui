@@ -1,25 +1,31 @@
 "use client";
 
-import React from "react";
-import { FormEvent } from "react";
-import { CaseForm, INITIAL_DATA } from "@/app/forms/CaseForm";
+import { useRouter } from "next/navigation";
+import { CaseForm } from "@/app/forms/CaseForm";
 
 const NewCase = () => {
-  const [data, setData] = React.useState(INITIAL_DATA);
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", data);
-    // POST data
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
+    // PUT data
     // Verify successful response
-    // Get new case number from response
-    // Route user to /cases/view/${caseNumber}
+    // Get ID
+    const caseID = "";
+    router.push(`/cases/view/${caseID}`);
+  };
+
+  const handleCancel = () => {
+    router.back();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CaseForm {...data} setData={setData} formTitle="New Case" />
-    </form>
+    <CaseForm
+      formTitle="New Case"
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+    />
   );
 };
 

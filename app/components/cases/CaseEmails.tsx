@@ -1,7 +1,7 @@
 import React from "react";
 import { DataTable } from "../DataTable";
 
-const getCaseEmails = async (caseNumber: string) => {
+const getCaseEmails = async (caseID: string) => {
   //TODO: Retieve emails for the provided case number
   const res = await fetch("https://dev.to/api/articles");
 
@@ -12,8 +12,8 @@ const getCaseEmails = async (caseNumber: string) => {
   return res.json();
 };
 
-export default async function CaseEmails({ caseNumber }: CaseEmailsProps) {
-  const caseEmails = await getCaseEmails(caseNumber);
+export default async function CaseEmails({ caseID }: CaseEmailsProps) {
+  const caseEmails = await getCaseEmails(caseID);
 
   return (
     <>
@@ -27,5 +27,5 @@ export default async function CaseEmails({ caseNumber }: CaseEmailsProps) {
 }
 
 interface CaseEmailsProps {
-  caseNumber: string;
+  caseID: string;
 }

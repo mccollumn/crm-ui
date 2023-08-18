@@ -1,370 +1,198 @@
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
-import { FormCheckbox } from "./FormCheckbox";
-import { FormDatePicker } from "./FormDatePicker";
-import { FormDropdownMenu } from "./FormDropdownMenu";
-import { useForm } from "@/app/forms/useForm";
-import { Grid, Stack, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Grid, Stack } from "@mui/material";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  DateTimePickerElement,
+  MultiSelectElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type ContactFormData = {
-  id: string;
-};
-
-type ContactFormProps = ContactFormData & {
-  setData: any;
+type ContactFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
-  id: "",
-};
+const initialValues = {};
 
 export const ContactForm = ({
-  setData,
   formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
   ...props
 }: ContactFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Contact Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Contact Owner */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Contact Owner"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             <p>
               <b>Name</b>
             </p>
             {/* Salutation */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Salutation"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* First Name */}
-            <TextField
-              type="text"
-              size="small"
-              label="First Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="First Name" name="" size="small" />
             {/* Last Name */}
-            <TextField
-              required
-              type="text"
-              size="small"
-              label="Last Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Last Name" name="" required size="small" />
             {/* Account Name */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Account Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Title */}
-            <TextField
-              type="text"
-              size="small"
-              label="Title"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Title" name="" size="small" />
             {/* Reports To */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Reports To"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Job Role */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Job Role"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Contact Role */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Contact Role"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Email */}
-            <TextField
-              required
-              type="text"
-              size="small"
-              label="Email"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Email" name="" required size="small" />
             {/* Unconfirmed Email */}
-            <FormCheckbox
-              label="Unconfirmed Email"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Unconfirmed Email" name="" size="small" />
             {/* Most Recent Product Interest */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Most Recent Product Interest"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Interest */}
-            <FormDropdownMenu
+            <MultiSelectElement
               label="Interest"
-              multiple
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              preserveOrder
+              showChips
               options={[]}
             />
             {/* Do Not Send Support Survey */}
-            <FormCheckbox
+            <CheckboxElement
               label="Do Not Send Support Survey"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
             {/* Webtrends OC */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Webtrends OC"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* HTML Login */}
-            <FormCheckbox
-              label="HTML Login"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="HTML Login" name="" size="small" />
             {/* Flash Login */}
-            <FormCheckbox
-              label="Flash Login"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Flash Login" name="" size="small" />
             {/* EOL Product */}
-            <TextField
-              type="text"
-              size="small"
-              label="EOL Product"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="EOL Product" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Relationship to Webtrends */}
-            <FormDropdownMenu
+            <MultiSelectElement
               label="Relationship to Webtrends"
-              multiple
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              preserveOrder
+              showChips
               options={[]}
             />
             {/* Contact Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Contact Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* MQL Date */}
-            <FormDatePicker
-              label="MQL Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="MQL Date" name="" />
+            </DateFnsProvider>
             {/* Lead Source */}
-            <FormDropdownMenu
-              required
+            <AutocompleteElement
               label="Lead Source"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              required
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Phone */}
-            <TextField
-              type="text"
-              size="small"
-              label="Phone"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Phone" name="" size="small" />
             {/* Mobile */}
-            <TextField
-              type="text"
-              size="small"
-              label="Mobile"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Mobile" name="" size="small" />
             {/* Other Phone */}
-            <TextField
-              type="text"
-              size="small"
-              label="Other Phone"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Other Phone" name="" size="small" />
             {/* Fax */}
-            <TextField
-              type="text"
-              size="small"
-              label="Fax"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Fax" name="" size="small" />
             {/* Flash Login */}
-            <FormCheckbox
-              label="Flash Login"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Flash Login" name="" size="small" />
             {/* Named Support Contact */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Named Support Contact"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Support Contract Administrator */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Support Contract Administrator"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Target Account Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Target Account Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -373,46 +201,22 @@ export const ContactForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* LinkedIn Profile */}
-            <TextField
-              type="text"
-              size="small"
-              label="LinkedIn Profile"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="LinkedIn Profile" name="" size="small" />
             {/* Social Media Properties */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Social Media Properties"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Marked for Deletion */}
-            <FormCheckbox
-              label="Marked for Deletion"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Marked for Deletion" name="" size="small" />
             {/* Twitter ID */}
-            <TextField
-              type="text"
-              size="small"
-              label="Twitter ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Twitter ID" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Address Information</FormDivider>
@@ -422,53 +226,28 @@ export const ContactForm = ({
               <b>Mailing Address</b>
             </p>
             {/* Mailing Street */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Mailing Street"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Mailing City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Mailing City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Mailing City" name="" size="small" />
             {/* Mailing State/Province */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Mailing State/Province"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Mailing Zip/Postal Code */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Mailing Zip/Postal Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Mailing Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Mailing Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Mailing Country" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -477,63 +256,33 @@ export const ContactForm = ({
               <b>Other Address</b>
             </p>
             {/* Other Street */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Other Street"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Other City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Other City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Other City" name="" size="small" />
             {/* Other State/Province */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Other State/Province"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Other Zip/Postal Code */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Other Zip/Postal Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Other Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Other Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Other Country" name="" size="small" />
             {/* Super Region */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Super Region"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -542,92 +291,54 @@ export const ContactForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* ADR/ISR Generated */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="ADR/ISR Generated"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Meeting Scheduled Date */}
-            <FormDatePicker
-              label="Meeting Scheduled Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Meeting Scheduled Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Meeting Rescheduled Date */}
-            <FormDatePicker
-              label="Meeting Rescheduled Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Meeting Rescheduled Date" name="" />
+            </DateFnsProvider>
             {/* Meeting Occurred Date */}
-            <FormDatePicker
-              label="Meeting Occurred Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Meeting Occurred Date" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>Description Information</FormDivider>
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* Product Interest */}
-            <FormDropdownMenu
+            <MultiSelectElement
               label="Product Interest"
-              multiple
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              preserveOrder
+              showChips
               options={[]}
             />
             {/* Comments */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Comments"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Lead Notes */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Lead Notes"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -635,86 +346,55 @@ export const ContactForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Lead Source Details */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Lead Source Details"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Lead Source Original */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Lead Source Original"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Lead Source Details Original */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Lead Source Details Original"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Email Remarketing Lead Date */}
-            <FormDatePicker
-              label="Email Remarketing Lead Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Email Remarketing Lead Date" name="" />
+            </DateFnsProvider>
             {/* Most Recent Activity */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Most Recent Activity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Most Recent Response Type */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Most Recent Response Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* SharePoint Contact */}
-            <FormCheckbox
-              label="SharePoint Contact"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="SharePoint Contact" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Demographic Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Preferred Language */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Preferred Language"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -722,15 +402,10 @@ export const ContactForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Time Zone */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Time Zone"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -739,110 +414,63 @@ export const ContactForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Email Opt Out */}
-            <FormCheckbox
-              label="Email Opt Out"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Email Opt Out" name="" size="small" />
             {/* Do Not Call */}
-            <FormCheckbox
-              label="Do Not Call"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Do Not Call" name="" size="small" />
             {/* No Install Admin Newsletter */}
-            <FormCheckbox
+            <CheckboxElement
               label="No Install Admin Newsletter"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Double Opt-In */}
-            <FormCheckbox
-              label="Double Opt-In"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Double Opt-In" name="" size="small" />
             {/* Double Opt-In Timestamp */}
-            <FormDatePicker
-              label="Double Opt-In Timestamp"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DateTimePickerElement label="Double Opt-In Timestamp" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <FormDivider>System Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* NPS Score */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="NPS Score"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* NPS Reason Promoter */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="NPS Reason Promoter"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Default Account */}
-            <FormCheckbox
-              label="Default Account"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Default Account" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* NPS Comments */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="NPS Comments"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* NPS Reason Detractor */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="NPS Reason Detractor"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>

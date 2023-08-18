@@ -4,7 +4,7 @@ import { ButtonNav } from "../ButtonNav";
 import { cases } from "@/mockData/cases";
 import React from "react";
 
-const getCase = async (caseNumber: string) => {
+const getCase = async (caseID: string) => {
   const res = await fetch("https://dev.to/api/articles");
 
   if (!res.ok) {
@@ -14,13 +14,13 @@ const getCase = async (caseNumber: string) => {
   return res.json();
 };
 
-export default async function CaseComments({ caseNumber }: CaseCommentsProps) {
-  const thisCase = cases.find((item) => item.id.toString() === caseNumber);
+export default async function CaseComments({ caseID }: CaseCommentsProps) {
+  const thisCase = cases.find((item) => item.id.toString() === caseID);
   const rows = thisCase?.comments || [];
 
   return (
     <>
-      <ButtonNav size="small" path={`/cases/new/${caseNumber}/comment/`}>
+      <ButtonNav size="small" path={`/cases/new/${caseID}/comment/`}>
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
@@ -33,5 +33,5 @@ export default async function CaseComments({ caseNumber }: CaseCommentsProps) {
 }
 
 interface CaseCommentsProps {
-  caseNumber: string;
+  caseID: string;
 }

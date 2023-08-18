@@ -14,7 +14,7 @@ const getContactName = (contactID: string) => {
   return "Mr. Customer";
 };
 
-const getContactAccountNumber = (contactID: string) => {
+const getContactAccountID = (contactID: string) => {
   // TODO: request account number
   return "";
 };
@@ -45,7 +45,7 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">Opportunities</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-opportunities-content">
-          <Opportunities accountNumber={getContactAccountNumber(contactID)} />
+          <Opportunities accountID={getContactAccountID(contactID)} />
         </AccordionDetails>
       </Accordion>
       <Accordion>

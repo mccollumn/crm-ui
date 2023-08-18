@@ -1,29 +1,31 @@
 "use client";
 
-import React from "react";
-import { FormEvent } from "react";
-import { OpportunityForm, INITIAL_DATA } from "@/app/forms/OpportunityForm";
+import { useRouter } from "next/navigation";
+import { OpportunityForm } from "@/app/forms/OpportunityForm";
 
 const NewOpportunity = () => {
-  const [data, setData] = React.useState(INITIAL_DATA);
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", data);
-    // POST data
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
+    // PUT data
     // Verify successful response
-    // Get new case number from response
-    // Route user to /cases/view/${caseNumber}
+    // Get ID
+    const opportunityID = "";
+    router.push(`/opportunities/view/${opportunityID}`);
+  };
+
+  const handleCancel = () => {
+    router.back();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <OpportunityForm
-        {...data}
-        setData={setData}
-        formTitle="New Opportunity"
-      />
-    </form>
+    <OpportunityForm
+      formTitle="New Opportunity"
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+    />
   );
 };
 

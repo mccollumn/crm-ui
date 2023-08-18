@@ -1,5 +1,6 @@
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
 export const FormDatePicker = ({
   label,
@@ -8,7 +9,8 @@ export const FormDatePicker = ({
   ...props
 }: FormDatePicker) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    // <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <DateFnsProvider>
       <DatePicker
         label={label}
         value={value}
@@ -16,7 +18,8 @@ export const FormDatePicker = ({
         onChange={onChange}
         {...props}
       />
-    </LocalizationProvider>
+    </DateFnsProvider>
+    // </LocalizationProvider>
   );
 };
 

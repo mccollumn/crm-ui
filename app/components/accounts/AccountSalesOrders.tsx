@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../ButtonNav";
 
-const getSalesOrders = async (accountNumber: string) => {
+const getSalesOrders = async (accountID: string) => {
   // TODO: Retrieve sales orders for provided account
   const res = await fetch("https://dev.to/api/articles");
 
@@ -14,16 +14,13 @@ const getSalesOrders = async (accountNumber: string) => {
 };
 
 export default async function AccountSalesOrders({
-  accountNumber,
+  accountID,
 }: AccountSalesOrdersProps) {
-  const accountSalesOrders = (await getSalesOrders(accountNumber)) || [];
+  const accountSalesOrders = (await getSalesOrders(accountID)) || [];
 
   return (
     <>
-      <ButtonNav
-        size="small"
-        path={`/accounts/new/${accountNumber}/sales-order/`}
-      >
+      <ButtonNav size="small" path={`/accounts/new/${accountID}/sales-order/`}>
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
@@ -33,7 +30,7 @@ export default async function AccountSalesOrders({
             columnDefType="accountSalesOrders"
             // TODO: Update field name for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -42,5 +39,5 @@ export default async function AccountSalesOrders({
 }
 
 interface AccountSalesOrdersProps {
-  accountNumber: string;
+  accountID: string;
 }

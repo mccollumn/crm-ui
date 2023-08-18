@@ -1,25 +1,31 @@
 "use client";
 
-import React from "react";
-import { FormEvent } from "react";
-import { ContactForm, INITIAL_DATA } from "@/app/forms/ContactForm";
+import { useRouter } from "next/navigation";
+import { ContactForm } from "@/app/forms/ContactForm";
 
 const NewContact = () => {
-  const [data, setData] = React.useState(INITIAL_DATA);
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", data);
-    // POST data
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
+    // PUT data
     // Verify successful response
-    // Get new case number from response
-    // Route user to /cases/view/${caseNumber}
+    // Get ID
+    const contactID = "";
+    router.push(`/contacts/view/${contactID}`);
+  };
+
+  const handleCancel = () => {
+    router.back();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <ContactForm {...data} setData={setData} formTitle="New Case" />
-    </form>
+    <ContactForm
+      formTitle="New Contact"
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+    />
   );
 };
 

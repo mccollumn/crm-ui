@@ -15,7 +15,7 @@ const getContacts = async () => {
   return [{ id: "1", contactName: "Mr. Customer" }];
 };
 
-export default async function Contacts({ accountNumber = "*" }: ContactsProps) {
+export default async function Contacts({ accountID = "*" }: ContactsProps) {
   const contactsList = await getContacts();
 
   return (
@@ -29,7 +29,7 @@ export default async function Contacts({ accountNumber = "*" }: ContactsProps) {
             columnDefType="contactsList"
             // TODO: Update this filed name with correct value for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -38,5 +38,5 @@ export default async function Contacts({ accountNumber = "*" }: ContactsProps) {
 }
 
 interface ContactsProps {
-  accountNumber?: string;
+  accountID?: string;
 }

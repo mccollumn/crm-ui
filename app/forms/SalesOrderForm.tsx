@@ -1,285 +1,167 @@
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
-import { FormCheckbox } from "./FormCheckbox";
-import { FormDatePicker } from "./FormDatePicker";
-import { FormDropdownMenu } from "./FormDropdownMenu";
-import { useForm } from "@/app/forms/useForm";
-import { Grid, Stack, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Grid, Stack } from "@mui/material";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type SalesOrderFormData = {
-  id: string;
-};
-
-type SalesOrderFormProps = SalesOrderFormData & {
-  setData: any;
+type SalesOrderFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
-  id: "",
-};
+const initialValues = {};
 
 export const SalesOrderForm = ({
-  setData,
   formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
   ...props
 }: SalesOrderFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Sales Order Number */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Sales Order Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
             {/* Account */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Account"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Opportunity */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Opportunity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Document Number */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Document Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              required
+              size="small"
             />
             {/* Document Type */}
-            <TextField
-              type="text"
-              size="small"
-              label="Document Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Document Type" name="" size="small" />
             {/* Terms */}
-            <TextField
-              type="text"
-              size="small"
-              label="Terms"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Terms" name="" size="small" />
             {/* Reference Number */}
-            <TextField
-              type="text"
-              size="small"
-              label="Reference Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Reference Number" name="" size="small" />
             {/* Quote */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Quote"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* End Customer Account */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="End Customer Account"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Is Channel */}
-            <FormCheckbox
-              label="Is Channel"
-              // id="<fill>"
-              // checked={props.<fill>}
-              onChange={handleCheckboxChange}
-            />
+            <CheckboxElement label="Is Channel" name="" size="small" />
             {/* Order Number */}
-            <TextField
-              type="text"
-              size="small"
-              label="Order Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Order Number" name="" size="small" />
             {/* SO Record Update */}
-            <FormDatePicker
-              label="SO Record Update"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="SO Record Update" name="" />
+            </DateFnsProvider>
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Parent Entity */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Parent Entity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Intacct Entity */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Intacct Entity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Owner */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Owner"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Date */}
-            <FormDatePicker
-              label="Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Date" name="" />
+            </DateFnsProvider>
             {/* State */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="State"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Ship Date */}
-            <FormDatePicker
-              label="Ship Date"
-              //   value={props.<fill> ? new Date(props.<fill>) : null}
-              onChange={(value) =>
-                updateFields({
-                  /*<fill>: value */
-                })
-              }
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Ship Date" name="" />
+            </DateFnsProvider>
             {/* Currency */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Currency"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Subtotal */}
-            <TextField
+            <TextFieldElement
+              label="Subtotal"
+              name=""
               type="number"
               size="small"
-              label="Subtotal"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Total */}
-            <TextField
+            <TextFieldElement
+              label="Total"
+              name=""
               type="number"
               size="small"
-              label="Total"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
             {/* Message */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Message"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -287,13 +169,11 @@ export const SalesOrderForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Exchange Rate to USD */}
-            <TextField
+            <TextFieldElement
+              label="Exchange Rate to USD"
+              name=""
               type="number"
               size="small"
-              label="Exchange Rate to USD"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
             />
           </Stack>
         </Grid>
@@ -301,27 +181,17 @@ export const SalesOrderForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Renewal Opportunity Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Renewal Opportunity Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Renewal Opportunity */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Renewal Opportunity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({
-                  /* <fill>: value || "" */
-                })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -329,16 +199,11 @@ export const SalesOrderForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Renewal Processor Message */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Renewal Processor Message"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -346,153 +211,49 @@ export const SalesOrderForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Bill to Company Name */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Bill to Company Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Bill to Name */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to Name" name="" size="small" />
             {/* Bill to Address 1 */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to Address 1"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to Address 1" name="" size="small" />
             {/* Bill to Address 2 */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to Address 2"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to Address 2" name="" size="small" />
             {/* Bill to City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to City" name="" size="small" />
             {/* Bill to State */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to State"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to State" name="" size="small" />
             {/* Bill to Zip Code */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to Zip Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to Zip Code" name="" size="small" />
             {/* Bill to Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bill to Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bill to Country" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Ship to Company Name */}
-            <TextField
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Ship to Company Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              size="small"
             />
             {/* Ship to Name */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to Name" name="" size="small" />
             {/* Ship to Address 1 */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to Address 1"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to Address 1" name="" size="small" />
             {/* Ship to Address 2 */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to Address 2"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to Address 2" name="" size="small" />
             {/* Ship to City */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to City"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to City" name="" size="small" />
             {/* Ship to State */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to State"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to State" name="" size="small" />
             {/* Ship to Zip Code */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to Zip Code"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to Zip Code" name="" size="small" />
             {/* Ship to Country */}
-            <TextField
-              type="text"
-              size="small"
-              label="Ship to Country"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Ship to Country" name="" size="small" />
           </Stack>
         </Grid>
       </Grid>

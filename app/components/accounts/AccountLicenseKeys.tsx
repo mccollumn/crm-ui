@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../ButtonNav";
 
-const getLicenseKeys = async (accountNumber: string) => {
+const getLicenseKeys = async (accountID: string) => {
   // TODO: Retrieve license keys for provided account
   const res = await fetch("https://dev.to/api/articles");
 
@@ -15,16 +15,13 @@ const getLicenseKeys = async (accountNumber: string) => {
 };
 
 export default async function AccountLicenseKeys({
-  accountNumber,
+  accountID,
 }: AccountLicenseKeysProps) {
-  const accountLicenseKeys = (await getLicenseKeys(accountNumber)) || [];
+  const accountLicenseKeys = (await getLicenseKeys(accountID)) || [];
 
   return (
     <>
-      <ButtonNav
-        size="small"
-        path={`/accounts/new/${accountNumber}/license-key/`}
-      >
+      <ButtonNav size="small" path={`/accounts/new/${accountID}/license-key/`}>
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
@@ -34,7 +31,7 @@ export default async function AccountLicenseKeys({
             columnDefType="accountLicenseKeys"
             // TODO: Update field name for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -43,5 +40,5 @@ export default async function AccountLicenseKeys({
 }
 
 interface AccountLicenseKeysProps {
-  accountNumber: string;
+  accountID: string;
 }

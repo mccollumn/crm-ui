@@ -1,34 +1,39 @@
 "use client";
 
-import React from "react";
-import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ContactForm, INITIAL_DATA } from "@/app/forms/ContactForm";
+import { ContactForm } from "@/app/forms/ContactForm";
 
 const EditContact = ({ params }: { params: { contactID: string } }) => {
   const router = useRouter();
 
   const contactID = params.contactID;
-  const [data, setData] = React.useState(getContactData(contactID));
+  const values = getContactData(contactID);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", data);
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
     // PUT data
     // Verify successful response
     router.push(`/contacts/view/${contactID}`);
   };
 
+  const handleCancel = () => {
+    router.back();
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <ContactForm {...data} setData={setData} formTitle="Edit Contact" />
-    </form>
+    <ContactForm
+      formTitle="Edit Contact"
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+      defaultValues={values}
+    />
   );
 };
 
 const getContactData = (contactID: string) => {
-  // TODO: Retreive contact data. Just returning initial data for now.
-  return INITIAL_DATA;
+  // TODO: Retreive contact data.
+  return {};
 };
 
 export default EditContact;

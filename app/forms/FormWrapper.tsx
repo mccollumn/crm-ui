@@ -1,5 +1,6 @@
 "use client";
 
+import { FormContainer } from "react-hook-form-mui";
 import { Box, Typography } from "@mui/material";
 import { FormButtonRow } from "./FormButtonRow";
 import { styled } from "@mui/material/styles";
@@ -10,9 +11,9 @@ import { ReactNode } from "react";
  * https://github.com/dohomi/react-hook-form-mui
  */
 export const FormWrapper = ({
-  // onSuccess,
+  onSuccess,
   onCancel,
-  // defaultValues,
+  defaultValues,
   submitButtonText,
   resetButtonText,
   title,
@@ -20,19 +21,21 @@ export const FormWrapper = ({
   children,
 }: FormWrapperProps) => {
   return (
-    <FormWrapperStyled className="form-wrapper-container">
-      <FormTitle title={title} />
+    <FormContainer onSuccess={onSuccess} defaultValues={defaultValues}>
+      <FormWrapperStyled className="form-wrapper-container">
+        <FormTitle title={title} />
 
-      <FormDescription description={description} />
+        <FormDescription description={description} />
 
-      {children}
+        {children}
 
-      <FormButtonRow
-        submitButtonText={submitButtonText}
-        resetButtonText={resetButtonText}
-        onCancel={onCancel}
-      />
-    </FormWrapperStyled>
+        <FormButtonRow
+          submitButtonText={submitButtonText}
+          resetButtonText={resetButtonText}
+          onCancel={onCancel}
+        />
+      </FormWrapperStyled>
+    </FormContainer>
   );
 };
 
@@ -92,7 +95,7 @@ export interface FormWrapperProps {
   /**
    * Form submit handler
    */
-  // onSuccess: any;
+  onSuccess: any;
   /**
    * Cancel button click override
    */
@@ -100,7 +103,7 @@ export interface FormWrapperProps {
   /**
    * Form default values
    */
-  // defaultValues: any;
+  defaultValues: any;
   /**
    * Form title
    */

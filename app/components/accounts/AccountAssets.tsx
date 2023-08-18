@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../ButtonNav";
 
-const getAssets = async (accountNumber: string) => {
+const getAssets = async (accountID: string) => {
   // TODO: Retrieve license keys for provided account
   const res = await fetch("https://dev.to/api/articles");
 
@@ -14,14 +14,12 @@ const getAssets = async (accountNumber: string) => {
   return [{ id: "1", licenseKey: "MOJ18-5C6RW-3PRPR-D9AIL-SIKX1" }];
 };
 
-export default async function AccountAssets({
-  accountNumber,
-}: AccountAssetsProps) {
-  const accountAssets = (await getAssets(accountNumber)) || [];
+export default async function AccountAssets({ accountID }: AccountAssetsProps) {
+  const accountAssets = (await getAssets(accountID)) || [];
 
   return (
     <>
-      <ButtonNav size="small" path={`/accounts/new/${accountNumber}/asset/`}>
+      <ButtonNav size="small" path={`/accounts/new/${accountID}/asset/`}>
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
@@ -31,7 +29,7 @@ export default async function AccountAssets({
             columnDefType="accountAssets"
             // TODO: Update field name for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -40,5 +38,5 @@ export default async function AccountAssets({
 }
 
 interface AccountAssetsProps {
-  accountNumber: string;
+  accountID: string;
 }

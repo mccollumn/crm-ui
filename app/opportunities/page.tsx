@@ -16,7 +16,7 @@ const getOpportunities = async () => {
 };
 
 export default async function Opportunities({
-  accountNumber = "*",
+  accountID = "*",
 }: OpportunitiesProps) {
   const opportunitiesList = await getOpportunities();
 
@@ -31,7 +31,7 @@ export default async function Opportunities({
             columnDefType="opportunitiesList"
             // TODO: Update this filed name with correct value for account number
             queryField="id"
-            queryValue={accountNumber}
+            queryValue={accountID}
           />
         </React.Suspense>
       </div>
@@ -40,5 +40,5 @@ export default async function Opportunities({
 }
 
 interface OpportunitiesProps {
-  accountNumber?: string;
+  accountID?: string;
 }

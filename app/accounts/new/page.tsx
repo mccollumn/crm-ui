@@ -1,25 +1,31 @@
 "use client";
 
-import React from "react";
-import { FormEvent } from "react";
-import { AccountForm, INITIAL_DATA } from "@/app/forms/AccountForm";
+import { useRouter } from "next/navigation";
+import { AccountForm } from "@/app/forms/AccountForm";
 
 const NewAccount = () => {
-  const [data, setData] = React.useState(INITIAL_DATA);
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", data);
-    // POST data
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
+    // PUT data
     // Verify successful response
-    // Get new case number from response
-    // Route user to /cases/view/${caseNumber}
+    // Get ID
+    const accountID = "";
+    router.push(`/accounts/view/${accountID}`);
+  };
+
+  const handleCancel = () => {
+    router.back();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <AccountForm {...data} setData={setData} formTitle="New Account" />
-    </form>
+    <AccountForm
+      formTitle="New Account"
+      onSuccess={onSuccess}
+      onCancel={handleCancel}
+    />
   );
 };
 

@@ -6,22 +6,23 @@ import { FormDropdownMenu } from "./FormDropdownMenu";
 import { useForm } from "@/app/forms/useForm";
 import { Grid, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
+import {
+  AutocompleteElement,
+  CheckboxElement,
+  DatePickerElement,
+  TextFieldElement,
+  TextareaAutosizeElement,
+} from "react-hook-form-mui";
+import DateFnsProvider from "../providers/DateFnsProvider";
 
-export type CaseFormData = {
-  subject: string;
-  accountName: string;
-  status: string;
-  hibernateDate: string | null;
-  isTamCase: boolean;
-  description: string;
-};
-
-type CaseFormProps = CaseFormData & {
-  setData: any;
+type CaseFormProps = {
   formTitle: string;
+  onSuccess: any;
+  onCancel: any;
+  defaultValues?: any;
 };
 
-export const INITIAL_DATA = {
+const initialValues = {
   subject: "",
   accountName: "",
   status: "",
@@ -32,136 +33,105 @@ export const INITIAL_DATA = {
 
 const STATUS_OPTIONS = ["Open", "Closed", "Hibernate"];
 
-export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
-  const router = useRouter();
-
-  const { handleInputChange, handleCheckboxChange, updateFields } = useForm(
-    (setData = { setData })
-  );
-
-  const handleCancel = () => {
-    router.back();
-  };
-
+export const CaseForm = ({
+  formTitle,
+  onSuccess,
+  onCancel,
+  defaultValues = initialValues,
+  ...props
+}: CaseFormProps) => {
   return (
     <FormWrapper
       title={formTitle}
       submitButtonText="Save"
       resetButtonText="Cancel"
-      onCancel={handleCancel}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+      defaultValues={defaultValues}
     >
       <Grid container spacing={1}>
         <FormDivider>Case Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Subject */}
-            <TextField
-              required
-              type="text"
-              size="small"
+            <TextFieldElement
               label="Subject"
-              id="subject"
-              value={props.subject}
-              onChange={handleInputChange}
+              name="subject"
+              required
+              size="small"
             />
             {/* Account Name */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Account Name"
-              id="accountName"
-              value={props.accountName}
-              onChange={(e, value) =>
-                updateFields({ accountName: value || "" })
-              }
-              options={[]}
+              name="accountName"
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Contact Name */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Contact Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Case Origin */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Case Origin"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Case Site */}
-            <TextField
-              type="text"
-              size="small"
-              label="Case Site"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Case Site" name="" size="small" />
             {/* Parent Case */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Parent Case"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Reference Case ID */}
-            <TextField
-              type="text"
-              size="small"
-              label="Reference Case ID"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Reference Case ID" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Status"
-              id="status"
-              value={props.status}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={STATUS_OPTIONS}
+              name="status"
               required
+              autocompleteProps={{ size: "small" }}
+              options={STATUS_OPTIONS}
             />
             {/* Sub-Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Sub-Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Hibernate End Date */}
-            <FormDatePicker
-              label="Hibernate End Date"
-              value={props.hibernateDate ? new Date(props.hibernateDate) : null}
-              onChange={(value) => updateFields({ hibernateDate: value })}
-            />
+            <DateFnsProvider>
+              <DatePickerElement label="Hibernate End Date" name="" />
+            </DateFnsProvider>
             {/* Case Owner */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Case Owner"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Case Sub-Owner */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Case Sub-Owner"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -170,116 +140,90 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Product Delivery Method */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Product Delivery Method"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({ accountName: value || "" })
-              }
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Product Name */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Product Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Product Version */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Product Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Product Sub-Version */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Product Sub-Version"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Bug Number */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bug Number"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bug Number" name="" size="small" />
             {/* Bug Description */}
-            <TextField
-              type="text"
-              size="small"
-              label="Bug Description"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Bug Description" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Case Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Case Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={STATUS_OPTIONS}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={STATUS_OPTIONS}
             />
             {/* Reason */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Reason"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Category */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Category"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Priority */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Priority"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Severity */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Severity"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
-              options={[]}
+              name=""
               required
+              autocompleteProps={{ size: "small" }}
+              options={[]}
             />
             {/* Is TAM Case */}
-            <FormCheckbox
-              id="isTamCase"
+            <CheckboxElement
               label="Is TAM Case"
-              checked={props.isTamCase}
-              onChange={handleCheckboxChange}
+              name="isTamCase"
+              size="small"
             />
           </Stack>
         </Grid>
@@ -287,36 +231,25 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* Description */}
-            <TextField
-              required
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Description"
-              id="description"
-              value={props.description}
-              onChange={handleInputChange}
+              name="description"
+              required
+              rows={3}
+              size="small"
             />
             {/* Internal Comments */}
-            <TextField
-              multiline
-              minRows={3}
-              fullWidth
-              type="text"
-              size="small"
+            <TextareaAutosizeElement
               label="Internal Comments"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
+              name=""
+              rows={3}
+              size="small"
             />
             {/* Visible in Self-Service Portal */}
-            <FormCheckbox
-              // id="<fill>"
+            <CheckboxElement
               label="Visible in Self-Service Portal"
-              checked={props.isTamCase}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
@@ -324,21 +257,17 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Escalation Status */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Escalation Status"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) =>
-                updateFields({ accountName: value || "" })
-              }
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Escalation Source */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Escalation Source"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -346,19 +275,17 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Escalation Type */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Escalation Type"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={STATUS_OPTIONS}
             />
             {/* Escalation Flag */}
-            <FormDropdownMenu
+            <AutocompleteElement
               label="Escalation Flag"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={(e, value) => updateFields({ status: value || "" })}
+              name=""
+              autocompleteProps={{ size: "small" }}
               options={[]}
             />
           </Stack>
@@ -367,67 +294,37 @@ export const CaseForm = ({ setData, formTitle, ...props }: CaseFormProps) => {
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Web Company */}
-            <TextField
-              type="text"
-              size="small"
-              label="Web Company"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Web Company" name="" size="small" />
             {/* Web Name */}
-            <TextField
-              type="text"
-              size="small"
-              label="Web Name"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Web Name" name="" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Web Phone */}
-            <TextField
-              type="text"
-              size="small"
-              label="Web Phone"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Web Phone" name="" size="small" />
             {/* Web Email */}
-            <TextField
-              type="text"
-              size="small"
-              label="Web Email"
-              // id="<fill>"
-              // value={props.<fill>}
-              onChange={handleInputChange}
-            />
+            <TextFieldElement label="Web Email" name="" size="small" />
           </Stack>
         </Grid>
         <FormDivider>Assignment</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Assign using active assignment rule */}
-            <FormCheckbox
-              // id="<fill>"
+            <CheckboxElement
               label="Assign using active assignment rule"
-              checked={props.isTamCase}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Send notification email to contact */}
-            <FormCheckbox
-              // id="<fill>"
+            <CheckboxElement
               label="Assign using active assignment rule"
-              checked={props.isTamCase}
-              onChange={handleCheckboxChange}
+              name=""
+              size="small"
             />
           </Stack>
         </Grid>
