@@ -304,7 +304,12 @@ export const CaseForm = ({
             {/* Web Phone */}
             <TextFieldElement label="Web Phone" name="" size="small" />
             {/* Web Email */}
-            <TextFieldElement label="Web Email" name="" size="small" />
+            <TextFieldElement
+              label="Web Email"
+              name=""
+              size="small"
+              type="email"
+            />
           </Stack>
         </Grid>
         <FormDivider>Assignment</FormDivider>

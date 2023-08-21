@@ -483,6 +483,7 @@ export const OpportunityForm = ({
               label="Initial Contact Email"
               name=""
               size="small"
+              type="email"
             />
             {/* Original Campaign Source */}
             <AutocompleteElement

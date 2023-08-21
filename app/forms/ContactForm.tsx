@@ -96,7 +96,13 @@ export const ContactForm = ({
               options={[]}
             />
             {/* Email */}
-            <TextFieldElement label="Email" name="" required size="small" />
+            <TextFieldElement
+              label="Email"
+              name=""
+              required
+              size="small"
+              type="email"
+            />
             {/* Unconfirmed Email */}
             <CheckboxElement label="Unconfirmed Email" name="" size="small" />
             {/* Most Recent Product Interest */}
