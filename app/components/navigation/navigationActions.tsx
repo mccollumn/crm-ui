@@ -1,5 +1,6 @@
 import { Home } from "@mui/icons-material";
-import SearchInput from "../components/SearchInput";
+import SearchInput from "./SearchInput";
+import AccountMenu from "./AccountMenu";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import GroupIcon from "@mui/icons-material/Group";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -20,6 +21,15 @@ export const navigationActions: NavigationAction[] = [
       />
     ),
     snapPosition: "right",
+  },
+  {
+    key: "AccountMenu",
+    label: "Account Menu",
+    ariaLabel: "AccountMenu",
+    authFilter: "always",
+    position: "top",
+    snapPosition: "right",
+    Component: <AccountMenu />,
   },
   {
     key: "Home",

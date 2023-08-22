@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-import { ButtonNav } from "../ButtonNav";
+import { ButtonNav } from "../navigation/ButtonNav";
 
 const getSalesInvoices = async (accountID: string) => {
   // TODO: Retrieve sales invoices for provided account

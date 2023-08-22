@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-import { ButtonNav } from "../ButtonNav";
+import { ButtonNav } from "../navigation/ButtonNav";
 
 const getLicenseKeys = async (accountID: string) => {
   // TODO: Retrieve license keys for provided account

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Title } from "../components/Title";
-import { ButtonNav } from "../components/ButtonNav";
+import { ButtonNav } from "../components/navigation/ButtonNav";
 import { DataTable } from "../components/DataTable";
 import "server-only";
 

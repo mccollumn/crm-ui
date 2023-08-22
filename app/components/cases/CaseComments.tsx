@@ -1,5 +1,5 @@
 import { DataTable } from "../DataTable";
-import { ButtonNav } from "../ButtonNav";
+import { ButtonNav } from "../navigation/ButtonNav";
 
 import { cases } from "@/mockData/cases";
 import React from "react";

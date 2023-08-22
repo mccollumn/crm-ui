@@ -13,7 +13,7 @@ import {
 import { Menu } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { NavigationAction } from "./navigationActions";
-import webtrendsLogo from "../images/webtrends_logo_white_small.png";
+import webtrendsLogo from "../../images/webtrends_logo_white_small.png";
 
 export const TopNavBar = ({
   topNavActions,

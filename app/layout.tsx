@@ -4,16 +4,16 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
-
 import React from "react";
 import {
   navigationActions,
   NavigationAction,
-} from "./navigation/navigationActions";
-import { TopNavBar } from "./navigation/TopNavBar";
-import { LeftNavDrawer } from "./navigation/LeftNavDrawer";
-import { filterNavigationActions } from "./navigation/navigation.util";
+} from "./components/navigation/navigationActions";
+import { TopNavBar } from "./components/navigation/TopNavBar";
+import { LeftNavDrawer } from "./components/navigation/LeftNavDrawer";
+import { filterNavigationActions } from "./components/navigation/navigation.util";
 import { Box } from "@mui/material";
+import { Providers } from "./providers/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,55 +58,57 @@ const Layout = ({
   return (
     <html>
       <body className={inter.className}>
-        <Box
-          className={baseClassNames.join(" ")}
-          sx={{
-            display: "flex",
-            flexGrow: 1,
-          }}
-          aria-label="Base application"
-        >
-          <TopNavBar
-            isAuthorized={isAuthorized}
-            topNavActions={topNavActions}
-            navClickHandler={navClickHandler}
-            selectedNav={selectedNav}
-            label={label}
-            expandNav={expandNav}
-            open={open}
-            showMenu={!!leftNavCount}
-            topNavHeight={topNavHeight}
-            maxWidth={leftNavMaxWidth}
-          />
-
-          <LeftNavDrawer
-            isAuthorized={true}
-            leftNavigationActions={leftNavActions}
-            leftNavigationClick={navClickHandler}
-            selectedNav={selectedNav}
-            open={open}
-            showDrawer={!!leftNavCount}
-            collapseNav={collapseNav}
-            minWidth={leftNavMinWidth}
-            maxWidth={leftNavMaxWidth}
-            topNavHeight={topNavHeight}
-          />
-
+        <Providers>
           <Box
-            className={"base-page-container"}
+            className={baseClassNames.join(" ")}
             sx={{
-              marginTop: `${topNavHeight}px`,
-              marginLeft: open
-                ? `${leftNavMaxWidth}px`
-                : `${leftNavMinWidth}px`,
-              width: "100%",
-              height: "100%",
-              padding: "24px",
+              display: "flex",
+              flexGrow: 1,
             }}
+            aria-label="Base application"
           >
-            {children}
+            <TopNavBar
+              isAuthorized={isAuthorized}
+              topNavActions={topNavActions}
+              navClickHandler={navClickHandler}
+              selectedNav={selectedNav}
+              label={label}
+              expandNav={expandNav}
+              open={open}
+              showMenu={!!leftNavCount}
+              topNavHeight={topNavHeight}
+              maxWidth={leftNavMaxWidth}
+            />
+
+            <LeftNavDrawer
+              isAuthorized={true}
+              leftNavigationActions={leftNavActions}
+              leftNavigationClick={navClickHandler}
+              selectedNav={selectedNav}
+              open={open}
+              showDrawer={!!leftNavCount}
+              collapseNav={collapseNav}
+              minWidth={leftNavMinWidth}
+              maxWidth={leftNavMaxWidth}
+              topNavHeight={topNavHeight}
+            />
+
+            <Box
+              className={"base-page-container"}
+              sx={{
+                marginTop: `${topNavHeight}px`,
+                marginLeft: open
+                  ? `${leftNavMaxWidth}px`
+                  : `${leftNavMinWidth}px`,
+                width: "100%",
+                height: "100%",
+                padding: "24px",
+              }}
+            >
+              {children}
+            </Box>
           </Box>
-        </Box>
+        </Providers>
       </body>
     </html>
   );

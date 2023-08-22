@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-import { ButtonNav } from "../ButtonNav";
+import { ButtonNav } from "../navigation/ButtonNav";
 
 const getOpportunityQuotes = async (opportunityID: string) => {
   const res = await fetch("https://dev.to/api/articles");

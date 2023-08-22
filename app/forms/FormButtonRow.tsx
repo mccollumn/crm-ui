@@ -2,7 +2,7 @@
 
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { ButtonStyled } from "../components/ButtonStyled";
+import { ButtonStyled } from "../components/navigation/ButtonStyled";
 
 export const FormButtonRow = ({
   submitButtonText = "Submit",

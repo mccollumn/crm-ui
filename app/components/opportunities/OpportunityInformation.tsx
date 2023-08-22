@@ -5,7 +5,7 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ButtonNav } from "../ButtonNav";
+import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { OpportunityData } from "@/app/types/opportunities";
 
