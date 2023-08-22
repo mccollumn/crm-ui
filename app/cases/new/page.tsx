@@ -6,10 +6,11 @@ import { CaseForm } from "@/app/forms/CaseForm";
 const NewCase = () => {
   const router = useRouter();
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
     console.log("Success values", values);
     // TODO:
     // PUT data
+    const data = await fetch("/cases/api/new/");
     // Verify successful response
     // Get ID
     const caseID = "";

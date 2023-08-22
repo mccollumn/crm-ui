@@ -9,10 +9,11 @@ const EditContact = ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
   const values = getContactData(contactID);
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
     console.log("Success values", values);
     // TODO:
     // PUT data
+    const data = await fetch(`/contacts/api/${contactID}/update/`);
     // Verify successful response
     router.push(`/contacts/view/${contactID}`);
   };
@@ -31,8 +32,12 @@ const EditContact = ({ params }: { params: { contactID: string } }) => {
   );
 };
 
-const getContactData = (contactID: string) => {
+const getContactData = async (contactID: string) => {
   // TODO: Retreive contact data.
+  const data = await fetch(
+    `${process.env.API_ENDPOINT}/contacts/api/${contactID}`
+  );
+  // return data || {};
   return {};
 };
 

@@ -24,7 +24,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
 
   return (
     <>
-      <ButtonNav size="small" path={`/cases/edit/${accountData.id}`}>
+      <ButtonNav size="small" path={`/accounts/edit/${accountData.id}`}>
         Edit
       </ButtonNav>
       <Accordion defaultExpanded={true}>

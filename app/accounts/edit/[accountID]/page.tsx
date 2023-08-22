@@ -9,10 +9,11 @@ const EditAccount = ({ params }: { params: { accountID: string } }) => {
   const accountID = params.accountID;
   const values = getAccountData(accountID);
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
     console.log("Success values", values);
     // TODO:
     // PUT data
+    const data = await fetch(`/accounts/api/${accountID}/update/`);
     // Verify successful response
     router.push(`/accounts/view/${accountID}`);
   };
@@ -31,8 +32,12 @@ const EditAccount = ({ params }: { params: { accountID: string } }) => {
   );
 };
 
-const getAccountData = (accountID: string) => {
+const getAccountData = async (accountID: string) => {
   // TODO: Retreive data. Just returning initial data for now.
+  const data = await fetch(
+    `${process.env.API_ENDPOINT}/accounts/api/${accountID}`
+  );
+  // return data || {};
   return {};
 };
 

@@ -11,10 +11,11 @@ const EditCase = ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
   const values = getCaseData(caseID);
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
     console.log("Success values", values);
     // TODO:
     // PUT data
+    const data = await fetch(`/cases/api/${caseID}/update/`);
     // Verify successful response
     router.push(`/cases/view/${caseID}`);
   };
@@ -33,7 +34,8 @@ const EditCase = ({ params }: { params: { caseID: string } }) => {
   );
 };
 
-const getCaseData = (caseID: string) => {
+const getCaseData = async (caseID: string) => {
+  const data = await fetch(`${process.env.API_ENDPOINT}/cases/api/${caseID}`);
   // TODO: Retreive case data. Just returning initial data for now.
   return cases.find((item) => item.id.toString() === caseID) || {};
 };

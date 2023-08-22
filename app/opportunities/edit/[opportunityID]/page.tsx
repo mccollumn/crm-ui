@@ -9,10 +9,11 @@ const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
   const opportunityID = params.opportunityID;
   const values = getOpportunityData(opportunityID);
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
     console.log("Success values", values);
     // TODO:
     // PUT data
+    const data = await fetch(`/opportunities/api/${opportunityID}/update/`);
     // Verify successful response
     router.push(`/opportunities/view/${opportunityID}`);
   };
@@ -31,8 +32,12 @@ const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
   );
 };
 
-const getOpportunityData = (opportunityID: string) => {
+const getOpportunityData = async (opportunityID: string) => {
   // TODO: Retreive case data.
+  const data = await fetch(
+    `${process.env.API_ENDPOINT}/opportunities/api/${opportunityID}`
+  );
+  // return data || {};
   return {};
 };
 
