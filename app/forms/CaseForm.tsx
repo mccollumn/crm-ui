@@ -112,7 +112,10 @@ export const CaseForm = ({
             />
             {/* Hibernate End Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Hibernate End Date" name="" />
+              <DatePickerElement
+                label="Hibernate End Date"
+                name="hibernateDate"
+              />
             </DateFnsProvider>
             {/* Case Owner */}
             <AutocompleteElement

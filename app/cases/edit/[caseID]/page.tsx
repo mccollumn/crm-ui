@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useRouter } from "next/navigation";
 import { CaseForm } from "@/app/forms/CaseForm";
 
@@ -7,9 +8,14 @@ import { cases } from "@/mockData/cases";
 
 const EditCase = ({ params }: { params: { caseID: string } }) => {
   const router = useRouter();
-
+  const [values, setValues] = React.useState<{} | null>(null);
   const caseID = params.caseID;
-  const values = getCaseData(caseID);
+
+  const getData = async () => {
+    const data = await getCaseData(caseID);
+    setValues(data);
+  };
+  getData();
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -24,14 +30,17 @@ const EditCase = ({ params }: { params: { caseID: string } }) => {
     router.back();
   };
 
-  return (
-    <CaseForm
-      formTitle="Edit Case"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
-      defaultValues={values}
-    />
-  );
+  if (values) {
+    return (
+      <CaseForm
+        formTitle="Edit Case"
+        onSuccess={onSuccess}
+        onCancel={handleCancel}
+        defaultValues={values}
+      />
+    );
+  }
+  return <div>Loading...</div>;
 };
 
 const getCaseData = async (caseID: string) => {

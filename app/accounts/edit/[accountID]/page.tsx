@@ -1,13 +1,21 @@
 "use client";
 
+import React from "react";
 import { useRouter } from "next/navigation";
 import { AccountForm } from "@/app/forms/AccountForm";
 
 const EditAccount = ({ params }: { params: { accountID: string } }) => {
   const router = useRouter();
-
+  const [values, setValues] = React.useState<{} | null>(null);
   const accountID = params.accountID;
-  const values = getAccountData(accountID);
+
+  React.useEffect(() => {
+    (async () => {
+      const data = await getAccountData(accountID);
+      setValues(data);
+    })();
+  }, [accountID]);
+  console.log("EditAccount");
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -22,14 +30,17 @@ const EditAccount = ({ params }: { params: { accountID: string } }) => {
     router.back();
   };
 
-  return (
-    <AccountForm
-      formTitle="Edit Account"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
-      defaultValues={values}
-    />
-  );
+  if (values) {
+    return (
+      <AccountForm
+        formTitle="Edit Account"
+        onSuccess={onSuccess}
+        onCancel={handleCancel}
+        defaultValues={values}
+      />
+    );
+  }
+  return <div>Loading...</div>;
 };
 
 const getAccountData = async (accountID: string) => {

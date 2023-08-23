@@ -1,13 +1,20 @@
 "use client";
 
+import React from "react";
 import { useRouter } from "next/navigation";
 import { ContactForm } from "@/app/forms/ContactForm";
 
 const EditContact = ({ params }: { params: { contactID: string } }) => {
   const router = useRouter();
-
+  const [values, setValues] = React.useState<{} | null>(null);
   const contactID = params.contactID;
-  const values = getContactData(contactID);
+
+  React.useEffect(() => {
+    (async () => {
+      const data = await getContactData(contactID);
+      setValues(data);
+    })();
+  }, [contactID]);
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -22,14 +29,17 @@ const EditContact = ({ params }: { params: { contactID: string } }) => {
     router.back();
   };
 
-  return (
-    <ContactForm
-      formTitle="Edit Contact"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
-      defaultValues={values}
-    />
-  );
+  if (values) {
+    return (
+      <ContactForm
+        formTitle="Edit Contact"
+        onSuccess={onSuccess}
+        onCancel={handleCancel}
+        defaultValues={values}
+      />
+    );
+  }
+  return <div>Loading...</div>;
 };
 
 const getContactData = async (contactID: string) => {

@@ -1,13 +1,20 @@
 "use client";
 
+import React from "react";
 import { useRouter } from "next/navigation";
 import { OpportunityForm } from "@/app/forms/OpportunityForm";
 
 const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
   const router = useRouter();
-
+  const [values, setValues] = React.useState<{} | null>(null);
   const opportunityID = params.opportunityID;
-  const values = getOpportunityData(opportunityID);
+
+  React.useEffect(() => {
+    (async () => {
+      const data = await getOpportunityData(opportunityID);
+      setValues(data);
+    })();
+  }, [opportunityID]);
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -22,14 +29,17 @@ const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
     router.back();
   };
 
-  return (
-    <OpportunityForm
-      formTitle="Edit Opportunity"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
-      defaultValues={values}
-    />
-  );
+  if (values) {
+    return (
+      <OpportunityForm
+        formTitle="Edit Opportunity"
+        onSuccess={onSuccess}
+        onCancel={handleCancel}
+        defaultValues={values}
+      />
+    );
+  }
+  return <div>Loading...</div>;
 };
 
 const getOpportunityData = async (opportunityID: string) => {

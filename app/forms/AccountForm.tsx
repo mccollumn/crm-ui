@@ -17,7 +17,7 @@ type CaseFormProps = {
   defaultValues?: any;
 };
 
-const initialValues = {};
+const initialValues = { accountOwner: "" };
 
 export const AccountForm = ({
   formTitle,
@@ -42,7 +42,7 @@ export const AccountForm = ({
             {/* Account Owner */}
             <AutocompleteElement
               label="Account Owner"
-              name=""
+              name="accountOwner"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}

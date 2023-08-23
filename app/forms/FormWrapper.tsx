@@ -20,6 +20,7 @@ export const FormWrapper = ({
   description,
   children,
 }: FormWrapperProps) => {
+  console.log("Form Wrapper Values:", defaultValues);
   return (
     <FormContainer onSuccess={onSuccess} defaultValues={defaultValues}>
       <FormWrapperStyled className="form-wrapper-container">

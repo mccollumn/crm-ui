@@ -8,12 +8,13 @@ const getOpportunityActivities = async (opportunityID: string) => {
     throw new Error("Failed to fetch data");
   }
 
-  return res.json();
+  // return res.json();
+  return [];
 };
 
-export default async function OpportunityActivities({
+const OpportunityActivities = async ({
   opportunityID,
-}: OpportunityActivitiesProps) {
+}: OpportunityActivitiesProps) => {
   const opportunityActivities = await getOpportunityActivities(opportunityID);
 
   return (
@@ -31,8 +32,10 @@ export default async function OpportunityActivities({
       </div>
     </>
   );
-}
+};
 
 interface OpportunityActivitiesProps {
   opportunityID: string;
 }
+
+export default OpportunityActivities;

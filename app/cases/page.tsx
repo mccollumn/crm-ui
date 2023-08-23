@@ -1,23 +1,20 @@
-import * as React from "react";
+import React from "react";
 import { Title } from "../components/Title";
 import { ButtonNav } from "../components/navigation/ButtonNav";
 import { DataTable } from "../components/DataTable";
 import "server-only";
 
-import { cases } from "../../mockData/cases";
-
 const getCases = async () => {
-  const res = await fetch("https://dev.to/api/articles");
-
+  const res = await fetch(`${process.env.API_ENDPOINT}/cases/api/`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
 
-  // return res.json();
-  return cases;
+  const cases = await res.json();
+  return cases.cases;
 };
 
-export default async function Cases({ contactID = "" }: CasesProps) {
+const Cases = async ({ contactID = "" }: CasesProps) => {
   const casesList = await getCases();
 
   return (
@@ -37,8 +34,10 @@ export default async function Cases({ contactID = "" }: CasesProps) {
       </div>
     </>
   );
-}
+};
 
 interface CasesProps {
   contactID?: string;
 }
+
+export default Cases;
