@@ -1,19 +1,10 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-
-const getCaseEmails = async (caseID: string) => {
-  //TODO: Retieve emails for the provided case number
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-};
+import { getCaseData } from "@/app/utils/getData";
 
 export default async function CaseEmails({ caseID }: CaseEmailsProps) {
-  const caseEmails = await getCaseEmails(caseID);
+  const caseData = await getCaseData(caseID);
+  const caseEmails = caseData?.CaseEmails;
 
   return (
     <>

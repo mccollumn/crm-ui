@@ -8,9 +8,12 @@ import CaseComments from "@/app/components/cases/CaseComments";
 import CaseInformation from "@/app/components/cases/CaseInformation";
 import CaseEmails from "@/app/components/cases/CaseEmails";
 import CaseHistory from "@/app/components/cases/CaseHistory";
+import { getCaseData } from "@/app/utils/getData";
 
-const CaseView = ({ params }: { params: { caseID: string } }) => {
+const CaseView = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
+  const caseData = await getCaseData(caseID);
+  const caseNumber = caseData.CaseInformation.Cases_CaseNumber;
 
   return (
     <div>
@@ -20,7 +23,11 @@ const CaseView = ({ params }: { params: { caseID: string } }) => {
           aria-controls="case-info-content"
           id="case-info-header"
         >
-          <Typography variant="h6">{`Case ${caseID}`}</Typography>
+          <Typography
+            component={"h1"}
+            fontSize={"h6.fontSize"}
+            fontWeight={"bold"}
+          >{`Case ${caseNumber}`}</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-info-content">
           <CaseInformation caseID={caseID} />

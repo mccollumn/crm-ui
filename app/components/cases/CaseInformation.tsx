@@ -5,21 +5,21 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { CaseData } from "../../types/cases";
+import formatDate from "@/app/utils/formatDate";
+import { getCaseData } from "@/app/utils/getData";
 
-import { cases } from "../../../mockData/cases";
-
-const CaseInformation = ({ caseID }: CaseInformationProps) => {
-  const caseData = cases.find((item) => item.id.toString() === caseID);
-  if (!caseData) return null;
-
-  const caseInfo = getCaseInfo(caseData);
+const CaseInformation = async ({ caseID }: CaseInformationProps) => {
+  const caseInfo = await getCaseInfo(caseID);
+  if (!caseInfo) return null;
 
   return (
     <>
-      <ButtonNav size="small" path={`/cases/edit/${caseData.id}`}>
+      <ButtonNav size="small" path={`/cases/edit/${caseID}`}>
         Edit
       </ButtonNav>
       <Accordion defaultExpanded={true}>
@@ -53,7 +53,7 @@ const CaseInformation = ({ caseID }: CaseInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="case-escalation-section-content"
@@ -67,7 +67,7 @@ const CaseInformation = ({ caseID }: CaseInformationProps) => {
             itemsRight={caseInfo.escalation.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -87,76 +87,152 @@ const CaseInformation = ({ caseID }: CaseInformationProps) => {
   );
 };
 
-const getCaseInfo = (caseData: CaseData) => {
+const getCaseInfo = async (caseID: string) => {
+  const caseData: CaseData = await getCaseData(caseID);
+  if (!caseData) return null;
   return {
     info: {
       left: [
-        { label: "Subject", value: caseData?.subject },
-        { label: "Account Name", value: caseData?.accountName },
+        { label: "Subject", value: caseData.CaseInformation.Cases_Subject },
+        {
+          label: "Account Name",
+          value: caseData.CaseInformation.Accounts_Name,
+        },
         { label: "Contact Name", value: "" },
-        { label: "Case Origin", value: "" },
-        { label: "Contact Phone", value: "" },
-        { label: "Contact Email", value: "" },
-        { label: "Case Number", value: "" },
-        { label: "Open Opp Value of Account", value: "" },
+        {
+          label: "Case Origin",
+          value: caseData.CaseInformation.Cases_Origin,
+        },
+        {
+          label: "Contact Phone",
+          value: caseData.CaseInformation.Cases_ContactPhone,
+        },
+        {
+          label: "Contact Email",
+          value: caseData.CaseInformation.Cases_ContactEmail,
+        },
+        {
+          label: "Case Number",
+          value: caseData.CaseInformation.Cases_CaseNumber,
+        },
+        {
+          label: "Open Opp Value of Account",
+          value: caseData.CaseInformation.Cases_OpenOppValueOfAccount,
+        },
       ],
       right: [
-        { label: "Status", value: caseData?.status },
-        { label: "Sub Status", value: "Waiting on customer" },
+        { label: "Status", value: caseData.CaseInformation.Cases_Status },
+        {
+          label: "Sub Status",
+          value: caseData.CaseInformation.Cases_SubStatus,
+        },
         {
           label: "Date/Time Opened",
-          value: caseData?.opened,
+          value: formatDate(caseData.CaseInformation.Cases_CreatedDate, true),
         },
-        { label: "Date/Time Closed", value: "" },
-        { label: "Hibernate End Date", value: "" },
+        {
+          label: "Date/Time Closed",
+          value: formatDate(caseData.CaseInformation.Cases_ClosedDate, true),
+        },
+        {
+          label: "Hibernate End Date",
+          value: formatDate(
+            caseData.CaseInformation.Cases_HibernateEndDate,
+            true
+          ),
+        },
         { label: "Case Owner", value: "" },
-        { label: "Sub Owner", value: "" },
-        { label: "Is Escalated", value: "" },
+        {
+          label: "Sub Owner",
+          value: caseData.CaseInformation.Cases_SubOwner,
+        },
+        {
+          label: "Is Escalated",
+          value: caseData.CaseInformation.Cases_IsEscalated ? (
+            <CheckBoxIcon />
+          ) : (
+            <CheckBoxOutlineBlankIcon />
+          ),
+        },
       ],
     },
     profile: {
       left: [
-        { label: "Product Delivary Method", value: "" },
-        { label: "Product Name", value: "" },
-        { label: "Product Version", value: "" },
-        { label: "Product Sub Version", value: "" },
-        { label: "Bug Number", value: "" },
-        { label: "Bug Description", value: "" },
-        // { label: "Description", value: caseData.description },
+        {
+          label: "Product Delivary Method",
+          value: caseData.CaseProfile.Cases_ProductDeliveryMethod,
+        },
+        {
+          label: "Product Name",
+          value: caseData.CaseProfile.Cases_ProductName,
+        },
+        {
+          label: "Product Version",
+          value: caseData.CaseProfile.Cases_ProductVersion,
+        },
+        {
+          label: "Product Sub Version",
+          value: caseData.CaseProfile.Cases_ProductSubVersion,
+        },
+        { label: "Bug Number", value: caseData.CaseProfile.Cases_BugNumber },
+        {
+          label: "Bug Description",
+          value: caseData.CaseProfile.Cases_BugDescription,
+        },
+      ],
+      right: [
+        { label: "Case Type", value: caseData.CaseProfile.Cases_CaseType },
+        { label: "Reason", value: caseData.CaseProfile.Cases_Reason },
+        { label: "Category", value: caseData.CaseProfile.Cases_Category },
+        { label: "Priority", value: caseData.CaseProfile.Cases_Priority },
+        { label: "Severity", value: caseData.CaseProfile.Cases_Severity },
+        {
+          label: "Is TAM Case",
+          value: caseData.CaseProfile.Cases_IsTAMCase ? (
+            <CheckBoxIcon />
+          ) : (
+            <CheckBoxOutlineBlankIcon />
+          ),
+        },
+      ],
+      fullWidth: [
+        {
+          label: "Description",
+          value: caseData.CaseProfile.Cases_Description,
+        },
         // { label: "Internal Comments", value: "" },
         // { label: "Visible in Self-Service Portal", value: "" },
       ],
-      right: [
-        { label: "Case Type", value: "" },
-        { label: "Reason", value: "" },
-        { label: "Category", value: "" },
-        { label: "Priority", value: "" },
-        { label: "Severity", value: "" },
-        { label: "Is TAM Case", value: "" },
-      ],
-      fullWidth: [
-        { label: "Description", value: caseData.description },
-        { label: "Internal Comments", value: "" },
-        { label: "Visible in Self-Service Portal", value: "" },
-      ],
     },
-    escalation: {
-      left: [
-        { label: "Escalation Status", value: "" },
-        { label: "Escalation Source", value: "" },
-        { label: "Web Company", value: "" },
-        { label: "Web Name", value: "" },
-      ],
-      right: [
-        { label: "Escalation Type", value: "" },
-        { label: "Escalation Flag", value: "" },
-        { label: "Web Phone", value: "" },
-        { label: "Web Email", value: "" },
-      ],
-    },
+    // escalation: {
+    //   left: [
+    //     { label: "Escalation Status", value: "" },
+    //     { label: "Escalation Source", value: "" },
+    //     { label: "Web Company", value: "" },
+    //     { label: "Web Name", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Escalation Type", value: "" },
+    //     { label: "Escalation Flag", value: "" },
+    //     { label: "Web Phone", value: "" },
+    //     { label: "Web Email", value: "" },
+    //   ],
+    // },
     system: {
-      left: [{ label: "Created By", value: "" }],
-      right: [{ label: "Last Modified By", value: "" }],
+      left: [
+        {
+          label: "Created By",
+          value: caseData.CaseInformation.Cases_CreatedById,
+        },
+        {
+          label: "Creation Date",
+          value: formatDate(caseData.CaseInformation.Cases_CreatedDate, true),
+        },
+      ],
+      right: [
+        { label: "Last Modified By", value: "" },
+        { label: "Last Modified Date", value: "" },
+      ],
     },
   };
 };

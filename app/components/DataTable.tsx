@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   DataGrid,
   GridColDef,
@@ -9,7 +10,6 @@ import {
 import { CheckBox } from "@mui/icons-material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Link from "next/link";
-import React from "react";
 
 type columnDefTypes =
   | "casesList"
@@ -95,7 +95,7 @@ export const DataTable = ({
     ],
     caseEmails: [
       {
-        field: "subject",
+        field: "EmailMessages_Subject",
         headerName: "Subject",
         renderCell: (params) => {
           return <Link href="\contacts">{params.value}</Link>;
@@ -103,29 +103,34 @@ export const DataTable = ({
         flex: 1,
       },
       {
-        field: "from",
+        field: "EmailMessages_FromAddress",
         headerName: "From Address",
         renderCell: (params) => {
           return <Link href={`mailto:${params.value}`}>{params.value}</Link>;
         },
       },
       { field: "to", headerName: "To Adress" },
-      { field: "date", headerName: "Message Date", type: "dateTime" },
       {
-        field: "status",
+        field: "EmailMessages_MessageDate",
+        headerName: "Message Date",
+        type: "dateTime",
+        valueGetter: (params: GridValueGetterParams) => new Date(params.value),
+      },
+      {
+        field: "EmailMessages_Status",
         headerName: "Status",
       },
     ],
     caseComments: [
       {
-        field: "user",
+        field: "CaseComments_CreatedById",
         headerName: "User",
         renderCell: (params) => {
           return <Link href="\contacts">{params.value}</Link>;
         },
       },
       {
-        field: "public",
+        field: "CaseComments_IsPublic",
         headerName: "Public",
         renderCell: (params) => {
           let publicComment;
@@ -138,8 +143,13 @@ export const DataTable = ({
           return publicComment ? <CheckBox /> : <CheckBoxOutlineBlankIcon />;
         },
       },
-      { field: "createDate", headerName: "Created Date" },
-      { field: "comment", headerName: "Comment", flex: 1 },
+      {
+        field: "CaseComments_CreatedDate",
+        headerName: "Created Date",
+        type: "dateTime",
+        valueGetter: (params: GridValueGetterParams) => new Date(params.value),
+      },
+      { field: "CaseComments_CommentBody", headerName: "Comment", flex: 1 },
       {
         field: "editLink",
         headerName: "Edit",
@@ -727,9 +737,31 @@ export const DataTable = ({
     ],
   });
 
+  const rowIDs = {
+    casesList: "",
+    caseHistory: "",
+    caseEmails: "EmailMessages_ID",
+    caseComments: "CaseComments_ID",
+    accountsList: "",
+    contactsList: "",
+    opportunitiesList: "",
+    accountSalesOrders: "",
+    accountSalesInvoices: "",
+    accountLicenseKeys: "",
+    accountAssets: "",
+    contactHistory: "",
+    opportunityQuotes: "",
+    opportunityContactRoles: "",
+    opportunityActivities: "",
+    opportunityProducts: "",
+    opportunityStages: "",
+  };
+
   const filterModel: GridFilterModel = {
     items: [{ field: queryField, operator: "contains", value: queryValue }],
   };
+
+  console.log("Row Data:", rows);
 
   return (
     <DataGrid
@@ -745,11 +777,16 @@ export const DataTable = ({
       }}
       pageSizeOptions={[5, 10]}
       //   paginationMode="server"
+      getRowId={(row) => {
+        console.log("Row ID:", row[rowIDs[columnDefType]]);
+        return row[rowIDs[columnDefType]];
+      }}
       {...props}
     />
   );
 };
 
+// interface DataTableProps extends ComponentPropsWithoutRef<"DataGridComponent"> {
 interface DataTableProps {
   /**
    * DataGrid row data
@@ -772,4 +809,8 @@ interface DataTableProps {
    * The queryField value to look for
    */
   queryValue?: string;
+  /**
+   * All other props
+   */
+  [key: string]: any;
 }

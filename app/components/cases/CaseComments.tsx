@@ -1,22 +1,11 @@
+import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
-
-import { cases } from "@/mockData/cases";
-import React from "react";
-
-const getCase = async (caseID: string) => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-};
+import { getCaseData } from "@/app/utils/getData";
 
 export default async function CaseComments({ caseID }: CaseCommentsProps) {
-  const thisCase = cases.find((item) => item.id.toString() === caseID);
-  const rows = thisCase?.comments || [];
+  const caseData = await getCaseData(caseID);
+  const rows = caseData?.CaseComments;
 
   return (
     <>
@@ -25,7 +14,7 @@ export default async function CaseComments({ caseID }: CaseCommentsProps) {
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
         <React.Suspense fallback={<p>Loading cases...</p>}>
-          <DataTable rows={rows} columnDefType="caseComments" data={thisCase} />
+          <DataTable rows={rows} columnDefType="caseComments" data={caseData} />
         </React.Suspense>
       </div>
     </>

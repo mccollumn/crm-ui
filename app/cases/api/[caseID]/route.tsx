@@ -7,10 +7,7 @@ export async function GET(
   { params }: { params: { caseID: string } }
 ) {
   const caseID = params.caseID;
+  // const data = await getData("case", caseID);
 
-  console.log("Retrieve data for:", caseID);
-
-  const data = await getData(caseID);
-
-  return NextResponse.json({ data });
+  // return NextResponse.json({ data });
 }

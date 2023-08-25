@@ -1,52 +1,62 @@
-"use client";
-
-import React from "react";
-import { useRouter } from "next/navigation";
 import { CaseForm } from "@/app/forms/CaseForm";
+import { getCaseData, getMenuItems } from "@/app/utils/getData";
 
-import { cases } from "@/mockData/cases";
-
-const EditCase = ({ params }: { params: { caseID: string } }) => {
-  const router = useRouter();
-  const [values, setValues] = React.useState<{} | null>(null);
+const EditCase = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
+  const caseData = await getCaseData(caseID);
+  const menuItemsAll = await getMenuItems();
 
-  const getData = async () => {
-    const data = await getCaseData(caseID);
-    setValues(data);
+  // TODO: Finish menu items
+  const menuItems: any = {
+    productNames: {
+      options: menuItemsAll.filter(
+        (item: any) => item.Menu_Name === "ProductName"
+      ),
+      caseDataSectionKey: "CaseProfile",
+      caseDataMenuKey: "Cases_ProductName",
+    },
+    productVersions: {
+      options: menuItemsAll.filter(
+        (item: any) => item.Menu_Name === "ProductVersion"
+      ),
+      caseDataSectionKey: "CaseProfile",
+      caseDataMenuKey: "Cases_ProductVersion",
+    },
   };
-  getData();
 
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch(`/cases/api/${caseID}/update/`);
-    // Verify successful response
-    router.push(`/cases/view/${caseID}`);
-  };
+  updateMenuValues(menuItems, caseData);
 
-  const handleCancel = () => {
-    router.back();
-  };
-
-  if (values) {
-    return (
-      <CaseForm
-        formTitle="Edit Case"
-        onSuccess={onSuccess}
-        onCancel={handleCancel}
-        defaultValues={values}
-      />
-    );
-  }
-  return <div>Loading...</div>;
+  return (
+    <CaseForm
+      formTitle="Edit Case"
+      defaultValues={caseData}
+      menuItems={menuItems}
+    />
+  );
 };
 
-const getCaseData = async (caseID: string) => {
-  const data = await fetch(`${process.env.API_ENDPOINT}/cases/api/${caseID}`);
-  // TODO: Retreive case data. Just returning initial data for now.
-  return cases.find((item) => item.id.toString() === caseID) || {};
+/**
+ * Replaces menu value strings in the case data with the corresponding menu item object.
+ */
+const updateMenuValues = (menuItems: any, caseData: any) => {
+  Object.keys(menuItems).forEach((menuName: string) => {
+    const section = menuItems[menuName].caseDataSectionKey;
+    const menu = menuItems[menuName].caseDataMenuKey;
+
+    if (!caseData[section][menu]) return;
+    const menuValue = menuItems[menuName].options.find(
+      (item: any) => item.Menu_Value === caseData[section][menu]
+    );
+
+    if (menuValue) {
+      caseData[section][menu] = menuValue;
+      return;
+    }
+    caseData[section][menu] = {
+      Menu_Name: menuName,
+      Menu_Display: caseData[section][menu],
+    };
+  });
 };
 
 export default EditCase;

@@ -1,22 +1,10 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-
-import { cases } from "@/mockData/cases";
-
-const getCaseHistory = async (caseID: string) => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-};
+import { getCaseData } from "@/app/utils/getData";
 
 export default async function CaseHistory({ caseID }: CaseHistoryProps) {
-  const thisCase = cases.find((item) => item.id.toString() === caseID);
-
-  const rows = thisCase?.comments || [];
+  const caseData = await getCaseData(caseID);
+  const rows = caseData?.CaseHistory || [];
 
   return (
     <>

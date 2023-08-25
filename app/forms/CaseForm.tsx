@@ -1,3 +1,5 @@
+"use client";
+
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
 import { Grid, Stack } from "@mui/material";
@@ -8,33 +10,117 @@ import {
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
+import { useRouter } from "next/navigation";
 import DateFnsProvider from "../providers/DateFnsProvider";
+import { CaseInformation, CaseProfile } from "../types/cases";
+import React from "react";
 
 type CaseFormProps = {
   formTitle: string;
-  onSuccess: any;
-  onCancel: any;
+  // onSuccess: any;
+  // onCancel: any;
   defaultValues?: any;
+  menuItems: { [key: string]: any };
 };
 
-const initialValues = {
-  subject: "",
-  accountName: "",
-  status: "",
-  hibernateDate: null,
-  isTamCase: false,
-  description: "",
+type CaseInfo = {
+  CaseInformation: CaseInformation;
+  CaseProfile: CaseProfile;
+};
+
+const initialValues: CaseInfo = {
+  CaseInformation: {
+    Cases_ID: "",
+    Cases_AccountID: "",
+    Accounts_Name: "",
+    Cases_CaseNumber: "",
+    Cases_ClosedDate: null,
+    Cases_ContactEmail: "",
+    Cases_ContactFax: "",
+    Cases_ContactId: "",
+    Contacts_FullName: "",
+    Cases_ContactMobile: "",
+    Cases_ContactPhone: "",
+    Cases_CreatedById: "",
+    CreatedBy_Name: "",
+    Cases_CreatedDate: null,
+    Cases_HibernateEndDate: null,
+    Cases_IsClosed: "0",
+    Cases_IsDeleted: "0",
+    Cases_IsEscalated: "0",
+    Cases_OpenOppValueOfAccount: "",
+    Cases_Origin: "",
+    Cases_OriginalCreatedDate: null,
+    Cases_OwnerId: "",
+    Owner_Name: "",
+    Cases_SourceId: "",
+    Cases_Status: "",
+    Cases_SubStatus: "",
+    Cases_Subject: "",
+    Cases_SubOwner: "",
+    Cases_SuppliedEmail: "",
+    Cases_SuppliedName: "",
+  },
+  CaseProfile: {
+    Cases_BugDescription: "",
+    Cases_BugNumber: "",
+    Cases_CaseType: "",
+    Cases_Category: "",
+    Cases_Description: "",
+    Cases_IsTAMCase: "0",
+    Cases_Priority: "",
+    Cases_ProductDeliveryMethod: "",
+    Cases_ProductName: "",
+    Cases_ProductSubVersion: "",
+    Cases_ProductVersion: "",
+    Cases_Reason: "",
+    Cases_Severity: "",
+    Cases_Subject: "",
+    Cases_Type: "",
+  },
 };
 
 const STATUS_OPTIONS = ["Open", "Closed", "Hibernate"];
 
 export const CaseForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
+  // onSuccess,
+  // onCancel,
   defaultValues = initialValues,
+  menuItems,
   ...props
 }: CaseFormProps) => {
+  const router = useRouter();
+
+  const [subStatus, setSubStatus] = React.useState([]);
+  const [productNames, setProductNames] = React.useState([]);
+  const [productVersions, setProductVersions] = React.useState([]);
+  const [productSubVersions, setProductSubVersions] = React.useState([]);
+  const [caseType, setCaseType] = React.useState([]);
+  const [reason, setReason] = React.useState([]);
+  const [category, setCategory] = React.useState([]);
+
+  const caseID = defaultValues.CaseInformation.Cases_ID;
+
+  const onSuccess = async (values: any) => {
+    console.log("Success values", values);
+    let id = caseID;
+    // TODO:
+    // PUT data
+    if (id) {
+      const data = await fetch(`/cases/api/${id}/update/`);
+      // Verify successful response
+    } else {
+      // POST new case
+      // Set id to new case ID
+    }
+    router.push(`/cases/view/${id}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
+
   return (
     <FormWrapper
       title={formTitle}
@@ -51,14 +137,14 @@ export const CaseForm = ({
             {/* Subject */}
             <TextFieldElement
               label="Subject"
-              name="subject"
+              name="CaseInformation.Cases_Subject"
               required
               size="small"
             />
             {/* Account Name */}
             <AutocompleteElement
               label="Account Name"
-              name="accountName"
+              name="CaseInformation.Accounts_Name"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -66,7 +152,7 @@ export const CaseForm = ({
             {/* Contact Name */}
             <AutocompleteElement
               label="Contact Name"
-              name=""
+              name="CaseInformation.Contacts_FullName"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -74,7 +160,7 @@ export const CaseForm = ({
             {/* Case Origin */}
             <AutocompleteElement
               label="Case Origin"
-              name=""
+              name="CaseInformation.Cases_Origin"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -82,14 +168,14 @@ export const CaseForm = ({
             {/* Case Site */}
             <TextFieldElement label="Case Site" name="" size="small" />
             {/* Parent Case */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Parent Case"
-              name=""
+              name="CaseInformation."
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Reference Case ID */}
-            <TextFieldElement label="Reference Case ID" name="" size="small" />
+            {/* <TextFieldElement label="Reference Case ID" name="" size="small" /> */}
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -97,7 +183,7 @@ export const CaseForm = ({
             {/* Status */}
             <AutocompleteElement
               label="Status"
-              name="status"
+              name="CaseInformation.Cases_Status"
               required
               autocompleteProps={{ size: "small" }}
               options={STATUS_OPTIONS}
@@ -105,7 +191,7 @@ export const CaseForm = ({
             {/* Sub-Status */}
             <AutocompleteElement
               label="Sub-Status"
-              name=""
+              name="CaseInformation.Cases_SubStatus"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -114,13 +200,13 @@ export const CaseForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Hibernate End Date"
-                name="hibernateDate"
+                name="CaseInformation.Cases_HibernateEndDate"
               />
             </DateFnsProvider>
             {/* Case Owner */}
             <AutocompleteElement
               label="Case Owner"
-              name=""
+              name="CaseInformation.Owner_Name"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -128,7 +214,7 @@ export const CaseForm = ({
             {/* Case Sub-Owner */}
             <AutocompleteElement
               label="Case Sub-Owner"
-              name=""
+              name="CaseInformation.Cases_SubOwner"
               autocompleteProps={{ size: "small" }}
               options={[]}
             />
@@ -140,7 +226,7 @@ export const CaseForm = ({
             {/* Product Delivery Method */}
             <AutocompleteElement
               label="Product Delivery Method"
-              name=""
+              name="CaseProfile.Cases_ProductDeliveryMethod"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -148,31 +234,45 @@ export const CaseForm = ({
             {/* Product Name */}
             <AutocompleteElement
               label="Product Name"
-              name=""
+              name="CaseProfile.Cases_ProductName"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) => option.Menu_Display,
+              }}
+              options={menuItems.productNames.options}
             />
             {/* Product Version */}
             <AutocompleteElement
               label="Product Version"
-              name=""
+              name="CaseProfile.Cases_ProductVersion"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) => option.Menu_Display,
+              }}
+              options={menuItems.productVersions.options}
             />
             {/* Product Sub-Version */}
             <AutocompleteElement
               label="Product Sub-Version"
-              name=""
+              name="CaseProfile.Cases_ProductSubVersion"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
             />
             {/* Bug Number */}
-            <TextFieldElement label="Bug Number" name="" size="small" />
+            <TextFieldElement
+              label="Bug Number"
+              name="CaseProfile.Cases_BugNumber"
+              size="small"
+            />
             {/* Bug Description */}
-            <TextFieldElement label="Bug Description" name="" size="small" />
+            <TextFieldElement
+              label="Bug Description"
+              name="CaseProfile.Cases_BugDescription"
+              size="small"
+            />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -180,7 +280,7 @@ export const CaseForm = ({
             {/* Case Type */}
             <AutocompleteElement
               label="Case Type"
-              name=""
+              name="CaseProfile.Cases_Type"
               required
               autocompleteProps={{ size: "small" }}
               options={STATUS_OPTIONS}
@@ -188,7 +288,7 @@ export const CaseForm = ({
             {/* Reason */}
             <AutocompleteElement
               label="Reason"
-              name=""
+              name="CaseProfile.Cases_Reason"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -196,7 +296,7 @@ export const CaseForm = ({
             {/* Category */}
             <AutocompleteElement
               label="Category"
-              name=""
+              name="CaseProfile.Cases_Category"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -204,7 +304,7 @@ export const CaseForm = ({
             {/* Priority */}
             <AutocompleteElement
               label="Priority"
-              name=""
+              name="CaseProfile.Cases_Priority"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -212,7 +312,7 @@ export const CaseForm = ({
             {/* Severity */}
             <AutocompleteElement
               label="Severity"
-              name=""
+              name="CaseProfile.Cases_Severity"
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
@@ -220,7 +320,7 @@ export const CaseForm = ({
             {/* Is TAM Case */}
             <CheckboxElement
               label="Is TAM Case"
-              name="isTamCase"
+              name="CaseProfile.Cases_IsTAMCase"
               size="small"
             />
           </Stack>
@@ -231,85 +331,85 @@ export const CaseForm = ({
             {/* Description */}
             <TextareaAutosizeElement
               label="Description"
-              name="description"
+              name="CaseProfile.Cases_Description"
               required
               rows={3}
               size="small"
             />
             {/* Internal Comments */}
-            <TextareaAutosizeElement
+            {/* <TextareaAutosizeElement
               label="Internal Comments"
               name=""
               rows={3}
               size="small"
-            />
+            /> */}
             {/* Visible in Self-Service Portal */}
-            <CheckboxElement
+            {/* <CheckboxElement
               label="Visible in Self-Service Portal"
               name=""
               size="small"
-            />
+            /> */}
           </Stack>
         </Grid>
-        <FormDivider>Case Escalation Details</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Escalation Status */}
-            <AutocompleteElement
+        {/* <FormDivider>Case Escalation Details</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Escalation Status */}
+        {/* <AutocompleteElement
               label="Escalation Status"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Escalation Source */}
-            <AutocompleteElement
+            /> */}
+        {/* Escalation Source */}
+        {/* <AutocompleteElement
               label="Escalation Source"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Escalation Type */}
-            <AutocompleteElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Escalation Type */}
+        {/* <AutocompleteElement
               label="Escalation Type"
               name=""
               autocompleteProps={{ size: "small" }}
               options={STATUS_OPTIONS}
-            />
-            {/* Escalation Flag */}
-            <AutocompleteElement
+            /> */}
+        {/* Escalation Flag */}
+        {/* <AutocompleteElement
               label="Escalation Flag"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-          </Stack>
-        </Grid>
-        <FormDivider>Web Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Web Company */}
-            <TextFieldElement label="Web Company" name="" size="small" />
-            {/* Web Name */}
-            <TextFieldElement label="Web Name" name="" size="small" />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Web Phone */}
-            <TextFieldElement label="Web Phone" name="" size="small" />
-            {/* Web Email */}
-            <TextFieldElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>Web Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Web Company */}
+        {/* <TextFieldElement label="Web Company" name="" size="small" /> */}
+        {/* Web Name */}
+        {/* <TextFieldElement label="Web Name" name="" size="small" /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Web Phone */}
+        {/* <TextFieldElement label="Web Phone" name="" size="small" /> */}
+        {/* Web Email */}
+        {/* <TextFieldElement
               label="Web Email"
               name=""
               size="small"
               type="email"
-            />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Assignment</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
@@ -325,7 +425,7 @@ export const CaseForm = ({
           <Stack spacing={1}>
             {/* Send notification email to contact */}
             <CheckboxElement
-              label="Assign using active assignment rule"
+              label="Send notification email to contact"
               name=""
               size="small"
             />

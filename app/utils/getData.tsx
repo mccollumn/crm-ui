@@ -1,21 +1,19 @@
 import { cache } from "react";
 import "server-only";
 
-export const preload = (id: string) => {
-  void getData(id);
+export const preload = (path: string) => {
+  void getData(path);
 };
 
-export const getData = cache(async (id: string) => {
+export const getData = cache(async (path: string) => {
   try {
-    console.log("Fetching data...");
-    const res = await fetch("https://dev.to/api/articles");
+    const res = await fetch(`${process.env.CRM_API_ENDPOINT}/${path}`);
 
     if (!res.ok) {
       throw new Error("Network response was not OK");
     }
 
     const result = await res.json();
-    console.log("Get result:", result);
     return result;
   } catch (error) {
     console.error("GET failed:", error);
@@ -44,3 +42,73 @@ export const postData = cache(async (data: any) => {
     console.error("POST failed:", error);
   }
 });
+
+/**
+ * Cases
+ */
+
+export const getCases = async () => {
+  const data = await getData("/case/list/all");
+  return data;
+};
+
+export const getOpenCases = async () => {
+  const data = await getData("/case/list/open");
+  return data;
+};
+
+export const getOpenCasesByOwner = async (ownerID: string) => {
+  const data = await getData(`/case/list/open/${ownerID}`);
+  return data;
+};
+
+export const getHibernatedCases = async () => {
+  const data = await getData("/case/list/hibernated");
+  return data;
+};
+
+export const getHibernatedCasesByOwner = async (ownerID: string) => {
+  const data = await getData(`/case/list/hibernated/${ownerID}`);
+  return data;
+};
+
+export const getCaseData = async (caseID: string) => {
+  // TODO: Are the API routes needed? Either use these functions or fetch directly from components.
+  // const res = await fetch(`${process.env.API_ENDPOINT}/cases/api/${caseID}`);
+  // const result = await res.json();
+  // return result.data;
+  const data = await getData(`/case/caseid/${caseID}`);
+  return data;
+};
+
+/**
+ * Accounts
+ */
+
+export const getAccounts = async () => {
+  const data = await getData("/account/listAccounts");
+  return data;
+};
+
+export const getActiveAccounts = async () => {
+  const data = await getData("/account/listActiveAccounts");
+  return data;
+};
+
+/**
+ * Contacts
+ */
+
+export const getContactsByAccount = async (accountID: string) => {
+  const data = await getData(`/contact/listContactByAccount/${accountID}`);
+  return data;
+};
+
+/**
+ * Other Data
+ */
+
+export const getMenuItems = async () => {
+  const data = await getData("/menu");
+  return data;
+};
