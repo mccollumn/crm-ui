@@ -13,12 +13,11 @@ import {
 import { useRouter } from "next/navigation";
 import DateFnsProvider from "../providers/DateFnsProvider";
 import { CaseInformation, CaseProfile } from "../types/cases";
+import { getInputName } from "../utils/forms";
 import React from "react";
 
 type CaseFormProps = {
   formTitle: string;
-  // onSuccess: any;
-  // onCancel: any;
   defaultValues?: any;
   menuItems: { [key: string]: any };
 };
@@ -54,7 +53,7 @@ const initialValues: CaseInfo = {
     Cases_OwnerId: "",
     Owner_Name: "",
     Cases_SourceId: "",
-    Cases_Status: "",
+    Cases_Status: "Open",
     Cases_SubStatus: "",
     Cases_Subject: "",
     Cases_SubOwner: "",
@@ -67,9 +66,9 @@ const initialValues: CaseInfo = {
     Cases_CaseType: "",
     Cases_Category: "",
     Cases_Description: "",
-    Cases_IsTAMCase: "0",
+    Cases_IsTAMCase: "",
     Cases_Priority: "",
-    Cases_ProductDeliveryMethod: "",
+    Cases_ProductDeliveryMethod: "On Premises",
     Cases_ProductName: "",
     Cases_ProductSubVersion: "",
     Cases_ProductVersion: "",
@@ -80,27 +79,32 @@ const initialValues: CaseInfo = {
   },
 };
 
-const STATUS_OPTIONS = ["Open", "Closed", "Hibernate"];
-
 export const CaseForm = ({
   formTitle,
-  // onSuccess,
-  // onCancel,
   defaultValues = initialValues,
   menuItems,
   ...props
 }: CaseFormProps) => {
   const router = useRouter();
-
-  const [subStatus, setSubStatus] = React.useState([]);
-  const [productNames, setProductNames] = React.useState([]);
-  const [productVersions, setProductVersions] = React.useState([]);
-  const [productSubVersions, setProductSubVersions] = React.useState([]);
-  const [caseType, setCaseType] = React.useState([]);
-  const [reason, setReason] = React.useState([]);
-  const [category, setCategory] = React.useState([]);
-
   const caseID = defaultValues.CaseInformation.Cases_ID;
+
+  const [accountNameOptions, setAccountNameOptions] = React.useState(
+    menuItems.accountName.options
+  );
+  const [contactNameOptions, setContactNameOptions] = React.useState([]);
+  const [statusOptions, setStatusOptions] = React.useState(
+    menuItems.status.options
+  );
+  const [subStatusOptions, setSubStatusOptions] = React.useState([]);
+  const [productNameOptions, setProductNameOptions] = React.useState(
+    menuItems.productName.options
+  );
+  const [productVersionOptions, setProductVersionOptions] = React.useState([]);
+  const [productSubVersionOptions, setProductSubVersionOptions] =
+    React.useState([]);
+  const [caseTypeOptions, setCaseTypeOptions] = React.useState([]);
+  const [reasonOptions, setReasonOptions] = React.useState([]);
+  const [categoryOptions, setCategoryOptions] = React.useState([]);
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -120,6 +124,50 @@ export const CaseForm = ({
   const onCancel = () => {
     router.back();
   };
+
+  const getSubStatusOptions = (status: string) => {
+    const options = menuItems.productSubStatus.options.filter(
+      (item: any) => item.Menu_DependantValue === status
+    );
+    setSubStatusOptions(options);
+  };
+
+  const getProductVersionOptions = (productName: string) => {
+    const options = menuItems.productVersion.options.filter(
+      (item: any) => item.Menu_DependantValue === productName
+    );
+    setProductVersionOptions(options);
+  };
+
+  const getProductSubVersionOptions = (productVersion: string) => {
+    const options = menuItems.productSubVersion.options.filter(
+      (item: any) => item.Menu_DependantValue === productVersion
+    );
+    setProductSubVersionOptions(options);
+  };
+
+  const getCaseTypeOptions = (productName: string) => {
+    const options = menuItems.caseType.options.filter(
+      (item: any) => item.Menu_DependantValue === productName
+    );
+    setCaseTypeOptions(options);
+  };
+
+  const getReasonOptions = (caseType: string) => {
+    const options = menuItems.reason.options.filter(
+      (item: any) => item.Menu_DependantValue === caseType
+    );
+    setReasonOptions(options);
+  };
+
+  const getCategoryOptions = (reason: string) => {
+    const options = menuItems.category.options.filter(
+      (item: any) => item.Menu_DependantValue === reason
+    );
+    setCategoryOptions(options);
+  };
+
+  console.log("Default Values:", defaultValues);
 
   return (
     <FormWrapper
@@ -144,26 +192,42 @@ export const CaseForm = ({
             {/* Account Name */}
             <AutocompleteElement
               label="Account Name"
-              name="CaseInformation.Accounts_Name"
+              name={getInputName(menuItems, "accountName")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Accounts_Name,
+              }}
+              options={menuItems.accountName.options}
             />
             {/* Contact Name */}
             <AutocompleteElement
               label="Contact Name"
-              name="CaseInformation.Contacts_FullName"
+              name={getInputName(menuItems, "contactName")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Contacts_FullName,
+                disabled: !accountNameOptions.length,
+              }}
+              options={menuItems.contactName.options}
             />
             {/* Case Origin */}
             <AutocompleteElement
               label="Case Origin"
-              name="CaseInformation.Cases_Origin"
+              name={getInputName(menuItems, "caseOrigin")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Cases_Origin,
+              }}
+              options={menuItems.caseOrigin.options}
             />
             {/* Case Site */}
             <TextFieldElement label="Case Site" name="" size="small" />
@@ -183,18 +247,30 @@ export const CaseForm = ({
             {/* Status */}
             <AutocompleteElement
               label="Status"
-              name="CaseInformation.Cases_Status"
+              name={getInputName(menuItems, "status")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={STATUS_OPTIONS}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Cases_Status,
+                onChange: (_, value) => getSubStatusOptions(value.Menu_Value),
+              }}
+              options={statusOptions}
             />
             {/* Sub-Status */}
             <AutocompleteElement
               label="Sub-Status"
-              name="CaseInformation.Cases_SubStatus"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name={getInputName(menuItems, "subStatus")}
+              required={!!subStatusOptions}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Cases_SubStatus,
+                disabled: !subStatusOptions.length,
+              }}
+              options={subStatusOptions}
             />
             {/* Hibernate End Date */}
             <DateFnsProvider>
@@ -206,17 +282,27 @@ export const CaseForm = ({
             {/* Case Owner */}
             <AutocompleteElement
               label="Case Owner"
-              name="CaseInformation.Owner_Name"
+              name={getInputName(menuItems, "caseOwner")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Owner_Name,
+              }}
+              options={menuItems.caseOwner.options}
             />
             {/* Case Sub-Owner */}
             <AutocompleteElement
               label="Case Sub-Owner"
-              name="CaseInformation.Cases_SubOwner"
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name={getInputName(menuItems, "caseSubOwner")}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseInformation.Cases_SubOwner,
+              }}
+              options={menuItems.caseSubOwner.options}
             />
           </Stack>
         </Grid>
@@ -226,40 +312,62 @@ export const CaseForm = ({
             {/* Product Delivery Method */}
             <AutocompleteElement
               label="Product Delivery Method"
-              name="CaseProfile.Cases_ProductDeliveryMethod"
+              name={getInputName(menuItems, "productDeliveryMethod")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_ProductDeliveryMethod,
+              }}
+              options={menuItems.productDeliveryMethod.options}
             />
             {/* Product Name */}
             <AutocompleteElement
               label="Product Name"
-              name="CaseProfile.Cases_ProductName"
+              name={getInputName(menuItems, "productName")}
               required
               autocompleteProps={{
                 size: "small",
-                getOptionLabel: (option) => option.Menu_Display,
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_ProductName,
+                onChange: (_, value) => {
+                  getProductVersionOptions(value.Menu_Value);
+                  getCaseTypeOptions(value.Menu_Value);
+                },
               }}
-              options={menuItems.productNames.options}
+              options={productNameOptions}
             />
             {/* Product Version */}
             <AutocompleteElement
               label="Product Version"
-              name="CaseProfile.Cases_ProductVersion"
-              required
+              name={getInputName(menuItems, "productVersion")}
+              required={!!productVersionOptions.length}
               autocompleteProps={{
                 size: "small",
-                getOptionLabel: (option) => option.Menu_Display,
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_ProductVersion,
+                onChange: (_, value) =>
+                  getProductSubVersionOptions(value.Menu_Value),
+                disabled: !productVersionOptions.length,
               }}
-              options={menuItems.productVersions.options}
+              options={productVersionOptions}
             />
             {/* Product Sub-Version */}
             <AutocompleteElement
               label="Product Sub-Version"
-              name="CaseProfile.Cases_ProductSubVersion"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name={getInputName(menuItems, "productSubVersion")}
+              required={!!productSubVersionOptions.length}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_ProductSubVersion,
+                disabled: !productSubVersionOptions.length,
+              }}
+              options={productSubVersionOptions}
             />
             {/* Bug Number */}
             <TextFieldElement
@@ -280,42 +388,70 @@ export const CaseForm = ({
             {/* Case Type */}
             <AutocompleteElement
               label="Case Type"
-              name="CaseProfile.Cases_Type"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={STATUS_OPTIONS}
+              name={getInputName(menuItems, "caseType")}
+              required={!!productNameOptions.length}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display || initialValues.CaseProfile.Cases_Type,
+                onChange: (_, value) => getReasonOptions(value.Menu_Display),
+                disabled: !productNameOptions.length,
+              }}
+              options={caseTypeOptions}
             />
             {/* Reason */}
             <AutocompleteElement
               label="Reason"
-              name="CaseProfile.Cases_Reason"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name={getInputName(menuItems, "reason")}
+              required={!!caseTypeOptions.length}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display || initialValues.CaseProfile.Cases_Reason,
+                onChange: (_, value) => getCategoryOptions(value.Menu_Display),
+                disabled: !caseTypeOptions.length,
+              }}
+              options={reasonOptions}
             />
             {/* Category */}
             <AutocompleteElement
               label="Category"
-              name="CaseProfile.Cases_Category"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name={getInputName(menuItems, "category")}
+              required={!!reasonOptions.length}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_Category,
+                disabled: !reasonOptions.length,
+              }}
+              options={reasonOptions}
             />
             {/* Priority */}
             <AutocompleteElement
               label="Priority"
-              name="CaseProfile.Cases_Priority"
+              name={getInputName(menuItems, "priority")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_Priority,
+              }}
+              options={menuItems.priority.options}
             />
             {/* Severity */}
             <AutocompleteElement
               label="Severity"
-              name="CaseProfile.Cases_Severity"
+              name={getInputName(menuItems, "severity")}
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                getOptionLabel: (option) =>
+                  option.Menu_Display ||
+                  initialValues.CaseProfile.Cases_Severity,
+              }}
+              options={menuItems.severity.options}
             />
             {/* Is TAM Case */}
             <CheckboxElement

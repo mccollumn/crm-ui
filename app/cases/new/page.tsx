@@ -1,33 +1,10 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import { CaseForm } from "@/app/forms/CaseForm";
+import { getCaseFormMenuItems } from "@/app/forms/CaseFormMenuItems";
 
-const NewCase = () => {
-  const router = useRouter();
+const NewCase = async () => {
+  const menuItems = await getCaseFormMenuItems();
 
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch("/cases/api/new/");
-    // Verify successful response
-    // Get ID
-    const caseID = "";
-    router.push(`/cases/view/${caseID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
-
-  return (
-    <CaseForm
-      formTitle="New Case"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
-    />
-  );
+  return <CaseForm formTitle="New Case" menuItems={menuItems} />;
 };
 
 export default NewCase;

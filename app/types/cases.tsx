@@ -45,7 +45,7 @@ export interface CaseProfile {
   Cases_CaseType: string;
   Cases_Category: string;
   Cases_Description?: string | null;
-  Cases_IsTAMCase: "0" | "1";
+  Cases_IsTAMCase: "0" | "1" | "";
   Cases_Priority: string;
   Cases_ProductDeliveryMethod: string;
   Cases_ProductName: string;

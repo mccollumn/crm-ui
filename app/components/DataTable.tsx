@@ -134,11 +134,12 @@ export const DataTable = ({
         headerName: "Public",
         renderCell: (params) => {
           let publicComment;
-          if (data?.comments) {
-            const comment = data?.comments.find(
-              (comment: any) => comment.id === params.row.id
+          if (data?.CaseComments.length > 0) {
+            const comment = data.CaseComments.find(
+              (comment: any) =>
+                comment.CaseComments_ID === params.row.CaseComments_ID
             );
-            publicComment = comment?.public || false;
+            publicComment = Number(comment?.CaseComments_IsPublic) || false;
           }
           return publicComment ? <CheckBox /> : <CheckBoxOutlineBlankIcon />;
         },
