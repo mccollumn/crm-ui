@@ -43,31 +43,32 @@ export const DataTable = ({
   ...props
 }: DataTableProps) => {
   /**
-   * Column def configs are here, rather than being passed down from the parent, because MUI doesn't support server components yet.
-   * Defining them here allows the parent to be a server component and fetch data server-side.
-   * https://mui.com/material-ui/guides/next-js-app-router/
+   * Column def configs are here, rather than being passed down from the parent,
+   * so that the parent components can be rendered server-side.
    */
   const [columnDefs, setColumnDefs] = React.useState<ColumnDefs>({
     casesList: [
       {
-        field: "id",
+        field: "Cases_CaseNumber",
         headerName: "Case Number",
         width: 130,
         renderCell: (params) => {
           return (
-            <Link href={`/cases/view/${params.value}`}>{params.value}</Link>
+            <Link href={`/cases/view/${params.row.Cases_ID}`}>
+              {params.value}
+            </Link>
           );
         },
       },
-      { field: "subject", headerName: "Subject", flex: 1 },
-      { field: "accountName", headerName: "Account Name", width: 250 },
+      { field: "Cases_Subject", headerName: "Subject", flex: 1 },
+      { field: "Accounts_Name", headerName: "Account Name", width: 250 },
       {
-        field: "status",
+        field: "Cases_Status",
         headerName: "Status",
         width: 90,
       },
       {
-        field: "opened",
+        field: "Cases_CreatedDate",
         headerName: "Opened",
         description: "This column has a value getter and is not sortable.",
         width: 180,
@@ -97,9 +98,6 @@ export const DataTable = ({
       {
         field: "EmailMessages_Subject",
         headerName: "Subject",
-        renderCell: (params) => {
-          return <Link href="\contacts">{params.value}</Link>;
-        },
         flex: 1,
       },
       {
@@ -156,7 +154,9 @@ export const DataTable = ({
         headerName: "Edit",
         renderCell: (params) => {
           return (
-            <Link href={`/cases/edit/${data?.id}/comment/${params.row.id}`}>
+            <Link
+              href={`/cases/edit/${data?.CaseInformation.Cases_ID}/comment/${params.row.CaseComments_ID}`}
+            >
               Edit
             </Link>
           );
@@ -739,7 +739,7 @@ export const DataTable = ({
   });
 
   const rowIDs = {
-    casesList: "",
+    casesList: "Cases_ID",
     caseHistory: "",
     caseEmails: "EmailMessages_ID",
     caseComments: "CaseComments_ID",
@@ -762,26 +762,21 @@ export const DataTable = ({
     items: [{ field: queryField, operator: "contains", value: queryValue }],
   };
 
-  console.log("Row Data:", rows);
-
   return (
     <DataGrid
       rows={rows}
       columns={columnDefs[columnDefType]}
       initialState={{
         pagination: {
-          paginationModel: { page: 0, pageSize: 5 },
+          paginationModel: { page: 0, pageSize: 10 },
         },
         filter: {
           filterModel: filterModel,
         },
       }}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[5, 10, 25, 50, 100]}
       //   paginationMode="server"
-      getRowId={(row) => {
-        console.log("Row ID:", row[rowIDs[columnDefType]]);
-        return row[rowIDs[columnDefType]];
-      }}
+      getRowId={(row) => row[rowIDs[columnDefType]]}
       {...props}
     />
   );

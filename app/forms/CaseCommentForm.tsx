@@ -1,27 +1,48 @@
+"use client";
+
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
 import { Grid, Stack } from "@mui/material";
 import { CheckboxElement, TextareaAutosizeElement } from "react-hook-form-mui";
+import { useRouter } from "next/navigation";
 
 type CaseCommentFormProps = {
   formTitle: string;
-  onSuccess: any;
-  onCancel: any;
+  caseID: string;
   defaultValues?: any;
 };
 
 const initialValues = {
-  id: "",
-  public: false,
+  CaseComments_CommentBody: "",
+  CaseComments_IsPublic: "",
 };
 
 export const CaseCommentForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
+  caseID,
   defaultValues = initialValues,
   ...props
 }: CaseCommentFormProps) => {
+  const router = useRouter();
+
+  const onSuccess = (values: any) => {
+    console.log("Success values", values);
+    // TODO:
+    // PUT data
+    // Verify successful response
+    router.push(`/cases/view/${caseID}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
+
+  if (typeof defaultValues.CaseComments_IsPublic === "string") {
+    defaultValues.CaseComments_IsPublic = !!Number(
+      defaultValues.CaseComments_IsPublic
+    );
+  }
+
   return (
     <FormWrapper
       title={formTitle}
@@ -37,7 +58,7 @@ export const CaseCommentForm = ({
           <Stack spacing={1}>
             <TextareaAutosizeElement
               label="Comment"
-              name="comment"
+              name="CaseComments_CommentBody"
               required
               rows={3}
               size="small"
@@ -46,7 +67,7 @@ export const CaseCommentForm = ({
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={1}>
-            <CheckboxElement label="Public" name="public" />
+            <CheckboxElement label="Public" name="CaseComments_IsPublic" />
           </Stack>
         </Grid>
       </Grid>

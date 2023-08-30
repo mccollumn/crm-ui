@@ -98,7 +98,10 @@ const getCaseInfo = async (caseID: string) => {
           label: "Account Name",
           value: caseData.CaseInformation.Accounts_Name,
         },
-        { label: "Contact Name", value: "" },
+        {
+          label: "Contact Name",
+          value: caseData.CaseInformation.Contacts_FullName,
+        },
         {
           label: "Case Origin",
           value: caseData.CaseInformation.Cases_Origin,
@@ -141,14 +144,14 @@ const getCaseInfo = async (caseID: string) => {
             true
           ),
         },
-        { label: "Case Owner", value: "" },
+        { label: "Case Owner", value: caseData.CaseInformation.Owner_Name },
         {
           label: "Sub Owner",
           value: caseData.CaseInformation.Cases_SubOwner,
         },
         {
           label: "Is Escalated",
-          value: caseData.CaseInformation.Cases_IsEscalated ? (
+          value: !!Number(caseData.CaseInformation.Cases_IsEscalated) ? (
             <CheckBoxIcon />
           ) : (
             <CheckBoxOutlineBlankIcon />
@@ -188,7 +191,7 @@ const getCaseInfo = async (caseID: string) => {
         { label: "Severity", value: caseData.CaseProfile.Cases_Severity },
         {
           label: "Is TAM Case",
-          value: caseData.CaseProfile.Cases_IsTAMCase ? (
+          value: !!Number(caseData.CaseProfile.Cases_IsTAMCase) ? (
             <CheckBoxIcon />
           ) : (
             <CheckBoxOutlineBlankIcon />
@@ -222,7 +225,7 @@ const getCaseInfo = async (caseID: string) => {
       left: [
         {
           label: "Created By",
-          value: caseData.CaseInformation.Cases_CreatedById,
+          value: caseData.CaseInformation.CreatedBy_Name,
         },
         {
           label: "Creation Date",

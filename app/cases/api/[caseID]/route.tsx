@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getData } from "@/app/utils/getData";
+import { getCaseData } from "@/app/utils/getData";
 
 // Retrieve data for case
 export async function GET(
@@ -7,7 +7,6 @@ export async function GET(
   { params }: { params: { caseID: string } }
 ) {
   const caseID = params.caseID;
-  // const data = await getData("case", caseID);
-
-  // return NextResponse.json({ data });
+  const data = await getCaseData(caseID);
+  return NextResponse.json({ data });
 }

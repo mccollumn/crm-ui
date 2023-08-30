@@ -110,6 +110,15 @@ export const getContactsByAccount = async (accountID: string) => {
 };
 
 /**
+ * Opportunities
+ */
+
+export const getOpportunityData = async (opportunityID: string) => {
+  const data = await getData(`/opportunity/opportunityid/${opportunityID}`);
+  return data;
+};
+
+/**
  * Other Data
  */
 

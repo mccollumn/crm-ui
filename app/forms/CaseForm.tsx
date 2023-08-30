@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import DateFnsProvider from "../providers/DateFnsProvider";
 import { CaseInformation, CaseProfile } from "../types/cases";
 import { getInputName } from "../utils/forms";
+import { useCaseForm } from "./useCaseForm";
 
 type CaseFormProps = {
   formTitle: string;
@@ -88,25 +89,29 @@ export const CaseForm = ({
 }: CaseFormProps) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const caseID = defaultValues.CaseInformation.Cases_ID;
+  const {
+    getSubStatusOptions,
+    getProductVersionOptions,
+    getProductSubVersionOptions,
+    getCaseTypeOptions,
+    getReasonOptions,
+    getCategoryOptions,
+    getContactOptions,
+    setAccountSelected,
+    updateBooleans,
+    accountSelected,
+    contactNameOptions,
+    statusOptions,
+    subStatusOptions,
+    productNameOptions,
+    productVersionOptions,
+    productSubVersionOptions,
+    caseTypeOptions,
+    reasonOptions,
+    categoryOptions,
+  } = useCaseForm({ defaultValues, menuItems });
 
-  const [accountSelected, setAccountSelected] = React.useState(
-    defaultValues.CaseInformation.Contacts_FullName
-  );
-  const [contactNameOptions, setContactNameOptions] = React.useState([]);
-  const [statusOptions, setStatusOptions] = React.useState(
-    menuItems.status.options
-  );
-  const [subStatusOptions, setSubStatusOptions] = React.useState([]);
-  const [productNameOptions, setProductNameOptions] = React.useState(
-    menuItems.productName.options
-  );
-  const [productVersionOptions, setProductVersionOptions] = React.useState([]);
-  const [productSubVersionOptions, setProductSubVersionOptions] =
-    React.useState([]);
-  const [caseTypeOptions, setCaseTypeOptions] = React.useState([]);
-  const [reasonOptions, setReasonOptions] = React.useState([]);
-  const [categoryOptions, setCategoryOptions] = React.useState([]);
+  const caseID = defaultValues.CaseInformation.Cases_ID;
 
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
@@ -128,60 +133,12 @@ export const CaseForm = ({
     router.back();
   };
 
-  const getSubStatusOptions = (status: string) => {
-    const options = menuItems.productSubStatus.options.filter(
-      (item: any) => item.Menu_DependantValue === status
-    );
-    setSubStatusOptions(options);
-  };
-
-  const getProductVersionOptions = (productName: string) => {
-    const options = menuItems.productVersion.options.filter(
-      (item: any) => item.Menu_DependantValue === productName
-    );
-    setProductVersionOptions(options);
-  };
-
-  const getProductSubVersionOptions = (productVersion: string) => {
-    const options = menuItems.productSubVersion.options.filter(
-      (item: any) => item.Menu_DependantValue === productVersion
-    );
-    setProductSubVersionOptions(options);
-  };
-
-  const getCaseTypeOptions = (productName: string) => {
-    const options = menuItems.caseType.options.filter(
-      (item: any) => item.Menu_DependantValue === productName
-    );
-    setCaseTypeOptions(options);
-  };
-
-  const getReasonOptions = (caseType: string) => {
-    const options = menuItems.reason.options.filter(
-      (item: any) => item.Menu_DependantValue === caseType
-    );
-    setReasonOptions(options);
-  };
-
-  const getCategoryOptions = (reason: string) => {
-    const options = menuItems.category.options.filter(
-      (item: any) => item.Menu_DependantValue === reason
-    );
-    setCategoryOptions(options);
-  };
-
-  const getContactOptions = async (accountID: string) => {
-    const results = await fetch(`/api/contacts/${accountID}`);
-    const options = await results.json();
-    setContactNameOptions(options.data);
-  };
-
   // Populate contact options if an account ID was provided when the form loaded
   React.useEffect(() => {
     const accountID = defaultValues.CaseInformation.Cases_AccountID;
     if (!accountID) return;
     getContactOptions(accountID);
-  }, [defaultValues.CaseInformation.Cases_AccountID]);
+  }, [defaultValues.CaseInformation.Cases_AccountID, getContactOptions]);
 
   // Populate owner name if the field does not already have a value
   React.useEffect(() => {
@@ -189,6 +146,9 @@ export const CaseForm = ({
       defaultValues.CaseInformation.Owner_Name = session?.user?.name;
     }
   }, [defaultValues.CaseInformation, session]);
+
+  // Cahnge binary values from strings to booleans
+  updateBooleans(defaultValues);
 
   return (
     <FormWrapper
@@ -244,7 +204,7 @@ export const CaseForm = ({
               autocompleteProps={{
                 size: "small",
                 getOptionLabel: (option) =>
-                  option.Menu_Display ||
+                  option.Contacts_Name ||
                   initialValues.CaseInformation.Contacts_FullName,
                 renderOption: (props, option) => {
                   return (
@@ -500,6 +460,10 @@ export const CaseForm = ({
               label="Is TAM Case"
               name="CaseProfile.Cases_IsTAMCase"
               size="small"
+              // defaultChecked={
+              //   !!Number(defaultValues.CaseProfile.Cases_IsTAMCase)
+              // }
+              // value={defaultValues.CaseProfile.Cases_IsTAMCase}
             />
           </Stack>
         </Grid>

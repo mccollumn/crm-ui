@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
-import { getData } from "@/app/utils/getData";
-
-import { cases } from "@/mockData/cases.json" assert { type: "json" };
+import { getOpenCases } from "@/app/utils/getData";
 
 // Retrieve list of cases
 export async function GET() {
-  const data = await getData("");
-
-  // return NextResponse.json({ data });
-  return NextResponse.json({ cases });
+  const data = await getOpenCases();
+  return NextResponse.json({ data });
 }
