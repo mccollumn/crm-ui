@@ -100,7 +100,11 @@ export const QuoteForm = ({
             />
             {/* Valid Through */}
             <DateFnsProvider>
-              <DatePickerElement label="Valid Through" name="" />
+              <DatePickerElement
+                label="Valid Through"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Primary */}
             <CheckboxElement label="Primary" name="" size="small" />
@@ -179,7 +183,11 @@ export const QuoteForm = ({
           <Stack spacing={1}>
             {/* Quote Last Send Date */}
             <DateFnsProvider>
-              <DateTimePickerElement label="Quote Last Send Date" name="" />
+              <DateTimePickerElement
+                label="Quote Last Send Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -190,35 +198,24 @@ export const QuoteForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Sales Notes to OM */}
-            <TextareaAutosizeElement
+            {/* <TextareaAutosizeElement
               label="Sales Notes to OM"
               name=""
               rows={3}
               size="small"
-            />
+            /> */}
             {/* Order Management Comments */}
-            <TextareaAutosizeElement
+            {/* <TextareaAutosizeElement
               label="Order Management Comments"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
+            /> */}
             {/* Current Financial Exchange Rate to USD */}
             <TextFieldElement
               label="Current Financial Exchange Rate to USD"
               name=""
               type="number"
-              size="small"
-            />
-            {/* Discount Reason */}
-            <TextareaAutosizeElement
-              label="Discount Reason"
-              name=""
-              rows={3}
               size="small"
             />
             {/* Discount Reasons */}
@@ -227,7 +224,19 @@ export const QuoteForm = ({
               name=""
               preserveOrder
               showChips
+              size="small"
               options={[]}
+            />
+          </Stack>
+        </Grid>
+        <Grid item xs={6}>
+          <Stack spacing={1}>
+            {/* Discount Reason */}
+            <TextareaAutosizeElement
+              label="Discount Reason"
+              name=""
+              rows={3}
+              size="small"
             />
           </Stack>
         </Grid>
@@ -249,26 +258,26 @@ export const QuoteForm = ({
               size="small"
             />
             {/* Segment Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Segment Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Spotimize Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Spotimize Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Streams Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Streams Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Refresh Entitlement Data */}
             <CheckboxElement
               label="Refresh Entitlement Data"
@@ -294,26 +303,26 @@ export const QuoteForm = ({
               size="small"
             />
             {/* Segment Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Existing Segment Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Spotimize Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Existing Spotimize Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Streams Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Existing Streams Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
           </Stack>
         </Grid>
         <FormDivider>Intacct Information</FormDivider>
@@ -332,7 +341,11 @@ export const QuoteForm = ({
           <Stack spacing={1}>
             {/* Order Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Order Date" name="" />
+              <DatePickerElement
+                label="Order Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>

@@ -97,7 +97,11 @@ export const SalesInvoiceForm = ({
           <Stack spacing={1}>
             {/* Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Date" name="" />
+              <DatePickerElement
+                label="Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Owner */}
             <AutocompleteElement
@@ -110,7 +114,11 @@ export const SalesInvoiceForm = ({
             <TextFieldElement label="State" name="" size="small" />
             {/* Ship Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Ship Date" name="" />
+              <DatePickerElement
+                label="Ship Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Currency */}
             <AutocompleteElement

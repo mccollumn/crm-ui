@@ -1,5 +1,5 @@
-import { CaseForm } from "@/app/forms/CaseForm";
-import { getCaseFormMenuItems } from "@/app/forms/CaseFormMenuItems";
+import { CaseForm } from "@/app/forms/case/CaseForm";
+import { getCaseFormMenuItems } from "@/app/forms/case/CaseFormMenuItems";
 
 const NewCase = async () => {
   const menuItems = await getCaseFormMenuItems();

@@ -107,7 +107,11 @@ export const AssetForm = ({
             <CheckboxElement label="Is Term License" name="" size="small" />
             {/* Purchase Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Purchase Date" name="" />
+              <DatePickerElement
+                label="Purchase Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Has Master */}
             <CheckboxElement label="Has Master" name="" size="small" />
@@ -135,7 +139,11 @@ export const AssetForm = ({
           <Stack spacing={1}>
             {/* Anniversary Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Anniversary Date" name="" />
+              <DatePickerElement
+                label="Anniversary Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -155,11 +163,19 @@ export const AssetForm = ({
           <Stack spacing={1}>
             {/* Support Plan Begin */}
             <DateFnsProvider>
-              <DatePickerElement label="Support Plan Begin" name="" />
+              <DatePickerElement
+                label="Support Plan Begin"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Support Plan End */}
             <DateFnsProvider>
-              <DatePickerElement label="Support Plan End" name="" />
+              <DatePickerElement
+                label="Support Plan End"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>

@@ -1,7 +1,7 @@
 "use client";
 
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import { CheckboxElement, TextareaAutosizeElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";

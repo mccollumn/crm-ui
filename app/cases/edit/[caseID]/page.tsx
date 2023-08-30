@@ -1,6 +1,6 @@
-import { CaseForm } from "@/app/forms/CaseForm";
+import { CaseForm } from "@/app/forms/case/CaseForm";
 import { getCaseData } from "@/app/utils/getData";
-import { getCaseFormMenuItems } from "@/app/forms/CaseFormMenuItems";
+import { getCaseFormMenuItems } from "@/app/forms/case/CaseFormMenuItems";
 import { updateMenuValues } from "@/app/utils/forms";
 
 const EditCase = async ({ params }: { params: { caseID: string } }) => {

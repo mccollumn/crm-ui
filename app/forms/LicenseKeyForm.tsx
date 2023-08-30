@@ -77,7 +77,11 @@ export const LicenseKeyForm = ({
             />
             {/* Maintenance Expiration Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Maintenance Expiration Date" name="" />
+              <DatePickerElement
+                label="Maintenance Expiration Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -123,7 +127,11 @@ export const LicenseKeyForm = ({
           <Stack spacing={1}>
             {/* Anniversary Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Anniversary Date" name="" />
+              <DatePickerElement
+                label="Anniversary Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -138,7 +146,11 @@ export const LicenseKeyForm = ({
           <Stack spacing={1}>
             {/* Last Applied Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Last Applied Date" name="" />
+              <DatePickerElement
+                label="Last Applied Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -153,7 +165,11 @@ export const LicenseKeyForm = ({
           <Stack spacing={1}>
             {/* Activation Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Activation Date" name="" />
+              <DatePickerElement
+                label="Activation Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -173,7 +189,12 @@ export const LicenseKeyForm = ({
           <Stack spacing={1}>
             {/* Key Created Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Key Created Date" name="" required />
+              <DatePickerElement
+                label="Key Created Date"
+                name=""
+                required
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>

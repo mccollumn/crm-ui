@@ -1,5 +1,5 @@
 import { getCaseData } from "@/app/utils/getData";
-import { CaseCommentForm } from "@/app/forms/CaseCommentForm";
+import { CaseCommentForm } from "@/app/forms/case/CaseCommentForm";
 
 const EditCaseComment = async ({
   params,

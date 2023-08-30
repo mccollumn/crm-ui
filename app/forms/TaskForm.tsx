@@ -65,7 +65,11 @@ export const TaskForm = ({
             />
             {/* Due Date */}
             <DateFnsProvider>
-              <DateTimePickerElement label="Due Date" name="" />
+              <DateTimePickerElement
+                label="Due Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Name */}
             <AutocompleteElement
@@ -127,7 +131,11 @@ export const TaskForm = ({
           <Stack spacing={1}>
             {/* Sent to Channel */}
             <DateFnsProvider>
-              <DateTimePickerElement label="Sent to Channel" name="" />
+              <DateTimePickerElement
+                label="Sent to Channel"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>

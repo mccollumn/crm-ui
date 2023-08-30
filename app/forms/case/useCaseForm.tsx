@@ -1,5 +1,5 @@
 import React from "react";
-import { CaseData } from "../types/cases";
+import { CaseData } from "@/app/types/cases";
 
 export const useCaseForm = ({ defaultValues, menuItems }: useCaseFormProps) => {
   const [accountSelected, setAccountSelected] = React.useState(

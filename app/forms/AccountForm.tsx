@@ -84,18 +84,22 @@ export const AccountForm = ({
             />
             {/* Type Last Change Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Type Last Change Date" name="" />
+              <DatePickerElement
+                label="Type Last Change Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Vertical */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Vertical"
               name=""
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Website */}
-            <TextFieldElement label="Website" name="" size="small" />
+            {/* <TextFieldElement label="Website" name="" size="small" /> */}
             {/* Misc. Info */}
             <TextFieldElement label="Misc. Info" name="" size="small" />
             {/* Migrate to New Org */}
@@ -116,40 +120,40 @@ export const AccountForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Client Health */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Client Health"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Client Unhealthy Reason */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Client Unhealthy Reason"
               name=""
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Client Unhealthy Reason Other */}
-            <TextareaAutosizeElement
+            {/* <TextareaAutosizeElement
               label="Client Unhealthy Reason Other"
               name=""
               rows={3}
               size="small"
-            />
+            /> */}
             {/* Fax */}
-            <TextFieldElement label="Fax" name="" size="small" />
+            {/* <TextFieldElement label="Fax" name="" size="small" /> */}
             {/* Phone */}
             <TextFieldElement label="Phone" name="" size="small" />
             {/* Target Account Type */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Target Account Type"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Global Account */}
-            <CheckboxElement label="Global Account" name="" size="small" />
+            {/* <CheckboxElement label="Global Account" name="" size="small" /> */}
             {/* USD Total Order Value */}
             <TextFieldElement
               label="USD Total Order Value"
@@ -254,92 +258,92 @@ export const AccountForm = ({
             <TextFieldElement label="Shipping Country" name="" size="small" />
           </Stack>
         </Grid>
-        <FormDivider>Account Credit Status</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Credit Last Modified */}
-            <DateFnsProvider>
+        {/* <FormDivider>Account Credit Status</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Credit Last Modified */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Credit Last Modified" name="" />
-            </DateFnsProvider>
-            {/* Credit Status */}
-            <AutocompleteElement
+            </DateFnsProvider> */}
+        {/* Credit Status */}
+        {/* <AutocompleteElement
               label="Credit Status"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Credit Denied Reason */}
-            <TextFieldElement
+            /> */}
+        {/* Credit Denied Reason */}
+        {/* <TextFieldElement
               label="Credit Denied Reason"
               name=""
               rows={3}
               size="small"
-            />
-            {/* Credit Global Fortune 500 */}
-            <CheckboxElement
+            /> */}
+        {/* Credit Global Fortune 500 */}
+        {/* <CheckboxElement
               label="Credit Global Fortune 500"
               name=""
               size="small"
-            />
-            {/* Auto Renew */}
-            <CheckboxElement
+            /> */}
+        {/* Auto Renew */}
+        {/* <CheckboxElement
               label="Credit Global Fortune 500"
               name=""
               size="small"
-            />
-            {/* Cancellation Notice */}
-            <TextFieldElement
+            /> */}
+        {/* Cancellation Notice */}
+        {/* <TextFieldElement
               label="Cancellation Notice"
               name=""
               size="small"
-            />
-            {/* Auto Renew Notes */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Auto Renew Notes */}
+        {/* <TextareaAutosizeElement
               label="Auto Renew Notes"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Credit Limit */}
-            <TextFieldElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Credit Limit */}
+        {/* <TextFieldElement
               label="Credit Limit"
               name=""
               type="number"
               size="small"
-            />
-            {/* PO Required */}
-            <AutocompleteElement
+            /> */}
+        {/* PO Required */}
+        {/* <AutocompleteElement
               label="PO Required"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* PO Required Notes */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* PO Required Notes */}
+        {/* <TextareaAutosizeElement
               label="PO Required Notes"
               name=""
               rows={3}
               size="small"
-            />
-            {/* Credit Notes */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Credit Notes */}
+        {/* <TextareaAutosizeElement
               label="Credit Notes"
               name=""
               rows={3}
               size="small"
-            />
-            {/* No Accounting Communication */}
-            <CheckboxElement
+            /> */}
+        {/* No Accounting Communication */}
+        {/* <CheckboxElement
               label="No Accounting Communication"
               name=""
               size="small"
-            />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Collections</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
@@ -420,65 +424,65 @@ export const AccountForm = ({
             />
           </Stack>
         </Grid>
-        <FormDivider>Additional Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Analytics Vendor */}
-            <AutocompleteElement
+        {/* <FormDivider>Additional Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Analytics Vendor */}
+        {/* <AutocompleteElement
               label="Analytics Vendor"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Optimize Vendor */}
-            <AutocompleteElement
+            /> */}
+        {/* Optimize Vendor */}
+        {/* <AutocompleteElement
               label="Optimize Vendor"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Big Data Connector */}
-            <TextFieldElement label="Big Data Connector" name="" size="small" />
-            {/* Email Vendor */}
-            <AutocompleteElement
+            /> */}
+        {/* Big Data Connector */}
+        {/* <TextFieldElement label="Big Data Connector" name="" size="small" /> */}
+        {/* Email Vendor */}
+        {/* <AutocompleteElement
               label="Email Vendor"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Description */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Description */}
+        {/* <TextareaAutosizeElement
               label="Description"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Analytics Vendor Contract End */}
-            <DateFnsProvider>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Analytics Vendor Contract End */}
+        {/* <DateFnsProvider>
               <DatePickerElement
                 label="Analytics Vendor Contract End"
                 name=""
               />
-            </DateFnsProvider>
-            {/* Optimize Vendor Contract End */}
-            <DateFnsProvider>
+            </DateFnsProvider> */}
+        {/* Optimize Vendor Contract End */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Optimize Vendor Contract End" name="" />
-            </DateFnsProvider>
-            {/* Health Check */}
-            <TextareaAutosizeElement
+            </DateFnsProvider> */}
+        {/* Health Check */}
+        {/* <TextareaAutosizeElement
               label="Health Check"
               name=""
               rows={3}
               size="small"
-            />
-            {/* SharePoint Site */}
-            <CheckboxElement label="SharePoint Site" name="" size="small" />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* SharePoint Site */}
+        {/* <CheckboxElement label="SharePoint Site" name="" size="small" /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Total Order Value of Products Owned</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
@@ -669,30 +673,35 @@ export const AccountForm = ({
               <DatePickerElement
                 label="On Demand Max Contract End Date"
                 name=""
+                inputProps={{ size: "small" }}
               />
-            </DateFnsProvider>
-            {/* Ads Max Contract End Date */}
-            <DateFnsProvider>
-              <DatePickerElement label="Ads Max Contract End Date" name="" />
             </DateFnsProvider>
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
-            {/* Optimize Max Contract End Date */}
+            {/* Ads Max Contract End Date */}
             <DateFnsProvider>
+              <DatePickerElement
+                label="Ads Max Contract End Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
+            {/* Optimize Max Contract End Date */}
+            {/* <DateFnsProvider>
               <DatePickerElement
                 label="Optimize Max Contract End Date"
                 name=""
               />
-            </DateFnsProvider>
+            </DateFnsProvider> */}
             {/* Streams Max Contract End Date */}
-            <DateFnsProvider>
+            {/* <DateFnsProvider>
               <DatePickerElement
                 label="Streams Max Contract End Date"
                 name=""
               />
-            </DateFnsProvider>
+            </DateFnsProvider> */}
           </Stack>
         </Grid>
         <FormDivider>MyWebtrends</FormDivider>
@@ -745,11 +754,16 @@ export const AccountForm = ({
               <DatePickerElement
                 label="Software Base Mnt Expiration Date"
                 name=""
+                inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
             {/* Software Mnt Expiration Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Software Mnt Expiration Date" name="" />
+              <DatePickerElement
+                label="Software Mnt Expiration Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Software Most Recent Activated Version */}
             <TextFieldElement
@@ -763,61 +777,62 @@ export const AccountForm = ({
               <DatePickerElement
                 label="Extended Maintenance for Legacy End Date"
                 name=""
+                inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
           </Stack>
         </Grid>
-        <FormDivider>Other Product Details</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* EPS Customer */}
-            <CheckboxElement label="EPS Customer" name="" size="small" />
-            {/* EPS Assigned TAM */}
-            <AutocompleteElement
+        {/* <FormDivider>Other Product Details</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* EPS Customer */}
+        {/* <CheckboxElement label="EPS Customer" name="" size="small" /> */}
+        {/* EPS Assigned TAM */}
+        {/* <AutocompleteElement
               label="EPS Assigned TAM"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* EPS Hours Per Week */}
-            <TextFieldElement
+            /> */}
+        {/* EPS Hours Per Week */}
+        {/* <TextFieldElement
               label="EPS Hours Per Week"
               name=""
               type="number"
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* EPS Contract End */}
-            <DateFnsProvider>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* EPS Contract End */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="EPS Contract End" name="" />
-            </DateFnsProvider>
-            {/* EPS Contract Start */}
-            <DateFnsProvider>
+            </DateFnsProvider> */}
+        {/* EPS Contract Start */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="EPS Contract Start" name="" />
-            </DateFnsProvider>
-            {/* EPS Hours Per Month */}
-            <TextFieldElement
+            </DateFnsProvider> */}
+        {/* EPS Hours Per Month */}
+        {/* <TextFieldElement
               label="EPS Hours Per Month"
               name=""
               type="number"
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <FormDivider>System Information</FormDivider>
-        <Grid item xs={12}>
-          <Stack spacing={1}>
-            {/* ODUI Notification Processed */}
-            <CheckboxElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>System Information</FormDivider> */}
+        {/* <Grid item xs={12}> */}
+        {/* <Stack spacing={1}> */}
+        {/* ODUI Notification Processed */}
+        {/* <CheckboxElement
               label="ODUI Notification Processed"
               name=""
               size="small"
-            />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
       </Grid>
     </FormWrapper>
   );

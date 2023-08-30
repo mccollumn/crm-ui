@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
@@ -13,9 +13,9 @@ import {
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import DateFnsProvider from "../providers/DateFnsProvider";
-import { CaseInformation, CaseProfile } from "../types/cases";
-import { getInputName } from "../utils/forms";
+import DateFnsProvider from "@/app/providers/DateFnsProvider";
+import { CaseInformation, CaseProfile } from "@/app/types/cases";
+import { getInputName } from "@/app/utils/forms";
 import { useCaseForm } from "./useCaseForm";
 
 type CaseFormProps = {
@@ -279,6 +279,7 @@ export const CaseForm = ({
               <DatePickerElement
                 label="Hibernate End Date"
                 name="CaseInformation.Cases_HibernateEndDate"
+                inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
             {/* Case Owner */}

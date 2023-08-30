@@ -3,14 +3,14 @@ import { FormDivider } from "./FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
-  CheckboxElement,
-  DatePickerElement,
-  DateTimePickerElement,
+  // CheckboxElement,
+  // DatePickerElement,
+  // DateTimePickerElement,
   MultiSelectElement,
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
-import DateFnsProvider from "../providers/DateFnsProvider";
+// import DateFnsProvider from "../providers/DateFnsProvider";
 
 type ContactFormProps = {
   formTitle: string;
@@ -74,12 +74,12 @@ export const ContactForm = ({
             {/* Title */}
             <TextFieldElement label="Title" name="" size="small" />
             {/* Reports To */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Reports To"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Job Role */}
             <AutocompleteElement
               label="Job Role"
@@ -104,41 +104,41 @@ export const ContactForm = ({
               type="email"
             />
             {/* Unconfirmed Email */}
-            <CheckboxElement label="Unconfirmed Email" name="" size="small" />
+            {/* <CheckboxElement label="Unconfirmed Email" name="" size="small" /> */}
             {/* Most Recent Product Interest */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Most Recent Product Interest"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Interest */}
-            <MultiSelectElement
+            {/* <MultiSelectElement
               label="Interest"
               name=""
               preserveOrder
               showChips
               options={[]}
-            />
+            /> */}
             {/* Do Not Send Support Survey */}
-            <CheckboxElement
+            {/* <CheckboxElement
               label="Do Not Send Support Survey"
               name=""
               size="small"
-            />
+            /> */}
             {/* Webtrends OC */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Webtrends OC"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* HTML Login */}
-            <CheckboxElement label="HTML Login" name="" size="small" />
+            {/* <CheckboxElement label="HTML Login" name="" size="small" /> */}
             {/* Flash Login */}
-            <CheckboxElement label="Flash Login" name="" size="small" />
+            {/* <CheckboxElement label="Flash Login" name="" size="small" /> */}
             {/* EOL Product */}
-            <TextFieldElement label="EOL Product" name="" size="small" />
+            {/* <TextFieldElement label="EOL Product" name="" size="small" /> */}
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -149,6 +149,7 @@ export const ContactForm = ({
               name=""
               preserveOrder
               showChips
+              size="small"
               options={[]}
             />
             {/* Contact Status */}
@@ -159,17 +160,17 @@ export const ContactForm = ({
               options={[]}
             />
             {/* MQL Date */}
-            <DateFnsProvider>
+            {/* <DateFnsProvider>
               <DatePickerElement label="MQL Date" name="" />
-            </DateFnsProvider>
+            </DateFnsProvider> */}
             {/* Lead Source */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Lead Source"
               name=""
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Phone */}
             <TextFieldElement label="Phone" name="" size="small" />
             {/* Mobile */}
@@ -177,9 +178,9 @@ export const ContactForm = ({
             {/* Other Phone */}
             <TextFieldElement label="Other Phone" name="" size="small" />
             {/* Fax */}
-            <TextFieldElement label="Fax" name="" size="small" />
+            {/* <TextFieldElement label="Fax" name="" size="small" /> */}
             {/* Flash Login */}
-            <CheckboxElement label="Flash Login" name="" size="small" />
+            {/* <CheckboxElement label="Flash Login" name="" size="small" /> */}
             {/* Named Support Contact */}
             <AutocompleteElement
               label="Named Support Contact"
@@ -195,36 +196,36 @@ export const ContactForm = ({
               options={[]}
             />
             {/* Target Account Type */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Target Account Type"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
           </Stack>
         </Grid>
-        <FormDivider>Social Media Presence</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* LinkedIn Profile */}
-            <TextFieldElement label="LinkedIn Profile" name="" size="small" />
-            {/* Social Media Properties */}
-            <TextareaAutosizeElement
+        {/* <FormDivider>Social Media Presence</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* LinkedIn Profile */}
+        {/* <TextFieldElement label="LinkedIn Profile" name="" size="small" /> */}
+        {/* Social Media Properties */}
+        {/* <TextareaAutosizeElement
               label="Social Media Properties"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Marked for Deletion */}
-            <CheckboxElement label="Marked for Deletion" name="" size="small" />
-            {/* Twitter ID */}
-            <TextFieldElement label="Twitter ID" name="" size="small" />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Marked for Deletion */}
+        {/* <CheckboxElement label="Marked for Deletion" name="" size="small" /> */}
+        {/* Twitter ID */}
+        {/* <TextFieldElement label="Twitter ID" name="" size="small" /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Address Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
@@ -293,193 +294,193 @@ export const ContactForm = ({
             />
           </Stack>
         </Grid>
-        <FormDivider>ADR/ISR Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* ADR/ISR Generated */}
-            <AutocompleteElement
+        {/* <FormDivider>ADR/ISR Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* ADR/ISR Generated */}
+        {/* <AutocompleteElement
               label="ADR/ISR Generated"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Meeting Scheduled Date */}
-            <DateFnsProvider>
+            /> */}
+        {/* Meeting Scheduled Date */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Meeting Scheduled Date" name="" />
-            </DateFnsProvider>
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Meeting Rescheduled Date */}
-            <DateFnsProvider>
+            </DateFnsProvider> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Meeting Rescheduled Date */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Meeting Rescheduled Date" name="" />
-            </DateFnsProvider>
-            {/* Meeting Occurred Date */}
-            <DateFnsProvider>
+            </DateFnsProvider> */}
+        {/* Meeting Occurred Date */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Meeting Occurred Date" name="" />
-            </DateFnsProvider>
-          </Stack>
-        </Grid>
-        <FormDivider>Description Information</FormDivider>
-        <Grid item xs={12}>
-          <Stack spacing={1}>
-            {/* Product Interest */}
-            <MultiSelectElement
+            </DateFnsProvider> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>Description Information</FormDivider> */}
+        {/* <Grid item xs={12}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Product Interest */}
+        {/* <MultiSelectElement
               label="Product Interest"
               name=""
               preserveOrder
               showChips
               options={[]}
-            />
-            {/* Comments */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Comments */}
+        {/* <TextareaAutosizeElement
               label="Comments"
               name=""
               rows={3}
               size="small"
-            />
-            {/* Lead Notes */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Lead Notes */}
+        {/* <TextareaAutosizeElement
               label="Lead Notes"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <FormDivider>Marketing Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Lead Source Details */}
-            <TextFieldElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>Marketing Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Lead Source Details */}
+        {/* <TextFieldElement
               label="Lead Source Details"
               name=""
               size="small"
-            />
-            {/* Lead Source Original */}
-            <TextFieldElement
+            /> */}
+        {/* Lead Source Original */}
+        {/* <TextFieldElement
               label="Lead Source Original"
               name=""
               size="small"
-            />
-            {/* Lead Source Details Original */}
-            <TextFieldElement
+            /> */}
+        {/* Lead Source Details Original */}
+        {/* <TextFieldElement
               label="Lead Source Details Original"
               name=""
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Email Remarketing Lead Date */}
-            <DateFnsProvider>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Email Remarketing Lead Date */}
+        {/* <DateFnsProvider>
               <DatePickerElement label="Email Remarketing Lead Date" name="" />
-            </DateFnsProvider>
-            {/* Most Recent Activity */}
-            <TextFieldElement
+            </DateFnsProvider> */}
+        {/* Most Recent Activity */}
+        {/* <TextFieldElement
               label="Most Recent Activity"
               name=""
               size="small"
-            />
-            {/* Most Recent Response Type */}
-            <TextFieldElement
+            /> */}
+        {/* Most Recent Response Type */}
+        {/* <TextFieldElement
               label="Most Recent Response Type"
               name=""
               size="small"
-            />
-            {/* SharePoint Contact */}
-            <CheckboxElement label="SharePoint Contact" name="" size="small" />
-          </Stack>
-        </Grid>
-        <FormDivider>Demographic Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Preferred Language */}
-            <AutocompleteElement
+            /> */}
+        {/* SharePoint Contact */}
+        {/* <CheckboxElement label="SharePoint Contact" name="" size="small" /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>Demographic Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Preferred Language */}
+        {/* <AutocompleteElement
               label="Preferred Language"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Time Zone */}
-            <AutocompleteElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Time Zone */}
+        {/* <AutocompleteElement
               label="Time Zone"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-          </Stack>
-        </Grid>
-        <FormDivider>Communication Preferences</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Email Opt Out */}
-            <CheckboxElement label="Email Opt Out" name="" size="small" />
-            {/* Do Not Call */}
-            <CheckboxElement label="Do Not Call" name="" size="small" />
-            {/* No Install Admin Newsletter */}
-            <CheckboxElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>Communication Preferences</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Email Opt Out */}
+        {/* <CheckboxElement label="Email Opt Out" name="" size="small" /> */}
+        {/* Do Not Call */}
+        {/* <CheckboxElement label="Do Not Call" name="" size="small" /> */}
+        {/* No Install Admin Newsletter */}
+        {/* <CheckboxElement
               label="No Install Admin Newsletter"
               name=""
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Double Opt-In */}
-            <CheckboxElement label="Double Opt-In" name="" size="small" />
-            {/* Double Opt-In Timestamp */}
-            <DateFnsProvider>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Double Opt-In */}
+        {/* <CheckboxElement label="Double Opt-In" name="" size="small" /> */}
+        {/* Double Opt-In Timestamp */}
+        {/* <DateFnsProvider>
               <DateTimePickerElement label="Double Opt-In Timestamp" name="" />
-            </DateFnsProvider>
-          </Stack>
-        </Grid>
-        <FormDivider>System Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* NPS Score */}
-            <AutocompleteElement
+            </DateFnsProvider> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <FormDivider>System Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* NPS Score */}
+        {/* <AutocompleteElement
               label="NPS Score"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* NPS Reason Promoter */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* NPS Reason Promoter */}
+        {/* <TextareaAutosizeElement
               label="NPS Reason Promoter"
               name=""
               rows={3}
               size="small"
-            />
-            {/* Default Account */}
-            <CheckboxElement label="Default Account" name="" size="small" />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* NPS Comments */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* Default Account */}
+        {/* <CheckboxElement label="Default Account" name="" size="small" /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* NPS Comments */}
+        {/* <TextareaAutosizeElement
               label="NPS Comments"
               name=""
               rows={3}
               size="small"
-            />
-            {/* NPS Reason Detractor */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* NPS Reason Detractor */}
+        {/* <TextareaAutosizeElement
               label="NPS Reason Detractor"
               name=""
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
       </Grid>
     </FormWrapper>
   );

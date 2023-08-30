@@ -93,7 +93,11 @@ export const SalesOrderForm = ({
             <TextFieldElement label="Order Number" name="" size="small" />
             {/* SO Record Update */}
             <DateFnsProvider>
-              <DatePickerElement label="SO Record Update" name="" />
+              <DatePickerElement
+                label="SO Record Update"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
           </Stack>
         </Grid>
@@ -122,7 +126,11 @@ export const SalesOrderForm = ({
             />
             {/* Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Date" name="" />
+              <DatePickerElement
+                label="Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* State */}
             <TextareaAutosizeElement
@@ -133,7 +141,11 @@ export const SalesOrderForm = ({
             />
             {/* Ship Date */}
             <DateFnsProvider>
-              <DatePickerElement label="Ship Date" name="" />
+              <DatePickerElement
+                label="Ship Date"
+                name=""
+                inputProps={{ size: "small" }}
+              />
             </DateFnsProvider>
             {/* Currency */}
             <AutocompleteElement
