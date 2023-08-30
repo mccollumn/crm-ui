@@ -13,13 +13,16 @@ export const updateMenuValues = (menuItems: any, data: any) => {
       (item: any) => item.Menu_Value === data[section][menu]
     );
 
+    // If the existing data value matches one of the menu options, then use that option
     if (menuValue) {
       data[section][menu] = menuValue;
       return;
     }
+    // If the existing data value does not match one of the menu options, then create a new option object
     data[section][menu] = {
       Menu_Name: menuName,
       Menu_Display: data[section][menu],
+      Menu_Value: data[section][menu],
     };
   });
 };

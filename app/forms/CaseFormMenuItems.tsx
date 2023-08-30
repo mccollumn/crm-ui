@@ -1,18 +1,29 @@
-import { getMenuItems } from "@/app/utils/getData";
+import { getMenuItems, getAccounts } from "@/app/utils/getData";
 
 export const getCaseFormMenuItems = async () => {
-  const menuItemsAll = await getMenuItems();
+  const menuItemsAllPromise = getMenuItems();
+  const accountsPromise = getAccounts();
+  const [menuItemsAll, accounts] = await Promise.all([
+    menuItemsAllPromise,
+    accountsPromise,
+  ]);
 
   // TODO: Finish menu items... names and keys may not be accurate.
+  // Need to add case owners
   const menuItems: any = {
     accountName: {
-      // TODO: request accounts list
-      options: [],
+      options: accounts.map((account: any) => {
+        return {
+          ...account,
+          Menu_Name: "accountName",
+          Menu_Display: account.Accounts_Name,
+          Menu_Value: account.Accounts_Name,
+        };
+      }),
       sectionKey: "CaseInformation",
       menuKey: "Accounts_Name",
     },
     contactName: {
-      // TODO: request contacts list
       options: [],
       sectionKey: "CaseInformation",
       menuKey: "Contacts_FullName",

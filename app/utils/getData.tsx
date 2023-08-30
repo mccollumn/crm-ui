@@ -81,6 +81,11 @@ export const getCaseData = async (caseID: string) => {
   return data;
 };
 
+export const getCasesPaginated = async (offset: string, rowCount: string) => {
+  const data = await getData(`/case/list/all/${offset}/${rowCount}`);
+  return data;
+};
+
 /**
  * Accounts
  */
@@ -110,5 +115,10 @@ export const getContactsByAccount = async (accountID: string) => {
 
 export const getMenuItems = async () => {
   const data = await getData("/menu");
+  return data;
+};
+
+export const getSearchResults = async (searchTerm: string) => {
+  const data = await getData(`/search/${searchTerm}`);
   return data;
 };

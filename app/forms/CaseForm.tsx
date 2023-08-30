@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "./FormWrapper";
 import { FormDivider } from "./FormDivider";
 import { Grid, Stack } from "@mui/material";
@@ -11,10 +12,10 @@ import {
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import DateFnsProvider from "../providers/DateFnsProvider";
 import { CaseInformation, CaseProfile } from "../types/cases";
 import { getInputName } from "../utils/forms";
-import React from "react";
 
 type CaseFormProps = {
   formTitle: string;
@@ -86,10 +87,11 @@ export const CaseForm = ({
   ...props
 }: CaseFormProps) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const caseID = defaultValues.CaseInformation.Cases_ID;
 
-  const [accountNameOptions, setAccountNameOptions] = React.useState(
-    menuItems.accountName.options
+  const [accountSelected, setAccountSelected] = React.useState(
+    defaultValues.CaseInformation.Contacts_FullName
   );
   const [contactNameOptions, setContactNameOptions] = React.useState([]);
   const [statusOptions, setStatusOptions] = React.useState(
@@ -110,6 +112,7 @@ export const CaseForm = ({
     console.log("Success values", values);
     let id = caseID;
     // TODO:
+    // Map menu values to appropriate fields
     // PUT data
     if (id) {
       const data = await fetch(`/cases/api/${id}/update/`);
@@ -167,7 +170,25 @@ export const CaseForm = ({
     setCategoryOptions(options);
   };
 
-  console.log("Default Values:", defaultValues);
+  const getContactOptions = async (accountID: string) => {
+    const results = await fetch(`/api/contacts/${accountID}`);
+    const options = await results.json();
+    setContactNameOptions(options.data);
+  };
+
+  // Populate contact options if an account ID was provided when the form loaded
+  React.useEffect(() => {
+    const accountID = defaultValues.CaseInformation.Cases_AccountID;
+    if (!accountID) return;
+    getContactOptions(accountID);
+  }, [defaultValues.CaseInformation.Cases_AccountID]);
+
+  // Populate owner name if the field does not already have a value
+  React.useEffect(() => {
+    if (session && !defaultValues.CaseInformation.Owner_Name) {
+      defaultValues.CaseInformation.Owner_Name = session?.user?.name;
+    }
+  }, [defaultValues.CaseInformation, session]);
 
   return (
     <FormWrapper
@@ -190,6 +211,8 @@ export const CaseForm = ({
               size="small"
             />
             {/* Account Name */}
+            {/* May need to virtualize the list if performance is bad. */}
+            {/* https://mui.com/material-ui/react-autocomplete/#virtualization */}
             <AutocompleteElement
               label="Account Name"
               name={getInputName(menuItems, "accountName")}
@@ -199,6 +222,17 @@ export const CaseForm = ({
                 getOptionLabel: (option) =>
                   option.Menu_Display ||
                   initialValues.CaseInformation.Accounts_Name,
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.Accounts_AccountID}>
+                      {`${option.Accounts_Name} - ${option.Accounts_Site} (${option.AccountType_Description})`}
+                    </li>
+                  );
+                },
+                onChange: (_, value) => {
+                  getContactOptions(value.Accounts_AccountID);
+                  setAccountSelected(value);
+                },
               }}
               options={menuItems.accountName.options}
             />
@@ -212,9 +246,17 @@ export const CaseForm = ({
                 getOptionLabel: (option) =>
                   option.Menu_Display ||
                   initialValues.CaseInformation.Contacts_FullName,
-                disabled: !accountNameOptions.length,
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.Contacts_ID}>
+                      {`${option.Contacts_Name} (${option.Contacts_Email})`}
+                    </li>
+                  );
+                },
+                disabled: !accountSelected,
               }}
-              options={menuItems.contactName.options}
+              // loading={!contactNameOptions.length}
+              options={contactNameOptions}
             />
             {/* Case Origin */}
             <AutocompleteElement
@@ -425,7 +467,7 @@ export const CaseForm = ({
                   initialValues.CaseProfile.Cases_Category,
                 disabled: !reasonOptions.length,
               }}
-              options={reasonOptions}
+              options={categoryOptions}
             />
             {/* Priority */}
             <AutocompleteElement
