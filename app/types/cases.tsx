@@ -22,7 +22,7 @@ export interface CaseInformation {
   Cases_HibernateEndDate?: string | null;
   Cases_IsClosed: "0" | "1";
   Cases_IsDeleted: "0" | "1";
-  Cases_IsEscalated: "0" | "1" | "" | true | false;
+  Cases_IsEscalated: "0" | "1";
   Cases_OpenOppValueOfAccount?: string | null;
   Cases_Origin: string;
   Cases_OriginalCreatedDate?: string | null;
@@ -45,10 +45,10 @@ export interface CaseProfile {
   Cases_CaseType: string;
   Cases_Category: string;
   Cases_Description?: string | null;
-  Cases_IsTAMCase: "0" | "1" | "" | true | false;
+  Cases_IsTAMCase: "0" | "1";
   Cases_Priority: string;
   Cases_ProductDeliveryMethod: string;
-  Cases_ProductName: string;
+  Cases_ProductName: string | null;
   Cases_ProductSubVersion?: string | null;
   Cases_ProductVersion?: string | null;
   Cases_Reason: string;

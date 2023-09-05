@@ -1,23 +1,22 @@
 import { CaseForm } from "@/app/forms/case/CaseForm";
-import { getCaseData } from "@/app/utils/getData";
-import { getCaseFormMenuItems } from "@/app/forms/case/CaseFormMenuItems";
-import { updateMenuValues } from "@/app/utils/forms";
+import { getCaseData, getMenuItems } from "@/app/utils/getData";
+import { createCaseFormData } from "@/app/utils/forms";
 
 const EditCase = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
   const caseDataPromise = getCaseData(caseID);
-  const menuItemsPromise = getCaseFormMenuItems();
+  const menuItemsPromise = getMenuItems();
   const [caseData, menuItems] = await Promise.all([
     caseDataPromise,
     menuItemsPromise,
   ]);
-
-  updateMenuValues(menuItems, caseData);
+  const caseNumber = caseData?.CaseInformation?.Cases_CaseNumber;
+  const values = await createCaseFormData(caseData);
 
   return (
     <CaseForm
-      formTitle="Edit Case"
-      defaultValues={caseData}
+      formTitle={`Edit Case - ${caseNumber}`}
+      defaultValues={values}
       menuItems={menuItems}
     />
   );

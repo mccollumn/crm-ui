@@ -61,7 +61,7 @@ export const TopNavBar = ({
               flexGrow: 1,
             }}
           >
-            <Image src={webtrendsLogo} alt="Webtrends Logo" />
+            <Image src={webtrendsLogo} alt="Webtrends Logo" priority={true} />
           </Typography>
           {left}
         </Box>

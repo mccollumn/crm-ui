@@ -49,7 +49,7 @@ const SearchInput = ({
       variant={variant}
       size="small"
       margin="dense"
-      inputProps={{
+      InputProps={{
         placeholder: placeholder,
         startAdornment: (
           <InputAdornment
