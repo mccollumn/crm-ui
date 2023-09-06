@@ -103,33 +103,38 @@ export const DataTable = ({
       {
         field: "EmailMessages_FromAddress",
         headerName: "From Address",
+        width: 175,
         renderCell: (params) => {
           return <Link href={`mailto:${params.value}`}>{params.value}</Link>;
         },
       },
-      { field: "to", headerName: "To Adress" },
+      { field: "to", headerName: "To Adress", width: 175 },
       {
         field: "EmailMessages_MessageDate",
         headerName: "Message Date",
         type: "dateTime",
+        width: 150,
         valueGetter: (params: GridValueGetterParams) => new Date(params.value),
       },
       {
         field: "EmailMessages_Status",
         headerName: "Status",
+        width: 50,
       },
     ],
     caseComments: [
       {
-        field: "CaseComments_CreatedById",
+        field: "CreatedBy_Name",
         headerName: "User",
-        renderCell: (params) => {
-          return <Link href="\contacts">{params.value}</Link>;
-        },
+        width: 150,
+        // renderCell: (params) => {
+        //   return <Link href="\contacts">{params.value}</Link>;
+        // },
       },
       {
         field: "CaseComments_IsPublic",
         headerName: "Public",
+        width: 50,
         renderCell: (params) => {
           let publicComment;
           if (data?.CaseComments.length > 0) {
@@ -146,12 +151,14 @@ export const DataTable = ({
         field: "CaseComments_CreatedDate",
         headerName: "Created Date",
         type: "dateTime",
+        width: 150,
         valueGetter: (params: GridValueGetterParams) => new Date(params.value),
       },
       { field: "CaseComments_CommentBody", headerName: "Comment", flex: 1 },
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
