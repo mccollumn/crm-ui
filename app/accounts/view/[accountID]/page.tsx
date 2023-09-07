@@ -11,14 +11,12 @@ import AccountSalesOrders from "@/app/components/accounts/AccountSalesOrders";
 import AccountSalesInvoices from "@/app/components/accounts/AccountSalesInvoices";
 import AccountLicenseKeys from "@/app/components/accounts/AccountLicenseKeys";
 import AccountAssets from "@/app/components/accounts/AccountAssets";
+import { getAccountData } from "@/app/utils/getData";
 
-const getAccountName = (accountID: string) => {
-  // TODO: request account name
-  return "Account Name";
-};
-
-const AccountView = ({ params }: { params: { accountID: string } }) => {
+const AccountView = async ({ params }: { params: { accountID: string } }) => {
   const accountID = params.accountID;
+  const accountData = await getAccountData(accountID);
+  const accountName = accountData.AccountDetail.Accounts_Name;
 
   return (
     <div>
@@ -28,7 +26,7 @@ const AccountView = ({ params }: { params: { accountID: string } }) => {
           aria-controls="account-info-content"
           id="account-info-header"
         >
-          <Typography variant="h6">{getAccountName(accountID)}</Typography>
+          <Typography variant="h6">{accountName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-info-content">
           <AccountInformation accountID={accountID} />

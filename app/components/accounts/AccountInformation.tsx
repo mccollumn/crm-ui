@@ -5,26 +5,20 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { AccountData } from "../../types/accounts";
+import { getAccountData } from "@/app/utils/getData";
 
-import { cases } from "../../../mockData/cases";
-
-const getAccountData = (accountID: string) => {
-  // TODO: Retreive account data
-  return { id: "0018Z00002eltWLQAY", accountName: "Super Awesome Account" };
-};
-
-const AccountInformation = ({ accountID }: AccountInformationProps) => {
-  const accountData = getAccountData(accountID);
-  if (!accountData) return null;
-
-  const accountInfo = getAccountInfo(accountData);
+const AccountInformation = async ({ accountID }: AccountInformationProps) => {
+  const accountInfo = await getAccountInfo(accountID);
+  if (!accountInfo) return null;
 
   return (
     <>
-      <ButtonNav size="small" path={`/accounts/edit/${accountData.id}`}>
+      <ButtonNav size="small" path={`/accounts/edit/${accountID}`}>
         Edit
       </ButtonNav>
       <Accordion defaultExpanded={true}>
@@ -118,7 +112,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-intacct-section-content"
@@ -132,7 +126,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.intacct.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -165,7 +159,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-demographics-section-content"
@@ -179,7 +173,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.demographics.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -195,7 +189,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-mywebtrends-section-content"
@@ -209,7 +203,7 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.mywebtrends.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -259,46 +253,72 @@ const AccountInformation = ({ accountID }: AccountInformationProps) => {
   );
 };
 
-const getAccountInfo = (accountData: AccountData) => {
+const getAccountInfo = async (accountID: string) => {
+  const accountData: AccountData = await getAccountData(accountID);
+  if (!accountData) return null;
   return {
     info: {
       left: [
-        { label: "Account Owner", value: "" },
-        { label: "Account Name", value: "" },
-        { label: "Alternate Account Name", value: "" },
-        { label: "Account Site", value: "" },
-        { label: "Parent Account", value: "" },
-        { label: "Account Record Type", value: "" },
-        { label: "Type", value: "" },
-        { label: "Type Last Change Date", value: "" },
-        { label: "Vertical", value: "" },
-        { label: "Sector", value: "" },
-        { label: "Website", value: "" },
-        { label: "Misc. Info", value: "" },
-        { label: "Migrate to New Org", value: "" },
-        { label: "Migration External ID", value: "" },
+        { label: "Account Owner", value: accountData.AccountDetail.OwnerName },
+        {
+          label: "Account Name",
+          value: accountData.AccountDetail.Accounts_Name,
+        },
+        {
+          label: "Alternate Account Name",
+          value: accountData.AccountDetail.Accounts_AlternateAccountName,
+        },
+        {
+          label: "Account Site",
+          value: accountData.AccountDetail.Accounts_Site,
+        },
+        // { label: "Parent Account", value: "" },
+        // { label: "Account Record Type", value: "" },
+        {
+          label: "Type",
+          value: accountData.AccountDetail.AccountType_Description,
+        },
+        // { label: "Type Last Change Date", value: "" },
+        // { label: "Vertical", value: "" },
+        // { label: "Sector", value: "" },
+        { label: "Website", value: accountData.AccountDetail.Accounts_Website },
+        // { label: "Misc. Info", value: "" },
+        // { label: "Migrate to New Org", value: "" },
+        // { label: "Migration External ID", value: "" },
       ],
       right: [
-        { label: "Client Health Status", value: "" },
-        { label: "Client Health", value: "" },
+        // { label: "Client Health Status", value: "" },
+        // { label: "Client Health", value: "" },
+        // {
+        //   label: "Client Unhealthy Reason",
+        //   value: "",
+        // },
+        // { label: "Client Unhealthy Reason Other", value: "" },
+        { label: "Fax", value: accountData.AccountDetail.Accounts_Fax },
+        { label: "Phone", value: accountData.AccountDetail.Accounts_Phone },
+        // { label: "Target Account Type", value: "" },
+        // { label: "Global Account", value: "" },
+        // { label: "Account Size", value: "" },
         {
-          label: "Client Unhealthy Reason",
-          value: "",
+          label: "USD Total Order Value",
+          value: accountData.TotalOrderValue.AccountsTotal_OrderValue,
         },
-        { label: "Client Unhealthy Reason Other", value: "" },
-        { label: "Fax", value: "" },
-        { label: "Phone", value: "" },
-        { label: "Target Account Type", value: "" },
-        { label: "Global Account", value: "" },
-        { label: "Account Size", value: "" },
-        { label: "USD Total Order Value", value: "" },
-        { label: "Is Federal", value: "" },
-        { label: "Is State", value: "" },
-        { label: "Territory", value: "" },
-        { label: "Region", value: "" },
-        { label: "Super Region", value: "" },
-        { label: "MSA", value: "" },
-        { label: "Partner Status", value: "" },
+        {
+          label: "Is Federal or State",
+          value: !!Number(accountData.AccountDetail.Accounts_IsFedState) ? (
+            <CheckBoxIcon />
+          ) : (
+            <CheckBoxOutlineBlankIcon />
+          ),
+        },
+        // { label: "Territory", value: "" },
+        // { label: "Region", value: "" },
+        {
+          label: "Super Region",
+          value: accountData.AccountDetail.Accounts_Super_Region,
+        },
+        // { label: "MSA", value: "" },
+        // { label: "Partner Status", value: "" },
       ],
     },
     address: {
@@ -380,10 +400,10 @@ const getAccountInfo = (accountData: AccountData) => {
         },
       ],
     },
-    intacct: {
-      left: [{ label: "Intacct Customer ID", value: "" }],
-      right: [{ label: "Intacct Location", value: "" }],
-    },
+    // intacct: {
+    //   left: [{ label: "Intacct Customer ID", value: "" }],
+    //   right: [{ label: "Intacct Location", value: "" }],
+    // },
     value: {
       left: [
         { label: "USD Total Analytics", value: "" },
@@ -413,23 +433,23 @@ const getAccountInfo = (accountData: AccountData) => {
         { label: "comScore Unique Monthly Visitors", value: "" },
       ],
     },
-    demographics: {
-      left: [
-        { label: "Legal Name", value: "" },
-        { label: "Industry", value: "" },
-        { label: "Annual Revenue", value: "" },
-        { label: "Employees", value: "" },
-        { label: "Location Type", value: "" },
-        { label: "Ownership", value: "" },
-      ],
-      right: [
-        { label: "Tax Exempt", value: "" },
-        { label: "Tax Exempt ID", value: "" },
-        { label: "Ticker Symbol", value: "" },
-        { label: "SIC Code", value: "" },
-        { label: "SIC Description", value: "" },
-      ],
-    },
+    // demographics: {
+    //   left: [
+    //     { label: "Legal Name", value: "" },
+    //     { label: "Industry", value: "" },
+    //     { label: "Annual Revenue", value: "" },
+    //     { label: "Employees", value: "" },
+    //     { label: "Location Type", value: "" },
+    //     { label: "Ownership", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Tax Exempt", value: "" },
+    //     { label: "Tax Exempt ID", value: "" },
+    //     { label: "Ticker Symbol", value: "" },
+    //     { label: "SIC Code", value: "" },
+    //     { label: "SIC Description", value: "" },
+    //   ],
+    // },
     contract: {
       left: [
         { label: "On Demand Max Contract End Date", value: "" },
@@ -440,10 +460,10 @@ const getAccountInfo = (accountData: AccountData) => {
         { label: "Streams Max Contract End Date", value: "" },
       ],
     },
-    mywebtrends: {
-      left: [{ label: "Has Entitlements", value: "" }],
-      right: [{ label: "Support Override for Entitlement", value: "" }],
-    },
+    // mywebtrends: {
+    //   left: [{ label: "Has Entitlements", value: "" }],
+    //   right: [{ label: "Support Override for Entitlement", value: "" }],
+    // },
     entitlements: {
       left: [
         { label: "Software Entitled Server Calls", value: "" },

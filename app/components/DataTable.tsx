@@ -172,7 +172,7 @@ export const DataTable = ({
     ],
     accountsList: [
       {
-        field: "accountName",
+        field: "Accounts_Name",
         headerName: "Account Name",
         flex: 1,
         renderCell: (params) => {
@@ -182,36 +182,24 @@ export const DataTable = ({
         },
       },
       {
-        field: "accountSite",
+        field: "Accounts_Site",
         headerName: "Account Site",
+        width: 150,
       },
       {
-        field: "owner",
-        headerName: "Owner Last Name",
-      },
-      {
-        field: "type",
+        field: "AccountType_Description",
         headerName: "Type",
+        width: 150,
       },
       {
-        field: "billingState",
-        headerName: "Billing State/Province",
+        field: "AccountsAddress_BillingCountry",
+        headerName: "Billing Country",
+        width: 150,
       },
       {
-        field: "territory",
-        headerName: "Territory",
-      },
-      {
-        field: "superRegion",
+        field: "Accounts_Region",
         headerName: "Super Region",
-      },
-      {
-        field: "typeLastChange",
-        headerName: "Type Last Change Date",
-      },
-      {
-        field: "orderValue",
-        headerName: "USD Total Order Value",
+        width: 150,
       },
     ],
     accountSalesOrders: [
@@ -750,7 +738,7 @@ export const DataTable = ({
     caseHistory: "",
     caseEmails: "EmailMessages_ID",
     caseComments: "CaseComments_ID",
-    accountsList: "",
+    accountsList: "Accounts_AccountID",
     contactsList: "",
     opportunitiesList: "",
     accountSalesOrders: "",

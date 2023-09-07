@@ -228,6 +228,11 @@ export const getActiveAccounts = async () => {
   return data;
 };
 
+export const getAccountData = async (accountID: string) => {
+  const data = await getData(`/account/accountid/${accountID}`);
+  return data;
+};
+
 /**
  * Contacts
  */

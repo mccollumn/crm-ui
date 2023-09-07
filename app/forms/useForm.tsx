@@ -35,6 +35,37 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   );
 
   /**
+   * Appends the options, preserving any existing options,
+   * for the provided menu name with the specified dependent value.
+   * The dependent value can be a string or array of strings.
+   */
+  const appendMenuOptions = React.useCallback(
+    (menu: string, dependentValue: string = "") => {
+      const optionObjs = menuItems.filter((item: MenuItem) => {
+        if (Array.isArray(item.Menu_DependantValue)) {
+          return (
+            item.Menu_Name === menu &&
+            item.Menu_DependantValue.includes(dependentValue)
+          );
+        } else {
+          return (
+            item.Menu_Name === menu &&
+            item.Menu_DependantValue === dependentValue
+          );
+        }
+      });
+      const optionsArray = optionObjs.map(
+        (item: MenuItem) => item.Menu_Display
+      );
+      setOptions((prev: any) => {
+        return { ...prev, [menu]: [...prev[menu], ...optionsArray] };
+      });
+      return optionsArray;
+    },
+    [menuItems]
+  );
+
+  /**
    * Sets the provided options for the specified menu.
    */
   const setCustomMenuOptions = React.useCallback(
@@ -50,6 +81,7 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   return {
     setMenuOptions,
     setCustomMenuOptions,
+    appendMenuOptions,
     menuOptions: options,
   };
 };

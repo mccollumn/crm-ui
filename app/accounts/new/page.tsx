@@ -1,31 +1,16 @@
-"use client";
+import { AccountForm } from "@/app/forms/account/AccountForm";
+import { createAccountFormData } from "@/app/forms/account/accountFormUtils";
+import { getMenuItems } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { AccountForm } from "@/app/forms/AccountForm";
-
-const NewAccount = () => {
-  const router = useRouter();
-
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch("/accounts/api/new/");
-    // Verify successful response
-    // Get ID
-    const accountID = "1";
-    router.push(`/accounts/view/${accountID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+const NewAccount = async () => {
+  const menuItems = await getMenuItems();
+  const values = await createAccountFormData();
 
   return (
     <AccountForm
       formTitle="New Account"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
+      defaultValues={values}
+      menuItems={menuItems}
     />
   );
 };

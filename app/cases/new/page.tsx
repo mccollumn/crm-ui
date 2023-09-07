@@ -1,5 +1,5 @@
 import { CaseForm } from "@/app/forms/case/CaseForm";
-import { createCaseFormData } from "@/app/utils/forms";
+import { createCaseFormData } from "@/app/forms/case/caseFormUtils";
 import { getMenuItems } from "@/app/utils/getData";
 
 const NewCase = async () => {
