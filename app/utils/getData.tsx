@@ -237,6 +237,11 @@ export const getAccountData = async (accountID: string) => {
  * Contacts
  */
 
+export const getContacts = async () => {
+  const data = await getData("/contact/list");
+  return data;
+};
+
 export const getContactsByAccount = async (accountID: string) => {
   const data = await getData(`/contact/list/by/account/${accountID}`);
   return data;

@@ -12,25 +12,20 @@ import {
 import { useRouter } from "next/navigation";
 import { Grid, Stack } from "@mui/material";
 import DateFnsProvider from "../../providers/DateFnsProvider";
-import { MenuItem } from "@/app/types/types";
+import { FormProps } from "@/app/types/types";
 import { useAccountForm } from "./useAccountForm";
-
-type AccountFormProps = {
-  formTitle: string;
-  defaultValues: any;
-  menuItems: MenuItem[];
-};
-
-const initialValues = { accountOwner: "" };
+import React from "react";
 
 export const AccountForm = ({
   formTitle,
   defaultValues,
   menuItems,
   ...props
-}: AccountFormProps) => {
+}: FormProps) => {
   const router = useRouter();
-  const { menuOptions } = useAccountForm({ menuItems });
+  const { menuOptions, FormatCurrency, FormatNumber } = useAccountForm({
+    menuItems,
+  });
 
   const accountID = defaultValues.accountID;
 
@@ -226,6 +221,7 @@ export const AccountForm = ({
               label="USD Total Order Value"
               name="orderValue.total"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* Is Federal */}
             <CheckboxElement
@@ -461,19 +457,24 @@ export const AccountForm = ({
               name="collections.pastDueAmount"
               type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* Anticipated Suspension Date */}
-            <TextFieldElement
-              label="Anticipated Suspension Date"
-              name="collections.suspensionDate"
-              size="small"
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Anticipated Suspension Date"
+                name="collections.suspensionDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Passed to Debt Collection Date */}
-            <TextFieldElement
-              label="Passed to Debt Collection Date"
-              name="collections.passedToDebtCollectionDate"
-              size="small"
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Passed to Debt Collection Date"
+                name="collections.passedToDebtCollectionDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Collections Correspondence */}
             <TextareaAutosizeElement
               label="Collections Correspondence"
@@ -505,11 +506,11 @@ export const AccountForm = ({
               size="small"
             />
             {/* Service Suspended */}
-            <CheckboxElement
+            {/* <CheckboxElement
               label="Service Suspended"
               name="collections.serviceSuspended"
               size="small"
-            />
+            /> */}
             {/* Services to be Suspended */}
             <TextFieldElement
               label="Services to be Suspended"
@@ -517,11 +518,13 @@ export const AccountForm = ({
               size="small"
             />
             {/* Services Suspension Date */}
-            <TextFieldElement
-              label="Services Suspension Date"
-              name="collections.serviceSuspensionDate"
-              size="small"
-            />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Services Suspension Date"
+                name="collections.serviceSuspensionDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Last Conversation Note */}
             <TextareaAutosizeElement
               label="Last Conversation Note"
@@ -597,8 +600,8 @@ export const AccountForm = ({
             <TextFieldElement
               label="USD Total Analytics"
               name="orderValue.total"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* USD Total VDM */}
             {/* <TextFieldElement
@@ -618,15 +621,15 @@ export const AccountForm = ({
             <TextFieldElement
               label="USD Total Consulting"
               name="orderValue.consulting"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* USD Total Services */}
             <TextFieldElement
               label="USD Total Services"
               name="orderValue.services"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
           </Stack>
         </Grid>
@@ -650,22 +653,22 @@ export const AccountForm = ({
             <TextFieldElement
               label="USD Total Training"
               name="orderValue.training"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* USD Total Partner Products */}
             <TextFieldElement
               label="USD Total Partner Products"
               name="orderValue.partnerProducts"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* USD Total Other */}
             <TextFieldElement
               label="USD Total Other"
               name="orderValue.other"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
           </Stack>
         </Grid>
@@ -874,8 +877,8 @@ export const AccountForm = ({
             <TextFieldElement
               label="Software Entitled Server Calls"
               name="entitlement.serverCalls"
-              type="number"
               size="small"
+              InputProps={{ inputComponent: FormatNumber as any }}
             />
             {/* Software Entitled Events */}
             {/* <TextFieldElement
@@ -921,7 +924,6 @@ export const AccountForm = ({
             <TextFieldElement
               label="Software Most Recent Activated Version"
               name="entitlement.activatedVersion"
-              type="number"
               size="small"
             />
             {/* Extended Maintenance for Legacy End Date */}

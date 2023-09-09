@@ -9,11 +9,6 @@ import Opportunities from "@/app/opportunities/page";
 import Cases from "@/app/cases/page";
 import ContactHistory from "@/app/components/contacts/ContactHistory";
 
-const getContactName = (contactID: string) => {
-  // TODO: request contact name
-  return "Mr. Customer";
-};
-
 const getContactAccountID = (contactID: string) => {
   // TODO: request account number
   return "";
@@ -21,6 +16,9 @@ const getContactAccountID = (contactID: string) => {
 
 const ContactView = ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
+  // TODO: Finish this when API is available
+  const contactData = {};
+  const contactName = "Mr. Customer";
 
   return (
     <div>
@@ -30,7 +28,7 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
           aria-controls="contact-info-content"
           id="contact-info-header"
         >
-          <Typography variant="h6">{getContactName(contactID)}</Typography>
+          <Typography variant="h6">{contactName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-info-content">
           <ContactInformation contactID={contactID} />

@@ -3,7 +3,10 @@ export interface AccountData {
   AddressInformation: AddressInformation;
   AccountCreditStatus: AccountCreditStatus;
   Collections: Collections;
+  SoftwareEntitlements: SoftwareEntitlements;
   TotalOrderValue: TotalOrderValue;
+  Assets: Asset[];
+  LicenseKeys: LicenseKey[];
 }
 
 interface AccountDetail {
@@ -68,6 +71,8 @@ interface Collections {
   Contact_Fullname?: string | null;
   AccountsCollection_Correspondence?: string | null;
   AccountsCollection_PastDueAmount?: string | null;
+  Accounts_NoTechnicalSupport: "0" | "1";
+  Accounts_Alert?: string | null;
 }
 
 interface TotalOrderValue {
@@ -80,4 +85,38 @@ interface TotalOrderValue {
   AccountsTotal_PartnerProducts?: string | null;
   AccountsTotal_Services?: string | null;
   AccountsTotal_Training?: string | null;
+}
+
+interface SoftwareEntitlements {
+  AccountsSoftware_ID: string;
+  AccountsSoftware_Base_Mnt_Expiration_Date?: string | null;
+  AccountsSoftware_Entitled_Server_Calls?: string | null;
+  AccountsSoftware_Installations?: string | null;
+  AccountsSoftware_Mnt_Expiration_Date?: string | null;
+  AccountsSoftware_Most_Recent_Activated_Version?: string | null;
+  AccountsSoftware_Term_License?: string | null;
+}
+
+interface Asset {
+  Assets_ID: string;
+  Assets_Name: string;
+  Assets_SerialNumber?: string | null;
+  Assets_SupportPlanEnd?: string | null;
+  Assets_SupportPlanType?: string | null;
+  Assets_Quantity?: string | null;
+  Assets_PageViews?: string | null;
+  Assets_Status?: string | null;
+}
+
+interface LicenseKey {
+  LicenseKeys_ID: string;
+  LicenseKeys_Name: string;
+  LicenseKeys_KeyType?: string | null;
+  LicenseKeys_PageViews?: string | null;
+  LicenseKeys_Status?: string | null;
+  LicenseKeys_MostRecentActivatedVersion?: string | null;
+  LicenseKeys_AnniversaryDate?: string | null;
+  LicenseKeys_SystemStatus?: string | null;
+  LicenseKeys_ParentKey?: string | null;
+  LicenseKeys_KeyCreatedDate?: string | null;
 }

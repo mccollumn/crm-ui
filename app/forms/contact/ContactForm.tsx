@@ -1,8 +1,11 @@
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+"use client";
+
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
+  CheckboxElement,
   // CheckboxElement,
   // DatePickerElement,
   // DateTimePickerElement,
@@ -10,24 +13,42 @@ import {
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
+import { useRouter } from "next/navigation";
+import { FormProps } from "@/app/types/types";
+import { useContactForm } from "./useContactForm";
 // import DateFnsProvider from "../providers/DateFnsProvider";
-
-type ContactFormProps = {
-  formTitle: string;
-  onSuccess: any;
-  onCancel: any;
-  defaultValues?: any;
-};
-
-const initialValues = {};
 
 export const ContactForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
-  defaultValues = initialValues,
+  defaultValues,
+  menuItems,
   ...props
-}: ContactFormProps) => {
+}: FormProps) => {
+  const router = useRouter();
+  const { menuOptions } = useContactForm({ menuItems });
+
+  const contactID = defaultValues.contactID;
+
+  const onSuccess = async (values: any) => {
+    console.log("Success values", values);
+    let id = contactID;
+    // TODO:
+    // Map menu values to appropriate fields
+    // PUT data
+    if (id) {
+      const data = await fetch("/contacts/api/new/");
+      // Verify successful response
+    } else {
+      // POST new contact
+      // Set id to new contact ID
+    }
+    router.push(`/contacts/view/${id}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
+
   return (
     <FormWrapper
       title={formTitle}
@@ -44,10 +65,20 @@ export const ContactForm = ({
             {/* Contact Owner */}
             <AutocompleteElement
               label="Contact Owner"
-              name=""
+              name="owner"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Owner}
             />
             <p>
               <b>Name</b>
@@ -55,24 +86,49 @@ export const ContactForm = ({
             {/* Salutation */}
             <AutocompleteElement
               label="Salutation"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="salutation"
+              autocompleteProps={{
+                style: { marginLeft: "20px" },
+                size: "small",
+              }}
+              options={menuOptions.Salutation}
             />
             {/* First Name */}
-            <TextFieldElement label="First Name" name="" size="small" />
+            <TextFieldElement
+              label="First Name"
+              name="firstName"
+              size="small"
+              style={{ marginLeft: "20px" }}
+            />
             {/* Last Name */}
-            <TextFieldElement label="Last Name" name="" required size="small" />
+            <TextFieldElement
+              label="Last Name"
+              name="lastName"
+              required
+              size="small"
+              style={{ marginLeft: "20px" }}
+            />
             {/* Account Name */}
             <AutocompleteElement
               label="Account Name"
-              name=""
+              name="account"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      <b>{option.name}</b>
+                      <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Title */}
-            <TextFieldElement label="Title" name="" size="small" />
+            <TextFieldElement label="Title" name="title" size="small" />
             {/* Reports To */}
             {/* <AutocompleteElement
               label="Reports To"
@@ -83,22 +139,22 @@ export const ContactForm = ({
             {/* Job Role */}
             <AutocompleteElement
               label="Job Role"
-              name=""
+              name="jobRole"
               required
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.JobRole}
             />
             {/* Contact Role */}
             <AutocompleteElement
               label="Contact Role"
-              name=""
+              name="contactRole"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.ContactRole}
             />
             {/* Email */}
             <TextFieldElement
               label="Email"
-              name=""
+              name="email"
               required
               size="small"
               type="email"
@@ -146,18 +202,18 @@ export const ContactForm = ({
             {/* Relationship to Webtrends */}
             <MultiSelectElement
               label="Relationship to Webtrends"
-              name=""
+              name="relationship"
               preserveOrder
               showChips
               size="small"
-              options={[]}
+              options={menuOptions.Relationship}
             />
             {/* Contact Status */}
             <AutocompleteElement
               label="Contact Status"
-              name=""
+              name="contactStatus"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.ContactStatus}
             />
             {/* MQL Date */}
             {/* <DateFnsProvider>
@@ -172,28 +228,30 @@ export const ContactForm = ({
               options={[]}
             /> */}
             {/* Phone */}
-            <TextFieldElement label="Phone" name="" size="small" />
+            <TextFieldElement label="Phone" name="phone" size="small" />
             {/* Mobile */}
-            <TextFieldElement label="Mobile" name="" size="small" />
+            <TextFieldElement label="Mobile" name="mobile" size="small" />
             {/* Other Phone */}
-            <TextFieldElement label="Other Phone" name="" size="small" />
+            <TextFieldElement
+              label="Other Phone"
+              name="otherPhone"
+              size="small"
+            />
             {/* Fax */}
             {/* <TextFieldElement label="Fax" name="" size="small" /> */}
             {/* Flash Login */}
             {/* <CheckboxElement label="Flash Login" name="" size="small" /> */}
             {/* Named Support Contact */}
-            <AutocompleteElement
+            <CheckboxElement
               label="Named Support Contact"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="namedSupportContact"
+              size="small"
             />
             {/* Support Contract Administrator */}
-            <AutocompleteElement
+            <CheckboxElement
               label="Support Contract Administrator"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="supportContactAdmin"
+              size="small"
             />
             {/* Target Account Type */}
             {/* <AutocompleteElement
@@ -235,26 +293,34 @@ export const ContactForm = ({
             {/* Mailing Street */}
             <TextareaAutosizeElement
               label="Mailing Street"
-              name=""
+              name="address.mailing.street"
               rows={3}
               size="small"
             />
             {/* Mailing City */}
-            <TextFieldElement label="Mailing City" name="" size="small" />
+            <TextFieldElement
+              label="Mailing City"
+              name="address.mailing.city"
+              size="small"
+            />
             {/* Mailing State/Province */}
             <TextFieldElement
               label="Mailing State/Province"
-              name=""
+              name="address.mailing.state"
               size="small"
             />
             {/* Mailing Zip/Postal Code */}
             <TextFieldElement
               label="Mailing Zip/Postal Code"
-              name=""
+              name="address.mailing.postalCode"
               size="small"
             />
             {/* Mailing Country */}
-            <TextFieldElement label="Mailing Country" name="" size="small" />
+            <TextFieldElement
+              label="Mailing Country"
+              name="address.mailing.country"
+              size="small"
+            />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -265,32 +331,40 @@ export const ContactForm = ({
             {/* Other Street */}
             <TextareaAutosizeElement
               label="Other Street"
-              name=""
+              name="address.other.street"
               rows={3}
               size="small"
             />
             {/* Other City */}
-            <TextFieldElement label="Other City" name="" size="small" />
+            <TextFieldElement
+              label="Other City"
+              name="address.other.city"
+              size="small"
+            />
             {/* Other State/Province */}
             <TextFieldElement
               label="Other State/Province"
-              name=""
+              name="address.other.state"
               size="small"
             />
             {/* Other Zip/Postal Code */}
             <TextFieldElement
               label="Other Zip/Postal Code"
-              name=""
+              name="address.other.postalCode"
               size="small"
             />
             {/* Other Country */}
-            <TextFieldElement label="Other Country" name="" size="small" />
+            <TextFieldElement
+              label="Other Country"
+              name="address.other.country"
+              size="small"
+            />
             {/* Super Region */}
             <AutocompleteElement
               label="Super Region"
-              name=""
+              name="address.superRegion"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.SuperRegion}
             />
           </Stack>
         </Grid>

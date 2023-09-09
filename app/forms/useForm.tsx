@@ -1,14 +1,11 @@
 import React from "react";
+import { NumericFormat, NumericFormatProps } from "react-number-format";
 import { MenuItem } from "../types/types";
 
 export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   const [options, setOptions] = React.useState<any>(initialMenuOptions);
 
-  /**
-   * Sets the options for the provided menu name with the specified dependent value.
-   * The dependent value can be a string or array of strings.
-   */
-  const setMenuOptions = React.useCallback(
+  const getMenuOptions = React.useCallback(
     (menu: string, dependentValue: string = "") => {
       const optionObjs = menuItems.filter((item: MenuItem) => {
         if (Array.isArray(item.Menu_DependantValue)) {
@@ -23,15 +20,24 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
           );
         }
       });
-      const optionsArray = optionObjs.map(
-        (item: MenuItem) => item.Menu_Display
-      );
+      return optionObjs.map((item: MenuItem) => item.Menu_Display);
+    },
+    [menuItems]
+  );
+
+  /**
+   * Sets the options for the provided menu name with the specified dependent value.
+   * The dependent value can be a string or array of strings.
+   */
+  const setMenuOptions = React.useCallback(
+    (menu: string, dependentValue: string = "") => {
+      const optionsArray = getMenuOptions(menu, dependentValue);
       setOptions((prev: any) => {
         return { ...prev, [menu]: optionsArray };
       });
       return optionsArray;
     },
-    [menuItems]
+    [getMenuOptions]
   );
 
   /**
@@ -41,28 +47,13 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
    */
   const appendMenuOptions = React.useCallback(
     (menu: string, dependentValue: string = "") => {
-      const optionObjs = menuItems.filter((item: MenuItem) => {
-        if (Array.isArray(item.Menu_DependantValue)) {
-          return (
-            item.Menu_Name === menu &&
-            item.Menu_DependantValue.includes(dependentValue)
-          );
-        } else {
-          return (
-            item.Menu_Name === menu &&
-            item.Menu_DependantValue === dependentValue
-          );
-        }
-      });
-      const optionsArray = optionObjs.map(
-        (item: MenuItem) => item.Menu_Display
-      );
+      const optionsArray = getMenuOptions(menu, dependentValue);
       setOptions((prev: any) => {
         return { ...prev, [menu]: [...prev[menu], ...optionsArray] };
       });
       return optionsArray;
     },
-    [menuItems]
+    [getMenuOptions]
   );
 
   /**
@@ -78,13 +69,73 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
     []
   );
 
+  /**
+   * Custom inputComponent that formats the input value as currency (USD).
+   */
+  const FormatCurrency = React.forwardRef<NumericFormatProps, CustomInputProps>(
+    function NumericFormatCustom(props, ref) {
+      const { onChange, ...other } = props;
+
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+          prefix="$"
+        />
+      );
+    }
+  );
+
+  /**
+   * Custom inputComponent that formats the input value as a number.
+   */
+  const FormatNumber = React.forwardRef<NumericFormatProps, CustomInputProps>(
+    function NumericFormatCustom(props, ref) {
+      const { onChange, ...other } = props;
+
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+        />
+      );
+    }
+  );
+
   return {
     setMenuOptions,
     setCustomMenuOptions,
     appendMenuOptions,
     menuOptions: options,
+    FormatCurrency,
+    FormatNumber,
   };
 };
+
+interface CustomInputProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
 
 interface UseFormProps {
   /**

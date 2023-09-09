@@ -28,6 +28,8 @@ useAccountFormProps) => {
     setCustomMenuOptions,
     appendMenuOptions,
     menuOptions,
+    FormatCurrency,
+    FormatNumber,
   } = useForm({
     initialMenuOptions,
     menuItems,
@@ -87,6 +89,8 @@ useAccountFormProps) => {
   return {
     setMenuOptions,
     menuOptions,
+    FormatCurrency,
+    FormatNumber,
   };
 };
 

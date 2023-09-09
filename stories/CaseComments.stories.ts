@@ -34,5 +34,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Comments: Story = {
-  args: {},
+  args: { caseID: "138195" },
 };

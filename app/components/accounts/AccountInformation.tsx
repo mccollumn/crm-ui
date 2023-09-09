@@ -5,12 +5,18 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { AccountData } from "../../types/accounts";
 import { getAccountData } from "@/app/utils/getData";
+import { Address } from "../Address";
+import Link from "next/link";
+import {
+  formatDate,
+  formatCurrency,
+  formatCheckbox,
+  formatNumber,
+} from "@/app/utils/utils";
 
 const AccountInformation = async ({ accountID }: AccountInformationProps) => {
   const accountInfo = await getAccountInfo(accountID);
@@ -81,7 +87,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-additional-section-content"
@@ -95,7 +101,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.additional.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -127,7 +133,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion> */}
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-products-section-content"
@@ -143,8 +149,8 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.products.right}
           />
         </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
+      </Accordion> */}
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-additional2-section-content"
@@ -158,7 +164,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.additional2.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -174,7 +180,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion> */}
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-contract-section-content"
@@ -188,7 +194,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.contract.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -219,7 +225,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-products-section-content"
@@ -233,7 +239,7 @@ const AccountInformation = async ({ accountID }: AccountInformationProps) => {
             itemsRight={accountInfo.products.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -269,6 +275,10 @@ const getAccountInfo = async (accountID: string) => {
           value: accountData.AccountDetail.Accounts_AlternateAccountName,
         },
         {
+          label: "Account ID",
+          value: accountData.AccountDetail.Accounts_AccountID,
+        },
+        {
           label: "Account Site",
           value: accountData.AccountDetail.Accounts_Site,
         },
@@ -301,15 +311,18 @@ const getAccountInfo = async (accountID: string) => {
         // { label: "Account Size", value: "" },
         {
           label: "USD Total Order Value",
-          value: accountData.TotalOrderValue.AccountsTotal_OrderValue,
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_OrderValue
+          ),
         },
         {
           label: "Is Federal or State",
-          value: !!Number(accountData.AccountDetail.Accounts_IsFedState) ? (
-            <CheckBoxIcon />
-          ) : (
-            <CheckBoxOutlineBlankIcon />
-          ),
+          // value: !!Number(accountData.AccountDetail.Accounts_IsFedState) ? (
+          //   <CheckBoxIcon />
+          // ) : (
+          //   <CheckBoxOutlineBlankIcon />
+          // ),
+          value: formatCheckbox(accountData.AccountDetail.Accounts_IsFedState),
         },
         // { label: "Territory", value: "" },
         // { label: "Region", value: "" },
@@ -322,81 +335,214 @@ const getAccountInfo = async (accountID: string) => {
       ],
     },
     address: {
-      left: [{ label: "Billing Address", value: "" }],
-      right: [{ label: "Shipping Address", value: "" }],
+      left: [
+        {
+          label: "Billing Address",
+          value: (
+            <Address
+              street={
+                accountData.AddressInformation.AccountsAddress_BillingStreet
+              }
+              city={accountData.AddressInformation.AccountsAddress_BillingCity}
+              state={
+                accountData.AddressInformation.AccountsAddress_BillingState
+              }
+              postalCode={
+                accountData.AddressInformation.AccountsAddress_BillingPostalCode
+              }
+              country={
+                accountData.AddressInformation.AccountsAddress_BillingCountry
+              }
+            />
+          ),
+        },
+      ],
+      right: [
+        {
+          label: "Shipping Address",
+          value: (
+            <Address
+              street={
+                accountData.AddressInformation.AccountsAddress_ShippingStreet
+              }
+              city={accountData.AddressInformation.AccountsAddress_ShippingCity}
+              state={
+                accountData.AddressInformation.AccountsAddress_ShippingState
+              }
+              postalCode={
+                accountData.AddressInformation
+                  .AccountsAddress_ShippingPostalCode
+              }
+              country={
+                accountData.AddressInformation.AccountsAddress_ShippingCountry
+              }
+            />
+          ),
+        },
+      ],
     },
     credit: {
       left: [
-        { label: "Credit Last Modified", value: "" },
-        { label: "Credit Status", value: "" },
-        { label: "Credit Denied Reason", value: "" },
-        { label: "Credit Global Fortune 500", value: "" },
-        { label: "Auto Renew OD", value: "" },
-        { label: "OD Cancellation Notice", value: "" },
-        { label: "Auto Renewal Notes", value: "" },
+        {
+          label: "Credit Last Modified",
+          value: formatDate(
+            accountData.AccountCreditStatus.AccountsCredit_Last_Modified
+          ),
+        },
+        {
+          label: "Credit Status",
+          value: accountData.AccountCreditStatus.AccountsCredit_Status,
+        },
+        {
+          label: "Credit Denied Reason",
+          value: accountData.AccountCreditStatus.AccountsCredit_DeniedReason,
+        },
+        // { label: "Credit Global Fortune 500", value: "". },
+        // { label: "Auto Renew OD", value: "" },
+        // { label: "OD Cancellation Notice", value: "" },
+        {
+          label: "Credit Hold",
+          value: formatCheckbox(
+            accountData.AccountCreditStatus.AccountsCredit_Hold
+          ),
+        },
+        {
+          label: "Credit Hold Reason",
+          value: accountData.AccountCreditStatus.AccountsCredit_HoldReason,
+        },
+        {
+          label: "Auto Renewal Notes",
+          value: accountData.AccountCreditStatus.Accounts_AutoRenewNotes,
+        },
       ],
       right: [
-        { label: "Credit Limit", value: "" },
-        { label: "PO Required", value: "" },
-        { label: "PO Required Notes", value: "" },
-        { label: "Credit Notes", value: "" },
-        { label: "No Accounting Communication", value: "" },
-        { label: "Auto Renew OP", value: "" },
-        { label: "OP Cancellation Noticen", value: "" },
+        {
+          label: "Credit Limit",
+          value: accountData.AccountCreditStatus.AccountsCredit_Limit,
+        },
+        {
+          label: "PO Required",
+          value: formatCheckbox(
+            accountData.AccountCreditStatus.Accounts_PORequired
+          ),
+        },
+        {
+          label: "PO Required Notes",
+          value: accountData.AccountCreditStatus.Accounts_PORequiredNotes,
+        },
+        {
+          label: "Credit Notes",
+          value: accountData.AccountCreditStatus.AccountsCredit_Notes,
+        },
+        // { label: "No Accounting Communication", value: "" },
+        {
+          label: "Auto Renew OP",
+          value: formatCheckbox(
+            accountData.AccountCreditStatus.Accounts_AutoRenewOP
+          ),
+        },
+        {
+          label: "OP Cancellation Notice",
+          value:
+            accountData.AccountCreditStatus.Accounts_OPCancellationNoticeDel,
+        },
       ],
     },
     collections: {
       left: [
-        { label: "Collections Contact", value: "" },
-        { label: "Collection Status", value: "" },
-        { label: "Collections Past Due Amount", value: "" },
-        { label: "Anticipated Suspension Date", value: "" },
-        { label: "Passed to Debt Collection Date", value: "" },
-        { label: "Collections Correspondence", value: "" },
+        {
+          label: "Collections Contact",
+          value: accountData.Collections.Contact_Fullname,
+        },
+        {
+          label: "Collection Status",
+          value: accountData.Collections.CollectionStatus_Description,
+        },
+        {
+          label: "Collections Past Due Amount",
+          value: formatCurrency(
+            accountData.Collections.AccountsCollection_PastDueAmount
+          ),
+        },
+        {
+          label: "Anticipated Suspension Date",
+          value: formatDate(
+            accountData.Collections.AccountsCollection_AnticipatedSuspDate
+          ),
+        },
+        {
+          label: "Passed to Debt Collection Date",
+          value: formatDate(
+            accountData.Collections.AccountsCollection_PassedToCollectionDate
+          ),
+        },
+        {
+          label: "Collections Correspondence",
+          value: accountData.Collections.AccountsCollection_Correspondence,
+        },
       ],
       right: [
-        { label: "Credit Hold", value: "" },
-        { label: "Support Account Alert", value: "" },
-        { label: "No Technical Support", value: "" },
-        { label: "Service Suspended", value: "" },
-        { label: "Services to be Suspended", value: "" },
-        { label: "Service Suspension Date", value: "" },
-        { label: "Last Conversation Note", value: "" },
+        // { label: "Credit Hold", value: "" },
+        // { label: "Support Account Alert", value: "" },
+        // { label: "No Technical Support", value: "" },
+        // { label: "Service Suspended", value: "" },
+        {
+          label: "Services to be Suspended",
+          value:
+            accountData.Collections.AccountsCollection_ServicesToBeSuspended,
+        },
+        {
+          label: "Service Suspension Date",
+          value: formatDate(
+            accountData.Collections.AccountsCollection_ServiceSuspensionDate
+          ),
+        },
+        {
+          label: "Last Conversation Note",
+          value:
+            accountData.Collections.AccountsCollection_LastConversationNote,
+        },
       ],
     },
-    additional: {
-      left: [
-        { label: "Analytics Vendor", value: "" },
-        { label: "Optimize Vendor", value: "" },
-        { label: "Big Data Connector", value: "" },
-        { label: "Email Vendor", value: "" },
-        { label: "Description", value: "" },
-      ],
-      right: [
-        { label: "Analytics Vendor Contract End", value: "" },
-        { label: "Optimize Vendor Contract End", value: "" },
-        { label: "Health Check", value: "" },
-        { label: "SharePoint Site", value: "" },
-      ],
-    },
+    // additional: {
+    //   left: [
+    //     { label: "Analytics Vendor", value: "" },
+    //     { label: "Optimize Vendor", value: "" },
+    //     { label: "Big Data Connector", value: "" },
+    //     { label: "Email Vendor", value: "" },
+    //     { label: "Description", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Analytics Vendor Contract End", value: "" },
+    //     { label: "Optimize Vendor Contract End", value: "" },
+    //     { label: "Health Check", value: "" },
+    //     { label: "SharePoint Site", value: "" },
+    //   ],
+    // },
     links: {
       left: [
         {
           label: "List of Countries, States & Provinces",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b30000000isOG&eid=0018Z00002eltWLQAY&ic=1",
-        },
-        {
-          label: "18 Character Account ID",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018KS3&eid=0018Z00002eltWLQAY&ic=1",
+          value: (
+            <Link href="/accounts/geo" target="_blank">
+              List of Countries, States & Provinces
+            </Link>
+          ),
         },
       ],
       right: [
+        // We don't use the SalesForce account IDs anymore that Trial Manager expects.
+        // I'm leaving the link for now, until it's confirmed that Trial Manager isn't needed.
         {
           label: "Trial Manager",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b30000000jD7Q&eid=0018Z00002eltWLQAY&ic=1",
+          value: (
+            <Link
+              href={`https://crm.webtrends.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${accountData.AccountDetail.Accounts_AccountID}&objectType=Account&objectid=${accountData.AccountDetail.Accounts_AccountID}&objectname=${accountData.AccountDetail.Accounts_Name}`}
+              target="_blank"
+            >
+              Trial Manager
+            </Link>
+          ),
         },
       ],
     },
@@ -406,33 +552,66 @@ const getAccountInfo = async (accountID: string) => {
     // },
     value: {
       left: [
-        { label: "USD Total Analytics", value: "" },
-        { label: "USD Total VDM", value: "" },
-        { label: "USD Total Optimize", value: "" },
-        { label: "USD Total Services", value: "" },
+        {
+          label: "USD Total Analytics",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_Analytics
+          ),
+        },
+        // { label: "USD Total VDM", value: "" },
+        // { label: "USD Total Optimize", value: "" },
+        {
+          label: "USD Total Services",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_Services
+          ),
+        },
+        {
+          label: "USD Total Consulting",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_Consulting
+          ),
+        },
       ],
       right: [
-        { label: "USD Total Ads", value: "" },
-        { label: "USD Total Apps", value: "" },
-        { label: "USD Total Other", value: "" },
+        // { label: "USD Total Ads", value: "" },
+        // { label: "USD Total Apps", value: "" },
+        {
+          label: "USD Total Training",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_Training
+          ),
+        },
+        {
+          label: "USD Total Partner Products",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_PartnerProducts
+          ),
+        },
+        {
+          label: "USD Total Other",
+          value: formatCurrency(
+            accountData.TotalOrderValue.AccountsTotal_Other
+          ),
+        },
       ],
     },
-    additional2: {
-      left: [
-        { label: "OP Customer", value: "" },
-        { label: "Annual Server Calls", value: "" },
-        { label: "Alexa Ranking", value: "" },
-        { label: "Alexa Ranking Top 10,000", value: "" },
-        { label: "eCommerce", value: "" },
-        { label: "Monthly Ad Spend", value: "" },
-      ],
-      right: [
-        { label: "comScore Annual Page Views", value: "" },
-        { label: "comScore Daily Visitors", value: "" },
-        { label: "comScore Ranking", value: "" },
-        { label: "comScore Unique Monthly Visitors", value: "" },
-      ],
-    },
+    // additional2: {
+    //   left: [
+    //     { label: "OP Customer", value: "" },
+    //     { label: "Annual Server Calls", value: "" },
+    //     { label: "Alexa Ranking", value: "" },
+    //     { label: "Alexa Ranking Top 10,000", value: "" },
+    //     { label: "eCommerce", value: "" },
+    //     { label: "Monthly Ad Spend", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "comScore Annual Page Views", value: "" },
+    //     { label: "comScore Daily Visitors", value: "" },
+    //     { label: "comScore Ranking", value: "" },
+    //     { label: "comScore Unique Monthly Visitors", value: "" },
+    //   ],
+    // },
     // demographics: {
     //   left: [
     //     { label: "Legal Name", value: "" },
@@ -450,46 +629,78 @@ const getAccountInfo = async (accountID: string) => {
     //     { label: "SIC Description", value: "" },
     //   ],
     // },
-    contract: {
-      left: [
-        { label: "On Demand Max Contract End Date", value: "" },
-        { label: "Ads Max Contract End Date", value: "" },
-      ],
-      right: [
-        { label: "Optimize Max Contract End Date", value: "" },
-        { label: "Streams Max Contract End Date", value: "" },
-      ],
-    },
+    // contract: {
+    //   left: [
+    //     { label: "On Demand Max Contract End Date", value: "" },
+    //     { label: "Ads Max Contract End Date", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Optimize Max Contract End Date", value: "" },
+    //     { label: "Streams Max Contract End Date", value: "" },
+    //   ],
+    // },
     // mywebtrends: {
     //   left: [{ label: "Has Entitlements", value: "" }],
     //   right: [{ label: "Support Override for Entitlement", value: "" }],
     // },
     entitlements: {
       left: [
-        { label: "Software Entitled Server Calls", value: "" },
-        { label: "Software Entitled Events", value: "" },
-        { label: "Software Installations", value: "" },
-        { label: "Software Term License", value: "" },
+        {
+          label: "Software Entitled Server Calls",
+          value: formatNumber(
+            accountData.SoftwareEntitlements
+              .AccountsSoftware_Entitled_Server_Calls
+          ),
+        },
+        // { label: "Software Entitled Events", value: "" },
+        {
+          label: "Software Installations",
+          value:
+            accountData.SoftwareEntitlements.AccountsSoftware_Installations,
+        },
+        {
+          label: "Software Term License",
+          value: formatCheckbox(
+            accountData.SoftwareEntitlements.AccountsSoftware_Term_License
+          ),
+        },
       ],
       right: [
-        { label: "Software Base Mnt Expiration Date", value: "" },
-        { label: "Software Mnt Expiration Date", value: "" },
-        { label: "Software Most Recent Activated Version", value: "" },
-        { label: "Extended Maintenance for Legacy End Date", value: "" },
+        {
+          label: "Software Base Mnt Expiration Date",
+          value: formatDate(
+            accountData.SoftwareEntitlements
+              .AccountsSoftware_Base_Mnt_Expiration_Date
+          ),
+        },
+        {
+          label: "Software Mnt Expiration Date",
+          value: formatDate(
+            accountData.SoftwareEntitlements
+              .AccountsSoftware_Mnt_Expiration_Date
+          ),
+        },
+        {
+          label: "Software Most Recent Activated Version",
+          value:
+            accountData.SoftwareEntitlements
+              .AccountsSoftware_Most_Recent_Activated_Version,
+        },
+        // { label: "Extended Maintenance for Legacy End Date", value: "" },
       ],
     },
-    products: {
-      left: [
-        { label: "EPS Customer", value: "" },
-        { label: "EPS Assigned TAM", value: "" },
-        { label: "EPS Hours Per Week", value: "" },
-      ],
-      right: [
-        { label: "EPS Contract End", value: "" },
-        { label: "EPS Contract Start", value: "" },
-        { label: "EPS Hours Per Month", value: "" },
-      ],
-    },
+    // products: {
+    //   left: [
+    //     { label: "EPS Customer", value: "" },
+    //     { label: "EPS Assigned TAM", value: "" },
+    //     { label: "EPS Hours Per Week", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "EPS Contract End", value: "" },
+    //     { label: "EPS Contract Start", value: "" },
+    //     { label: "EPS Hours Per Month", value: "" },
+    //   ],
+    // },
     system: {
       left: [
         { label: "Created By", value: "" },

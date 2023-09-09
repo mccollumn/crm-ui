@@ -1,5 +1,6 @@
 import { AccountData } from "@/app/types/accounts";
 import { getDefaultOwner } from "@/app/utils/forms";
+import { formatCurrency } from "@/app/utils/utils";
 
 /**
  * Generates and object containing the default values for a new/empty account form.
@@ -74,10 +75,10 @@ const generateInitialAccountFormData = async () => {
       suspensionDate: null,
       passedToDebtCollectionDate: null,
       correspondence: null,
-      creditHold: false, // Not currently included
-      supportAccountAlert: null, // Not currently included
-      noSupport: false, // Not currently included
-      serviceSuspended: false, // Not currently included
+      creditHold: false,
+      supportAccountAlert: null,
+      noSupport: false,
+      // serviceSuspended: false, // Not currently included
       servicesToSuspend: null,
       serviceSuspensionDate: null,
       lastConversationNote: null,
@@ -113,14 +114,13 @@ const generateInitialAccountFormData = async () => {
     // },
     // supportOverrideForEntitlement: false,
     entitlement: {
-      // Not currently included
       serverCalls: null,
-      events: null,
+      // events: null,
       installations: null,
       termLicense: false,
       baseMntExpireDate: null,
       mntExpireDate: null,
-      extMntExpireDate: null,
+      // extMntExpireDate: null,
       activatedVersion: null,
     },
   };
@@ -177,7 +177,7 @@ export const createAccountFormData = async (accountData?: AccountData) => {
       partnerProducts:
         accountData.TotalOrderValue.AccountsTotal_PartnerProducts,
     },
-    isFederalState: accountData.AccountDetail.Accounts_IsFedState,
+    isFederalState: !!Number(accountData.AccountDetail.Accounts_IsFedState),
     governmentType: accountData.AccountDetail.Accounts_GovtType,
     // territory: null,
     // region: null,
@@ -194,7 +194,7 @@ export const createAccountFormData = async (accountData?: AccountData) => {
         country: accountData.AddressInformation.AccountsAddress_BillingCountry,
       },
       shipping: {
-        treet: accountData.AddressInformation.AccountsAddress_ShippingStreet,
+        street: accountData.AddressInformation.AccountsAddress_ShippingStreet,
         city: accountData.AddressInformation.AccountsAddress_ShippingCity,
         state: accountData.AddressInformation.AccountsAddress_ShippingState,
         postalCode:
@@ -215,10 +215,10 @@ export const createAccountFormData = async (accountData?: AccountData) => {
       passedToDebtCollectionDate:
         accountData.Collections.AccountsCollection_PassedToCollectionDate,
       correspondence: accountData.Collections.AccountsCollection_Correspondence,
-      creditHold: false, // Not currently included
-      supportAccountAlert: null, // Not currently included
-      noSupport: false, // Not currently included
-      serviceSuspended: false, // Not currently included
+      creditHold: !!Number(accountData.AccountCreditStatus.AccountsCredit_Hold),
+      supportAccountAlert: accountData.Collections.Accounts_Alert,
+      noSupport: !!Number(accountData.Collections.Accounts_NoTechnicalSupport),
+      // serviceSuspended: false, // Not currently included
       servicesToSuspend:
         accountData.Collections.AccountsCollection_ServicesToBeSuspended,
       serviceSuspensionDate:
@@ -257,15 +257,23 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     // },
     // supportOverrideForEntitlement: false,
     entitlement: {
-      // Not currently included
-      serverCalls: null,
-      events: null,
-      installations: null,
-      termLicense: false,
-      baseMntExpireDate: null,
-      mntExpireDate: null,
-      extMntExpireDate: null,
-      activatedVersion: null,
+      serverCalls:
+        accountData.SoftwareEntitlements.AccountsSoftware_Entitled_Server_Calls,
+      // events: null,
+      installations:
+        accountData.SoftwareEntitlements.AccountsSoftware_Installations,
+      termLicense: !!Number(
+        accountData.SoftwareEntitlements.AccountsSoftware_Term_License
+      ),
+      baseMntExpireDate:
+        accountData.SoftwareEntitlements
+          .AccountsSoftware_Base_Mnt_Expiration_Date,
+      mntExpireDate:
+        accountData.SoftwareEntitlements.AccountsSoftware_Mnt_Expiration_Date,
+      // extMntExpireDate: null,
+      activatedVersion:
+        accountData.SoftwareEntitlements
+          .AccountsSoftware_Most_Recent_Activated_Version,
     },
   };
 };

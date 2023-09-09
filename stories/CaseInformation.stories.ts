@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import CaseInformation from "../app/components/CaseInformation";
+import CaseInformation from "../app/components/cases/CaseInformation";
 
 const caseInfoLeft = [
   { label: "Subject", value: "We're confused" },
@@ -35,7 +35,6 @@ type Story = StoryObj<typeof meta>;
 
 export const CaseInfo: Story = {
   args: {
-    caseInfoLeft: caseInfoLeft,
-    caseInfoRight: caseInfoRight,
+    caseID: "138195",
   },
 };

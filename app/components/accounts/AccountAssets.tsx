@@ -1,42 +1,28 @@
 import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
+import { getAccountData } from "@/app/utils/getData";
 
-const getAssets = async (accountID: string) => {
-  // TODO: Retrieve license keys for provided account
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  //   return res.json();
-  return [{ id: "1", licenseKey: "MOJ18-5C6RW-3PRPR-D9AIL-SIKX1" }];
-};
-
-export default async function AccountAssets({ accountID }: AccountAssetsProps) {
-  const accountAssets = (await getAssets(accountID)) || [];
+const AccountAssets = async ({ accountID }: AccountAssetsProps) => {
+  const accountData = await getAccountData(accountID);
+  const accountAssets = accountData?.Assets || [];
 
   return (
     <>
       <ButtonNav size="small" path={`/accounts/new/${accountID}/asset/`}>
         New
       </ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading assets...</p>}>
-          <DataTable
-            rows={accountAssets}
-            columnDefType="accountAssets"
-            // TODO: Update field name for account number
-            queryField="id"
-            queryValue={accountID}
-          />
+          <DataTable rows={accountAssets} columnDefType="accountAssets" />
         </React.Suspense>
       </div>
     </>
   );
-}
+};
 
 interface AccountAssetsProps {
   accountID: string;
 }
+
+export default AccountAssets;

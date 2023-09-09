@@ -73,7 +73,7 @@ export const DataTable = ({
         description: "This column has a value getter and is not sortable.",
         width: 180,
         type: "dateTime",
-        valueGetter: (params: GridValueGetterParams) => new Date(params.value),
+        valueGetter: displayDate,
       },
     ],
     caseHistory: [
@@ -114,7 +114,7 @@ export const DataTable = ({
         headerName: "Message Date",
         type: "dateTime",
         width: 150,
-        valueGetter: (params: GridValueGetterParams) => new Date(params.value),
+        valueGetter: displayDate,
       },
       {
         field: "EmailMessages_Status",
@@ -152,7 +152,7 @@ export const DataTable = ({
         headerName: "Created Date",
         type: "dateTime",
         width: 150,
-        valueGetter: (params: GridValueGetterParams) => new Date(params.value),
+        valueGetter: displayDate,
       },
       { field: "CaseComments_CommentBody", headerName: "Comment", flex: 1 },
       {
@@ -239,6 +239,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -283,6 +284,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -296,7 +298,7 @@ export const DataTable = ({
     ],
     accountAssets: [
       {
-        field: "assetName",
+        field: "Assets_Name",
         headerName: "Asset Name",
         flex: 1,
         renderCell: (params) => {
@@ -308,32 +310,37 @@ export const DataTable = ({
         },
       },
       {
-        field: "serialNumber",
+        field: "Assets_SerialNumber",
         headerName: "Serial Number",
+        width: 250,
       },
       {
-        field: "supportEndDate",
+        field: "Assets_SupportPlanEnd",
         headerName: "Support Plan End",
+        type: "date",
+        valueGetter: displayDate,
       },
       {
-        field: "supportType",
+        field: "Assets_SupportPlanType",
         headerName: "Support Plan Type",
       },
       {
-        field: "quantity",
+        field: "Assets_Quantity",
         headerName: "Quantity",
       },
       {
-        field: "pageViews",
+        field: "Assets_PageViews",
         headerName: "Page Views",
+        valueFormatter: (params) => Number(params.value).toLocaleString(),
       },
       {
-        field: "status",
+        field: "Assets_Status",
         headerName: "Status",
       },
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link href={`/accounts/edit/${data?.id}/asset/${params.row.id}`}>
@@ -345,7 +352,7 @@ export const DataTable = ({
     ],
     accountLicenseKeys: [
       {
-        field: "licenseKey",
+        field: "LicenseKeys_Name",
         headerName: "License Key",
         flex: 1,
         renderCell: (params) => {
@@ -356,33 +363,35 @@ export const DataTable = ({
           );
         },
       },
+      { field: "LicenseKeys_KeyType", headerName: "Type" },
+      { field: "LicenseKeys_Status", headerName: "Status" },
       {
-        field: "accountName",
-        headerName: "Account",
+        field: "LicenseKeys_PageViews",
+        headerName: "Page Views",
+        valueFormatter: (params) => Number(params.value).toLocaleString(),
       },
       {
-        field: "date",
-        headerName: "Date",
+        field: "LicenseKeys_MostRecentActivatedVersion",
+        headerName: "Activated Version",
       },
       {
-        field: "docNumber",
-        headerName: "Document Number",
+        field: "LicenseKeys_AnniversaryDate",
+        headerName: "Anniversary Date",
+        type: "date",
+        valueGetter: displayDate,
       },
+      { field: "LicenseKeys_SystemStatus", headerName: "System Status" },
       {
-        field: "terms",
-        headerName: "Terms",
+        field: "LicenseKeys_KeyCreatedDate",
+        headerName: "Creation Date",
+        type: "date",
+        valueGetter: displayDate,
       },
-      {
-        field: "total",
-        headerName: "Total",
-      },
-      {
-        field: "status",
-        headerName: "Payment Status",
-      },
+      { field: "LicenseKeys_ParentKey", headerName: "Parent Key", width: 250 },
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -396,7 +405,7 @@ export const DataTable = ({
     ],
     contactsList: [
       {
-        field: "contactName",
+        field: "Contacts_Name",
         headerName: "Name",
         flex: 1,
         renderCell: (params) => {
@@ -406,28 +415,36 @@ export const DataTable = ({
         },
       },
       {
-        field: "title",
+        field: "Contacts_Title",
         headerName: "Title",
+        flex: 1,
       },
       {
-        field: "accountName",
+        field: "Accounts_Name",
         headerName: "Account Name",
+        flex: 1,
       },
       {
-        field: "accountSite",
-        headerName: "Account Site",
-      },
-      {
-        field: "email",
+        field: "Contacts_Email",
         headerName: "Email",
+        width: 250,
+        renderCell: (params) => {
+          return <Link href={`mailto:${params.value}`}>{params.value}</Link>;
+        },
       },
       {
-        field: "relationship",
-        headerName: "Relationship to Webtrends",
+        field: "Contacts_CreatedDate",
+        headerName: "Created",
+        type: "date",
+        width: 150,
+        valueGetter: displayDate,
       },
       {
-        field: "owner",
-        headerName: "Owner Last Name",
+        field: "Contacts_LastActivityDate",
+        headerName: "Last Activity",
+        type: "date",
+        width: 150,
+        valueGetter: displayDate,
       },
     ],
     contactHistory: [
@@ -547,6 +564,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -596,6 +614,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -649,6 +668,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -689,6 +709,7 @@ export const DataTable = ({
       {
         field: "editLink",
         headerName: "Edit",
+        width: 50,
         renderCell: (params) => {
           return (
             <Link
@@ -739,12 +760,12 @@ export const DataTable = ({
     caseEmails: "EmailMessages_ID",
     caseComments: "CaseComments_ID",
     accountsList: "Accounts_AccountID",
-    contactsList: "",
+    contactsList: "Contacts_ID",
     opportunitiesList: "",
     accountSalesOrders: "",
     accountSalesInvoices: "",
-    accountLicenseKeys: "",
-    accountAssets: "",
+    accountLicenseKeys: "LicenseKeys_ID",
+    accountAssets: "Assets_ID",
     contactHistory: "",
     opportunityQuotes: "",
     opportunityContactRoles: "",
@@ -775,6 +796,12 @@ export const DataTable = ({
       {...props}
     />
   );
+};
+
+const displayDate = (params: GridValueGetterParams) => {
+  if (params.value) {
+    return new Date(params.value);
+  }
 };
 
 // interface DataTableProps extends ComponentPropsWithoutRef<"DataGridComponent"> {

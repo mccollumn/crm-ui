@@ -6,3 +6,9 @@ export type MenuItem = {
   Menu_DependantValue: string | string[];
   Menu_Order: string;
 };
+
+export interface FormProps {
+  formTitle: string;
+  defaultValues: any;
+  menuItems: MenuItem[];
+}

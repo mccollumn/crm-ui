@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ContactForm } from "@/app/forms/ContactForm";
+import { ContactForm } from "@/app/forms/contact/ContactForm";
 
 const EditContact = ({ params }: { params: { contactID: string } }) => {
   const router = useRouter();

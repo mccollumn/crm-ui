@@ -44,7 +44,8 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Contacts accountID={accountID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* TODO: Update each of the following components once the API is finished */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-opportunities-content"
@@ -79,7 +80,7 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
         <AccordionDetails id="account-invoices-content">
           <AccountSalesInvoices accountID={accountID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
