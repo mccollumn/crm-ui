@@ -5,12 +5,10 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { CaseData } from "../../types/cases";
-import { formatCheckbox, formatDate } from "@/app/utils/utils";
+import { formatCheckbox, formatCurrency, formatDate } from "@/app/utils/utils";
 import { getCaseData } from "@/app/utils/getData";
 
 const CaseInformation = async ({ caseID }: CaseInformationProps) => {
@@ -120,7 +118,9 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Open Opp Value of Account",
-          value: caseData.CaseInformation.Cases_OpenOppValueOfAccount,
+          value: formatCurrency(
+            caseData.CaseInformation.Cases_OpenOppValueOfAccount
+          ),
         },
       ],
       right: [

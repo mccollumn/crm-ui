@@ -1,14 +1,14 @@
 import { AccountData } from "@/app/types/accounts";
-import { getDefaultOwner } from "@/app/utils/forms";
+import { getAccountData } from "@/app/utils/getData";
 
 /**
- * Generates and object containing the default values for a new/empty account form.
- * @returns Initial account form data.
+ * Generates and object containing the default values for a new/empty license key form.
+ * @returns Initial license key form data.
  */
-const generateInitialAccountFormData = async () => {
-  const defaultOwner = await getDefaultOwner();
+const generateInitialLicenseKeyFormData = async (accountID: string) => {
+  const accountData: AccountData = await getAccountData(accountID);
 
-  const initialAccountFormData = {
+  const initialLicenseKeyFormData = {
     accountID: null,
     name: null,
     alternateName: null,
@@ -17,7 +17,6 @@ const generateInitialAccountFormData = async () => {
     //   name: null,
     //   site: null,
     // },
-    owner: defaultOwner,
     type: {
       id: null,
       value: null,
@@ -124,106 +123,110 @@ const generateInitialAccountFormData = async () => {
     },
   };
 
-  return initialAccountFormData;
+  return initialLicenseKeyFormData;
 };
 
 /**
- * Returns an account data object to be passed to the account form.
- * @param accountData Data from an existing account. (optional)
- * @returns Account data object.
+ * Returns a license key data object to be passed to the license key form.
+ * @param keyData Data from an existing license key. (optional)
+ * @returns License key data object.
  */
-export const createAccountFormData = async (accountData?: AccountData) => {
-  const initialAccountFormData = await generateInitialAccountFormData();
+export const createLicenseKeyFormData = async (
+  accountID: string,
+  keydata?: LicenseKeyData
+) => {
+  const initialAccountFormData = await generateInitialLicenseKeyFormData(
+    accountID
+  );
 
-  if (!accountData) {
+  if (!keydata) {
     return initialAccountFormData;
   }
 
   return {
     ...initialAccountFormData,
-    accountID: accountData.AccountDetail.Accounts_AccountID,
-    name: accountData.AccountDetail.Accounts_Name,
-    alternateName: accountData.AccountDetail.Accounts_AlternateAccountName,
+    accountID: keydata.AccountDetail.Accounts_AccountID,
+    name: keydata.AccountDetail.Accounts_Name,
+    alternateName: keydata.AccountDetail.Accounts_AlternateAccountName,
     // parentAccount: {
     //   id: null,
     //   name: null,
     //   site: null,
     // },
     owner: {
-      id: accountData.AccountDetail.Accounts_OwnerId,
-      name: accountData.AccountDetail.OwnerName,
+      id: keydata.AccountDetail.Accounts_OwnerId,
+      name: keydata.AccountDetail.OwnerName,
     },
     type: {
-      id: accountData.AccountDetail.Accounts_Type,
-      value: accountData.AccountDetail.AccountType_Description,
+      id: keydata.AccountDetail.Accounts_Type,
+      value: keydata.AccountDetail.AccountType_Description,
       //   lastChangeDate: null,
     },
     // miscInfo: null,
     // migrateToNewOrg: null,
     // migrationExternalID: null,
-    phone: accountData.AccountDetail.Accounts_Phone,
+    phone: keydata.AccountDetail.Accounts_Phone,
     orderValue: {
-      total: accountData.TotalOrderValue.AccountsTotal_OrderValue,
-      analytics: accountData.TotalOrderValue.AccountsTotal_Analytics,
+      total: keydata.TotalOrderValue.AccountsTotal_OrderValue,
+      analytics: keydata.TotalOrderValue.AccountsTotal_Analytics,
       //   vdm: null,
       //   optimize: null,
-      services: accountData.TotalOrderValue.AccountsTotal_Services,
+      services: keydata.TotalOrderValue.AccountsTotal_Services,
       //   ads: null,
       //   apps: null,
-      other: accountData.TotalOrderValue.AccountsTotal_Other,
-      consulting: accountData.TotalOrderValue.AccountsTotal_Consulting,
-      training: accountData.TotalOrderValue.AccountsTotal_Training,
-      partnerProducts:
-        accountData.TotalOrderValue.AccountsTotal_PartnerProducts,
+      other: keydata.TotalOrderValue.AccountsTotal_Other,
+      consulting: keydata.TotalOrderValue.AccountsTotal_Consulting,
+      training: keydata.TotalOrderValue.AccountsTotal_Training,
+      partnerProducts: keydata.TotalOrderValue.AccountsTotal_PartnerProducts,
     },
-    isFederalState: !!Number(accountData.AccountDetail.Accounts_IsFedState),
-    governmentType: accountData.AccountDetail.Accounts_GovtType,
+    isFederalState: !!Number(keydata.AccountDetail.Accounts_IsFedState),
+    governmentType: keydata.AccountDetail.Accounts_GovtType,
     // territory: null,
     // region: null,
-    superRegion: accountData.AccountDetail.Accounts_Super_Region,
+    superRegion: keydata.AccountDetail.Accounts_Super_Region,
     // msa: null,
     // partnerStatus: null,
     address: {
       billing: {
-        street: accountData.AddressInformation.AccountsAddress_BillingStreet,
-        city: accountData.AddressInformation.AccountsAddress_BillingCity,
-        state: accountData.AddressInformation.AccountsAddress_BillingState,
+        street: keydata.AddressInformation.AccountsAddress_BillingStreet,
+        city: keydata.AddressInformation.AccountsAddress_BillingCity,
+        state: keydata.AddressInformation.AccountsAddress_BillingState,
         postalCode:
-          accountData.AddressInformation.AccountsAddress_BillingPostalCode,
-        country: accountData.AddressInformation.AccountsAddress_BillingCountry,
+          keydata.AddressInformation.AccountsAddress_BillingPostalCode,
+        country: keydata.AddressInformation.AccountsAddress_BillingCountry,
       },
       shipping: {
-        street: accountData.AddressInformation.AccountsAddress_ShippingStreet,
-        city: accountData.AddressInformation.AccountsAddress_ShippingCity,
-        state: accountData.AddressInformation.AccountsAddress_ShippingState,
+        street: keydata.AddressInformation.AccountsAddress_ShippingStreet,
+        city: keydata.AddressInformation.AccountsAddress_ShippingCity,
+        state: keydata.AddressInformation.AccountsAddress_ShippingState,
         postalCode:
-          accountData.AddressInformation.AccountsAddress_ShippingPostalCode,
-        country: accountData.AddressInformation.AccountsAddress_ShippingCountry,
+          keydata.AddressInformation.AccountsAddress_ShippingPostalCode,
+        country: keydata.AddressInformation.AccountsAddress_ShippingCountry,
       },
     },
     collections: {
       contact: {
-        id: accountData.Collections.AccountsCollection_ContactID,
-        name: accountData.Collections.Contact_Fullname,
+        id: keydata.Collections.AccountsCollection_ContactID,
+        name: keydata.Collections.Contact_Fullname,
       },
-      statusID: accountData.Collections.AccountsCollection_Status,
-      status: accountData.Collections.CollectionStatus_Description,
-      pastDueAmount: accountData.Collections.AccountsCollection_PastDueAmount,
+      statusID: keydata.Collections.AccountsCollection_Status,
+      status: keydata.Collections.CollectionStatus_Description,
+      pastDueAmount: keydata.Collections.AccountsCollection_PastDueAmount,
       suspensionDate:
-        accountData.Collections.AccountsCollection_AnticipatedSuspDate,
+        keydata.Collections.AccountsCollection_AnticipatedSuspDate,
       passedToDebtCollectionDate:
-        accountData.Collections.AccountsCollection_PassedToCollectionDate,
-      correspondence: accountData.Collections.AccountsCollection_Correspondence,
-      creditHold: !!Number(accountData.AccountCreditStatus.AccountsCredit_Hold),
-      supportAccountAlert: accountData.Collections.Accounts_Alert,
-      noSupport: !!Number(accountData.Collections.Accounts_NoTechnicalSupport),
+        keydata.Collections.AccountsCollection_PassedToCollectionDate,
+      correspondence: keydata.Collections.AccountsCollection_Correspondence,
+      creditHold: !!Number(keydata.AccountCreditStatus.AccountsCredit_Hold),
+      supportAccountAlert: keydata.Collections.Accounts_Alert,
+      noSupport: !!Number(keydata.Collections.Accounts_NoTechnicalSupport),
       // serviceSuspended: false, // Not currently included
       servicesToSuspend:
-        accountData.Collections.AccountsCollection_ServicesToBeSuspended,
+        keydata.Collections.AccountsCollection_ServicesToBeSuspended,
       serviceSuspensionDate:
-        accountData.Collections.AccountsCollection_ServiceSuspensionDate,
+        keydata.Collections.AccountsCollection_ServiceSuspensionDate,
       lastConversationNote:
-        accountData.Collections.AccountsCollection_LastConversationNote,
+        keydata.Collections.AccountsCollection_LastConversationNote,
     },
     // opCustomer: true,
     // annualServerCalls: null,
@@ -257,21 +260,20 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     // supportOverrideForEntitlement: false,
     entitlement: {
       serverCalls:
-        accountData.SoftwareEntitlements.AccountsSoftware_Entitled_Server_Calls,
+        keydata.SoftwareEntitlements.AccountsSoftware_Entitled_Server_Calls,
       // events: null,
       installations:
-        accountData.SoftwareEntitlements.AccountsSoftware_Installations,
+        keydata.SoftwareEntitlements.AccountsSoftware_Installations,
       termLicense: !!Number(
-        accountData.SoftwareEntitlements.AccountsSoftware_Term_License
+        keydata.SoftwareEntitlements.AccountsSoftware_Term_License
       ),
       baseMntExpireDate:
-        accountData.SoftwareEntitlements
-          .AccountsSoftware_Base_Mnt_Expiration_Date,
+        keydata.SoftwareEntitlements.AccountsSoftware_Base_Mnt_Expiration_Date,
       mntExpireDate:
-        accountData.SoftwareEntitlements.AccountsSoftware_Mnt_Expiration_Date,
+        keydata.SoftwareEntitlements.AccountsSoftware_Mnt_Expiration_Date,
       // extMntExpireDate: null,
       activatedVersion:
-        accountData.SoftwareEntitlements
+        keydata.SoftwareEntitlements
           .AccountsSoftware_Most_Recent_Activated_Version,
     },
   };

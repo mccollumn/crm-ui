@@ -12,7 +12,7 @@ const InfoList = ({ items }: InfoListProps) => {
     >
       {[...items].map((item) => (
         <InfoItem label={item.label} key={item.label}>
-          <Typography>{item.value}</Typography>
+          <Typography sx={{ whiteSpace: "pre-wrap" }}>{item.value}</Typography>
         </InfoItem>
       ))}
     </Box>

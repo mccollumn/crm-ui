@@ -12,11 +12,12 @@ const AccountLicenseKeys = async ({ accountID }: AccountLicenseKeysProps) => {
       <ButtonNav size="small" path={`/accounts/new/${accountID}/license-key/`}>
         New
       </ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading license keys...</p>}>
           <DataTable
             rows={accountLicenseKeys}
             columnDefType="accountLicenseKeys"
+            data={accountData}
           />
         </React.Suspense>
       </div>

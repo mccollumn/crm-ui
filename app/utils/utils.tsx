@@ -13,8 +13,8 @@ export const isObjectEmpty = (objectName: any) => {
 /**
  * Formats a date or date/time string as either UTC or the current locale.
  * @param dateString Date / time value.
- * @param locale Use current locale?
- * @param time Should the time be included?
+ * @param locale Use current locale? Default true.
+ * @param time Should the time be included? Default false.
  * @returns String repesentation of the date / time.
  */
 export const formatDate = (
@@ -22,7 +22,7 @@ export const formatDate = (
   props?: { locale?: boolean; time?: boolean }
 ) => {
   if (!dateString) return dateString;
-  const locale = props?.locale;
+  const locale = typeof props?.locale === "undefined" ? true : props?.locale;
   const time = props?.time;
   if (locale) {
     return time
@@ -73,4 +73,18 @@ export const formatCheckbox = (
 export const formatNumber = (value: number | string | null | undefined) => {
   if (!value) return value;
   return numericFormatter(value.toString(), { thousandSeparator: true });
+};
+
+/**
+ * Unescapes an HTML string.
+ * @param str String containing HTML escaped characters.
+ * @returns String with characters unescaped.
+ */
+export const unEscape = (str: string) => {
+  return str
+    .replace(/&gt;/g, ">")
+    .replace(/&lt;/g, "<")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
 };

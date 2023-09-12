@@ -12,7 +12,7 @@ const CaseComments = async ({ caseID }: CaseCommentsProps) => {
       <ButtonNav size="small" path={`/cases/new/${caseID}/comment/`}>
         New
       </ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading cases...</p>}>
           <DataTable rows={rows} columnDefType="caseComments" data={caseData} />
         </React.Suspense>

@@ -5,7 +5,7 @@ export const InformationSection = ({
   itemsLeft = [],
   itemsRight = [],
   itemsFullWidth = [],
-}: CaseInformationSectionProps) => {
+}: InformationSectionProps) => {
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -21,7 +21,7 @@ export const InformationSection = ({
   );
 };
 
-interface CaseInformationSectionProps {
+interface InformationSectionProps {
   itemsLeft?: Array<any>;
   itemsRight?: Array<any>;
   itemsFullWidth?: Array<any>;

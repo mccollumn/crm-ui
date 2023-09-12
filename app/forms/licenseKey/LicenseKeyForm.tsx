@@ -1,5 +1,7 @@
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+"use client";
+
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
@@ -8,24 +10,38 @@ import {
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
-import DateFnsProvider from "../providers/DateFnsProvider";
-
-type LicenseKeyFormProps = {
-  formTitle: string;
-  onSuccess: any;
-  onCancel: any;
-  defaultValues?: any;
-};
-
-const initialValues = {};
+import { useRouter } from "next/navigation";
+import DateFnsProvider from "../../providers/DateFnsProvider";
+import { FormProps } from "@/app/types/types";
 
 export const LicenseKeyForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
-  defaultValues = initialValues,
+  defaultValues,
+  menuItems,
   ...props
-}: LicenseKeyFormProps) => {
+}: FormProps) => {
+  const router = useRouter();
+  const keyID = defaultValues.id;
+
+  const onSuccess = async (values: any) => {
+    console.log("Success values", values);
+    let id = keyID;
+    // TODO:
+    // Map menu values to appropriate fields
+    // PUT data
+    if (id) {
+      const data = await fetch("/accounts/api/new/");
+      // Verify successful response
+    } else {
+      // POST new account
+      // Set id to new account ID
+    }
+    router.push(`/accounts/view/${id}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
   return (
     <FormWrapper
       title={formTitle}

@@ -10,7 +10,7 @@ const EditAccount = async ({ params }: { params: { accountID: string } }) => {
     accountDataPromise,
     menuItemsPromise,
   ]);
-  const accountName = accountData?.AccountDetails?.Accounts_Name;
+  const accountName = accountData?.AccountDetail?.Accounts_Name;
   const values = await createAccountFormData(accountData);
 
   return (

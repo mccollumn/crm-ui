@@ -301,13 +301,13 @@ export const DataTable = ({
         field: "Assets_Name",
         headerName: "Asset Name",
         flex: 1,
-        renderCell: (params) => {
-          return (
-            <Link href={`/accounts/view/asset/${params.value}`}>
-              {params.value}
-            </Link>
-          );
-        },
+        // renderCell: (params) => {
+        //   return (
+        //     <Link href={`/accounts/view/asset/${params.id}`}>
+        //       {params.value}
+        //     </Link>
+        //   );
+        // },
       },
       {
         field: "Assets_SerialNumber",
@@ -343,7 +343,9 @@ export const DataTable = ({
         width: 50,
         renderCell: (params) => {
           return (
-            <Link href={`/accounts/edit/${data?.id}/asset/${params.row.id}`}>
+            <Link
+              href={`/accounts/edit/${data.AccountDetail.Accounts_AccountID}/asset/${params.id}`}
+            >
               Edit
             </Link>
           );
@@ -355,13 +357,13 @@ export const DataTable = ({
         field: "LicenseKeys_Name",
         headerName: "License Key",
         flex: 1,
-        renderCell: (params) => {
-          return (
-            <Link href={`/accounts/view/license-key/${params.value}`}>
-              {params.value}
-            </Link>
-          );
-        },
+        // renderCell: (params) => {
+        //   return (
+        //     <Link href={`/accounts/view/license-key/${params.value}`}>
+        //       {params.value}
+        //     </Link>
+        //   );
+        // },
       },
       { field: "LicenseKeys_KeyType", headerName: "Type" },
       { field: "LicenseKeys_Status", headerName: "Status" },
@@ -395,7 +397,7 @@ export const DataTable = ({
         renderCell: (params) => {
           return (
             <Link
-              href={`/accounts/edit/${data?.id}/license-key/${params.row.id}`}
+              href={`/accounts/edit/${data.AccountDetail.Accounts_AccountID}/license-key/${params.id}`}
             >
               Edit
             </Link>

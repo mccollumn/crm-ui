@@ -1,26 +1,46 @@
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
-export const Address = ({
+export function Address({
   street,
   city,
   state,
   postalCode,
   country,
-}: AddressProps) => {
-  const address = encodeURI(
-    `${street}, ${city}, ${state} ${postalCode}, ${country}`
+}: AddressProps) {
+  const args = arguments[0];
+  if (Object.values(args).every((value) => value === null)) return null;
+
+  const address: { [key: string]: string } = {
+    street: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+  };
+  Object.keys(args).forEach((key) => {
+    const value = args[key];
+    if (value) {
+      address[key] = value;
+    }
+  });
+
+  const addressStr = encodeURI(
+    `${address.street}, ${address.city}, ${address.state} ${address.postalCode}, ${address.country}`
   );
   return (
     <Box>
-      <Link href={`https://www.google.com/maps/?q=${address}`} target="_blank">
-        <Typography>{street}</Typography>
-        <Typography>{`${city}, ${state} ${postalCode}`}</Typography>
-        <Typography>{country}</Typography>
+      <Link
+        href={`https://www.google.com/maps/?q=${addressStr}`}
+        target="_blank"
+      >
+        <Typography>{address.street}</Typography>
+        <Typography>{`${address.city}, ${address.state} ${address.postalCode}`}</Typography>
+        <Typography>{address.country}</Typography>
       </Link>
     </Box>
   );
-};
+}
 
 interface AddressProps {
   street?: string | null;

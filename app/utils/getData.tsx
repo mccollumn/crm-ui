@@ -234,6 +234,15 @@ export const getAccountData = async (accountID: string) => {
 };
 
 /**
+ * Assets
+ */
+
+export const getAssetData = async (assetID: string) => {
+  const data = await getData(`/asset/assetid/${assetID}`);
+  return data;
+};
+
+/**
  * Contacts
  */
 
@@ -247,9 +256,28 @@ export const getContactsByAccount = async (accountID: string) => {
   return data;
 };
 
+export const getContactData = async (contactID: string) => {
+  const data = await getData(`/contact/contactid/${contactID}`);
+  return data;
+};
+
+/**
+ * License Keys
+ */
+// TODO: Need URL for license key request
+export const getLicenseKeyData = async (keyID: string) => {
+  const data = await getData(``);
+  return data;
+};
+
 /**
  * Opportunities
  */
+
+export const getOpenOpportunities = async () => {
+  const data = await getData("/opportunity/list/open");
+  return data;
+};
 
 export const getOpportunityData = async (opportunityID: string) => {
   const data = await getData(`/opportunity/opportunityid/${opportunityID}`);

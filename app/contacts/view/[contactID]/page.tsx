@@ -8,17 +8,13 @@ import ContactInformation from "@/app/components/contacts/ContactInformation";
 import Opportunities from "@/app/opportunities/page";
 import Cases from "@/app/cases/page";
 import ContactHistory from "@/app/components/contacts/ContactHistory";
+import { getContactData } from "@/app/utils/getData";
 
-const getContactAccountID = (contactID: string) => {
-  // TODO: request account number
-  return "";
-};
-
-const ContactView = ({ params }: { params: { contactID: string } }) => {
+const ContactView = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
-  // TODO: Finish this when API is available
-  const contactData = {};
-  const contactName = "Mr. Customer";
+  const contactData = await getContactData(contactID);
+  const contactName = contactData.ContactDetail.Contacts_FullName;
+  const contactAccountID = contactData.ContactDetail.Contacts_AccountId;
 
   return (
     <div>
@@ -34,7 +30,7 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
           <ContactInformation contactID={contactID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="contact-opportunities-content"
@@ -43,9 +39,9 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">Opportunities</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-opportunities-content">
-          <Opportunities accountID={getContactAccountID(contactID)} />
+          <Opportunities accountID={contactAccountID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -58,7 +54,7 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
           <Cases contactID={contactID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="contact-attachments-content"
@@ -72,8 +68,8 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
             malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
-      </Accordion>
-      <Accordion>
+      </Accordion> */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="contact-history-content"
@@ -84,7 +80,7 @@ const ContactView = ({ params }: { params: { contactID: string } }) => {
         <AccordionDetails id="contact-history-content">
           <ContactHistory contactID={contactID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </div>
   );
 };

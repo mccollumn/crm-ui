@@ -12,6 +12,7 @@ import AccountSalesInvoices from "@/app/components/accounts/AccountSalesInvoices
 import AccountLicenseKeys from "@/app/components/accounts/AccountLicenseKeys";
 import AccountAssets from "@/app/components/accounts/AccountAssets";
 import { getAccountData } from "@/app/utils/getData";
+import Cases from "@/app/cases/page";
 
 const AccountView = async ({ params }: { params: { accountID: string } }) => {
   const accountID = params.accountID;
@@ -42,6 +43,18 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
         </AccordionSummary>
         <AccordionDetails id="account-contacts-content">
           <Contacts accountID={accountID} />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="account-cases-content"
+          id="account-cases-header"
+        >
+          <Typography variant="h6">Cases</Typography>
+        </AccordionSummary>
+        <AccordionDetails id="account-cases-content">
+          <Cases accountID={accountID} />
         </AccordionDetails>
       </Accordion>
       {/* TODO: Update each of the following components once the API is finished */}
