@@ -99,7 +99,8 @@ export const AssetForm = ({
                 renderOption: (props, option) => {
                   return (
                     <li {...props} key={option.id}>
-                      {option.name}
+                      <b>{option.name}</b>
+                      <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
                     </li>
                   );
                 },
@@ -186,19 +187,19 @@ export const AssetForm = ({
             />
           </Stack>
         </Grid>
-        <FormDivider>Support Details</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Anniversary Date */}
-            {/* <DateFnsProvider>
+        {/* <FormDivider>Support Details</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Anniversary Date */}
+        {/* <DateFnsProvider>
               <DatePickerElement
                 label="Anniversary Date"
                 name=""
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider> */}
-          </Stack>
-        </Grid>
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Activation Info</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>

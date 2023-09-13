@@ -3,19 +3,34 @@ import { MenuItem } from "@/app/types/types";
 import { isObjectEmpty } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 
-export const useContactForm = ({ menuItems }: useContactFormProps) => {
+export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
   const initialMenuOptions = {
     Owner: [],
     Account: [],
-    Salutation: [],
-    JobRole: [],
-    ContactRole: [],
-    Relationship: [],
-    ContactStatus: [],
-    // SuperRegion: [],
+    OpportunityType: [],
+    Product: [],
+    ProductFamily: [],
+    Stage: [],
+    Status: [],
+    Term: [],
+    Interest: [],
+    RenewalStatus: [],
+    Resell: [],
+    // OriginatingPartner: [],
+    // FulfillingPartner: [],
+    // ReferringPartner: [],
+    // InfluencingPartner: [],
+    Type: [],
+    TerritoryOverride: [],
   };
 
-  const { setMenuOptions, setCustomMenuOptions, menuOptions } = useForm({
+  const {
+    setMenuOptions,
+    setCustomMenuOptions,
+    menuOptions,
+    FormatCurrency,
+    FormatNumber,
+  } = useForm({
     initialMenuOptions,
     menuItems,
   });
@@ -35,6 +50,10 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
           };
         });
         setCustomMenuOptions("Account", options);
+        // setCustomMenuOptions("OriginatingPartner", options);
+        // setCustomMenuOptions("FulfillingPartner", options);
+        // setCustomMenuOptions("ReferringPartner", options);
+        // setCustomMenuOptions("InfluencingPartner", options);
       } catch {
         console.error("Could not retrieve list of accounts");
       }
@@ -51,7 +70,6 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("Owner", options);
-        setCustomMenuOptions("CollectionsContact", options);
       } catch {
         console.error("Could not retrieve list of users");
       }
@@ -59,21 +77,27 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     setOwners();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Salutation");
-    setMenuOptions("JobRole");
-    setMenuOptions("ContactRole");
-    setMenuOptions("Relationship");
-    setMenuOptions("ContactStatus");
-    // setMenuOptions("SuperRegion");
+    setMenuOptions("OpportunityType");
+    setMenuOptions("Product");
+    setMenuOptions("ProductFamily");
+    setMenuOptions("Stage");
+    setMenuOptions("Term");
+    setMenuOptions("Interest");
+    setMenuOptions("RenewalStatus");
+    setMenuOptions("Resell");
+    setMenuOptions("Type");
+    setMenuOptions("TerritoryOverride");
   }, [setCustomMenuOptions, setMenuOptions]);
 
   return {
     setMenuOptions,
     menuOptions,
+    FormatCurrency,
+    FormatNumber,
   };
 };
 
-interface useContactFormProps {
+interface useOpportunityFormProps {
   /**
    * Array of all possible menu options.
    */

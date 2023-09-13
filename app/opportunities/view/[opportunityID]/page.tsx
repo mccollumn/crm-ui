@@ -10,14 +10,19 @@ import OpportunityContactRoles from "@/app/components/opportunities/OpportunityC
 import OpportunityActivities from "@/app/components/opportunities/OpportunityActivities";
 import OpportunityProducts from "@/app/components/opportunities/OpportunityProducts";
 import OpportunityStage from "@/app/components/opportunities/OpportunityStage";
+import { getOpportunityData } from "@/app/utils/getData";
+import { unEscape } from "@/app/utils/utils";
 
-const getOpportunityName = (opportunityID: string) => {
-  // TODO: request oppurtunity name
-  return "Account Name";
-};
-
-const OpportunityView = ({ params }: { params: { opportunityID: string } }) => {
+const OpportunityView = async ({
+  params,
+}: {
+  params: { opportunityID: string };
+}) => {
   const opportunityID = params.opportunityID;
+  const opportunityData = await getOpportunityData(opportunityID);
+  const opportunityName = unEscape(
+    opportunityData?.OpportunityDetail?.Opportunities_Name
+  );
 
   return (
     <div>
@@ -27,15 +32,14 @@ const OpportunityView = ({ params }: { params: { opportunityID: string } }) => {
           aria-controls="opportunity-info-content"
           id="opportunity-info-header"
         >
-          <Typography variant="h6">
-            {getOpportunityName(opportunityID)}
-          </Typography>
+          <Typography variant="h6">{opportunityName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-info-content">
           <OpportunityInformation opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* TODO */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-quotes-content"
@@ -94,7 +98,7 @@ const OpportunityView = ({ params }: { params: { opportunityID: string } }) => {
         <AccordionDetails id="opportunity-stage-content">
           <OpportunityStage opportunityID={opportunityID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </div>
   );
 };

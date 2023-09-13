@@ -4,7 +4,7 @@ import { getAccountData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
 
 /**
- * Generates and object containing the default values for a new/empty asset form.
+ * Generates an object containing the default values for a new/empty asset form.
  * @returns Initial asset form data.
  */
 const generateInitialAssetFormData = async (accountID: string) => {

@@ -2,23 +2,13 @@ import * as React from "react";
 import { Title } from "../components/Title";
 import { ButtonNav } from "../components/navigation/ButtonNav";
 import { DataTable } from "../components/DataTable";
+import { getOpenOpportunities } from "../utils/getData";
 import "server-only";
-
-const getOpportunities = async () => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  // return res.json();
-  return [{ id: "1", opportunityName: "Opportunity of a Lifetime" }];
-};
 
 export default async function Opportunities({
   accountID = "*",
 }: OpportunitiesProps) {
-  const opportunitiesList = await getOpportunities();
+  const opportunitiesList = await getOpenOpportunities();
 
   return (
     <>
@@ -29,9 +19,6 @@ export default async function Opportunities({
           <DataTable
             rows={opportunitiesList}
             columnDefType="opportunitiesList"
-            // TODO: Update this filed name with correct value for account number
-            queryField="id"
-            queryValue={accountID}
           />
         </React.Suspense>
       </div>

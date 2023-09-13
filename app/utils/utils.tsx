@@ -88,3 +88,17 @@ export const unEscape = (str: string) => {
     .replace(/&#39;/g, "'")
     .replace(/&amp;/g, "&");
 };
+
+/**
+ * Converts a delimited string into an array.
+ * @param str String to convert to array.
+ * @param delimiter Delimiter used to split the string. Default semicolon.
+ * @returns Array of strings.
+ */
+export const convertStringToArray = (
+  str: string | null | undefined,
+  delimiter: string = ";"
+) => {
+  if (!str) return str;
+  return str.split(delimiter);
+};

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { OpportunityForm } from "@/app/forms/OpportunityForm";
+import { OpportunityForm } from "@/app/forms/opportunity/OpportunityForm";
 
 const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
   const router = useRouter();

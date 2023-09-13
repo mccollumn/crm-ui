@@ -84,7 +84,7 @@ export const ContactForm = ({
               <b>Name</b>
             </p>
             {/* Salutation */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Salutation"
               name="salutation"
               autocompleteProps={{
@@ -92,7 +92,7 @@ export const ContactForm = ({
                 size: "small",
               }}
               options={menuOptions.Salutation}
-            />
+            /> */}
             {/* First Name */}
             <TextFieldElement
               label="First Name"
@@ -160,7 +160,11 @@ export const ContactForm = ({
               type="email"
             />
             {/* Unconfirmed Email */}
-            {/* <CheckboxElement label="Unconfirmed Email" name="" size="small" /> */}
+            <CheckboxElement
+              label="Unconfirmed Email"
+              name="unconfirmedEmail"
+              size="small"
+            />
             {/* Most Recent Product Interest */}
             {/* <AutocompleteElement
               label="Most Recent Product Interest"
@@ -177,11 +181,11 @@ export const ContactForm = ({
               options={[]}
             /> */}
             {/* Do Not Send Support Survey */}
-            {/* <CheckboxElement
+            <CheckboxElement
               label="Do Not Send Support Survey"
-              name=""
+              name="doNotSendSupportSurvey"
               size="small"
-            /> */}
+            />
             {/* Webtrends OC */}
             {/* <AutocompleteElement
               label="Webtrends OC"
@@ -360,12 +364,12 @@ export const ContactForm = ({
               size="small"
             />
             {/* Super Region */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Super Region"
               name="address.superRegion"
               autocompleteProps={{ size: "small" }}
               options={menuOptions.SuperRegion}
-            />
+            /> */}
           </Stack>
         </Grid>
         {/* <FormDivider>ADR/ISR Information</FormDivider> */}
@@ -491,31 +495,51 @@ export const ContactForm = ({
             /> */}
         {/* </Stack> */}
         {/* </Grid> */}
-        {/* <FormDivider>Communication Preferences</FormDivider> */}
-        {/* <Grid item xs={6}> */}
-        {/* <Stack spacing={1}> */}
-        {/* Email Opt Out */}
-        {/* <CheckboxElement label="Email Opt Out" name="" size="small" /> */}
-        {/* Do Not Call */}
-        {/* <CheckboxElement label="Do Not Call" name="" size="small" /> */}
-        {/* No Install Admin Newsletter */}
-        {/* <CheckboxElement
+        <FormDivider>Communication Preferences</FormDivider>
+        <Grid item xs={6}>
+          <Stack spacing={1}>
+            {/* Email Opt Out */}
+            <CheckboxElement
+              label="Email Opt Out"
+              name="communication.emailOptOut"
+              size="small"
+            />
+            {/* Do Not Call */}
+            <CheckboxElement
+              label="Do Not Call"
+              name="communication.doNotCall"
+              size="small"
+            />
+            {/* No Install Admin Newsletter */}
+            {/* <CheckboxElement
               label="No Install Admin Newsletter"
               name=""
               size="small"
             /> */}
-        {/* </Stack> */}
-        {/* </Grid> */}
-        {/* <Grid item xs={6}> */}
-        {/* <Stack spacing={1}> */}
-        {/* Double Opt-In */}
-        {/* <CheckboxElement label="Double Opt-In" name="" size="small" /> */}
-        {/* Double Opt-In Timestamp */}
-        {/* <DateFnsProvider>
+          </Stack>
+        </Grid>
+        <Grid item xs={6}>
+          <Stack spacing={1}>
+            {/* Postal Mail Opt Out */}
+            <CheckboxElement
+              label="Postal Mail Opt Out"
+              name="communication.postalMailOptOut"
+              size="small"
+            />
+            {/* Do Not Remarket */}
+            <CheckboxElement
+              label="Do Not Remarket"
+              name="communication.doNotRemarket"
+              size="small"
+            />
+            {/* Double Opt-In */}
+            {/* <CheckboxElement label="Double Opt-In" name="" size="small" /> */}
+            {/* Double Opt-In Timestamp */}
+            {/* <DateFnsProvider>
               <DateTimePickerElement label="Double Opt-In Timestamp" name="" />
             </DateFnsProvider> */}
-        {/* </Stack> */}
-        {/* </Grid> */}
+          </Stack>
+        </Grid>
         {/* <FormDivider>System Information</FormDivider> */}
         {/* <Grid item xs={6}> */}
         {/* <Stack spacing={1}> */}

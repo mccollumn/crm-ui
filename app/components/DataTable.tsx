@@ -474,7 +474,7 @@ export const DataTable = ({
     ],
     opportunitiesList: [
       {
-        field: "opportunityName",
+        field: "Opportunities_Name",
         headerName: "Opportunity Name",
         flex: 1,
         renderCell: (params) => {
@@ -486,40 +486,33 @@ export const DataTable = ({
         },
       },
       {
-        field: "accountName",
+        field: "Account_Name",
         headerName: "Account Name",
+        flex: 1,
       },
       {
-        field: "accountSite",
-        headerName: "Account Site",
-      },
-      {
-        field: "amount",
+        field: "Opportunities_Amount",
         headerName: "Amount",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
-        field: "status",
+        field: "Opportunities_ForecastStatus",
         headerName: "Forecast Status",
       },
       {
-        field: "stage",
-        headerName: "Stage",
-      },
-      {
-        field: "closeDate",
+        field: "Opportunities_CloseDate",
         headerName: "Close Date",
+        type: "date",
+        valueGetter: displayDate,
       },
       {
-        field: "type",
+        field: "Opportunities_OpportunityType",
         headerName: "Opportunity Type",
       },
       {
-        field: "product",
+        field: "Opportunities_ProductFamily",
         headerName: "Product",
-      },
-      {
-        field: "owner",
-        headerName: "Owner Last Name",
       },
     ],
     opportunityQuotes: [
@@ -763,7 +756,7 @@ export const DataTable = ({
     caseComments: "CaseComments_ID",
     accountsList: "Accounts_AccountID",
     contactsList: "Contacts_ID",
-    opportunitiesList: "",
+    opportunitiesList: "Opportunities_ID",
     accountSalesOrders: "",
     accountSalesInvoices: "",
     accountLicenseKeys: "LicenseKeys_ID",

@@ -266,7 +266,7 @@ export const getContactData = async (contactID: string) => {
  */
 // TODO: Need URL for license key request
 export const getLicenseKeyData = async (keyID: string) => {
-  const data = await getData(``);
+  const data = await getData(`/licensekey/licensekeyid/${keyID}`);
   return data;
 };
 

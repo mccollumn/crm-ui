@@ -15,7 +15,7 @@ const EditLicenseKey = async ({
     licenseKeyDataPromise,
     menuItemsPromise,
   ]);
-  const values = await createLicenseKeyFormData(licenseKeyData);
+  const values = await createLicenseKeyFormData(accountID, licenseKeyData);
 
   return (
     <LicenseKeyForm

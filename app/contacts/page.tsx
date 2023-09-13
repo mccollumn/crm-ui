@@ -15,7 +15,7 @@ const Contacts = async ({ accountID }: ContactsProps) => {
   return (
     <>
       <ButtonNav path="/contacts/new">New</ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading contacts...</p>}>
           <DataTable rows={contactsList} columnDefType="contactsList" />
         </React.Suspense>

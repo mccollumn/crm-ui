@@ -3,13 +3,13 @@ import { MenuItem } from "@/app/types/types";
 import { isObjectEmpty } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 
-export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
+export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
   const initialMenuOptions = {
-    Product: [],
     Account: [],
-    Opportunity: [],
+    Type: [],
     Status: [],
-    SupportPlanType: [],
+    SystemStatus: [],
+    CreatedBy: [],
   };
 
   const {
@@ -45,29 +45,26 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     };
     setAccounts();
 
-    // Open Opportunities
-    const setOpportunities = async () => {
+    // Created By
+    const setUsers = async () => {
       try {
-        const results = await fetch("/api/opportunities/open");
-        const opportunities = await results.json();
-        if (isObjectEmpty(opportunities)) return;
-        const options = opportunities.data.map((opportunity: any) => {
-          return {
-            id: opportunity.Opportunities_ID,
-            name: opportunity.Opportunities_Name,
-          };
+        const results = await fetch("/api/users/internal");
+        const users = await results.json();
+        if (isObjectEmpty(users)) return;
+        const options = users.data.map((owner: any) => {
+          return { id: owner.Users_ID, name: owner.Users_Name };
         });
-        setCustomMenuOptions("Opportunity", options);
+        setCustomMenuOptions("CreatedBy", options);
       } catch {
-        console.error("Could not retrieve list of opportunities");
+        console.error("Could not retrieve list of users");
       }
     };
-    setOpportunities();
+    setUsers();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Product");
+    setMenuOptions("Type");
     setMenuOptions("Status");
-    setMenuOptions("SupportPlanType");
+    setMenuOptions("SystemStatus");
   }, [setCustomMenuOptions, setMenuOptions]);
 
   return {
@@ -78,7 +75,7 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
   };
 };
 
-interface useAssetFormProps {
+interface useLicenseKeyFormProps {
   /**
    * Array of all possible menu options.
    */
