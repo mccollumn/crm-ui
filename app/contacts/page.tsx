@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Title } from "../components/Title";
 import { ButtonNav } from "../components/navigation/ButtonNav";
 import { DataTable } from "../components/DataTable";
 import { getContactsByAccount, getContacts } from "../utils/getData";
@@ -14,6 +15,7 @@ const Contacts = async ({ accountID }: ContactsProps) => {
 
   return (
     <>
+      <Title title="Contacts" />
       <ButtonNav path="/contacts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading contacts...</p>}>

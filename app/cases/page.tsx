@@ -18,7 +18,7 @@ const Cases = async ({ contactID, accountID }: CasesProps) => {
   if (accountID) {
     rows = await getCasesByAccount(accountID);
   }
-  if (!rows) {
+  if (rows.length === 0) {
     const casesOpenListPromise = getOpenCases();
     const casesHibernatedListPromise = getHibernatedCases();
     const [casesOpenList, casesHibernatedList] = await Promise.all([

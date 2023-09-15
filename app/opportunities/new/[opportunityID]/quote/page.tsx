@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { QuoteForm } from "@/app/forms/QuoteForm";
+import { QuoteForm } from "@/app/forms/quote/QuoteForm";
 
 const NewQuote = ({ params }: { params: { opportunityID: string } }) => {
   const router = useRouter();

@@ -1,29 +1,31 @@
-"use client";
+import { Title } from "@/app/components/Title";
+import { ButtonNav } from "@/app/components/navigation/ButtonNav";
+import { ContactRoleForm } from "@/app/forms/contactRole/ContactRoleForm";
+import { createContactRoleFormData } from "@/app/forms/contactRole/contactRoleFormUtils";
+import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { ContactRoleForm } from "@/app/forms/ContactRoleForm";
-
-const NewContactRole = ({ params }: { params: { opportunityID: string } }) => {
-  const router = useRouter();
+const NewContactRole = async ({
+  params,
+}: {
+  params: { opportunityID: string };
+}) => {
   const opportunityID = params.opportunityID;
-
-  const onSuccess = (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/opportunities/view/${opportunityID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+  const opportunityDataPromise = getOpportunityData(opportunityID);
+  const menuItemsPromise = getMenuItems();
+  const valuesPromise = createContactRoleFormData();
+  const [opportunityData, menuItems, values] = await Promise.all([
+    opportunityDataPromise,
+    menuItemsPromise,
+    valuesPromise,
+  ]);
+  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
 
   return (
     <ContactRoleForm
       formTitle="New Contact Role"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
+      defaultValues={values}
+      menuItems={menuItems}
+      accountID={accountID}
     />
   );
 };

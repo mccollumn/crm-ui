@@ -105,7 +105,7 @@ interface OpportunityStageTracking {
   Opportunities_Stage5Date: string | null;
 }
 
-interface Quote {
+export interface Quote {
   Quotes_ID: string;
   Quotes_Name: string | null;
   Quotes_Status: string | null;
@@ -117,7 +117,7 @@ interface Quote {
   Quotes_Primary: "0" | "1";
 }
 
-interface ContactRole {
+export interface ContactRole {
   OpportunityContactRoles_ID: string;
   OpportunityContactRoles_ContactId: string | null;
   Contacts_Name: string | null;

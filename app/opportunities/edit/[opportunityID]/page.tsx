@@ -1,54 +1,32 @@
-"use client";
-
-import React from "react";
-import { useRouter } from "next/navigation";
 import { OpportunityForm } from "@/app/forms/opportunity/OpportunityForm";
+import { createOpportunityFormData } from "@/app/forms/opportunity/opportunityFormUtils";
+import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
+import { unEscape } from "@/app/utils/utils";
 
-const EditOpportunity = ({ params }: { params: { opportunityID: string } }) => {
-  const router = useRouter();
-  const [values, setValues] = React.useState<{} | null>(null);
+const EditOpportunity = async ({
+  params,
+}: {
+  params: { opportunityID: string };
+}) => {
   const opportunityID = params.opportunityID;
-
-  React.useEffect(() => {
-    (async () => {
-      const data = await getOpportunityData(opportunityID);
-      setValues(data);
-    })();
-  }, [opportunityID]);
-
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch(`/opportunities/api/${opportunityID}/update/`);
-    // Verify successful response
-    router.push(`/opportunities/view/${opportunityID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
-
-  if (values) {
-    return (
-      <OpportunityForm
-        formTitle="Edit Opportunity"
-        onSuccess={onSuccess}
-        onCancel={handleCancel}
-        defaultValues={values}
-      />
-    );
-  }
-  return <div>Loading...</div>;
-};
-
-const getOpportunityData = async (opportunityID: string) => {
-  // TODO: Retreive case data.
-  const data = await fetch(
-    `${process.env.API_ENDPOINT}/opportunities/api/${opportunityID}`
+  const opportunityDataPromise = getOpportunityData(opportunityID);
+  const menuItemsPromise = getMenuItems();
+  const [opportunityData, menuItems] = await Promise.all([
+    opportunityDataPromise,
+    menuItemsPromise,
+  ]);
+  const opportunityName = unEscape(
+    opportunityData.OpportunityDetail.Opportunities_Name
   );
-  // return data || {};
-  return {};
+  const values = await createOpportunityFormData(opportunityData);
+
+  return (
+    <OpportunityForm
+      formTitle={`Edit Opportunity - ${opportunityName}`}
+      defaultValues={values}
+      menuItems={menuItems}
+    />
+  );
 };
 
 export default EditOpportunity;

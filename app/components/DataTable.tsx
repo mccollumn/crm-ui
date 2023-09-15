@@ -517,43 +517,42 @@ export const DataTable = ({
     ],
     opportunityQuotes: [
       {
-        field: "quoteID",
+        field: "Quotes_Name",
         headerName: "Quote ID",
         flex: 1,
-        renderCell: (params) => {
-          return (
-            <Link href={`/opportunities/view/${params.id}`}>
-              {params.value}
-            </Link>
-          );
-        },
       },
       {
-        field: "status",
+        field: "Quotes_Status",
         headerName: "Status",
       },
       {
-        field: "currencyCode",
+        field: "Quotes_CurrencyCode",
         headerName: "Currency Code",
       },
       {
-        field: "totalPrice",
+        field: "Quotes_TotalPrice",
         headerName: "Total Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
-        field: "totalPriceUSD",
+        field: "Quotes_USDTotalPrice",
         headerName: "USD Total Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
-        field: "validThrough",
+        field: "Quotes_ValidThrough",
         headerName: "Valid Through",
+        type: "date",
+        valueGetter: displayDate,
       },
       {
-        field: "oneYearTotalUSD",
+        field: "Quotes_USDTotalOneYearAmount",
         headerName: "USD Total One Year Amount",
       },
       {
-        field: "primary",
+        field: "Quotes_Primary",
         headerName: "Primary",
       },
       {
@@ -573,7 +572,7 @@ export const DataTable = ({
     ],
     opportunityContactRoles: [
       {
-        field: "contactName",
+        field: "Contacts_Name",
         headerName: "Contact Name",
         flex: 1,
         renderCell: (params) => {
@@ -583,29 +582,39 @@ export const DataTable = ({
         },
       },
       {
-        field: "role",
+        field: "OpportunityContactRoles_Role",
         headerName: "Role",
+        width: 200,
       },
+      // {
+      //   field: "title",
+      //   headerName: "Title",
+      // },
       {
-        field: "title",
-        headerName: "Title",
-      },
-      {
-        field: "primary",
+        field: "OpportunityContactRoles_IsPrimary",
         headerName: "Primary",
+        renderCell: (params) => {
+          return params.value === "0" ? (
+            <CheckBoxOutlineBlankIcon />
+          ) : (
+            <CheckBox />
+          );
+        },
       },
       {
-        field: "phone",
+        field: "Contacts_Phone",
         headerName: "Phone",
+        width: 150,
       },
       {
-        field: "email",
+        field: "Contacts_Email",
         headerName: "Email",
+        width: 200,
       },
-      {
-        field: "accountName",
-        headerName: "Account Name",
-      },
+      // {
+      //   field: "accountName",
+      //   headerName: "Account Name",
+      // },
       {
         field: "editLink",
         headerName: "Edit",
@@ -613,7 +622,7 @@ export const DataTable = ({
         renderCell: (params) => {
           return (
             <Link
-              href={`/opportunities/edit/${data?.id}/contact-role/${params.row.id}`}
+              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/contact-role/${params.id}`}
             >
               Edit
             </Link>
@@ -762,8 +771,8 @@ export const DataTable = ({
     accountLicenseKeys: "LicenseKeys_ID",
     accountAssets: "Assets_ID",
     contactHistory: "",
-    opportunityQuotes: "",
-    opportunityContactRoles: "",
+    opportunityQuotes: "Quotes_ID",
+    opportunityContactRoles: "OpportunityContactRoles_ID",
     opportunityActivities: "",
     opportunityProducts: "",
     opportunityStages: "",

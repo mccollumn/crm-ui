@@ -38,8 +38,7 @@ const OpportunityView = async ({
           <OpportunityInformation opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      {/* TODO */}
-      {/* <Accordion>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-quotes-content"
@@ -63,7 +62,8 @@ const OpportunityView = async ({
           <OpportunityContactRoles opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* TODO */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-activities-content"
