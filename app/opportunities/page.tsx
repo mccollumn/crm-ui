@@ -14,7 +14,7 @@ export default async function Opportunities({
     <>
       <Title title="Opportunities" />
       <ButtonNav path="/opportunities/new">New</ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading opportunities...</p>}>
           <DataTable
             rows={opportunitiesList}

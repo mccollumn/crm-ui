@@ -454,7 +454,10 @@ const getOpportunityInfo = async (opportunityData: OpportunityData) => {
         },
         {
           label: "Renewal Growth Percentage",
-          value: `${opportunityData.OpportunityRenewalInfo.Opportunities_RenewalGrowthPercentage}%`,
+          value: opportunityData.OpportunityRenewalInfo
+            .Opportunities_RenewalGrowthPercentage
+            ? `${opportunityData.OpportunityRenewalInfo.Opportunities_RenewalGrowthPercentage}%`
+            : "",
         },
         {
           label: "Renewal Growth Results",

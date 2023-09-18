@@ -71,7 +71,20 @@ interface QuoteEntitlements {
 
 interface QuoteContact {}
 
-interface QuoteProduct {}
+interface QuoteProduct {
+  QuoteProducts_ID: string;
+  QuoteProducts_Discount: string | null;
+  QuoteProducts_Name: string | null;
+  QuoteProducts_Product2ID: string | null;
+  Product_Name: string | null;
+  QuoteProducts_ProductCode: string | null;
+  QuoteProducts_ProductFamily: string | null;
+  QuoteProducts_Quantity: string | null;
+  QuoteProducts_QuoteID: string | null;
+  QuoteProducts_SKUGroup: string | null;
+  QuoteProducts_TotalSalePrice: string | null;
+  QuoteProducts_UOM: string | null;
+}
 
 interface QuoteFullfillment {
   QuoteFulfillment_ID: string;

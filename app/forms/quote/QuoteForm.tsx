@@ -16,14 +16,14 @@ import { FormProps } from "../../types/types";
 import { useQuoteForm } from "./useQuoteForm";
 
 interface QuoteFormProps extends FormProps {
-  accountID: string;
+  opportunityID: string;
 }
 
 export const QuoteForm = ({
   formTitle,
   defaultValues,
   menuItems,
-  accountID,
+  opportunityID,
   ...props
 }: QuoteFormProps) => {
   const router = useRouter();
@@ -45,7 +45,7 @@ export const QuoteForm = ({
       // POST new account
       // Set id to new account ID
     }
-    router.push(`/opportunities/view/${accountID}`);
+    router.push(`/opportunities/view/${opportunityID}`);
   };
 
   const onCancel = () => {
@@ -147,29 +147,29 @@ export const QuoteForm = ({
             <CheckboxElement label="Primary" name="isPrimary" size="small" />
           </Stack>
         </Grid>
-        <FormDivider>Audit Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Audit Status */}
-            <AutocompleteElement
+        {/* <FormDivider>Audit Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Audit Status */}
+        {/* <AutocompleteElement
               label="Audit Status"
               name="audit.status"
               autocompleteProps={{ size: "small" }}
               options={menuOptions.AuditStatus}
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Audit Notes */}
-            <TextareaAutosizeElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Audit Notes */}
+        {/* <TextareaAutosizeElement
               label="Audit Notes"
               name="audit.notes"
               rows={3}
               size="small"
-            />
-          </Stack>
-        </Grid>
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
         <FormDivider>Payment Information</FormDivider>
         <Grid item xs={6}>
           <Stack spacing={1}>
@@ -211,12 +211,12 @@ export const QuoteForm = ({
               options={menuOptions.PaymentTerms}
             />
             {/* Terms Audit */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Terms Audit"
               name="payment.termsAudit"
               autocompleteProps={{ size: "small" }}
               options={menuOptions.TermsAudit}
-            />
+            /> */}
           </Stack>
         </Grid>
         <FormDivider>Send Quote</FormDivider>
@@ -292,12 +292,12 @@ export const QuoteForm = ({
               size="small"
             />
             {/* Analytics Server Calls */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Analytics Server Calls"
               name="entitlements.serverCalls"
               type="number"
               size="small"
-            />
+            /> */}
             {/* Segment Events */}
             {/* <TextFieldElement
               label="Segment Events"
@@ -320,11 +320,11 @@ export const QuoteForm = ({
               size="small"
             /> */}
             {/* Refresh Entitlement Data */}
-            <CheckboxElement
+            {/* <CheckboxElement
               label="Refresh Entitlement Data"
               name="entitlements.refreshData"
               size="small"
-            />
+            /> */}
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -337,12 +337,12 @@ export const QuoteForm = ({
               size="small"
             />
             {/* Analytics Server Calls */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Existing Analytics Server Calls"
               name="entitlements.existingServerCalls"
               type="number"
               size="small"
-            />
+            /> */}
             {/* Segment Events */}
             {/* <TextFieldElement
               label="Existing Segment Events"

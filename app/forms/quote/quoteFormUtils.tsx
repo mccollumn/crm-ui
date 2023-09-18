@@ -34,16 +34,16 @@ const generateInitialQuoteFormData = async (
     USDTotalOneYearAmount: null,
     isPrimary: false,
     lastSendDate: null,
-    audit: {
-      status: null,
-      notes: null,
-    },
+    // audit: {
+    //   status: null,
+    //   notes: null,
+    // },
     payment: {
       method: null,
       docNumber: null,
       billingFrequency: null,
       terms: null,
-      termsAudit: null,
+      // termsAudit: null,
     },
     comments: {
       exchangeRate: 1,
@@ -53,9 +53,9 @@ const generateInitialQuoteFormData = async (
     entitlements: {
       pageViews: null,
       existingPageViews: null,
-      serverCalls: null,
-      existingServerCalls: null,
-      refreshData: false,
+      // serverCalls: null,
+      // existingServerCalls: null,
+      // refreshData: false,
     },
   };
 
@@ -100,16 +100,16 @@ export const createQuoteFormData = async (quoteData?: QuoteData) => {
     USDTotalOneYearAmount: quoteData.QuoteTotals.Quotes_USDTotalOneYearAmount,
     isPrimary: !!Number(null),
     lastSendDate: null,
-    audit: {
-      status: null,
-      notes: null,
-    },
+    // audit: {
+    //   status: null,
+    //   notes: null,
+    // },
     payment: {
       method: quoteData.QuotePaymentInfo.Quotes_PaymentMethod,
       docNumber: quoteData.QuotePaymentInfo.Quotes_PaymentDocumentNumber,
       billingFrequency: quoteData.QuotePaymentInfo.Quotes_BillingFrequency,
       terms: quoteData.QuotePaymentInfo.Quotes_PaymentTerms,
-      termsAudit: null,
+      // termsAudit: null,
     },
     comments: {
       exchangeRate: quoteData.QuoteTotals.Quotes_ExchangeRateToUSD,
@@ -120,9 +120,9 @@ export const createQuoteFormData = async (quoteData?: QuoteData) => {
       pageViews: quoteData.QuoteEntitlements.Quotes_AnalyticsPageViews,
       existingPageViews:
         quoteData.QuoteEntitlements.Quotes_ExistingAnalyticsPageViews,
-      serverCalls: null,
-      existingServerCalls: null,
-      refreshData: !!Number(false),
+      // serverCalls: null,
+      // existingServerCalls: null,
+      // refreshData: !!Number(false),
     },
   };
 };

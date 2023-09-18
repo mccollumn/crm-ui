@@ -284,6 +284,15 @@ export const getOpportunityData = async (opportunityID: string) => {
 };
 
 /**
+ * Quotes
+ */
+
+export const getQuoteData = async (quoteID: string) => {
+  const data = await getData(`/quote/quoteid/${quoteID}`);
+  return data;
+};
+
+/**
  * Other Data
  */
 

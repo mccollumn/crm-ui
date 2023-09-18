@@ -1,44 +1,30 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import { QuoteForm } from "@/app/forms/quote/QuoteForm";
+import { createQuoteFormData } from "@/app/forms/quote/quoteFormUtils";
+import { getMenuItems, getQuoteData } from "@/app/utils/getData";
 
-const EditQuote = ({
+const EditQuote = async ({
   params,
 }: {
   params: { opportunityID: string; quoteID: string };
 }) => {
-  const router = useRouter();
-
   const opportunityID = params.opportunityID;
   const quoteID = params.quoteID;
-  const values = getQuoteData(quoteID);
-
-  const onSuccess = (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/opportunities/view/${opportunityID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+  const quoteDataPromise = getQuoteData(quoteID);
+  const menuItemsPromise = getMenuItems();
+  const [quoteData, menuItems] = await Promise.all([
+    quoteDataPromise,
+    menuItemsPromise,
+  ]);
+  const values = await createQuoteFormData(quoteData);
 
   return (
     <QuoteForm
       formTitle="Edit Quote"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
       defaultValues={values}
+      menuItems={menuItems}
+      opportunityID={opportunityID}
     />
   );
-};
-
-const getQuoteData = async (quoteID: string) => {
-  // TODO: Retreive order data.
-  return {};
 };
 
 export default EditQuote;

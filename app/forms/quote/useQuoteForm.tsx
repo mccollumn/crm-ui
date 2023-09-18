@@ -10,11 +10,11 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     Status: [],
     OfficeLocation: [],
     Currency: [],
-    AuditStatus: [],
+    // AuditStatus: [],
     PaymentMethod: [],
     BillingFrequency: [],
     PaymentTerms: [],
-    TermsAudit: [],
+    // TermsAudit: [],
     DiscountReason: [],
   };
 
@@ -63,11 +63,11 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     setMenuOptions("Status");
     setMenuOptions("OfficeLocation");
     setMenuOptions("Currency");
-    setMenuOptions("AuditStatus");
+    // setMenuOptions("AuditStatus");
     setMenuOptions("PaymentMethod");
     setMenuOptions("BillingFrequency");
     setMenuOptions("PaymentTerms");
-    setMenuOptions("TermsAudit");
+    // setMenuOptions("TermsAudit");
     setMenuOptions("DiscountReason");
   }, [setCustomMenuOptions, setMenuOptions]);
 
