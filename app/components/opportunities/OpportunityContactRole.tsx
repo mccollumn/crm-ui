@@ -1,40 +1,40 @@
 import React from "react";
 import { DataTable } from "../DataTable";
+import { getOpportunityData } from "@/app/utils/getData";
+import { OpportunityData } from "@/app/types/opportunities";
+import { ButtonNav } from "../navigation/ButtonNav";
 
-const getOpportunityContactRoles = async (opportunityID: string) => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-};
-
-export default async function OpportunityContactRoles({
+const OpportunityContactRoles = async ({
   opportunityID,
-}: OpportunityContactRolesProps) {
-  const opportunityContactRoles = await getOpportunityContactRoles(
+}: OpportunityContactRolesProps) => {
+  const opportunityData: OpportunityData = await getOpportunityData(
     opportunityID
   );
+  const opportunityContactRoles = opportunityData.OpportunityQuoteContactRoles;
 
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <ButtonNav
+        size="small"
+        path={`/opportunities/new/${opportunityID}/contact-role/`}
+      >
+        New
+      </ButtonNav>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading contact roles...</p>}>
           <DataTable
             rows={opportunityContactRoles}
             columnDefType="opportunityContactRoles"
-            // TODO: Update field name for opportunity number
-            queryField="id"
-            queryValue={opportunityID}
+            data={opportunityData}
           />
         </React.Suspense>
       </div>
     </>
   );
-}
+};
 
 interface OpportunityContactRolesProps {
   opportunityID: string;
 }
+
+export default OpportunityContactRoles;

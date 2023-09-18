@@ -8,25 +8,30 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { OpportunityData } from "@/app/types/opportunities";
+import { getOpportunityData } from "@/app/utils/getData";
+import {
+  formatCheckbox,
+  formatCurrency,
+  formatDate,
+  unEscape,
+} from "@/app/utils/utils";
+import Link from "next/link";
 
-const getOpportunityData = (opportunityID: string) => {
-  // TODO: Retreive contact data
-  return { id: "0018Z00002eltWLQAY", name: "Mr Customer" };
-};
-
-const OpportunityInformation = ({
+const OpportunityInformation = async ({
   opportunityID,
 }: OpportunityInformationProps) => {
-  const opportunityData = getOpportunityData(opportunityID);
+  const opportunityData: OpportunityData = await getOpportunityData(
+    opportunityID
+  );
   if (!opportunityData) return null;
-
-  const opportunityInfo = getContactInfo(opportunityData);
+  const opportunityInfo = await getOpportunityInfo(opportunityData);
+  if (!opportunityInfo) return null;
 
   return (
     <>
       <ButtonNav
         size="small"
-        path={`/opportunities/edit/${opportunityData.id}`}
+        path={`/opportunities/edit/${opportunityData.OpportunityDetail.Opportunities_ID}`}
       >
         Edit
       </ButtonNav>
@@ -134,7 +139,7 @@ const OpportunityInformation = ({
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-se-section-content"
@@ -148,8 +153,8 @@ const OpportunityInformation = ({
             itemsRight={opportunityInfo.se.right}
           />
         </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
+      </Accordion> */}
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-clarizen-section-content"
@@ -163,8 +168,8 @@ const OpportunityInformation = ({
             itemsRight={opportunityInfo.clarizen.right}
           />
         </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
+      </Accordion> */}
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-marketing-section-content"
@@ -178,8 +183,8 @@ const OpportunityInformation = ({
             itemsRight={opportunityInfo.marketing.right}
           />
         </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
+      </Accordion> */}
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-commission-section-content"
@@ -193,7 +198,7 @@ const OpportunityInformation = ({
             itemsRight={opportunityInfo.commission.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -209,7 +214,7 @@ const OpportunityInformation = ({
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-system-section-content"
@@ -223,224 +228,542 @@ const OpportunityInformation = ({
             itemsRight={opportunityInfo.system.right}
           />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </>
   );
 };
 
-const getContactInfo = (contactData: OpportunityData) => {
+const getOpportunityInfo = async (opportunityData: OpportunityData) => {
   return {
     info: {
       left: [
-        { label: "Opportunity Owner", value: "" },
-        { label: "Opportunity Name", value: "" },
-        { label: "Account Name", value: "" },
-        { label: "Opportunity Type", value: "" },
-        { label: "Product", value: "" },
-        { label: "Product Family", value: "" },
-        { label: "Interest", value: "" },
-        { label: "Contains New Business", value: "" },
-        { label: "Account Type", value: "" },
-        { label: "Ops Audit", value: "" },
-        { label: "Order Exception", value: "" },
-        { label: "Order Exception Notes", value: "" },
-        { label: "Split Opportunity", value: "" },
-        { label: "Quarter Bank", value: "" },
-        { label: "Fast Notes/Next Steps", value: "" },
-        { label: "Optimize Product Type", value: "" },
-        { label: "Migration External ID", value: "" },
+        {
+          label: "Opportunity Owner",
+          value: opportunityData.OpportunityDetail.Owners_Name,
+        },
+        {
+          label: "Opportunity Name",
+          value: unEscape(
+            opportunityData.OpportunityDetail.Opportunities_Name || ""
+          ),
+        },
+        {
+          label: "Account Name",
+          value: opportunityData.OpportunityDetail.Accounts_Name,
+        },
+        {
+          label: "Opportunity Type",
+          value: opportunityData.OpportunityDetail.Opportunities_Type,
+        },
+        {
+          label: "Product",
+          value: opportunityData.OpportunityDetail.Opportunities_Product,
+        },
+        {
+          label: "Product Family",
+          value: opportunityData.OpportunityDetail.Opportunities_ProductFamily,
+        },
+        {
+          label: "Interest",
+          value: opportunityData.OpportunityDetail.Opportunities_Interest,
+        },
+        {
+          label: "Contains New Business",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_ContainsNewBusiness
+          ),
+        },
+        {
+          label: "Ops Audit",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_OpsAudit
+          ),
+        },
+        {
+          label: "Order Exception",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_OrderException
+          ),
+        },
+        {
+          label: "Order Exception Notes",
+          value:
+            opportunityData.OpportunityDetail.Opportunities_OrderExceptionNotes,
+        },
+        {
+          label: "Split Opportunity",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_SplitOpportunity
+          ),
+        },
+        {
+          label: "Quarter Bank",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_QuarterBank
+          ),
+        },
+        // { label: "Optimize Product Type", value: "" },
+        // { label: "Migration External ID", value: "" },
       ],
       right: [
-        { label: "Opportunity Record Type", value: "" },
-        { label: "Amount", value: "" },
-        { label: "Stage", value: "" },
-        { label: "Close Date", value: "" },
-        { label: "Probability (%)", value: "" },
-        { label: "Forecast Status", value: "" },
-        { label: "Expected Revenue", value: "" },
-        { label: "Term (months)", value: "" },
-        { label: "Multi-Year Year 1 Amount", value: "" },
-        { label: "1st Year Contract Amount", value: "" },
-        { label: "1st Year Expected Amount", value: "" },
-        { label: "MSA", value: "" },
-        { label: "CHAMPP", value: "" },
+        // { label: "Opportunity Record Type", value: "" },
+        {
+          label: "Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityDetail.Opportunities_Amount
+          ),
+        },
+        {
+          label: "Stage",
+          value: opportunityData.OpportunityDetail.Opportunities_StageName,
+        },
+        {
+          label: "Close Date",
+          value: formatDate(
+            opportunityData.OpportunityDetail.Opportunities_CloseDate
+          ),
+        },
+        {
+          label: "Probability (%)",
+          value: `${opportunityData.OpportunityDetail.Opportunities_Probability}%`,
+        },
+        {
+          label: "Forecast Status",
+          value: opportunityData.OpportunityDetail.Opportunities_ForecastStatus,
+        },
+        {
+          label: "Expected Revenue",
+          value: formatCurrency(
+            opportunityData.OpportunityDetail.Opportunities_ExpectedRevenue
+          ),
+        },
+        {
+          label: "Term (months)",
+          value: opportunityData.OpportunityDetail.Opportunities_Term,
+        },
+        {
+          label: "Multi-Year Year 1 Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityDetail.Opportunities_MultiYearYear1Amount
+          ),
+        },
+        {
+          label: "Fast Notes/Next Steps",
+          value:
+            opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps,
+        },
+        // { label: "1st Year Contract Amount", value: "" },
+        // { label: "1st Year Expected Amount", value: "" },
+        // { label: "MSA", value: "" },
+        // { label: "CHAMPP", value: "" },
       ],
     },
     overview: {
       left: [
-        { label: "PF Analytics On Demand", value: "" },
-        { label: "PF Analytics On Premises", value: "" },
-        { label: "PF VDM / Segments", value: "" },
-        { label: "PF Optimize", value: "" },
-        { label: "PF Streams", value: "" },
-        { label: "PF Ads", value: "" },
-        { label: "PF Services", value: "" },
-        { label: "PF Other", value: "" },
+        // { label: "PF Analytics On Demand", value: "" },
+        {
+          label: "PF Analytics On Premises",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview
+              .Opportunities_PFLICAnalytics
+          ),
+        },
+        // { label: "PF VDM / Segments", value: "" },
+        // { label: "PF Optimize", value: "" },
+        // { label: "PF Streams", value: "" },
+        // { label: "PF Ads", value: "" },
+        {
+          label: "PF Services",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview
+              .Opportunities_PFServices
+          ),
+        },
+        {
+          label: "PF Consulting",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview
+              .Opportunities_PFConsulting
+          ),
+        },
+        {
+          label: "PF Training",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview
+              .Opportunities_PFTraining
+          ),
+        },
       ],
       right: [
-        { label: "PF Site analytics", value: "" },
-        { label: "PF SharePoint Site", value: "" },
-        { label: "PF SharePoint Intranet", value: "" },
-        { label: "PF Mobile", value: "" },
-        { label: "PF Facebook", value: "" },
-        { label: "PF Social Analytics", value: "" },
-        { label: "PF EPS", value: "" },
-        { label: "PF Digital Intelligence", value: "" },
-        { label: "PF SAP", value: "" },
+        // { label: "PF Site analytics", value: "" },
+        // { label: "PF SharePoint Site", value: "" },
+        // { label: "PF SharePoint Intranet", value: "" },
+        // { label: "PF Mobile", value: "" },
+        // { label: "PF Facebook", value: "" },
+        // { label: "PF Social Analytics", value: "" },
+        {
+          label: "PF EPS",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview.Opportunities_PFEPS
+          ),
+        },
+        {
+          label: "PF Digital Intelligence",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview
+              .Opportunities_PFDigitalIntelligence
+          ),
+        },
+        {
+          label: "PF Other",
+          value: formatCurrency(
+            opportunityData.OpportunitySolutionsOverview.Opportunities_PFOther
+          ),
+        },
+        // { label: "PF SAP", value: "" },
       ],
     },
     renewal: {
       left: [
-        { label: "Baseline Renewal Amount", value: "" },
-        { label: "Services Renewal Amount", value: "" },
-        { label: "Total Baseline", value: "" },
-        { label: "Multi-Year Add Back", value: "" },
-        { label: "Renewal Growth Percentage", value: "" },
-        { label: "Renewal Growth Results", value: "" },
+        {
+          label: "Baseline Renewal Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_BaselineRenewalAmount
+          ),
+        },
+        {
+          label: "Services Renewal Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_ServicesRenewalAmount
+          ),
+        },
+        {
+          label: "Total Baseline",
+          value: formatCurrency(
+            opportunityData.OpportunityRenewalInfo.Opportunities_TotalBaseline
+          ),
+        },
+        {
+          label: "Multi-Year Add Back",
+          value: formatCheckbox(
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_MultiYearaddback
+          ),
+        },
+        {
+          label: "Renewal Growth Percentage",
+          value: opportunityData.OpportunityRenewalInfo
+            .Opportunities_RenewalGrowthPercentage
+            ? `${opportunityData.OpportunityRenewalInfo.Opportunities_RenewalGrowthPercentage}%`
+            : "",
+        },
+        {
+          label: "Renewal Growth Results",
+          value:
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_RenewalGrowthResults,
+        },
       ],
       right: [
-        { label: "Baseline Renewal Date", value: "" },
-        { label: "Renewal Status", value: "" },
-        { label: "Renewal Status Comments & Next Steps", value: "" },
-        { label: "Resell", value: "" },
+        {
+          label: "Baseline Renewal Date",
+          value: formatDate(
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_BaselineRenewalDate
+          ),
+        },
+        {
+          label: "Renewal Status",
+          value:
+            opportunityData.OpportunityRenewalInfo.Opportunities_RenewalStatus,
+        },
+        {
+          label: "Renewal Status Comments & Next Steps",
+          value:
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_RenewalStatusCommentsNextSteps,
+        },
+        {
+          label: "Resell",
+          value: opportunityData.OpportunityRenewalInfo.Opportunities_Resell,
+        },
       ],
     },
     additional: {
       fullWidth: [
-        { label: "Opportunity Notes", value: "" },
-        { label: "Compelling Event", value: "" },
+        {
+          label: "Opportunity Notes",
+          value:
+            opportunityData.OpportunityAdditonalInfo
+              .Opportunities_OpportunityNotes,
+        },
+        {
+          label: "Compelling Event",
+          value:
+            opportunityData.OpportunityAdditonalInfo
+              .Opportunities_CPCompellingEvent,
+        },
       ],
     },
     win_loss: {
       left: [
-        { label: "Winner", value: "" },
-        { label: "Current/Prior Vendor", value: "" },
-        { label: "Win Type", value: "" },
-        { label: "Competitors", value: "" },
-        { label: "Business Value of Solution to Customer", value: "" },
-        { label: "Change from Renewal Baseline Reason", value: "" },
+        {
+          label: "Winner",
+          value: opportunityData.OpportunityWinLossDetail.Opportunities_Winner,
+        },
+        {
+          label: "Current/Prior Vendor",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_PriorWAVendor,
+        },
+        {
+          label: "Win Type",
+          value: opportunityData.OpportunityWinLossDetail.Opportunities_WinType,
+        },
+        // { label: "Competitors", value: "" },
+        {
+          label: "Business Value of Solution to Customer",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_BusinessValueofSolutionToCustomer,
+        },
+        {
+          label: "Change from Renewal Baseline Reason",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_ChangeFromRenewalBaselineReason,
+        },
       ],
       right: [
-        { label: "Primary Win/Loss Reason", value: "" },
-        { label: "Primary Win/Loss Detail", value: "" },
-        { label: "Secondary Win/Loss Reason", value: "" },
-        { label: "Secondary Win/Loss Detail", value: "" },
-        { label: "Additional Win/Loss Details", value: "" },
+        {
+          label: "Primary Win/Loss Reason",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_PrimaryWinLossReason,
+        },
+        {
+          label: "Primary Win/Loss Detail",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_PrimaryWinLossDetail,
+        },
+        {
+          label: "Secondary Win/Loss Reason",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_SecondaryWinLossReason,
+        },
+        {
+          label: "Secondary Win/Loss Detail",
+          value:
+            opportunityData.OpportunityWinLossDetail
+              .Opportunities_SecondaryWinLossDetail,
+        },
+        // { label: "Additional Win/Loss Details", value: "" },
       ],
     },
     partner: {
       left: [
-        { label: "Originating Partner", value: "" },
-        { label: "Fulfilling Partner", value: "" },
-        { label: "Referring Partner", value: "" },
+        {
+          label: "Originating Partner",
+          value:
+            opportunityData.OpportunityPartnerDetail
+              .Opportunities_OriginatingPartnerID,
+        },
+        {
+          label: "Fulfilling Partner",
+          value:
+            opportunityData.OpportunityPartnerDetail
+              .Opportunities_FulfillingPartnerID,
+        },
+        {
+          label: "Referring Partner",
+          value:
+            opportunityData.OpportunityPartnerDetail
+              .Opportunities_ReferringPartnerID,
+        },
       ],
       right: [
-        { label: "Influencing Partner", value: "" },
-        { label: "Channel Deal", value: "" },
+        {
+          label: "Influencing Partner",
+          value:
+            opportunityData.OpportunityPartnerDetail
+              .Opportunities_InfluencingPartnerID,
+        },
+        {
+          label: "Channel Deal",
+          value: formatCheckbox(
+            opportunityData.OpportunityPartnerDetail.Opportunities_ChannelDeal
+          ),
+        },
       ],
     },
     links: {
       left: [
-        {
-          label: "18 Character Contact ID",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018LuX&eid=0031W00002d6IULQA2&ic=1",
-        },
+        // {
+        //   label: "18 Character Contact ID",
+        //   value:
+        //     "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018LuX&eid=0031W00002d6IULQA2&ic=1",
+        // },
         {
           label: "Trial Manager",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b30000000iZGr&eid=0068Z00001VJmTkQAL&ic=1",
+          value: (
+            <Link
+              href={`https://crm.webtrends.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectType=Account&objectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectname=${opportunityData.OpportunityDetail.Accounts_Name}`}
+              target="_blank"
+            >
+              Trial Manager
+            </Link>
+          ),
         },
       ],
       right: [
-        {
-          label: "Old Quote Manager",
-          value:
-            "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018I7S&eid=0068Z00001VJmTkQAL&ic=1",
-        },
+        // {
+        //   label: "Old Quote Manager",
+        //   value:
+        //     "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018I7S&eid=0068Z00001VJmTkQAL&ic=1",
+        // },
       ],
     },
-    se: {
-      left: [
-        { label: "SE Involved", value: "" },
-        { label: "Product Fit", value: "" },
-        { label: "SE Engagement", value: "" },
-      ],
-      right: [
-        { label: "SE Next Steps", value: "" },
-        { label: "SE Comments", value: "" },
-      ],
-    },
-    clarizen: {
-      left: [
-        { label: "Project Trigger Type", value: "" },
-        { label: "Parent Project ID", value: "" },
-      ],
-      right: [
-        { label: "Order Number", value: "" },
-        { label: "Order Date", value: "" },
-      ],
-    },
-    marketing: {
-      left: [
-        { label: "Lead Source", value: "" },
-        { label: "Initial Contact Email", value: "" },
-        { label: "Original Campaign Source", value: "" },
-      ],
-      right: [
-        { label: "Primary Campaign Source", value: "" },
-        { label: "Marketing Generated", value: "" },
-        { label: "Sourced from Data.com", value: "" },
-      ],
-    },
-    commission: {
-      left: [
-        { label: "Sales Rep ID", value: "" },
-        { label: "Commission Category", value: "" },
-        { label: "SharePoint Overlay Contributor", value: "" },
-        { label: "Exception", value: "" },
-      ],
-      right: [
-        { label: "Commission Comments", value: "" },
-        { label: "OD Switcher", value: "" },
-        { label: "Multi-Year Uplift", value: "" },
-      ],
-    },
+    // se: {
+    //   left: [
+    //     { label: "SE Involved", value: "" },
+    //     { label: "Product Fit", value: "" },
+    //     { label: "SE Engagement", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "SE Next Steps", value: "" },
+    //     { label: "SE Comments", value: "" },
+    //   ],
+    // },
+    // clarizen: {
+    //   left: [
+    //     { label: "Project Trigger Type", value: "" },
+    //     { label: "Parent Project ID", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Order Number", value: "" },
+    //     { label: "Order Date", value: "" },
+    //   ],
+    // },
+    // marketing: {
+    //   left: [
+    //     { label: "Lead Source", value: "" },
+    //     { label: "Initial Contact Email", value: "" },
+    //     { label: "Original Campaign Source", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Primary Campaign Source", value: "" },
+    //     { label: "Marketing Generated", value: "" },
+    //     { label: "Sourced from Data.com", value: "" },
+    //   ],
+    // },
+    // commission: {
+    //   left: [
+    //     { label: "Sales Rep ID", value: "" },
+    //     { label: "Commission Category", value: "" },
+    //     { label: "SharePoint Overlay Contributor", value: "" },
+    //     { label: "Exception", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Commission Comments", value: "" },
+    //     { label: "OD Switcher", value: "" },
+    //     { label: "Multi-Year Uplift", value: "" },
+    //   ],
+    // },
     stage: {
       left: [
-        { label: "Converted from Lead ID", value: "" },
-        { label: "Stage 1 Date", value: "" },
-        { label: "Stage 2 Date", value: "" },
-        { label: "Stage 3 Date", value: "" },
-        { label: "Stage 4 Date", value: "" },
-        { label: "Stage 5 Date", value: "" },
+        // { label: "Converted from Lead ID", value: "" },
+        {
+          label: "Stage 1 Date",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking.Opportunities_Stage1Date
+          ),
+        },
+        {
+          label: "Stage 2 Date",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking.Opportunities_Stage2Date
+          ),
+        },
+        {
+          label: "Stage 3 Date",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking.Opportunities_Stage3Date
+          ),
+        },
+        {
+          label: "Stage 4 Date",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking.Opportunities_Stage4Date
+          ),
+        },
+        {
+          label: "Stage 5 Date",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking.Opportunities_Stage5Date
+          ),
+        },
       ],
       right: [
-        { label: "Conversion Date", value: "" },
-        { label: "Most Recent Stage 1", value: "" },
-        { label: "Most Recent Stage 2", value: "" },
-        { label: "Most Recent Stage 3", value: "" },
-        { label: "Most Recent Stage 4", value: "" },
-        { label: "Most Recent Stage 5", value: "" },
+        // { label: "Conversion Date", value: "" },
+        {
+          label: "Most Recent Stage 1",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage1
+          ),
+        },
+        {
+          label: "Most Recent Stage 2",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage2
+          ),
+        },
+        {
+          label: "Most Recent Stage 3",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage3
+          ),
+        },
+        {
+          label: "Most Recent Stage 4",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage4
+          ),
+        },
+        {
+          label: "Most Recent Stage 5",
+          value: formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage5
+          ),
+        },
       ],
     },
-    system: {
-      left: [
-        { label: "Opportunity Territory", value: "" },
-        { label: "Holdover Expiration", value: "" },
-        { label: "Type", value: "" },
-        { label: "Refresh Product Family", value: "" },
-        { label: "Created By", value: "" },
-      ],
-      right: [
-        { label: "Territory Override", value: "" },
-        { label: "Territory Tracker", value: "" },
-        { label: "Deal Alert Sent", value: "" },
-        { label: "Quote Submitted", value: "" },
-        { label: "Do Not Run Trigger Test", value: "" },
-        { label: "Last Modified By", value: "" },
-      ],
-    },
+    // system: {
+    //   left: [
+    //     { label: "Opportunity Territory", value: "" },
+    //     { label: "Holdover Expiration", value: "" },
+    //     { label: "Type", value: "" },
+    //     { label: "Refresh Product Family", value: "" },
+    //     { label: "Created By", value: "" },
+    //   ],
+    //   right: [
+    //     { label: "Territory Override", value: "" },
+    //     { label: "Territory Tracker", value: "" },
+    //     { label: "Deal Alert Sent", value: "" },
+    //     { label: "Quote Submitted", value: "" },
+    //     { label: "Do Not Run Trigger Test", value: "" },
+    //     { label: "Last Modified By", value: "" },
+    //   ],
+    // },
   };
 };
 

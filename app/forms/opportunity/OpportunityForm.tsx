@@ -1,5 +1,7 @@
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+"use client";
+
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
@@ -9,24 +11,43 @@ import {
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
-import DateFnsProvider from "../providers/DateFnsProvider";
-
-type OpportunityFormProps = {
-  formTitle: string;
-  onSuccess: any;
-  onCancel: any;
-  defaultValues?: any;
-};
-
-const initialValues = {};
+import { useRouter } from "next/navigation";
+import DateFnsProvider from "../../providers/DateFnsProvider";
+import { FormProps } from "@/app/types/types";
+import { useOpportunityForm } from "./useOpportunityForm";
 
 export const OpportunityForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
-  defaultValues = initialValues,
+  defaultValues,
+  menuItems,
   ...props
-}: OpportunityFormProps) => {
+}: FormProps) => {
+  const router = useRouter();
+  const { menuOptions, FormatCurrency, setMenuOptions } = useOpportunityForm({
+    menuItems,
+  });
+
+  const keyID = defaultValues.id;
+
+  const onSuccess = async (values: any) => {
+    console.log("Success values", values);
+    let id = keyID;
+    // TODO:
+    // Map menu values to appropriate fields
+    // PUT data
+    if (id) {
+      const data = await fetch("/opportunities/api/new/");
+      // Verify successful response
+    } else {
+      // POST new account
+      // Set id to new account ID
+    }
+    router.push(`/opportunities/view/${id}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
   return (
     <FormWrapper
       title={formTitle}
@@ -43,64 +64,85 @@ export const OpportunityForm = ({
             {/* Opportunity Owner */}
             <AutocompleteElement
               label="Opportunity Owner"
-              name=""
+              name="owner"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Owner}
             />
             {/* Opportunity Name */}
             <TextFieldElement
               label="Opportunity Name"
-              name=""
+              name="name"
               required
               size="small"
             />
             {/* Account Name */}
             <AutocompleteElement
               label="Account Name"
-              name=""
+              name="account"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      <b>{option.name}</b>
+                      <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Opportunity Type */}
             <AutocompleteElement
               label="Opportunity Type"
-              name=""
+              name="opportunityType"
               required
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.OpportunityType}
             />
             {/* Product */}
             <AutocompleteElement
               label="Product"
-              name=""
+              name="product.name"
               required
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.Product}
             />
             {/* Product Family */}
             <AutocompleteElement
               label="Product Family"
-              name=""
+              name="product.family"
               required
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.ProductFamily}
             />
             {/* Interest */}
             <MultiSelectElement
               label="Interest"
-              name=""
+              name="interest"
               required
               preserveOrder
               showChips
               size="small"
-              options={[]}
+              options={menuOptions.Interest}
             />
             {/* Contains New Business */}
             <CheckboxElement
               label="Contains New Business"
-              name=""
+              name="newBusiness"
               size="small"
             />
             {/* Ops Audit */}
@@ -121,7 +163,7 @@ export const OpportunityForm = ({
             {/* Fast Notes/Next Steps */}
             <TextareaAutosizeElement
               label="Fast Notes/Next Steps"
-              name=""
+              name="fastNotes"
               rows={3}
               size="small"
             />
@@ -133,44 +175,49 @@ export const OpportunityForm = ({
               options={[]}
             /> */}
             {/* Migration External ID */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Migration External ID"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
           </Stack>
         </Grid>
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Opportunity Record Type */}
-            <AutocompleteElement
+            {/* <AutocompleteElement
               label="Opportunity Record Type"
               name=""
               required
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
+            /> */}
             {/* Amount */}
             <TextFieldElement
               label="Amount"
-              name=""
-              type="number"
+              name="amount"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* Stage */}
             <AutocompleteElement
               label="Stage"
-              name=""
+              name="stage.name"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                size: "small",
+                onChange: (_, value) => {
+                  setMenuOptions("Status", value);
+                },
+              }}
+              options={menuOptions.Stage}
             />
             {/* Close Date */}
             <DateFnsProvider>
               <DatePickerElement
                 label="Close Date"
-                name=""
+                name="closeDate"
                 required
                 inputProps={{ size: "small" }}
               />
@@ -178,30 +225,33 @@ export const OpportunityForm = ({
             {/* Probability */}
             <TextFieldElement
               label="Probability"
-              name=""
+              name="probability"
               type="number"
               size="small"
             />
             {/* Forecast Status */}
             <AutocompleteElement
               label="Forecast Status"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="forecastStatus"
+              autocompleteProps={{
+                size: "small",
+                disabled: !menuOptions.Status.length,
+              }}
+              options={menuOptions.Status}
             />
             {/* Term (months) */}
             <AutocompleteElement
               label="Term (months)"
-              name=""
+              name="term"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.Term}
             />
             {/* Multi-Year Year 1 Amount */}
             <TextFieldElement
               label="Multi-Year Year 1 Amount"
-              name=""
-              type="number"
+              name="oneYearAmount"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* CHAMPP */}
             {/* <TextareaAutosizeElement
@@ -218,19 +268,23 @@ export const OpportunityForm = ({
             {/* Baseline Renewal Amount */}
             <TextFieldElement
               label="Baseline Renewal Amount"
-              name=""
-              type="number"
+              name="renewal.baselineAmount"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* Services Renewal Amount */}
             <TextFieldElement
               label="Services Renewal Amount"
-              name=""
-              type="number"
+              name="renewal.servicesAmount"
               size="small"
+              InputProps={{ inputComponent: FormatCurrency as any }}
             />
             {/* Multi-Year Add Back */}
-            <CheckboxElement label="Multi-Year Add Back" name="" size="small" />
+            <CheckboxElement
+              label="Multi-Year Add Back"
+              name="renewal.multiYearAddBack"
+              size="small"
+            />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -239,30 +293,30 @@ export const OpportunityForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Baseline Renewal Date"
-                name=""
+                name="renewal.baselineRenewalDate"
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
             {/* Renewal Status */}
             <AutocompleteElement
               label="Renewal Status"
-              name=""
+              name="renewal.status"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.RenewalStatus}
             />
             {/* Renewal Status Comments & Next Steps */}
             <TextareaAutosizeElement
               label="Renewal Status Comments & Next Steps"
-              name=""
+              name="renewal.comments"
               rows={3}
               size="small"
             />
             {/* Resell */}
             <AutocompleteElement
               label="Resell"
-              name=""
+              name="renewal.resell"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.Resell}
             />
           </Stack>
         </Grid>
@@ -378,23 +432,53 @@ export const OpportunityForm = ({
             {/* Originating Partner */}
             <AutocompleteElement
               label="Originating Partner"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="partner.originatingPartner"
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Fulfilling Partner */}
             <AutocompleteElement
               label="Fulfilling Partner"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="partner.fulfillingPartner"
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Referring Partner */}
             <AutocompleteElement
               label="Referring Partner"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="partner.referringPartner"
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
           </Stack>
         </Grid>
@@ -403,12 +487,26 @@ export const OpportunityForm = ({
             {/* Influencing Partner */}
             <AutocompleteElement
               label="Influencing Partner"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              name="partner.influencingPartner"
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Channel Deal */}
-            <CheckboxElement label="Channel Deal" name="" size="small" />
+            <CheckboxElement
+              label="Channel Deal"
+              name="partner.channelDeal"
+              size="small"
+            />
           </Stack>
         </Grid>
         {/* <FormDivider>Solutions Engineering</FormDivider> */}
@@ -552,72 +650,102 @@ export const OpportunityForm = ({
         <Grid item xs={12}>
           <Stack spacing={1}>
             {/* Converted from Lead ID */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Converted from Lead ID"
               name=""
               size="small"
-            />
+            /> */}
             {/* Stage 1 Date */}
-            <TextFieldElement label="Stage 1 Date" name="" size="small" />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Stage 1 Date"
+                name="stage.stageOneDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Stage 2 Date */}
-            <TextFieldElement label="Stage 2 Date" name="" size="small" />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Stage 2 Date"
+                name="stage.stageTwoDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Stage 3 Date */}
-            <TextFieldElement label="Stage 3 Date" name="" size="small" />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Stage 3 Date"
+                name="stage.stageThreeDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Stage 4 Date */}
-            <TextFieldElement label="Stage 4 Date" name="" size="small" />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Stage 4 Date"
+                name="stage.stageFourDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
             {/* Stage 5 Date */}
-            <TextFieldElement label="Stage 5 Date" name="" size="small" />
+            <DateFnsProvider>
+              <DatePickerElement
+                label="Stage 5 Date"
+                name="stage.stageFiveDate"
+                inputProps={{ size: "small" }}
+              />
+            </DateFnsProvider>
           </Stack>
         </Grid>
-        <FormDivider>System Information</FormDivider>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Holdover Expiration */}
-            <DateFnsProvider>
+        {/* <FormDivider>System Information</FormDivider> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Holdover Expiration */}
+        {/* <DateFnsProvider>
               <DatePickerElement
                 label="Holdover Expiration"
                 name=""
                 inputProps={{ size: "small" }}
               />
-            </DateFnsProvider>
-            {/* Type */}
-            <AutocompleteElement
+            </DateFnsProvider> */}
+        {/* Type */}
+        {/* <AutocompleteElement
               label="Type"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Refresh Product Family */}
-            <CheckboxElement
+            /> */}
+        {/* Refresh Product Family */}
+        {/* <CheckboxElement
               label="Refresh Product Family"
               name=""
               size="small"
-            />
-          </Stack>
-        </Grid>
-        <Grid item xs={6}>
-          <Stack spacing={1}>
-            {/* Territory Override */}
-            <AutocompleteElement
+            /> */}
+        {/* </Stack> */}
+        {/* </Grid> */}
+        {/* <Grid item xs={6}> */}
+        {/* <Stack spacing={1}> */}
+        {/* Territory Override */}
+        {/* <AutocompleteElement
               label="Territory Override"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
-            />
-            {/* Territory Tracker */}
-            <TextFieldElement label="Territory Tracker" name="" size="small" />
-            {/* Deal Alert Sent */}
-            <CheckboxElement label="Deal Alert Sent" name="" size="small" />
-            {/* Quote Submitted */}
-            <CheckboxElement label="Quote Submitted" name="" size="small" />
-            {/* Do Not Run Trigger Test */}
-            {/* <CheckboxElement
+            /> */}
+        {/* Territory Tracker */}
+        {/* <TextFieldElement label="Territory Tracker" name="" size="small" /> */}
+        {/* Deal Alert Sent */}
+        {/* <CheckboxElement label="Deal Alert Sent" name="" size="small" /> */}
+        {/* Quote Submitted */}
+        {/* <CheckboxElement label="Quote Submitted" name="" size="small" /> */}
+        {/* Do Not Run Trigger Test */}
+        {/* <CheckboxElement
               label="Do Not Run Trigger Test"
               name=""
               size="small"
             /> */}
-          </Stack>
-        </Grid>
+        {/* </Stack> */}
+        {/* </Grid> */}
       </Grid>
     </FormWrapper>
   );

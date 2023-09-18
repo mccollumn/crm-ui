@@ -1,54 +1,25 @@
-"use client";
+import { ContactForm } from "@/app/forms/contact/ContactForm";
+import { createContactFormData } from "@/app/forms/contact/contactFormUtils";
+import { getContactData, getMenuItems } from "@/app/utils/getData";
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import { ContactForm } from "@/app/forms/ContactForm";
-
-const EditContact = ({ params }: { params: { contactID: string } }) => {
-  const router = useRouter();
-  const [values, setValues] = React.useState<{} | null>(null);
+const EditContact = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
+  const contactDataPromise = getContactData(contactID);
+  const menuItemsPromise = getMenuItems();
+  const [contactData, menuItems] = await Promise.all([
+    contactDataPromise,
+    menuItemsPromise,
+  ]);
+  const contactName = contactData?.ContactDetail?.Contacts_FullName;
+  const values = await createContactFormData(contactData);
 
-  React.useEffect(() => {
-    (async () => {
-      const data = await getContactData(contactID);
-      setValues(data);
-    })();
-  }, [contactID]);
-
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch(`/contacts/api/${contactID}/update/`);
-    // Verify successful response
-    router.push(`/contacts/view/${contactID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
-
-  if (values) {
-    return (
-      <ContactForm
-        formTitle="Edit Contact"
-        onSuccess={onSuccess}
-        onCancel={handleCancel}
-        defaultValues={values}
-      />
-    );
-  }
-  return <div>Loading...</div>;
-};
-
-const getContactData = async (contactID: string) => {
-  // TODO: Retreive contact data.
-  const data = await fetch(
-    `${process.env.API_ENDPOINT}/contacts/api/${contactID}`
+  return (
+    <ContactForm
+      formTitle={`Edit Contact - ${contactName}`}
+      defaultValues={values}
+      menuItems={menuItems}
+    />
   );
-  // return data || {};
-  return {};
 };
 
 export default EditContact;

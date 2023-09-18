@@ -1,5 +1,7 @@
-import { FormWrapper } from "./FormWrapper";
-import { FormDivider } from "./FormDivider";
+"use client";
+
+import { FormWrapper } from "../FormWrapper";
+import { FormDivider } from "../FormDivider";
 import { Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
@@ -8,24 +10,44 @@ import {
   TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
-import DateFnsProvider from "../providers/DateFnsProvider";
-
-type LicenseKeyFormProps = {
-  formTitle: string;
-  onSuccess: any;
-  onCancel: any;
-  defaultValues?: any;
-};
-
-const initialValues = {};
+import { useRouter } from "next/navigation";
+import DateFnsProvider from "../../providers/DateFnsProvider";
+import { FormProps } from "@/app/types/types";
+import { useLicenseKeyForm } from "./useLicenseKeyForm";
 
 export const LicenseKeyForm = ({
   formTitle,
-  onSuccess,
-  onCancel,
-  defaultValues = initialValues,
+  defaultValues,
+  menuItems,
   ...props
-}: LicenseKeyFormProps) => {
+}: FormProps) => {
+  const router = useRouter();
+  const { menuOptions, FormatCurrency, FormatNumber } = useLicenseKeyForm({
+    menuItems,
+  });
+
+  const keyID = defaultValues.id;
+
+  const onSuccess = async (values: any) => {
+    console.log("Success values", values);
+    let id = keyID;
+    // TODO:
+    // Map menu values to appropriate fields
+    // PUT data
+    if (id) {
+      const data = await fetch("/accounts/api/new/");
+      // Verify successful response
+    } else {
+      // POST new account
+      // Set id to new account ID
+    }
+    router.push(`/accounts/view/${id}`);
+  };
+
+  const onCancel = () => {
+    router.back();
+  };
+
   return (
     <FormWrapper
       title={formTitle}
@@ -42,44 +64,55 @@ export const LicenseKeyForm = ({
             {/* License Key */}
             <TextFieldElement
               label="License Key"
-              name=""
+              name="key"
               required
               size="small"
             />
             {/* Account */}
             <AutocompleteElement
               label="Account"
-              name=""
+              name="account"
               required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      <b>{option.name}</b>
+                      <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.Account}
             />
             {/* Key Type */}
             <AutocompleteElement
               label="Key Type"
-              name=""
+              name="type"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.Type}
             />
             {/* Page Views */}
             <TextFieldElement
               label="Page Views"
-              name=""
-              type="number"
+              name="pageViews"
               size="small"
+              InputProps={{ inputComponent: FormatNumber as any }}
             />
             {/* Events */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Events"
               name=""
               type="number"
               size="small"
-            />
+            /> */}
             {/* Maintenance Expiration Date */}
             <DateFnsProvider>
               <DatePickerElement
                 label="Maintenance Expiration Date"
-                name=""
+                name="maintenanceExpirationDate"
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
@@ -88,38 +121,46 @@ export const LicenseKeyForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Parent Key */}
-            <TextFieldElement label="Parent Key" name="" size="small" />
+            <TextFieldElement
+              label="Parent Key"
+              name="parentKey"
+              size="small"
+            />
             {/* Original Version */}
-            <TextFieldElement label="Original Version" name="" size="small" />
+            <TextFieldElement
+              label="Original Version"
+              name="originalVersion"
+              size="small"
+            />
             {/* Version */}
-            <TextFieldElement label="Version" name="" size="small" />
+            <TextFieldElement label="Version" name="version" size="small" />
             {/* Status */}
             <AutocompleteElement
               label="Status"
-              name=""
+              name="status"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.Status}
             />
             {/* System Status */}
             <AutocompleteElement
               label="System Status"
-              name=""
+              name="systemStatus"
               autocompleteProps={{ size: "small" }}
-              options={[]}
+              options={menuOptions.SystemStatus}
             />
             {/* Notes */}
             <TextareaAutosizeElement
               label="Notes"
-              name=""
+              name="notes"
               rows={3}
               size="small"
             />
             {/* Migration External ID */}
-            <TextFieldElement
+            {/* <TextFieldElement
               label="Migration External ID"
               name=""
               size="small"
-            />
+            /> */}
           </Stack>
         </Grid>
         <FormDivider>Auth Key Related Info</FormDivider>
@@ -129,7 +170,7 @@ export const LicenseKeyForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Anniversary Date"
-                name=""
+                name="anniversaryDate"
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
@@ -139,7 +180,7 @@ export const LicenseKeyForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Is Applied */}
-            <CheckboxElement label="Is Applied" name="" size="small" />
+            <CheckboxElement label="Is Applied" name="isApplied" size="small" />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -148,7 +189,7 @@ export const LicenseKeyForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Last Applied Date"
-                name=""
+                name="lastAppliedDate"
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
@@ -158,7 +199,11 @@ export const LicenseKeyForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Activated Version */}
-            <TextFieldElement label="Activated Version" name="" size="small" />
+            <TextFieldElement
+              label="Activated Version"
+              name="activatedVersion"
+              size="small"
+            />
           </Stack>
         </Grid>
         <Grid item xs={6}>
@@ -167,7 +212,7 @@ export const LicenseKeyForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Activation Date"
-                name=""
+                name="activationDate"
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider>
@@ -177,11 +222,22 @@ export const LicenseKeyForm = ({
         <Grid item xs={6}>
           <Stack spacing={1}>
             {/* Key Created By */}
-            <TextFieldElement
+            <AutocompleteElement
               label="Key Created By"
-              name=""
+              name="system.createdBy"
               required
-              size="small"
+              autocompleteProps={{
+                getOptionLabel: (option) => option.name || "",
+                renderOption: (props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                },
+                size: "small",
+              }}
+              options={menuOptions.CreatedBy}
             />
           </Stack>
         </Grid>
@@ -191,7 +247,7 @@ export const LicenseKeyForm = ({
             <DateFnsProvider>
               <DatePickerElement
                 label="Key Created Date"
-                name=""
+                name="system.createdDate"
                 required
                 inputProps={{ size: "small" }}
               />

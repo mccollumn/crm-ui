@@ -11,14 +11,13 @@ import AccountSalesOrders from "@/app/components/accounts/AccountSalesOrders";
 import AccountSalesInvoices from "@/app/components/accounts/AccountSalesInvoices";
 import AccountLicenseKeys from "@/app/components/accounts/AccountLicenseKeys";
 import AccountAssets from "@/app/components/accounts/AccountAssets";
+import { getAccountData } from "@/app/utils/getData";
+import Cases from "@/app/cases/page";
 
-const getAccountName = (accountID: string) => {
-  // TODO: request account name
-  return "Account Name";
-};
-
-const AccountView = ({ params }: { params: { accountID: string } }) => {
+const AccountView = async ({ params }: { params: { accountID: string } }) => {
   const accountID = params.accountID;
+  const accountData = await getAccountData(accountID);
+  const accountName = accountData.AccountDetail.Accounts_Name;
 
   return (
     <div>
@@ -28,7 +27,7 @@ const AccountView = ({ params }: { params: { accountID: string } }) => {
           aria-controls="account-info-content"
           id="account-info-header"
         >
-          <Typography variant="h6">{getAccountName(accountID)}</Typography>
+          <Typography variant="h6">{accountName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-info-content">
           <AccountInformation accountID={accountID} />
@@ -47,6 +46,19 @@ const AccountView = ({ params }: { params: { accountID: string } }) => {
         </AccordionDetails>
       </Accordion>
       <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="account-cases-content"
+          id="account-cases-header"
+        >
+          <Typography variant="h6">Cases</Typography>
+        </AccordionSummary>
+        <AccordionDetails id="account-cases-content">
+          <Cases accountID={accountID} />
+        </AccordionDetails>
+      </Accordion>
+      {/* TODO: Update each of the following components once the API is finished */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="account-opportunities-content"
@@ -81,7 +93,7 @@ const AccountView = ({ params }: { params: { accountID: string } }) => {
         <AccordionDetails id="account-invoices-content">
           <AccountSalesInvoices accountID={accountID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

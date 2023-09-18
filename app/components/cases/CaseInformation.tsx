@@ -5,12 +5,10 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { CaseData } from "../../types/cases";
-import formatDate from "@/app/utils/formatDate";
+import { formatCheckbox, formatCurrency, formatDate } from "@/app/utils/utils";
 import { getCaseData } from "@/app/utils/getData";
 
 const CaseInformation = async ({ caseID }: CaseInformationProps) => {
@@ -120,7 +118,9 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Open Opp Value of Account",
-          value: caseData.CaseInformation.Cases_OpenOppValueOfAccount,
+          value: formatCurrency(
+            caseData.CaseInformation.Cases_OpenOppValueOfAccount
+          ),
         },
       ],
       right: [
@@ -131,18 +131,19 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Date/Time Opened",
-          value: formatDate(caseData.CaseInformation.Cases_CreatedDate, true),
+          value: formatDate(caseData.CaseInformation.Cases_CreatedDate, {
+            time: true,
+          }),
         },
         {
           label: "Date/Time Closed",
-          value: formatDate(caseData.CaseInformation.Cases_ClosedDate, true),
+          value: formatDate(caseData.CaseInformation.Cases_ClosedDate, {
+            time: true,
+          }),
         },
         {
           label: "Hibernate End Date",
-          value: formatDate(
-            caseData.CaseInformation.Cases_HibernateEndDate,
-            true
-          ),
+          value: formatDate(caseData.CaseInformation.Cases_HibernateEndDate),
         },
         { label: "Case Owner", value: caseData.CaseInformation.Owner_Name },
         {
@@ -151,11 +152,7 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Is Escalated",
-          value: !!Number(caseData.CaseInformation.Cases_IsEscalated) ? (
-            <CheckBoxIcon />
-          ) : (
-            <CheckBoxOutlineBlankIcon />
-          ),
+          value: formatCheckbox(caseData.CaseInformation.Cases_IsEscalated),
         },
       ],
     },
@@ -191,11 +188,7 @@ const getCaseInfo = async (caseID: string) => {
         { label: "Severity", value: caseData.CaseProfile.Cases_Severity },
         {
           label: "Is TAM Case",
-          value: !!Number(caseData.CaseProfile.Cases_IsTAMCase) ? (
-            <CheckBoxIcon />
-          ) : (
-            <CheckBoxOutlineBlankIcon />
-          ),
+          value: formatCheckbox(caseData.CaseProfile.Cases_IsTAMCase),
         },
       ],
       fullWidth: [
@@ -229,7 +222,7 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Creation Date",
-          value: formatDate(caseData.CaseInformation.Cases_CreatedDate, true),
+          value: formatDate(caseData.CaseInformation.Cases_CreatedDate),
         },
       ],
       right: [

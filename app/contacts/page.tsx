@@ -2,41 +2,32 @@ import * as React from "react";
 import { Title } from "../components/Title";
 import { ButtonNav } from "../components/navigation/ButtonNav";
 import { DataTable } from "../components/DataTable";
+import { getContactsByAccount, getContacts } from "../utils/getData";
 import "server-only";
 
-const getContacts = async () => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+const Contacts = async ({ accountID }: ContactsProps) => {
+  let contactsList = [];
+  if (accountID) {
+    contactsList = await getContactsByAccount(accountID);
+  } else {
+    contactsList = await getContacts();
   }
-
-  // return res.json();
-  return [{ id: "1", contactName: "Mr. Customer" }];
-};
-
-export default async function Contacts({ accountID = "*" }: ContactsProps) {
-  const contactsList = await getContacts();
 
   return (
     <>
       <Title title="Contacts" />
       <ButtonNav path="/contacts/new">New</ButtonNav>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading contacts...</p>}>
-          <DataTable
-            rows={contactsList}
-            columnDefType="contactsList"
-            // TODO: Update this filed name with correct value for account number
-            queryField="id"
-            queryValue={accountID}
-          />
+          <DataTable rows={contactsList} columnDefType="contactsList" />
         </React.Suspense>
       </div>
     </>
   );
-}
+};
 
 interface ContactsProps {
   accountID?: string;
 }
+
+export default Contacts;

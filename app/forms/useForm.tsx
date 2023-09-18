@@ -1,35 +1,149 @@
-// import { CaseData } from "../types/cases";
-import { CaseFormData } from "./CaseForm";
+import React from "react";
+import { NumericFormat, NumericFormatProps } from "react-number-format";
+import { MenuItem } from "../types/types";
 
-type AllFormData = CaseFormData;
+export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
+  const [options, setOptions] = React.useState<any>(initialMenuOptions);
 
-export const useForm = ({ setData }: UseFormProps) => {
-  const updateFields = (fields: Partial<AllFormData>) => {
-    setData((prev: CaseFormData) => {
-      return { ...prev, ...fields };
-    });
-  };
+  const getMenuOptions = React.useCallback(
+    (menu: string, dependentValue: string = "") => {
+      const optionObjs = menuItems.filter((item: MenuItem) => {
+        if (Array.isArray(item.Menu_DependantValue)) {
+          return (
+            item.Menu_Name === menu &&
+            item.Menu_DependantValue.includes(dependentValue)
+          );
+        } else {
+          return (
+            item.Menu_Name === menu &&
+            item.Menu_DependantValue === dependentValue
+          );
+        }
+      });
+      return optionObjs.map((item: MenuItem) => item.Menu_Display);
+    },
+    [menuItems]
+  );
 
-  // Input ID values must match the field name
-  const handleInputChange = (e: any) => {
-    updateFields({ [e.target.id]: e.target.value });
-  };
+  /**
+   * Sets the options for the provided menu name with the specified dependent value.
+   * The dependent value can be a string or array of strings.
+   */
+  const setMenuOptions = React.useCallback(
+    (menu: string, dependentValue: string = "") => {
+      const optionsArray = getMenuOptions(menu, dependentValue);
+      setOptions((prev: any) => {
+        return { ...prev, [menu]: optionsArray };
+      });
+      return optionsArray;
+    },
+    [getMenuOptions]
+  );
 
-  // Input ID values must match the field name
-  const handleCheckboxChange = (e: any) => {
-    updateFields({ [e.target.id]: e.target.checked });
-  };
+  /**
+   * Appends the options, preserving any existing options,
+   * for the provided menu name with the specified dependent value.
+   * The dependent value can be a string or array of strings.
+   */
+  const appendMenuOptions = React.useCallback(
+    (menu: string, dependentValue: string = "") => {
+      const optionsArray = getMenuOptions(menu, dependentValue);
+      setOptions((prev: any) => {
+        return { ...prev, [menu]: [...prev[menu], ...optionsArray] };
+      });
+      return optionsArray;
+    },
+    [getMenuOptions]
+  );
+
+  /**
+   * Sets the provided options for the specified menu.
+   */
+  const setCustomMenuOptions = React.useCallback(
+    (menu: string, optionsArray: any[]) => {
+      setOptions((prev: any) => {
+        return { ...prev, [menu]: optionsArray };
+      });
+      return optionsArray;
+    },
+    []
+  );
+
+  /**
+   * Custom inputComponent that formats the input value as currency (USD).
+   */
+  const FormatCurrency = React.forwardRef<NumericFormatProps, CustomInputProps>(
+    function NumericFormatCustom(props, ref) {
+      const { onChange, ...other } = props;
+
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+          prefix="$"
+        />
+      );
+    }
+  );
+
+  /**
+   * Custom inputComponent that formats the input value as a number.
+   */
+  const FormatNumber = React.forwardRef<NumericFormatProps, CustomInputProps>(
+    function NumericFormatCustom(props, ref) {
+      const { onChange, ...other } = props;
+
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+        />
+      );
+    }
+  );
 
   return {
-    updateFields,
-    handleInputChange,
-    handleCheckboxChange,
+    setMenuOptions,
+    setCustomMenuOptions,
+    appendMenuOptions,
+    menuOptions: options,
+    FormatCurrency,
+    FormatNumber,
   };
 };
 
+interface CustomInputProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
 interface UseFormProps {
   /**
-   * React useState setter function for form data
+   * Array of all possible menu options.
    */
-  setData: React.Dispatch<React.SetStateAction<CaseFormData>>;
+  menuItems: MenuItem[];
+  /**
+   * Initial menu options used to populate a new form.
+   */
+  initialMenuOptions?: any;
 }

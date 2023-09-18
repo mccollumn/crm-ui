@@ -1,29 +1,22 @@
-"use client";
+import { QuoteForm } from "@/app/forms/quote/QuoteForm";
+import { createQuoteFormData } from "@/app/forms/quote/quoteFormUtils";
+import { getMenuItems } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { QuoteForm } from "@/app/forms/QuoteForm";
-
-const NewQuote = ({ params }: { params: { opportunityID: string } }) => {
-  const router = useRouter();
+const NewQuote = async ({ params }: { params: { opportunityID: string } }) => {
   const opportunityID = params.opportunityID;
-
-  const onSuccess = (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/opportunities/view/${opportunityID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+  const menuItemsPromise = getMenuItems();
+  const valuesPromise = createQuoteFormData();
+  const [menuItems, values] = await Promise.all([
+    menuItemsPromise,
+    valuesPromise,
+  ]);
 
   return (
     <QuoteForm
       formTitle="New Quote"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
+      defaultValues={values}
+      menuItems={menuItems}
+      opportunityID={opportunityID}
     />
   );
 };

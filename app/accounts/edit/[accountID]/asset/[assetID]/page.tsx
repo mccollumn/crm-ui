@@ -1,44 +1,29 @@
-"use client";
+import { AssetForm } from "@/app/forms/asset/AssetForm";
+import { createAssetFormData } from "@/app/forms/asset/assetFormUtils";
+import { getAssetData, getMenuItems } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { AssetForm } from "@/app/forms/AssetForm";
-
-const EditAsset = ({
+const EditAsset = async ({
   params,
 }: {
   params: { accountID: string; assetID: string };
 }) => {
-  const router = useRouter();
-
   const accountID = params.accountID;
   const assetID = params.assetID;
-  const values = getAssetData(assetID);
-
-  const onSuccess = (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/accounts/view/${accountID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+  const assetDataPromise = getAssetData(assetID);
+  const menuItemsPromise = getMenuItems();
+  const [assetData, menuItems] = await Promise.all([
+    assetDataPromise,
+    menuItemsPromise,
+  ]);
+  const values = await createAssetFormData(accountID, assetData);
 
   return (
     <AssetForm
       formTitle="Edit Asset"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
       defaultValues={values}
+      menuItems={menuItems}
     />
   );
-};
-
-const getAssetData = (assetID: string) => {
-  // TODO: Retreive  data.
-  return {};
 };
 
 export default EditAsset;

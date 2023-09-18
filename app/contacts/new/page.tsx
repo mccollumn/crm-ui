@@ -1,31 +1,16 @@
-"use client";
+import { ContactForm } from "@/app/forms/contact/ContactForm";
+import { createContactFormData } from "@/app/forms/contact/contactFormUtils";
+import { getMenuItems } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { ContactForm } from "@/app/forms/ContactForm";
-
-const NewContact = () => {
-  const router = useRouter();
-
-  const onSuccess = async (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    const data = await fetch("/contacts/api/new/");
-    // Verify successful response
-    // Get ID
-    const contactID = "";
-    router.push(`/contacts/view/${contactID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+const NewContact = async () => {
+  const menuItems = await getMenuItems();
+  const values = await createContactFormData();
 
   return (
     <ContactForm
       formTitle="New Contact"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
+      defaultValues={values}
+      menuItems={menuItems}
     />
   );
 };

@@ -1,44 +1,38 @@
-"use client";
+import { ContactRoleForm } from "@/app/forms/contactRole/ContactRoleForm";
+import { createContactRoleFormData } from "@/app/forms/contactRole/contactRoleFormUtils";
+import { ContactRole } from "@/app/types/opportunities";
+import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 
-import { useRouter } from "next/navigation";
-import { ContactRoleForm } from "@/app/forms/ContactRoleForm";
-
-const EditContactRole = ({
+const EditContactRole = async ({
   params,
 }: {
   params: { opportunityID: string; roleID: string };
 }) => {
-  const router = useRouter();
-
   const opportunityID = params.opportunityID;
   const roleID = params.roleID;
-  const values = getContactRoleData(roleID);
 
-  const onSuccess = (values: any) => {
-    console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/opportunities/view/${opportunityID}`);
-  };
-
-  const handleCancel = () => {
-    router.back();
-  };
+  const opportunityDataPromise: Promise<any> =
+    getOpportunityData(opportunityID);
+  const menuItemsPromise = getMenuItems();
+  const [opportunityData, menuItems] = await Promise.all([
+    opportunityDataPromise,
+    menuItemsPromise,
+  ]);
+  const contactRoleData = opportunityData.OpportunityQuoteContactRoles.find(
+    (contactRole: ContactRole) =>
+      contactRole.OpportunityContactRoles_ID === roleID
+  );
+  const values = await createContactRoleFormData(contactRoleData);
+  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
 
   return (
     <ContactRoleForm
       formTitle="Edit Contact Role"
-      onSuccess={onSuccess}
-      onCancel={handleCancel}
       defaultValues={values}
+      menuItems={menuItems}
+      accountID={accountID}
     />
   );
-};
-
-const getContactRoleData = async (roleID: string) => {
-  // TODO: Retreive data.
-  return {};
 };
 
 export default EditContactRole;

@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { getCaseData } from "@/app/utils/getData";
 
-export default async function CaseHistory({ caseID }: CaseHistoryProps) {
+const CaseHistory = async ({ caseID }: CaseHistoryProps) => {
   const caseData = await getCaseData(caseID);
   const rows = caseData?.CaseHistory || [];
 
@@ -15,8 +15,10 @@ export default async function CaseHistory({ caseID }: CaseHistoryProps) {
       </div>
     </>
   );
-}
+};
 
 interface CaseHistoryProps {
   caseID: string;
 }
+
+export default CaseHistory;
