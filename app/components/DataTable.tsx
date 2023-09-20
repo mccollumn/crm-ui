@@ -798,6 +798,7 @@ export const DataTable = ({
       //   paginationMode="server"
       getRowId={(row) => row[rowIDs[columnDefType]]}
       {...props}
+      autoHeight
     />
   );
 };
