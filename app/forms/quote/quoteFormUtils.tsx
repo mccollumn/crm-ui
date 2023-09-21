@@ -1,5 +1,5 @@
 import { OpportunityData, Quote } from "@/app/types/opportunities";
-import { QuoteData } from "@/app/types/quotes";
+import { QuoteData, QuoteFormData } from "@/app/types/quotes";
 import { getDefaultOwner } from "@/app/utils/forms";
 import { getOpportunityData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
@@ -15,7 +15,7 @@ const generateInitialQuoteFormData = async (
   const opportunityID = quoteData?.QuoteDetail.Quotes_OpportunityID;
   const opportunityName = quoteData?.QuoteDetail.Opportunities_Name;
 
-  const initialOpportunityFormData = {
+  const initialOpportunityFormData: QuoteFormData = {
     id: null,
     name: null,
     owner: defaultOwner,

@@ -76,3 +76,44 @@ interface CaseComments {
   CaseComments_LastModifiedById?: string | null;
   CaseComments_LastModifiedDate?: string | null;
 }
+
+export type CaseFormData = {
+  caseID?: string | null;
+  caseNumber?: string | null;
+  subject?: string | null;
+  account: {
+    id?: string | null;
+    name?: string | null;
+    site?: string | null;
+    description?: string | null;
+  };
+  contact: {
+    id?: string | null;
+    name?: string | null;
+    email?: string | null;
+    fax?: string | null;
+    phone?: string | null;
+    mobile?: string | null;
+  };
+  origin?: string | null;
+  status?: string | null;
+  subStatus?: string | null;
+  hibernateEndDate?: string | null;
+  owner: { id?: string | null; name?: string | null };
+  subOwner: { id?: string | null; name?: string | null };
+  product: {
+    deliveryMethod?: string | null;
+    name?: string | null;
+    version?: string | null;
+    subVersion?: string | null;
+  };
+  bugNumber?: string | null;
+  bugDescription?: string | null;
+  type?: string | null;
+  reason?: string | null;
+  category?: string | null;
+  priority?: string | null;
+  severity?: string | null;
+  isTamCase?: boolean | null;
+  description?: string | null;
+};

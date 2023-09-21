@@ -45,3 +45,33 @@ interface SystemInfo {
   LastModifiedBy_Name: string | null;
   LicenseKeys_LastModifiedDate: string | null;
 }
+
+export type LicenseKeyFormData = {
+  id?: string | null;
+  key?: string | null;
+  account: {
+    id?: string | null;
+    name?: string | null;
+  };
+  type?: string | null;
+  pageViews?: string | null;
+  maintenanceExpirationDate?: string | null;
+  parentKey?: string | null;
+  originalVersion?: string | null;
+  version?: string | null;
+  status?: string | null;
+  systemStatus?: string | null;
+  notes?: string | null;
+  anniversaryDate?: string | null;
+  isApplied?: boolean | null;
+  lastAppliedDate?: string | null;
+  activatedVersion?: string | null;
+  activationDate?: string | null;
+  system: {
+    createdBy: {
+      id?: string | null;
+      name?: string | null;
+    };
+    createdDate?: string | null;
+  };
+};

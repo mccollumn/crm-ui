@@ -68,3 +68,46 @@ interface ContactSystemInformation {
   Contacts_LastReferencedDate?: string | null;
   Contacts_LastViewedDate?: string | null;
 }
+
+export type ContactFormData = {
+  contactID?: string | null;
+  owner: { id?: string | null; name?: string | null };
+  firstName?: string | null;
+  lastName?: string | null;
+  account: { id?: string | null; name?: string | null };
+  title?: string | null;
+  jobRole?: string | null;
+  contactRole?: string | null;
+  email?: string | null;
+  unconfirmedEmail?: boolean | null;
+  relationship?: string | null;
+  contactStatus?: string | null;
+  phone?: string | null;
+  mobile?: string | null;
+  otherPhone?: string | null;
+  namedSupportContact?: boolean | null;
+  supportContactAdmin?: boolean | null;
+  doNotSendSupportSurvey?: boolean | null;
+  communication: {
+    doNotRemarket?: boolean | null;
+    doNotCall?: boolean | null;
+    emailOptOut?: boolean | null;
+    postalMailOptOut?: boolean | null;
+  };
+  address: {
+    mailing: {
+      street?: string | null;
+      city?: string | null;
+      state?: string | null;
+      postalCode?: string | null;
+      country?: string | null;
+    };
+    other: {
+      street?: string | null;
+      city?: string | null;
+      state?: string | null;
+      postalCode?: string | null;
+      country?: string | null;
+    };
+  };
+};

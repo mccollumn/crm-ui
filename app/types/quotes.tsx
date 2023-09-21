@@ -113,3 +113,42 @@ interface QuoteSalesOrder {
   SalesOrders_Name: string | null;
   SalesOrders_Total: string | null;
 }
+
+export type QuoteFormData = {
+  id?: string | null;
+  name?: string | null;
+  owner: {
+    id?: string | null;
+    name?: string | null;
+  };
+  opportunity: {
+    id?: string | null;
+    name?: string | null;
+  };
+  isChannel?: boolean | null;
+  quoteComments?: string | null;
+  status?: string | null;
+  officeLocation?: string | null;
+  currencyCode?: string | null;
+  totalPrice?: string | null;
+  USDTotalPrice?: string | null;
+  validThrough?: Date | null;
+  USDTotalOneYearAmount?: string | null;
+  isPrimary?: boolean | null;
+  lastSendDate?: Date | null;
+  payment: {
+    method?: string | null;
+    docNumber?: string | null;
+    billingFrequency?: string | null;
+    terms?: string | null;
+  };
+  comments: {
+    exchangeRate?: number | null;
+    discountReason?: string | null;
+    discountReasons?: string | null;
+  };
+  entitlements: {
+    pageViews?: string | null;
+    existingPageViews?: string | null;
+  };
+};

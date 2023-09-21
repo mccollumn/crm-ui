@@ -1,4 +1,4 @@
-import { ContactData } from "@/app/types/contacts";
+import { ContactData, ContactFormData } from "@/app/types/contacts";
 import { getDefaultOwner } from "@/app/utils/forms";
 
 /**
@@ -8,7 +8,7 @@ import { getDefaultOwner } from "@/app/utils/forms";
 const generateInitialContactFormData = async () => {
   const defaultOwner = await getDefaultOwner();
 
-  const initialContactFormData = {
+  const initialContactFormData: ContactFormData = {
     contactID: null,
     owner: defaultOwner,
     // salutation: null,

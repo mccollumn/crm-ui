@@ -1,4 +1,4 @@
-import { AssetData } from "@/app/types/assets";
+import { AssetData, AssetFormData } from "@/app/types/assets";
 import { AccountData } from "@/app/types/accounts";
 import { getAccountData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
@@ -10,7 +10,7 @@ import { unEscape } from "@/app/utils/utils";
 const generateInitialAssetFormData = async (accountID: string) => {
   const accountData: AccountData = await getAccountData(accountID);
 
-  const initialAssetFormData = {
+  const initialAssetFormData: AssetFormData = {
     id: null,
     name: null,
     serialNumber: null,

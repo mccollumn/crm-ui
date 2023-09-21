@@ -18,6 +18,7 @@ const EditAccount = async ({ params }: { params: { accountID: string } }) => {
       formTitle={`Edit Account - ${accountName}`}
       defaultValues={values}
       menuItems={menuItems}
+      accountData={accountData}
     />
   );
 };

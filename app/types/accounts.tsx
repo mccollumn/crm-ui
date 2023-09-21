@@ -120,3 +120,78 @@ interface LicenseKey {
   LicenseKeys_ParentKey?: string | null;
   LicenseKeys_KeyCreatedDate?: string | null;
 }
+
+export type AccountFormData = {
+  accountID?: string | null;
+  name?: string | null;
+  alternateName?: string | null;
+  owner: {
+    id?: string | null;
+    name?: string | null;
+  };
+  type: {
+    id?: string | null;
+    value?: string | null;
+  };
+  phone?: string | null;
+  orderValue: {
+    id?: string | null;
+    accountID?: string | null;
+    total?: string | null;
+    analytics?: string | null;
+    services?: string | null;
+    other?: string | null;
+    consulting?: string | null;
+    training?: string | null;
+    partnerProducts?: string | null;
+  };
+  isFederalState?: boolean | null;
+  governmentType?: string | null;
+  superRegion?: string | null;
+  address: {
+    id?: string | null;
+    billing: {
+      street?: string | null;
+      city?: string | null;
+      state?: string | null;
+      postalCode?: string | null;
+      country?: string | null;
+    };
+    shipping: {
+      street?: string | null;
+      city?: string | null;
+      state?: string | null;
+      postalCode?: string | null;
+      country?: string | null;
+    };
+  };
+  collections: {
+    id?: string | null;
+    accountID?: string | null;
+    contact: {
+      id?: string | null;
+      name?: string | null;
+    };
+    statusID?: string | null;
+    status?: string | null;
+    pastDueAmount?: string | null;
+    suspensionDate?: Date | null;
+    passedToDebtCollectionDate?: Date | null;
+    correspondence?: string | null;
+    creditHold?: boolean | null;
+    supportAccountAlert?: string | null;
+    noSupport?: boolean | null;
+    servicesToSuspend?: string | null;
+    serviceSuspensionDate?: Date | null;
+    lastConversationNote?: string | null;
+  };
+  entitlement: {
+    id?: string | null;
+    serverCalls?: string | null;
+    installations?: string | null;
+    termLicense?: boolean | null;
+    baseMntExpireDate?: Date | null;
+    mntExpireDate?: Date | null;
+    activatedVersion?: string | null;
+  };
+};

@@ -14,34 +14,40 @@ import { Grid, Stack } from "@mui/material";
 import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAccountForm } from "./useAccountForm";
+import { AccountData } from "@/app/types/accounts";
+
+interface AccountFormProps extends FormProps {
+  accountData?: AccountData;
+}
 
 export const AccountForm = ({
   formTitle,
   defaultValues,
   menuItems,
+  accountData,
   ...props
-}: FormProps) => {
+}: AccountFormProps) => {
   const router = useRouter();
-  const { menuOptions, FormatCurrency, FormatNumber } = useAccountForm({
+  const {
+    menuOptions,
+    FormatCurrency,
+    FormatNumber,
+    createAccountFormSubmissionData,
+  } = useAccountForm({
     menuItems,
   });
 
-  const accountID = defaultValues.accountID;
-
   const onSuccess = async (values: any) => {
     console.log("Success values", values);
-    let id = accountID;
-    // TODO:
-    // Map menu values to appropriate fields
-    // PUT data
-    if (id) {
-      const data = await fetch("/accounts/api/new/");
-      // Verify successful response
-    } else {
-      // POST new account
-      // Set id to new account ID
-    }
-    router.push(`/accounts/view/${id}`);
+
+    // TODO
+    const data = createAccountFormSubmissionData(values, accountData);
+    console.log("Submitted Data:", data);
+    // Submit
+    const response = await fetch("/route/to/submit");
+    // Verify successful response
+    // Set id to account ID from response
+    // router.push(`/accounts/view/${id}`);
   };
 
   const onCancel = () => {
@@ -395,16 +401,16 @@ export const AccountForm = ({
               type="number"
               size="small"
             /> */}
-        {/* PO Required */}
+        {/* PO required */}
         {/* <AutocompleteElement
-              label="PO Required"
+              label="PO required"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
-        {/* PO Required Notes */}
+        {/* PO required Notes */}
         {/* <TextareaAutosizeElement
-              label="PO Required Notes"
+              label="PO required Notes"
               name=""
               rows={3}
               size="small"
@@ -454,7 +460,6 @@ export const AccountForm = ({
             <TextFieldElement
               label="Collection Past Due Amount"
               name="collections.pastDueAmount"
-              type="number"
               size="small"
               InputProps={{ inputComponent: FormatCurrency as any }}
             />

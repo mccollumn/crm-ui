@@ -1,5 +1,5 @@
 import { AccountData } from "@/app/types/accounts";
-import { LicenseKeyData } from "@/app/types/licenseKeys";
+import { LicenseKeyData, LicenseKeyFormData } from "@/app/types/licenseKeys";
 import { getAccountData } from "@/app/utils/getData";
 
 /**
@@ -9,7 +9,7 @@ import { getAccountData } from "@/app/utils/getData";
 const generateInitialLicenseKeyFormData = async (accountID: string) => {
   const accountData: AccountData = await getAccountData(accountID);
 
-  const initialLicenseKeyFormData = {
+  const initialLicenseKeyFormData: LicenseKeyFormData = {
     id: null,
     key: null,
     account: {

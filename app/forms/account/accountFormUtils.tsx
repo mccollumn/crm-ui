@@ -1,4 +1,4 @@
-import { AccountData } from "@/app/types/accounts";
+import { AccountData, AccountFormData } from "@/app/types/accounts";
 import { getDefaultOwner } from "@/app/utils/forms";
 
 /**
@@ -8,7 +8,7 @@ import { getDefaultOwner } from "@/app/utils/forms";
 const generateInitialAccountFormData = async () => {
   const defaultOwner = await getDefaultOwner();
 
-  const initialAccountFormData = {
+  const initialAccountFormData: AccountFormData = {
     accountID: null,
     name: null,
     alternateName: null,
@@ -28,6 +28,8 @@ const generateInitialAccountFormData = async () => {
     // migrationExternalID: null,
     phone: null,
     orderValue: {
+      id: null,
+      accountID: null,
       total: null,
       analytics: null,
       //   vdm: null,
@@ -40,7 +42,7 @@ const generateInitialAccountFormData = async () => {
       training: null,
       partnerProducts: null,
     },
-    isFederalState: false,
+    isFederalState: null,
     governmentType: null,
     // territory: null,
     // region: null,
@@ -48,6 +50,7 @@ const generateInitialAccountFormData = async () => {
     // msa: null,
     // partnerStatus: null,
     address: {
+      id: null,
       billing: {
         street: null,
         city: null,
@@ -64,6 +67,8 @@ const generateInitialAccountFormData = async () => {
       },
     },
     collections: {
+      id: null,
+      accountID: null,
       contact: {
         id: null,
         name: null,
@@ -74,9 +79,9 @@ const generateInitialAccountFormData = async () => {
       suspensionDate: null,
       passedToDebtCollectionDate: null,
       correspondence: null,
-      creditHold: false,
+      creditHold: null,
       supportAccountAlert: null,
-      noSupport: false,
+      noSupport: null,
       // serviceSuspended: false, // Not currently included
       servicesToSuspend: null,
       serviceSuspensionDate: null,
@@ -113,10 +118,11 @@ const generateInitialAccountFormData = async () => {
     // },
     // supportOverrideForEntitlement: false,
     entitlement: {
+      id: null,
       serverCalls: null,
       // events: null,
       installations: null,
-      termLicense: false,
+      termLicense: null,
       baseMntExpireDate: null,
       mntExpireDate: null,
       // extMntExpireDate: null,
@@ -144,11 +150,6 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     accountID: accountData.AccountDetail.Accounts_AccountID,
     name: accountData.AccountDetail.Accounts_Name,
     alternateName: accountData.AccountDetail.Accounts_AlternateAccountName,
-    // parentAccount: {
-    //   id: null,
-    //   name: null,
-    //   site: null,
-    // },
     owner: {
       id: accountData.AccountDetail.Accounts_OwnerId,
       name: accountData.AccountDetail.OwnerName,
@@ -156,20 +157,14 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     type: {
       id: accountData.AccountDetail.Accounts_Type,
       value: accountData.AccountDetail.AccountType_Description,
-      //   lastChangeDate: null,
     },
-    // miscInfo: null,
-    // migrateToNewOrg: null,
-    // migrationExternalID: null,
     phone: accountData.AccountDetail.Accounts_Phone,
     orderValue: {
+      id: accountData.TotalOrderValue.AccountsTotal_ID,
+      accountID: accountData.TotalOrderValue.AccountsTotal_AccountID,
       total: accountData.TotalOrderValue.AccountsTotal_OrderValue,
       analytics: accountData.TotalOrderValue.AccountsTotal_Analytics,
-      //   vdm: null,
-      //   optimize: null,
       services: accountData.TotalOrderValue.AccountsTotal_Services,
-      //   ads: null,
-      //   apps: null,
       other: accountData.TotalOrderValue.AccountsTotal_Other,
       consulting: accountData.TotalOrderValue.AccountsTotal_Consulting,
       training: accountData.TotalOrderValue.AccountsTotal_Training,
@@ -178,12 +173,9 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     },
     isFederalState: !!Number(accountData.AccountDetail.Accounts_IsFedState),
     governmentType: accountData.AccountDetail.Accounts_GovtType,
-    // territory: null,
-    // region: null,
     superRegion: accountData.AccountDetail.Accounts_Super_Region,
-    // msa: null,
-    // partnerStatus: null,
     address: {
+      id: accountData.AddressInformation.AccountsAddress_ID,
       billing: {
         street: accountData.AddressInformation.AccountsAddress_BillingStreet,
         city: accountData.AddressInformation.AccountsAddress_BillingCity,
@@ -202,6 +194,8 @@ export const createAccountFormData = async (accountData?: AccountData) => {
       },
     },
     collections: {
+      id: accountData.Collections.AccountsCollection_ID,
+      accountID: accountData.Collections.AccountsCollection_AccountID,
       contact: {
         id: accountData.Collections.AccountsCollection_ContactID,
         name: accountData.Collections.Contact_Fullname,
@@ -217,7 +211,6 @@ export const createAccountFormData = async (accountData?: AccountData) => {
       creditHold: !!Number(accountData.AccountCreditStatus.AccountsCredit_Hold),
       supportAccountAlert: accountData.Collections.Accounts_Alert,
       noSupport: !!Number(accountData.Collections.Accounts_NoTechnicalSupport),
-      // serviceSuspended: false, // Not currently included
       servicesToSuspend:
         accountData.Collections.AccountsCollection_ServicesToBeSuspended,
       serviceSuspensionDate:
@@ -225,40 +218,10 @@ export const createAccountFormData = async (accountData?: AccountData) => {
       lastConversationNote:
         accountData.Collections.AccountsCollection_LastConversationNote,
     },
-    // opCustomer: true,
-    // annualServerCalls: null,
-    // alexaRanking: null,
-    // alexaRankingTop10k: null,
-    // eCommerce: false,
-    // monthlyAdSpend: null,
-    // comScore: {
-    //   annualPageViewa: null,
-    //   dailyVisitors: null,
-    //   ranking: null,
-    //   uniqueMonthlyVisitors: null,
-    // },
-    // demographics: {
-    //   legalName: null,
-    //   industry: null,
-    //   annualRevenue: null,
-    //   employees: null,
-    //   locationType: null,
-    //   ownership: null,
-    //   taxExpemt: false,
-    //   taxExemptID: null,
-    //   tickerSymbol: null,
-    //   sicCode: null,
-    //   sicDescription: null,
-    // },
-    // contract: {
-    //   odMaxEndDate: null,
-    //   adsMaxEndDate: null,
-    // },
-    // supportOverrideForEntitlement: false,
     entitlement: {
+      id: accountData.SoftwareEntitlements.AccountsSoftware_ID,
       serverCalls:
         accountData.SoftwareEntitlements.AccountsSoftware_Entitled_Server_Calls,
-      // events: null,
       installations:
         accountData.SoftwareEntitlements.AccountsSoftware_Installations,
       termLicense: !!Number(
@@ -269,7 +232,6 @@ export const createAccountFormData = async (accountData?: AccountData) => {
           .AccountsSoftware_Base_Mnt_Expiration_Date,
       mntExpireDate:
         accountData.SoftwareEntitlements.AccountsSoftware_Mnt_Expiration_Date,
-      // extMntExpireDate: null,
       activatedVersion:
         accountData.SoftwareEntitlements
           .AccountsSoftware_Most_Recent_Activated_Version,

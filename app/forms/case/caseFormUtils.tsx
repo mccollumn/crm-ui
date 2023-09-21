@@ -1,4 +1,4 @@
-import { CaseData } from "../../types/cases";
+import { CaseData, CaseFormData } from "../../types/cases";
 import { getDefaultOwner } from "@/app/utils/forms";
 
 /**
@@ -8,7 +8,7 @@ import { getDefaultOwner } from "@/app/utils/forms";
 const generateInitialCaseFormData = async () => {
   const defaultOwner = await getDefaultOwner();
 
-  const initialCaseFormData = {
+  const initialCaseFormData: CaseFormData = {
     caseID: null,
     caseNumber: null,
     subject: null,

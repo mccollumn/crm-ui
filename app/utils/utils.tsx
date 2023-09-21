@@ -90,6 +90,29 @@ export const unEscape = (str: string) => {
 };
 
 /**
+ * Converts a date to an ISO formatted string.
+ * @param date Date object or date string.
+ * @returns ISO formatted date string.
+ */
+export const convertDateToISOString = (date: Date | null | undefined) => {
+  if (!date) return date;
+  return new Date(date).toISOString();
+};
+
+/**
+ * Converts a boolean to a string.
+ * @param bool Boolean value.
+ * @returns String with value of either "0" or "1".
+ */
+export const convertBooleanToString = (
+  bool: boolean | string | null | undefined
+) => {
+  if (bool === null) return "0";
+  if (bool === "0") return "0";
+  return bool ? "1" : "0";
+};
+
+/**
  * Converts a delimited string into an array.
  * @param str String to convert to array.
  * @param delimiter Delimiter used to split the string. Default semicolon.
@@ -101,4 +124,59 @@ export const convertStringToArray = (
 ) => {
   if (!str) return str;
   return str.split(delimiter);
+};
+
+/**
+ * Returns an object with all keys with null values removed.
+ * The object can have one level of nesting.
+ * @param obj Object to iterate over.
+ * @returns Object with no nulls.
+ */
+export const removeNullsFromObject = (obj: any) => {
+  let result = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] && typeof obj[key] === "object") {
+      const subObj = obj[key];
+      let subResult = {};
+      Object.keys(subObj).forEach((subKey) => {
+        if (subObj[subKey] !== null) {
+          subResult = { ...subResult, [subKey]: subObj[subKey] };
+        }
+      });
+      if (!isObjectEmpty(subResult)) {
+        result = { ...result, [key]: { ...subResult } };
+      }
+    } else if (obj[key] !== null) {
+      result = { ...result, [key]: obj[key] };
+    }
+  });
+  return result;
+};
+
+/**
+ * Returns an object that only contains the form values that changed.
+ * @param formData Form data being submitted.
+ * @param origData Data used to initially populate the form.
+ * @returns Object with only values that were modified.
+ */
+export const getChangedValues = (formData: any, origData: any) => {
+  if (!origData) return formData;
+  let result = {};
+  Object.keys(formData).forEach((key) => {
+    if (formData[key] && typeof formData[key] === "object") {
+      const subObj = formData[key];
+      let subResult = {};
+      Object.keys(subObj).forEach((subKey) => {
+        if (subObj[subKey] !== origData[key][subKey]) {
+          subResult = { ...subResult, [subKey]: subObj[subKey] };
+        }
+      });
+      if (!isObjectEmpty(subResult)) {
+        result = { ...result, [key]: { ...subResult } };
+      }
+    } else if (formData[key] !== origData[key]) {
+      result = { ...result, [key]: formData[key] };
+    }
+  });
+  return result;
 };

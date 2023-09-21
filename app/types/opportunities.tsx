@@ -173,3 +173,54 @@ interface Product {
   OpportunityLineItems_TotalPrice: string | null;
   OpportunityLineItems_UnitPrice: string | null;
 }
+
+export type OpportunityformData = {
+  id?: string | null;
+  name?: string | null;
+  owner: {
+    id?: string | null;
+    name?: string | null;
+  };
+  account: {
+    id?: string | null;
+    name?: string | null;
+  };
+  opportunityType?: string | null;
+  product: {
+    name?: string | null;
+    family?: string | null;
+  };
+  interest?: string | null;
+  newBusiness?: boolean | null;
+  fastNotes?: string | null;
+  amount?: string | null;
+  closeDate?: Date | null;
+  probability?: string | null;
+  forecastStatus?: string | null;
+  term?: string | null;
+  oneYearAmount?: string | null;
+  renewal: {
+    baselineAmount?: string | null;
+    servicesAmount?: string | null;
+    multiYearAddBack?: boolean | null;
+    baselineRenewalDate?: Date | null;
+    status?: string | null;
+    comments?: string | null;
+    resell?: string | null;
+  };
+  partner: {
+    originatingPartner?: string | null;
+    fulfillingPartner?: string | null;
+    referringPartner?: string | null;
+    influencingPartner?: string | null;
+    channelDeal?: boolean | null;
+  };
+  stage: {
+    name?: string | null;
+    stageOneDate?: Date | null;
+    stageTwoDate?: Date | null;
+    stageThreeDate?: Date | null;
+    stageFourDate?: Date | null;
+    stageFiveDate?: Date | null;
+  };
+};
