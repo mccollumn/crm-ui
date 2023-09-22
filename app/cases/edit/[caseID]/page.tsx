@@ -18,6 +18,7 @@ const EditCase = async ({ params }: { params: { caseID: string } }) => {
       formTitle={`Edit Case - ${caseNumber}`}
       defaultValues={values}
       menuItems={menuItems}
+      caseData={caseData}
     />
   );
 };

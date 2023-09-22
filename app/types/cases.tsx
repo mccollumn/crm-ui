@@ -1,8 +1,8 @@
 export interface CaseData {
   CaseInformation: CaseInformation;
   CaseProfile: CaseProfile;
-  CaseEmails: CaseEmails[];
-  CaseComments: CaseComments[];
+  CaseEmails: CaseEmail[];
+  CaseComments: CaseComment[];
 }
 
 export interface CaseInformation {
@@ -57,7 +57,7 @@ export interface CaseProfile {
   Cases_Type?: string | null;
 }
 
-interface CaseEmails {
+interface CaseEmail {
   EmailMessages_ID: string;
   EmailMessages_FromAddress: string;
   EmailMessages_HasAttachment: "0" | "1";
@@ -66,7 +66,7 @@ interface CaseEmails {
   EmailMessages_Subject: string;
 }
 
-interface CaseComments {
+export interface CaseComment {
   CaseComments_ID: string;
   CaseComments_CommentBody: string;
   CaseComments_CreatedById?: string | null;
@@ -98,7 +98,7 @@ export type CaseFormData = {
   origin?: string | null;
   status?: string | null;
   subStatus?: string | null;
-  hibernateEndDate?: string | null;
+  hibernateEndDate?: Date | null;
   owner: { id?: string | null; name?: string | null };
   subOwner: { id?: string | null; name?: string | null };
   product: {
@@ -116,4 +116,10 @@ export type CaseFormData = {
   severity?: string | null;
   isTamCase?: boolean | null;
   description?: string | null;
+};
+
+export type CaseCommentFormData = {
+  caseID?: string | null;
+  comment?: string | null;
+  isPublic?: boolean | null;
 };

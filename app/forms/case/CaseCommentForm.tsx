@@ -2,35 +2,52 @@
 
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
-import { Grid, Stack } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
 import { CheckboxElement, TextareaAutosizeElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
-
-type CaseCommentFormProps = {
-  formTitle: string;
-  caseID: string;
-  defaultValues?: any;
-};
-
-const initialValues = {
-  CaseComments_CommentBody: "",
-  CaseComments_IsPublic: "",
-};
+import { useCaseCommentForm } from "./useCaseCommentForm";
+import { CaseComment, CaseData } from "@/app/types/cases";
 
 export const CaseCommentForm = ({
   formTitle,
-  caseID,
-  defaultValues = initialValues,
+  defaultValues,
+  caseCommentData,
+  caseData,
   ...props
 }: CaseCommentFormProps) => {
   const router = useRouter();
+  const { setIsLoading, isLoading, createCaseCommentFormSubmissionData } =
+    useCaseCommentForm();
 
-  const onSuccess = (values: any) => {
+  const onSuccess = async (values: any) => {
+    setIsLoading(true);
+    let id = caseData?.CaseInformation.Cases_ID;
+    const data = createCaseCommentFormSubmissionData(
+      values,
+      id,
+      caseCommentData
+    );
     console.log("Success values", values);
-    // TODO:
-    // PUT data
-    // Verify successful response
-    router.push(`/cases/view/${caseID}`);
+    console.log("Submitted Data:", data);
+    const url = id ? "/api/cases/update" : "/api/cases/insert";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+    console.log("Response:", response);
+
+    if (!response.ok) {
+      console.error("Unable to submit data:", response.statusText);
+      router.push("/error");
+    }
+
+    if (!id) {
+      const responseData = await response.json();
+      id = responseData.CaseInformation.Cases_ID;
+    }
+    setIsLoading(false);
+    router.push(`/cases/view/${id}`);
   };
 
   const onCancel = () => {
@@ -44,33 +61,48 @@ export const CaseCommentForm = ({
   }
 
   return (
-    <FormWrapper
-      title={formTitle}
-      submitButtonText="Save"
-      resetButtonText="Cancel"
-      onSuccess={onSuccess}
-      onCancel={onCancel}
-      defaultValues={defaultValues}
-    >
-      <Grid container spacing={1}>
-        <FormDivider>Information</FormDivider>
-        <Grid item xs={12}>
-          <Stack spacing={1}>
-            <TextareaAutosizeElement
-              label="Comment"
-              name="CaseComments_CommentBody"
-              required
-              rows={3}
-              size="small"
-            />
-          </Stack>
+    <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <FormWrapper
+        title={formTitle}
+        submitButtonText="Save"
+        resetButtonText="Cancel"
+        onSuccess={onSuccess}
+        onCancel={onCancel}
+        defaultValues={defaultValues}
+      >
+        <Grid container spacing={1}>
+          <FormDivider>Information</FormDivider>
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <TextareaAutosizeElement
+                label="Comment"
+                name="comment"
+                required
+                rows={3}
+                size="small"
+              />
+            </Stack>
+          </Grid>
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <CheckboxElement label="Public" name="isPublic" />
+            </Stack>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Stack spacing={1}>
-            <CheckboxElement label="Public" name="CaseComments_IsPublic" />
-          </Stack>
-        </Grid>
-      </Grid>
-    </FormWrapper>
+      </FormWrapper>
+    </>
   );
 };
+
+interface CaseCommentFormProps {
+  formTitle: string;
+  defaultValues?: any;
+  caseCommentData?: CaseComment;
+  caseData: CaseData;
+}

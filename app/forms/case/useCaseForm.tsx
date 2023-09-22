@@ -1,7 +1,14 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
-import { isObjectEmpty } from "@/app/utils/utils";
+import {
+  convertBooleanToString,
+  convertDateToISOString,
+  getChangedValues,
+  isObjectEmpty,
+  removeNullsFromObject,
+} from "@/app/utils/utils";
 import { useForm } from "../useForm";
+import { CaseCommentFormData, CaseData, CaseFormData } from "@/app/types/cases";
 
 // TODO: Update all the menu names. I just guessed what they will be.
 
@@ -25,7 +32,13 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     Severity: [],
   };
 
-  const { setMenuOptions, setCustomMenuOptions, menuOptions } = useForm({
+  const {
+    setMenuOptions,
+    setCustomMenuOptions,
+    setIsLoading,
+    isLoading,
+    menuOptions,
+  } = useForm({
     initialMenuOptions,
     menuItems,
   });
@@ -99,12 +112,105 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setMenuOptions("Severity");
   }, [defaultValues.owner.name, setCustomMenuOptions, setMenuOptions]);
 
+  const createCaseFormSubmissionData = (
+    values: CaseFormData,
+    caseData?: CaseData
+  ) => {
+    const data = {
+      CaseInformation: {
+        Cases_ID: values.caseID,
+        Cases_AccountID: values.account.id,
+        Accounts_Name: values.account.name,
+        Cases_CaseNumber: values.caseNumber,
+        Cases_ContactEmail: values.contact.email,
+        Cases_ContactFax: values.contact.fax,
+        Cases_ContactId: values.contact.id,
+        Contacts_FullName: values.contact.name,
+        Cases_ContactMobile: values.contact.mobile,
+        Cases_ContactPhone: values.contact.phone,
+        Cases_HibernateEndDate: convertDateToISOString(values.hibernateEndDate),
+        Cases_Origin: values.origin,
+        Cases_OwnerId: values.owner.id,
+        Owner_Name: values.owner.name,
+        Cases_Status: values.status,
+        Cases_SubStatus: values.subStatus,
+        Cases_Subject: values.subject,
+        Cases_SubOwner: values.subOwner.name,
+      },
+      CaseProfile: {
+        Cases_ID: values.caseID,
+        Cases_BugDescription: values.bugDescription,
+        Cases_BugNumber: values.bugNumber,
+        Cases_CaseType: values.type,
+        Cases_Category: values.category,
+        Cases_Description: values.description,
+        Cases_IsTAMCase: convertBooleanToString(values.isTamCase),
+        Cases_Priority: values.priority,
+        Cases_ProductDeliveryMethod: values.product.deliveryMethod,
+        Cases_ProductName: values.product.name,
+        Cases_ProductSubVersion: values.product.subVersion,
+        Cases_ProductVersion: values.product.version,
+        Cases_Reason: values.reason,
+        Cases_Severity: values.severity,
+        Cases_Subject: values.subject,
+        Cases_Type: values.type,
+      },
+    };
+    let newFormData: any = removeNullsFromObject(data);
+
+    // We only want to submit form values that were modified
+    newFormData = getChangedValues(newFormData, caseData);
+
+    // Add the case ID back in
+    if (caseData) {
+      newFormData = {
+        ...newFormData,
+        CaseInformation: {
+          ...newFormData.CaseInformation,
+          Cases_ID: caseData.CaseInformation.Cases_ID,
+        },
+      };
+    }
+    return newFormData;
+  };
+
+  const createCaseCommentFormSubmissionData = (
+    values: CaseCommentFormData,
+    caseData?: CaseData
+  ) => {
+    const data = {
+      CaseComments_ID: values.caseID,
+      CaseComments_CommentBody: values.comment,
+      CaseComments_IsPublic: convertBooleanToString(values.isPublic),
+    };
+    let newFormData: any = removeNullsFromObject(data);
+
+    // We only want to submit form values that were modified
+    newFormData = getChangedValues(newFormData, caseData);
+
+    // Add the case ID back in
+    if (caseData) {
+      newFormData = {
+        ...newFormData,
+        CaseInformation: {
+          ...newFormData.CaseInformation,
+          Cases_ID: caseData.CaseInformation.Cases_ID,
+        },
+      };
+    }
+    return newFormData;
+  };
+
   return {
     setMenuOptions,
     getContactOptions,
     setAccountSelected,
+    setIsLoading,
+    isLoading,
     menuOptions,
     accountSelected,
+    createCaseFormSubmissionData,
+    createCaseCommentFormSubmissionData,
   };
 };
 

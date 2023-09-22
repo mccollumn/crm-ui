@@ -33,6 +33,8 @@ useAccountFormProps) => {
     setMenuOptions,
     setCustomMenuOptions,
     appendMenuOptions,
+    setIsLoading,
+    isLoading,
     menuOptions,
     FormatCurrency,
     FormatNumber,
@@ -201,6 +203,8 @@ useAccountFormProps) => {
 
   return {
     setMenuOptions,
+    setIsLoading,
+    isLoading,
     menuOptions,
     FormatCurrency,
     FormatNumber,

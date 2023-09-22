@@ -25,24 +25,19 @@ export const getData = cache(async (path: string) => {
   }
 });
 
-export const postData = cache(async (data: any) => {
+export const postData = cache(async (url: string, data: any) => {
   try {
-    console.log("Posting data...");
-    const res = await fetch("https://dev.to/api/articles", {
-      method: "POST", // Or PUT?
+    const res = await fetch(url, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-
     if (!res.ok) {
       throw new Error("Network response was not OK");
     }
-
-    const result = await res.json();
-    console.log("POST result:", result);
-    return res.json();
+    return res;
   } catch (error) {
     console.error("POST failed:", error);
   }

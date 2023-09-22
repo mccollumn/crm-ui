@@ -4,6 +4,7 @@ import { MenuItem } from "../types/types";
 
 export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   const [options, setOptions] = React.useState<any>(initialMenuOptions);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const getMenuOptions = React.useCallback(
     (menu: string, dependentValue: string = "") => {
@@ -126,6 +127,8 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
     setMenuOptions,
     setCustomMenuOptions,
     appendMenuOptions,
+    setIsLoading,
+    isLoading,
     menuOptions: options,
     FormatCurrency,
     FormatNumber,
