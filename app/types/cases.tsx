@@ -68,6 +68,7 @@ interface CaseEmail {
 
 export interface CaseComment {
   CaseComments_ID: string;
+  CaseComments_CaseID: string;
   CaseComments_CommentBody: string;
   CaseComments_CreatedById?: string | null;
   CaseComments_CreatedDate: string;
@@ -119,6 +120,7 @@ export type CaseFormData = {
 };
 
 export type CaseCommentFormData = {
+  caseCommentID?: string | null;
   caseID?: string | null;
   comment?: string | null;
   isPublic?: boolean | null;

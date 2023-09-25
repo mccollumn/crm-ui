@@ -29,7 +29,7 @@ export const CaseCommentForm = ({
     );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    const url = id ? "/api/cases/update" : "/api/cases/insert";
+    const url = id ? "/api/cases/update/comment" : "/api/cases/insert/comment";
     const request = new Request(url, {
       method: "POST",
       body: JSON.stringify(data),
@@ -44,8 +44,10 @@ export const CaseCommentForm = ({
 
     if (!id) {
       const responseData = await response.json();
-      id = responseData.CaseInformation.Cases_ID;
+      id = responseData.CaseComments_CaseID;
     }
+    // Invalidate cached case data
+    fetch("/api/revalidate/tag?tag=case");
     setIsLoading(false);
     router.push(`/cases/view/${id}`);
   };

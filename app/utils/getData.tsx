@@ -10,9 +10,14 @@ export const preload = (fn: (a?: any) => void, args: any[] = []) => {
   void fn(...args);
 };
 
-export const getData = cache(async (path: string) => {
+export const getData = cache(async (path: string, tags?: string[]) => {
   try {
-    const res = await fetch(`${process.env.CRM_API_ENDPOINT}/${path}`);
+    const tagOptions = tags ? { next: { tags: tags } } : {};
+    console.log("Tag options:", tagOptions);
+    const res = await fetch(
+      `${process.env.CRM_API_ENDPOINT}/${path}`,
+      tagOptions
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not OK");
@@ -205,7 +210,7 @@ export const getHibernatedCasesByAccountPaginated = async (
 };
 
 export const getCaseData = async (caseID: string) => {
-  const data = await getData(`/case/caseid/${caseID}`);
+  const data = await getData(`/case/caseid/${caseID}`, ["case"]);
   return data;
 };
 
@@ -224,7 +229,7 @@ export const getActiveAccounts = async () => {
 };
 
 export const getAccountData = async (accountID: string) => {
-  const data = await getData(`/account/accountid/${accountID}`);
+  const data = await getData(`/account/accountid/${accountID}`, ["account"]);
   return data;
 };
 

@@ -17,7 +17,8 @@ export const useCaseCommentForm = () => {
     caseCommentData?: CaseComment
   ) => {
     const data = {
-      CaseComments_ID: values.caseID,
+      CaseComments_CaseID: values.caseID,
+      CaseComments_ID: values.caseCommentID,
       CaseComments_CommentBody: values.comment,
       CaseComments_IsPublic: convertBooleanToString(values.isPublic),
     };
@@ -26,15 +27,17 @@ export const useCaseCommentForm = () => {
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, caseCommentData);
 
-    // Add the case ID back in
-    if (caseCommentData) {
+    // Add the case and comment IDs back in
+    if (caseCommentData && caseID) {
       newFormData = {
-        CaseComments: [
-          { ...newFormData, CaseComments_ID: caseCommentData.CaseComments_ID },
-        ],
-        CaseInformation: {
-          Cases_ID: caseID,
-        },
+        ...newFormData,
+        CaseComments_CaseID: caseID,
+      };
+    }
+    if (caseCommentData && values.caseCommentID) {
+      newFormData = {
+        ...newFormData,
+        CaseComments_ID: values.caseCommentID,
       };
     }
     return newFormData;

@@ -6,6 +6,7 @@ import { CaseCommentFormData, CaseComment } from "../../types/cases";
  */
 const generateInitialCaseCommentFormData = async () => {
   const initialCaseCommentFormData: CaseCommentFormData = {
+    caseCommentID: null,
     caseID: null,
     comment: null,
     isPublic: null,
@@ -30,7 +31,8 @@ export const createCaseCommentFormData = async (
 
   return {
     ...initialCaseCommentFormData,
-    caseID: caseCommentData.CaseComments_ID,
+    caseCommentID: caseCommentData.CaseComments_ID,
+    caseID: caseCommentData.CaseComments_CaseID,
     comment: caseCommentData.CaseComments_CommentBody,
     isPublic: !!Number(caseCommentData.CaseComments_IsPublic),
   };

@@ -62,6 +62,8 @@ export const AccountForm = ({
       const responseData = await response.json();
       id = responseData.AccountDetail.Accounts_AccountID;
     }
+    // Invalidate cached account data
+    fetch("/api/revalidate/tag?tag=account");
     setIsLoading(false);
     router.push(`/accounts/view/${id}`);
   };
