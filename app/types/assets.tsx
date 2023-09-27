@@ -55,7 +55,7 @@ export type AssetFormData = {
   product: { id?: string | null; name?: string | null };
   pageViews?: string | null;
   purchaseDate?: Date | null;
-  quantity?: string | null;
+  quantity?: number | null;
   support: {
     status?: string | null;
     beginDate?: Date | null;

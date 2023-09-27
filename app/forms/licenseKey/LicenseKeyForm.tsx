@@ -18,6 +18,7 @@ import { LicenseKeyData } from "@/app/types/licenseKeys";
 
 interface LicenseKeyFormProps extends FormProps {
   licenseKeyData?: LicenseKeyData;
+  accountID: string;
 }
 
 export const LicenseKeyForm = ({
@@ -25,6 +26,7 @@ export const LicenseKeyForm = ({
   defaultValues,
   menuItems,
   licenseKeyData,
+  accountID,
   ...props
 }: LicenseKeyFormProps) => {
   const router = useRouter();
@@ -43,8 +45,8 @@ export const LicenseKeyForm = ({
     const data = createLicenseKeyFormSubmissionData(values, licenseKeyData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let id = defaultValues.id;
-    const url = id
+    const isEdit = !!defaultValues?.id;
+    const url = isEdit
       ? "/api/accounts/update/license-key"
       : "/api/accounts/insert/license-key";
     const request = new Request(url, {
@@ -59,16 +61,12 @@ export const LicenseKeyForm = ({
       router.push("/error");
     }
 
-    if (!id) {
-      const responseData = await response.json();
-      id = responseData.LicenseKeyDetail.LicenseKeys_AccountId;
-    }
     // Invalidate cached account data
     fetch("/api/revalidate/tag?tag=account");
     fetch("/api/revalidate/tag?tag=licenseKey");
 
     setIsLoading(false);
-    router.push(`/accounts/view/${id}`);
+    router.push(`/accounts/view/${accountID}`);
   };
 
   const onCancel = () => {

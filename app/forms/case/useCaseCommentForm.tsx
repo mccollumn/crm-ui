@@ -6,8 +6,6 @@ import {
 } from "@/app/utils/utils";
 import { CaseComment, CaseCommentFormData } from "@/app/types/cases";
 
-// TODO: Update all the menu names. I just guessed what they will be.
-
 export const useCaseCommentForm = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -28,12 +26,10 @@ export const useCaseCommentForm = () => {
     newFormData = getChangedValues(newFormData, caseCommentData);
 
     // Add the case and comment IDs back in
-    if (caseCommentData && caseID) {
-      newFormData = {
-        ...newFormData,
-        CaseComments_CaseID: caseID,
-      };
-    }
+    newFormData = {
+      ...newFormData,
+      CaseComments_CaseID: caseID,
+    };
     if (caseCommentData && values.caseCommentID) {
       newFormData = {
         ...newFormData,

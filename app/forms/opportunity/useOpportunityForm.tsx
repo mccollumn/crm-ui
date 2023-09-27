@@ -1,8 +1,10 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
 import {
+  convertArrayToString,
   convertBooleanToString,
   convertDateToISOString,
+  convertNumberToString,
   getChangedValues,
   isObjectEmpty,
   removeNullsFromObject,
@@ -10,7 +12,7 @@ import {
 import { useForm } from "../useForm";
 import {
   OpportunityData,
-  OpportunityformData,
+  OpportunityFormData,
 } from "@/app/types/opportunities";
 
 export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
@@ -102,7 +104,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
   }, [setCustomMenuOptions, setMenuOptions]);
 
   const createOpportunitytFormSubmissionData = (
-    values: OpportunityformData,
+    values: OpportunityFormData,
     opportunityData?: OpportunityData
   ) => {
     const data = {
@@ -120,7 +122,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_FirstYrContractAmt: values.oneYearAmount,
         // Opportunities_FirstYrExpectedAmt: "6437.84",
         Opportunities_ForecastStatus: values.forecastStatus,
-        Opportunities_Interest: values.interest,
+        Opportunities_Interest: convertArrayToString(values.interest),
         // Opportunities_MultiYearYear1Amount: "8583.79",
         Opportunities_Name: values.name,
         // Opportunities_OpsAudit: "0",
@@ -128,7 +130,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         // Opportunities_OrderExceptionNotes: null,
         Opportunities_OwnerID: values.owner.id,
         Owners_Name: values.owner.name,
-        Opportunities_Probability: values.probability,
+        Opportunities_Probability: convertNumberToString(values.probability),
         Opportunities_Product: values.product.name,
         Opportunities_ProductFamily: values.product.family,
         // Opportunities_QuarterBank: "0",

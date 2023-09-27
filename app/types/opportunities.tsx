@@ -16,7 +16,7 @@ export interface OpportunityData {
 
 interface OpportunityDetail {
   Opportunities_ID: string;
-  Opportunities_AccountId: string | null;
+  Opportunities_AccountId: string;
   Accounts_Name: string | null;
   Opportunities_Amount: string | null;
   Opportunities_CloseDate: string | null;
@@ -180,7 +180,7 @@ interface Product {
   OpportunityLineItems_UnitPrice: string | null;
 }
 
-export type OpportunityformData = {
+export type OpportunityFormData = {
   id?: string | null;
   name?: string | null;
   owner: {
@@ -196,12 +196,12 @@ export type OpportunityformData = {
     name?: string | null;
     family?: string | null;
   };
-  interest?: string | null;
+  interest?: string[] | null;
   newBusiness?: boolean | null;
   fastNotes?: string | null;
   amount?: string | null;
   closeDate?: Date | null;
-  probability?: string | null;
+  probability?: number | null;
   forecastStatus?: string | null;
   term?: string | null;
   oneYearAmount?: string | null;
@@ -230,5 +230,17 @@ export type OpportunityformData = {
     stageThreeDate?: Date | null;
     stageFourDate?: Date | null;
     stageFiveDate?: Date | null;
+  };
+};
+
+export type ContactRoleFormData = {
+  id: string;
+  contact: {
+    id: string;
+    name?: string | null;
+    isPrimary?: boolean | null;
+  };
+  role: {
+    name?: string | null;
   };
 };

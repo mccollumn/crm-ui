@@ -1,6 +1,7 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
 import {
+  convertArrayToString,
   convertBooleanToString,
   getChangedValues,
   isObjectEmpty,
@@ -13,12 +14,14 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
   const initialMenuOptions = {
     Owner: [],
     Account: [],
-    Salutation: [],
+    // Salutation: [],
     JobRole: [],
     ContactRole: [],
     Relationship: [],
     ContactStatus: [],
     // SuperRegion: [],
+    TimeZone: [],
+    PreferredLanguage: [],
   };
 
   const {
@@ -71,12 +74,14 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     setOwners();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Salutation");
+    // setMenuOptions("Salutation");
     setMenuOptions("JobRole");
     setMenuOptions("ContactRole");
     setMenuOptions("Relationship");
     setMenuOptions("ContactStatus");
     // setMenuOptions("SuperRegion");
+    setMenuOptions("TimeZone");
+    setMenuOptions("PreferredLanguage");
   }, [setCustomMenuOptions, setMenuOptions]);
 
   const createContactFormSubmissionData = (
@@ -98,7 +103,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         // Contacts_EmailBouncedReason: null,
         // Contacts_EmailDomain: "kp.org",
         // Contacts_Fax: "(510) 267-2601",
-        // Contacts_FullName: "Lindsay  McCall",
+        Contacts_FullName: `${values.firstName} ${values.lastName}`,
         // Contacts_HomePhone: null,
         Contacts_JobRole: values.jobRole,
         Contacts_MobilePhone: values.mobile,
@@ -107,7 +112,9 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         ),
         Contacts_OtherPhone: values.otherPhone,
         Contacts_Phone: values.phone,
-        Contacts_RelationshipToWebtrends: values.relationship,
+        Contacts_RelationshipToWebtrends: convertArrayToString(
+          values.relationship
+        ),
         Contacts_SupportContactAdministrator: convertBooleanToString(
           values.supportContactAdmin
         ),
@@ -129,13 +136,13 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         Contacts_OtherState: values.address.other.state,
         Contacts_OtherStreet: values.address.other.street,
       },
-      // ContactDemographicInformation: {
-      //   Contacts_ID: values.contactID,
-      //   Contacts_IndustryContact: "Healthcare",
-      //   Contacts_PreferredLanguage: null,
-      //   Contacts_TimeZone: null,
-      //   Contacts_VerticalContact: "Health Care",
-      // },
+      ContactDemographicInformation: {
+        Contacts_ID: values.contactID,
+        // Contacts_IndustryContact: "Healthcare",
+        Contacts_PreferredLanguage: values.demographic.preferredLanguage,
+        Contacts_TimeZone: values.demographic.timeZone,
+        // Contacts_VerticalContact: "Health Care",
+      },
       ContactCommunicationsPreferences: {
         Contacts_ID: values.contactID,
         Contacts_DoNotRemarket: convertBooleanToString(
@@ -180,6 +187,10 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         ContactAddressInformation: {
           ...newFormData.ContactAddressInformation,
           Contacts_ID: contactData.ContactAddressInformation.Contacts_ID,
+        },
+        ContactDemographicInformation: {
+          ...newFormData.ContactDemographicInformation,
+          Contacts_ID: contactData.ContactDemographicInformation.Contacts_ID,
         },
         ContactCommunicationsPreferences: {
           ...newFormData.ContactCommunicationsPreferences,

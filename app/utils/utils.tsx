@@ -137,6 +137,20 @@ export const convertStringToArray = (
 };
 
 /**
+ * Converts an array of strings into a delimited string.
+ * @param arr Array to convert to string.
+ * @param delimiter Delimiter used in the output string. Default semicolon.
+ * @returns String with all array values concatenated.
+ */
+export const convertArrayToString = (
+  arr: string[] | null | undefined,
+  delimiter: string = ";"
+) => {
+  if (!arr) return arr;
+  return arr.join(delimiter);
+};
+
+/**
  * Returns an object with all keys with null values removed.
  * The object can have one level of nesting.
  * @param obj Object to iterate over.

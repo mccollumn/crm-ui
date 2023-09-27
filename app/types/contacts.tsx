@@ -84,7 +84,7 @@ export type ContactFormData = {
   contactRole?: string | null;
   email?: string | null;
   unconfirmedEmail?: boolean | null;
-  relationship?: string | null;
+  relationship?: string[] | null;
   contactStatus?: string | null;
   phone?: string | null;
   mobile?: string | null;
@@ -113,5 +113,9 @@ export type ContactFormData = {
       postalCode?: string | null;
       country?: string | null;
     };
+  };
+  demographic: {
+    timeZone?: string | null;
+    preferredLanguage?: string | null;
   };
 };

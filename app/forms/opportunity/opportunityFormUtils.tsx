@@ -1,7 +1,7 @@
 import { convertStringToArray, unEscape } from "@/app/utils/utils";
 import {
   OpportunityData,
-  OpportunityformData,
+  OpportunityFormData,
 } from "@/app/types/opportunities";
 import { getDefaultOwner } from "@/app/utils/forms";
 
@@ -12,7 +12,7 @@ import { getDefaultOwner } from "@/app/utils/forms";
 const generateInitialOpportunityFormData = async () => {
   const defaultOwner = await getDefaultOwner();
 
-  const initialOpportunityFormData: OpportunityformData = {
+  const initialOpportunityFormData: OpportunityFormData = {
     id: null,
     name: null,
     owner: defaultOwner,

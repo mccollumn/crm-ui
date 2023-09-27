@@ -15,30 +15,46 @@ export const ContactRoleForm = ({
   formTitle,
   defaultValues,
   menuItems,
-  accountID,
+  opportunityID,
   ...props
 }: ContactRoleFormProps) => {
   const router = useRouter();
   const contactRoleID = defaultValues.OpportunityContactRoles_ID;
-  const { menuOptions, setMenuOptions } = useContactRoleForm({
+  const {
+    menuOptions,
+    setIsLoading,
+    isLoading,
+    createContactRoleFormSubmissionData,
+  } = useContactRoleForm({
     menuItems,
     accountID,
   });
 
   const onSuccess = async (values: any) => {
+    setIsLoading(true);
+    const data = createContactRoleFormSubmissionData(values, quoteData);
     console.log("Success values", values);
-    let id = contactRoleID;
-    // TODO:
-    // Map menu values to appropriate fields
-    // PUT data
-    if (id) {
-      const data = await fetch("/opportunities/api/new/");
-      // Verify successful response
-    } else {
-      // POST new account
-      // Set id to new account ID
+    console.log("Submitted Data:", data);
+    let isEdit = !!defaultValues?.id;
+    const url = isEdit
+      ? "/api/opportunities/update/quote"
+      : "/api/opportunities/insert/quote";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+    console.log("Response:", response);
+
+    if (!response.ok) {
+      console.error("Unable to submit data:", response.statusText);
+      router.push("/error");
     }
-    router.push(`/opportunities/view/${accountID}`);
+
+    // Invalidate cached account data
+    fetch("/api/revalidate/tag?tag=quote");
+    setIsLoading(false);
+    router.push(`/opportunities/view/${opportunityID}`);
   };
 
   const onCancel = () => {

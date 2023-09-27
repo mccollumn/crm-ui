@@ -9,7 +9,7 @@ const generateInitialCaseCommentFormData = async () => {
     caseCommentID: null,
     caseID: null,
     comment: null,
-    isPublic: null,
+    isPublic: undefined,
   };
 
   return initialCaseCommentFormData;

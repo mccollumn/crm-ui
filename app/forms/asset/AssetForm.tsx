@@ -18,6 +18,7 @@ import { AssetData } from "@/app/types/assets";
 
 interface AssetFormProps extends FormProps {
   assetData?: AssetData;
+  accountID: string;
 }
 
 export const AssetForm = ({
@@ -25,6 +26,7 @@ export const AssetForm = ({
   defaultValues,
   menuItems,
   assetData,
+  accountID,
   ...props
 }: AssetFormProps) => {
   const router = useRouter();
@@ -43,8 +45,8 @@ export const AssetForm = ({
     const data = createAssetFormSubmissionData(values, assetData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let id = defaultValues.account.id;
-    const url = id
+    let isEdit = !!defaultValues?.account.id;
+    const url = isEdit
       ? "/api/accounts/update/asset"
       : "/api/accounts/insert/asset";
     const request = new Request(url, {
@@ -59,16 +61,12 @@ export const AssetForm = ({
       router.push("/error");
     }
 
-    if (!id) {
-      const responseData = await response.json();
-      id = responseData.AssetDetail.Assets_AccountID;
-    }
-    // Invalidate cached account data
+    // Invalidate cached account and asset data
     fetch("/api/revalidate/tag?tag=account");
     fetch("/api/revalidate/tag?tag=asset");
 
     setIsLoading(false);
-    router.push(`/accounts/view/${id}`);
+    router.push(`/accounts/view/${accountID}`);
   };
 
   const onCancel = () => {
@@ -223,20 +221,7 @@ export const AssetForm = ({
               />
             </Stack>
           </Grid>
-          {/* <FormDivider>Support Details</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Anniversary Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Anniversary Date"
-                name=""
-                inputProps={{ size: "small" }}
-              />
-            </DateFnsProvider> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          <FormDivider>Activation Info</FormDivider>
+          <FormDivider>Support Details</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
               {/* Support Plan Type */}

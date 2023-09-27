@@ -547,6 +547,7 @@ export const DataTable = ({
       {
         field: "Quotes_Status",
         headerName: "Status",
+        width: 175,
       },
       {
         field: "Quotes_CurrencyCode",
@@ -573,10 +574,21 @@ export const DataTable = ({
       {
         field: "Quotes_USDTotalOneYearAmount",
         headerName: "USD Total One Year Amount",
+        width: 175,
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
         field: "Quotes_Primary",
         headerName: "Primary",
+        width: 50,
+        renderCell: (params) => {
+          return params.value === "0" ? (
+            <CheckBoxOutlineBlankIcon />
+          ) : (
+            <CheckBox />
+          );
+        },
       },
       {
         field: "editLink",

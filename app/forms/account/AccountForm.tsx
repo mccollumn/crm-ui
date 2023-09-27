@@ -59,6 +59,7 @@ export const AccountForm = ({
 
     if (!id) {
       const responseData = await response.json();
+      console.log("Account Response:", response.body);
       console.log("Account Response Data:", responseData);
       id = responseData?.AccountDetail?.Accounts_AccountID;
     }
@@ -96,7 +97,7 @@ export const AccountForm = ({
               <AutocompleteElement
                 label="Account Owner"
                 name="owner"
-                //required
+                required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -114,7 +115,7 @@ export const AccountForm = ({
               <TextFieldElement
                 label="Account Name"
                 name="name"
-                //required
+                required
                 size="small"
               />
               {/* Alternate Account Name */}
@@ -145,7 +146,7 @@ export const AccountForm = ({
               {/* <AutocompleteElement
               label="Account Record Type"
               name="type"
-              //required
+              required
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
@@ -172,7 +173,7 @@ export const AccountForm = ({
                 name="superRegion"
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.SuperRegion}
-                //required
+                required
               />
               {/* Type Last Change Date */}
               {/* <DateFnsProvider>
@@ -186,7 +187,7 @@ export const AccountForm = ({
               {/* <AutocompleteElement
               label="Vertical"
               name=""
-              //required
+              required
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
@@ -222,7 +223,7 @@ export const AccountForm = ({
               {/* <AutocompleteElement
               label="Client Unhealthy Reason"
               name=""
-              //required
+              required
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
@@ -426,16 +427,16 @@ export const AccountForm = ({
               type="number"
               size="small"
             /> */}
-          {/* PO //required */}
+          {/* PO required */}
           {/* <AutocompleteElement
-              label="PO //required"
+              label="PO required"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
-          {/* PO //required Notes */}
+          {/* PO required Notes */}
           {/* <TextareaAutosizeElement
-              label="PO //required Notes"
+              label="PO required Notes"
               name=""
               rows={3}
               size="small"

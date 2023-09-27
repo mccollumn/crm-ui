@@ -15,13 +15,15 @@ const EditAsset = async ({
     assetDataPromise,
     menuItemsPromise,
   ]);
+  const assetName = assetData.AssetDetail.Assets_Name;
   const values = await createAssetFormData(accountID, assetData);
 
   return (
     <AssetForm
-      formTitle="Edit Asset"
+      formTitle={`Edit Asset - ${assetName}`}
       defaultValues={values}
       menuItems={menuItems}
+      accountID={accountID}
     />
   );
 };

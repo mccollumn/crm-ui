@@ -12,6 +12,7 @@ const NewLicenseKey = async ({ params }: { params: { accountID: string } }) => {
       formTitle="New License Key"
       defaultValues={values}
       menuItems={menuItems}
+      accountID={accountID}
     />
   );
 };

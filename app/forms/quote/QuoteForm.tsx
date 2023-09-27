@@ -19,7 +19,8 @@ import { useQuoteForm } from "./useQuoteForm";
 import { QuoteData } from "@/app/types/quotes";
 
 interface QuoteFormProps extends FormProps {
-  quoteData: QuoteData;
+  quoteData?: QuoteData;
+  opportunityID: string;
 }
 
 export const QuoteForm = ({
@@ -27,13 +28,13 @@ export const QuoteForm = ({
   defaultValues,
   menuItems,
   quoteData,
+  opportunityID,
   ...props
 }: QuoteFormProps) => {
   const router = useRouter();
   const {
     menuOptions,
     FormatNumber,
-    setMenuOptions,
     setIsLoading,
     isLoading,
     createQuoteFormSubmissionData,
@@ -46,8 +47,8 @@ export const QuoteForm = ({
     const data = createQuoteFormSubmissionData(values, quoteData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let id = defaultValues.id;
-    const url = id
+    let isEdit = !!defaultValues?.id;
+    const url = isEdit
       ? "/api/opportunities/update/quote"
       : "/api/opportunities/insert/quote";
     const request = new Request(url, {
@@ -62,14 +63,10 @@ export const QuoteForm = ({
       router.push("/error");
     }
 
-    if (!id) {
-      const responseData = await response.json();
-      id = responseData.QuoteDetail.Quotes_OpportunityID;
-    }
     // Invalidate cached account data
     fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
-    router.push(`/opportunities/view/${id}`);
+    router.push(`/opportunities/view/${opportunityID}`);
   };
 
   const onCancel = () => {

@@ -12,6 +12,7 @@ const NewAsset = async ({ params }: { params: { accountID: string } }) => {
       formTitle="New Asset"
       defaultValues={values}
       menuItems={menuItems}
+      accountID={accountID}
     />
   );
 };

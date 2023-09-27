@@ -1,5 +1,6 @@
 import { ContactData, ContactFormData } from "@/app/types/contacts";
 import { getDefaultOwner } from "@/app/utils/forms";
+import { convertStringToArray } from "@/app/utils/utils";
 
 /**
  * Generates and object containing the default values for a new/empty contact form.
@@ -51,6 +52,10 @@ const generateInitialContactFormData = async () => {
       },
       // superRegion: null,
     },
+    demographic: {
+      timeZone: null,
+      preferredLanguage: null,
+    },
   };
 
   return initialContactFormData;
@@ -90,7 +95,9 @@ export const createContactFormData = async (contactData?: ContactData) => {
     unconfirmedEmail: !!Number(
       contactData.ContactDetail.Contacts_UnconfirmedEmail
     ),
-    relationship: contactData.ContactDetail.Contacts_RelationshipToWebtrends,
+    relationship: convertStringToArray(
+      contactData.ContactDetail.Contacts_RelationshipToWebtrends
+    ),
     contactStatus: contactData.ContactDetail.Contacts_ContactStatus,
     phone: contactData.ContactDetail.Contacts_Phone,
     mobile: contactData.ContactDetail.Contacts_MobilePhone,
@@ -137,6 +144,11 @@ export const createContactFormData = async (contactData?: ContactData) => {
         country: contactData.ContactAddressInformation.Contacts_OtherCountry,
       },
       // superRegion: null,
+    },
+    demographic: {
+      timeZone: contactData.ContactDemographicInformation.Contacts_TimeZone,
+      preferredLanguage:
+        contactData.ContactDemographicInformation.Contacts_PreferredLanguage,
     },
   };
 };

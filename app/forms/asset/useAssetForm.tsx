@@ -3,6 +3,7 @@ import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   convertDateToISOString,
+  convertNumberToString,
   getChangedValues,
   isObjectEmpty,
   removeNullsFromObject,
@@ -97,7 +98,7 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
         Assets_Product2Id: values.product.id,
         Product2_Name: values.product.name,
         Assets_PurchaseDate: values.purchaseDate,
-        Assets_Quantity: values.quantity,
+        Assets_Quantity: convertNumberToString(values.quantity),
         Assets_SerialNumber: values.serialNumber,
         Assets_Status: values.status,
       },

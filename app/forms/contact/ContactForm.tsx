@@ -501,29 +501,29 @@ export const ContactForm = ({
           {/* <CheckboxElement label="SharePoint Contact" name="" size="small" /> */}
           {/* </Stack> */}
           {/* </Grid> */}
-          {/* <FormDivider>Demographic Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Preferred Language */}
-          {/* <AutocompleteElement
-              label="Preferred Language"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Time Zone */}
-          {/* <AutocompleteElement
-              label="Time Zone"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
+          <FormDivider>Demographic Information</FormDivider>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Preferred Language */}
+              <AutocompleteElement
+                label="Preferred Language"
+                name="demographic.preferredLanguage"
+                autocompleteProps={{ size: "small" }}
+                options={[]}
+              />
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Time Zone */}
+              <AutocompleteElement
+                label="Time Zone"
+                name="demographic.timezone"
+                autocompleteProps={{ size: "small" }}
+                options={[]}
+              />
+            </Stack>
+          </Grid>
           <FormDivider>Communication Preferences</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>

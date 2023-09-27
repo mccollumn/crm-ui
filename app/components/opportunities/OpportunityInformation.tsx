@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { OpportunityData } from "@/app/types/opportunities";
-import { getOpportunityData } from "@/app/utils/getData";
+import { getAccountData, getOpportunityData } from "@/app/utils/getData";
 import {
   formatCheckbox,
   formatCurrency,
@@ -16,6 +16,7 @@ import {
   unEscape,
 } from "@/app/utils/utils";
 import Link from "next/link";
+import { AccountData } from "@/app/types/accounts";
 
 const OpportunityInformation = async ({
   opportunityID,
@@ -23,8 +24,14 @@ const OpportunityInformation = async ({
   const opportunityData: OpportunityData = await getOpportunityData(
     opportunityID
   );
+
   if (!opportunityData) return null;
-  const opportunityInfo = await getOpportunityInfo(opportunityData);
+  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
+  const accountData = await getAccountData(accountID);
+  const opportunityInfo = await getOpportunityInfo(
+    opportunityData,
+    accountData
+  );
   if (!opportunityInfo) return null;
 
   return (
@@ -214,7 +221,7 @@ const OpportunityInformation = async ({
           />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion defaultExpanded={true}>
+      <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-system-section-content"
@@ -228,12 +235,15 @@ const OpportunityInformation = async ({
             itemsRight={opportunityInfo.system.right}
           />
         </AccordionDetails>
-      </Accordion> */}
+      </Accordion>
     </>
   );
 };
 
-const getOpportunityInfo = async (opportunityData: OpportunityData) => {
+const getOpportunityInfo = async (
+  opportunityData: OpportunityData,
+  accountData: AccountData
+) => {
   return {
     info: {
       left: [
@@ -253,7 +263,11 @@ const getOpportunityInfo = async (opportunityData: OpportunityData) => {
         },
         {
           label: "Opportunity Type",
-          value: opportunityData.OpportunityDetail.Opportunities_Type,
+          value: "",
+        },
+        {
+          label: "Account Type",
+          value: accountData.AccountDetail.AccountType_Description,
         },
         {
           label: "Product",
@@ -759,23 +773,26 @@ const getOpportunityInfo = async (opportunityData: OpportunityData) => {
         },
       ],
     },
-    // system: {
-    //   left: [
-    //     { label: "Opportunity Territory", value: "" },
-    //     { label: "Holdover Expiration", value: "" },
-    //     { label: "Type", value: "" },
-    //     { label: "Refresh Product Family", value: "" },
-    //     { label: "Created By", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Territory Override", value: "" },
-    //     { label: "Territory Tracker", value: "" },
-    //     { label: "Deal Alert Sent", value: "" },
-    //     { label: "Quote Submitted", value: "" },
-    //     { label: "Do Not Run Trigger Test", value: "" },
-    //     { label: "Last Modified By", value: "" },
-    //   ],
-    // },
+    system: {
+      left: [
+        { label: "Opportunity Territory", value: "" },
+        { label: "Holdover Expiration", value: "" },
+        {
+          label: "Type",
+          value: opportunityData.OpportunityDetail.Opportunities_Type,
+        },
+        { label: "Refresh Product Family", value: "" },
+        // { label: "Created By", value: "" },
+      ],
+      right: [
+        { label: "Territory Override", value: "" },
+        { label: "Territory Tracker", value: "" },
+        { label: "Deal Alert Sent", value: "" },
+        { label: "Quote Submitted", value: "" },
+        // { label: "Do Not Run Trigger Test", value: "" },
+        // { label: "Last Modified By", value: "" },
+      ],
+    },
   };
 };
 

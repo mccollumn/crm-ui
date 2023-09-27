@@ -22,6 +22,7 @@ const EditLicenseKey = async ({
       formTitle="Edit License Key"
       defaultValues={values}
       menuItems={menuItems}
+      accountID={accountID}
     />
   );
 };

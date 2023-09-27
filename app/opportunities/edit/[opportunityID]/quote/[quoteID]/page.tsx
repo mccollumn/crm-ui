@@ -15,7 +15,7 @@ const EditQuote = async ({
     quoteDataPromise,
     menuItemsPromise,
   ]);
-  const quoteName = quoteData.QuoteDetail.Quotes_Name;
+  const quoteName = quoteData?.QuoteDetail.Quotes_Name;
   const values = await createQuoteFormData(quoteData);
 
   return (
@@ -24,6 +24,7 @@ const EditQuote = async ({
       defaultValues={values}
       menuItems={menuItems}
       quoteData={quoteData}
+      opportunityID={opportunityID}
     />
   );
 };
