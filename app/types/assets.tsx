@@ -23,6 +23,7 @@ interface AssetDetail {
 }
 
 interface AssetSupportDetails {
+  Assets_ID: string;
   Assets_MaintenanceStatus?: string | null;
   Assets_SupportPlanBegin?: string | null;
   Assets_SupportPlanEnd?: string | null;
@@ -30,6 +31,7 @@ interface AssetSupportDetails {
 }
 
 interface AssetSystemInformation {
+  Assets_ID: string;
   Assets_CreatedByID?: string | null;
   Users_Name?: string | null;
   Assets_CreatedDate?: string | null;

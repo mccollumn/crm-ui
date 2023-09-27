@@ -238,7 +238,7 @@ export const getAccountData = async (accountID: string) => {
  */
 
 export const getAssetData = async (assetID: string) => {
-  const data = await getData(`/asset/assetid/${assetID}`);
+  const data = await getData(`/asset/assetid/${assetID}`, ["asset"]);
   return data;
 };
 
@@ -257,7 +257,7 @@ export const getContactsByAccount = async (accountID: string) => {
 };
 
 export const getContactData = async (contactID: string) => {
-  const data = await getData(`/contact/contactid/${contactID}`);
+  const data = await getData(`/contact/contactid/${contactID}`, ["contact"]);
   return data;
 };
 
@@ -265,7 +265,9 @@ export const getContactData = async (contactID: string) => {
  * License Keys
  */
 export const getLicenseKeyData = async (keyID: string) => {
-  const data = await getData(`/licensekey/licensekeyid/${keyID}`);
+  const data = await getData(`/licensekey/licensekeyid/${keyID}`, [
+    "licenseKey",
+  ]);
   return data;
 };
 
@@ -278,8 +280,41 @@ export const getOpenOpportunities = async () => {
   return data;
 };
 
+export const getWonOpportunities = async () => {
+  const data = await getData("/opportunity/list/won");
+  return data;
+};
+
+export const getDeadOpportunities = async () => {
+  const data = await getData("/opportunity/list/dead");
+  return data;
+};
+
+export const getOpenOpportunitiesByAccount = async (accountID: string) => {
+  const data = await getData(
+    `/opportunity/list/open/by/account/id/${accountID}`
+  );
+  return data;
+};
+
+export const getWonOpportunitiesByAccount = async (accountID: string) => {
+  const data = await getData(
+    `/opportunity/list/won/by/account/id/${accountID}`
+  );
+  return data;
+};
+
+export const getDeadOpportunitiesByAccount = async (accountID: string) => {
+  const data = await getData(
+    `/opportunity/list/dead/by/account/id/${accountID}`
+  );
+  return data;
+};
+
 export const getOpportunityData = async (opportunityID: string) => {
-  const data = await getData(`/opportunity/opportunityid/${opportunityID}`);
+  const data = await getData(`/opportunity/opportunityid/${opportunityID}`, [
+    "opportunity",
+  ]);
   return data;
 };
 
@@ -288,7 +323,16 @@ export const getOpportunityData = async (opportunityID: string) => {
  */
 
 export const getQuoteData = async (quoteID: string) => {
-  const data = await getData(`/quote/quoteid/${quoteID}`);
+  const data = await getData(`/quote/quoteid/${quoteID}`, ["quote"]);
+  return data;
+};
+
+/**
+ * Sales Orders
+ */
+
+export const getSalesOrdersByAccount = async (accountID: string) => {
+  const data = await getData(`/salesorder/list/by/account/id/${accountID}`);
   return data;
 };
 

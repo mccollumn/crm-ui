@@ -204,37 +204,60 @@ export const DataTable = ({
     ],
     accountSalesOrders: [
       {
-        field: "orderNumber",
+        field: "SalesOrders_Name",
         headerName: "Sales Order Number",
         flex: 1,
       },
       {
-        field: "accountName",
+        field: "Account_Name",
         headerName: "Account",
+        flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link href={`/accounts/view/${params.row.SalesOrders_AccountID}`}>
+              {params.value}
+            </Link>
+          );
+        },
       },
       {
-        field: "date",
+        field: "SalesOrders_Date",
         headerName: "Date",
+        type: "date",
+        width: 150,
+        valueGetter: displayDate,
       },
       {
-        field: "docNumber",
+        field: "SalesOrders_DocumentNumber",
         headerName: "Document Number",
+        width: 150,
       },
       {
-        field: "docType",
+        field: "SalesOrders_DocumentType",
         headerName: "Document Type",
       },
       {
-        field: "isChannel",
+        field: "SalesOrders_IsChannel",
         headerName: "Is Channel",
+        type: "boolean",
+        renderCell: (params) => {
+          return params.value === "0" ? (
+            <CheckBoxOutlineBlankIcon />
+          ) : (
+            <CheckBox />
+          );
+        },
       },
       {
-        field: "quote",
+        field: "Quotes_Name",
         headerName: "Quote",
+        width: 150,
       },
       {
-        field: "total",
+        field: "SalesOrders_Total",
         headerName: "Total",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
         field: "editLink",
@@ -562,7 +585,7 @@ export const DataTable = ({
         renderCell: (params) => {
           return (
             <Link
-              href={`/opportunities/edit/${data?.id}/quote/${params.row.id}`}
+              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.id}`}
             >
               Edit
             </Link>
@@ -766,7 +789,7 @@ export const DataTable = ({
     accountsList: "Accounts_AccountID",
     contactsList: "Contacts_ID",
     opportunitiesList: "Opportunities_ID",
-    accountSalesOrders: "",
+    accountSalesOrders: "SalesOrders_ID",
     accountSalesInvoices: "",
     accountLicenseKeys: "LicenseKeys_ID",
     accountAssets: "Assets_ID",

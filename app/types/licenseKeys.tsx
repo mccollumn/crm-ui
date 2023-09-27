@@ -23,20 +23,24 @@ interface LicenseKeyDetail {
 }
 
 interface AuthKeyDetail {
+  LicenseKeys_ID: string;
   LicenseKeys_AnniversaryDate: string | null;
 }
 
 interface AddOnKeyDetail {
+  LicenseKeys_ID: string;
   LicenseKeys_IsApplied: "0" | "1";
   LicenseKeys_LastAppliedDate: string | null;
 }
 
 interface ActivationInfo {
+  LicenseKeys_ID: string;
   LicenseKeys_MostRecentActivatedVersion: string | null;
   LicenseKeys_MostRecentActivationDate: string | null;
 }
 
 interface SystemInfo {
+  LicenseKeys_ID: string;
   LicenseKeys_CreatedByID: string | null;
   LicenseKeys_CreatedDate: string | null;
   LicenseKeys_KeyCreatedBy: string | null;
@@ -55,23 +59,23 @@ export type LicenseKeyFormData = {
   };
   type?: string | null;
   pageViews?: string | null;
-  maintenanceExpirationDate?: string | null;
+  maintenanceExpirationDate?: Date | null;
   parentKey?: string | null;
   originalVersion?: string | null;
   version?: string | null;
   status?: string | null;
   systemStatus?: string | null;
   notes?: string | null;
-  anniversaryDate?: string | null;
+  anniversaryDate?: Date | null;
   isApplied?: boolean | null;
-  lastAppliedDate?: string | null;
+  lastAppliedDate?: Date | null;
   activatedVersion?: string | null;
-  activationDate?: string | null;
+  activationDate?: Date | null;
   system: {
     createdBy: {
       id?: string | null;
       name?: string | null;
     };
-    createdDate?: string | null;
+    createdDate?: Date | null;
   };
 };

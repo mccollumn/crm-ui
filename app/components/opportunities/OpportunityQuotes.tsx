@@ -23,6 +23,7 @@ const OpportunityQuotes = async ({ opportunityID }: OpportunityQuotesProps) => {
           <DataTable
             rows={opportunityQuotes}
             columnDefType="opportunityQuotes"
+            data={opportunityData}
           />
         </React.Suspense>
       </div>

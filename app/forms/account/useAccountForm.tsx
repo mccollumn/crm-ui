@@ -3,6 +3,7 @@ import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   convertDateToISOString,
+  convertNumberToString,
   isObjectEmpty,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
@@ -161,7 +162,9 @@ useAccountFormProps) => {
           values.entitlement.baseMntExpireDate
         ),
         AccountsSoftware_Entitled_Server_Calls: values.entitlement.serverCalls,
-        AccountsSoftware_Installations: values.entitlement.installations,
+        AccountsSoftware_Installations: convertNumberToString(
+          values.entitlement.installations
+        ),
         AccountsSoftware_Mnt_Expiration_Date: convertDateToISOString(
           values.entitlement.mntExpireDate
         ),

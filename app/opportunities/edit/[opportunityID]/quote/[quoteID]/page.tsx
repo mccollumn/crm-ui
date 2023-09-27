@@ -15,14 +15,15 @@ const EditQuote = async ({
     quoteDataPromise,
     menuItemsPromise,
   ]);
+  const quoteName = quoteData.QuoteDetail.Quotes_Name;
   const values = await createQuoteFormData(quoteData);
 
   return (
     <QuoteForm
-      formTitle="Edit Quote"
+      formTitle={`Edit Quote - ${quoteName}`}
       defaultValues={values}
       menuItems={menuItems}
-      opportunityID={opportunityID}
+      quoteData={quoteData}
     />
   );
 };

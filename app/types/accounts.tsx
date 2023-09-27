@@ -23,7 +23,7 @@ interface AccountDetail {
   Accounts_Super_Region?: string | null;
   Accounts_Type?: string | null;
   AccountType_Description: string | null;
-  Accounts_Vertical?: string | null;
+  // Accounts_Vertical?: string | null;
   Accounts_Website?: string | null;
 }
 
@@ -43,8 +43,8 @@ interface AddressInformation {
 
 interface AccountCreditStatus {
   AccountsCredit_ID: string;
-  Accounts_AutoRenewOP: "0" | "1";
-  Accounts_AutoRenewNotes?: string | null;
+  AccountsCredit_AutoRenewOP: "0" | "1";
+  AccountsCredit_AutoRenewNotes?: string | null;
   AccountsCredit_DeniedReason?: string | null;
   AccountsCredit_Hold: "0" | "1";
   AccountsCredit_HoldReason?: string | null;
@@ -52,9 +52,9 @@ interface AccountCreditStatus {
   AccountsCredit_Limit?: string | null;
   AccountsCredit_Notes?: string | null;
   AccountsCredit_Status?: string | null;
-  Accounts_OPCancellationNoticeDel?: string | null;
-  Accounts_PORequired: "0" | "1";
-  Accounts_PORequiredNotes?: string | null;
+  AccountsCredit_OPCancellationNoticeDel?: string | null;
+  AccountsCredit_PORequired: "0" | "1";
+  AccountsCredit_PORequiredNotes?: string | null;
 }
 
 interface Collections {
@@ -188,7 +188,7 @@ export type AccountFormData = {
   entitlement: {
     id?: string | null;
     serverCalls?: string | null;
-    installations?: string | null;
+    installations?: number | null;
     termLicense?: boolean | null;
     baseMntExpireDate?: Date | null;
     mntExpireDate?: Date | null;

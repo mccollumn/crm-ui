@@ -10,10 +10,10 @@ import {
 } from "@/app/utils/getData";
 import "server-only";
 
-const Cases = async ({ contactID, accountID }: CasesProps) => {
+const Cases = async ({ ownerID, accountID }: CasesProps) => {
   let rows = [];
-  if (contactID) {
-    rows = await getCasesByOwner(contactID);
+  if (ownerID) {
+    rows = await getCasesByOwner(ownerID);
   }
   if (accountID) {
     rows = await getCasesByAccount(accountID);
@@ -42,7 +42,7 @@ const Cases = async ({ contactID, accountID }: CasesProps) => {
 };
 
 interface CasesProps {
-  contactID?: string;
+  ownerID?: string;
   accountID?: string;
 }
 

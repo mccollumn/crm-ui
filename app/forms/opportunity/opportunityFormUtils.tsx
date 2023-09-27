@@ -117,8 +117,9 @@ export const createOpportunityFormData = async (
       servicesAmount:
         opportunityData.OpportunityRenewalInfo
           .Opportunities_ServicesRenewalAmount,
-      multiYearAddBack:
-        opportunityData.OpportunityRenewalInfo.Opportunities_MultiYearaddback,
+      multiYearAddBack: !!Number(
+        opportunityData.OpportunityRenewalInfo.Opportunities_MultiYearaddback
+      ),
       baselineRenewalDate:
         opportunityData.OpportunityRenewalInfo
           .Opportunities_BaselineRenewalDate,

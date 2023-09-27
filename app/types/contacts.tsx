@@ -32,6 +32,7 @@ interface ContactDetail {
 }
 
 interface ContactAddressInformation {
+  Contacts_ID: string;
   Contacts_MailingCity?: string | null;
   Contacts_MailingCountry?: string | null;
   Contacts_MailingPostalCode?: string | null;
@@ -45,6 +46,7 @@ interface ContactAddressInformation {
 }
 
 interface ContactDemographicInformation {
+  Contacts_ID: string;
   Contacts_IndustryContact?: string | null;
   Contacts_PreferredLanguage?: string | null;
   Contacts_TimeZone?: string | null;
@@ -52,6 +54,7 @@ interface ContactDemographicInformation {
 }
 
 interface ContactCommunicationsPreferences {
+  Contacts_ID: string;
   Contacts_DoNotRemarket: "0" | "1";
   Contacts_DoNotSendPostalMail: "0" | "1";
   Contacts_DoNotCall: "0" | "1";
@@ -59,6 +62,7 @@ interface ContactCommunicationsPreferences {
 }
 
 interface ContactSystemInformation {
+  Contacts_ID: string;
   Contacts_CreatedById: string;
   Users_Name?: string | null;
   Contacts_CreatedDate?: string | null;

@@ -348,6 +348,18 @@ const getOpportunityInfo = async (opportunityData: OpportunityData) => {
           ),
         },
         {
+          label: "1st Year Contract Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityDetail.Opportunities_FirstYrContractAmt
+          ),
+        },
+        {
+          label: "1st Year Expected Amount",
+          value: formatCurrency(
+            opportunityData.OpportunityDetail.Opportunities_FirstYrExpectedAmt
+          ),
+        },
+        {
           label: "Fast Notes/Next Steps",
           value:
             opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps,

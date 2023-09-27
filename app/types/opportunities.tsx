@@ -45,6 +45,7 @@ interface OpportunityDetail {
 }
 
 interface OpportunitySolutionsOverview {
+  Opportunities_ID: string;
   Opportunities_PFConsulting: string | null;
   Opportunities_PFDigitalIntelligence: string | null;
   Opportunities_PFEPS: string | null;
@@ -55,6 +56,7 @@ interface OpportunitySolutionsOverview {
 }
 
 interface OpportunityRenewalInfo {
+  Opportunities_ID: string;
   Opportunities_BaselineRenewalAmount: string | null;
   Opportunities_BaselineRenewalDate: string | null;
   Opportunities_RenewalStatus: string | null;
@@ -68,11 +70,13 @@ interface OpportunityRenewalInfo {
 }
 
 interface OpportunityAdditonalInfo {
+  Opportunities_ID: string;
   Opportunities_OpportunityNotes: string | null;
   Opportunities_CPCompellingEvent: string | null;
 }
 
 interface OpportunityWinLossDetail {
+  Opportunities_ID: string;
   Opportunities_BusinessValueofSolutionToCustomer: string | null;
   Opportunities_ChangeFromRenewalBaselineReason: string | null;
   Opportunities_PriorWAVendor: string | null;
@@ -85,6 +89,7 @@ interface OpportunityWinLossDetail {
 }
 
 interface OpportunityPartnerDetail {
+  Opportunities_ID: string;
   Opportunities_ChannelDeal: "0" | "1";
   Opportunities_FulfillingPartnerID: string | null;
   Opportunities_InfluencingPartnerID: string | null;
@@ -93,6 +98,7 @@ interface OpportunityPartnerDetail {
 }
 
 interface OpportunityStageTracking {
+  Opportunities_ID: string;
   Opportunities_MostRecentStage1: string | null;
   Opportunities_MostRecentStage2: string | null;
   Opportunities_MostRecentStage3: string | null;
@@ -199,6 +205,8 @@ export type OpportunityformData = {
   forecastStatus?: string | null;
   term?: string | null;
   oneYearAmount?: string | null;
+  firstYearContractAmount?: string | null;
+  firstYearExpectedAmount?: string | null;
   renewal: {
     baselineAmount?: string | null;
     servicesAmount?: string | null;

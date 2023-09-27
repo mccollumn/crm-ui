@@ -82,8 +82,8 @@ export const createQuoteFormData = async (quoteData?: QuoteData) => {
     id: quoteData.QuoteDetail.Quotes_ID,
     name: quoteData.QuoteDetail.Quotes_Name,
     owner: {
-      id: quoteData.QuoteDetail.Owners_Name,
-      name: quoteData.QuoteDetail.Quotes_OwnerID,
+      id: quoteData.QuoteDetail.Quotes_OwnerID,
+      name: quoteData.QuoteDetail.Owners_Name,
     },
     opportunity: {
       id: quoteData.QuoteDetail.Quotes_OpportunityID,

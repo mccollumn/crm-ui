@@ -51,7 +51,7 @@ const ContactView = async ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">Cases</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-cases-content">
-          <Cases contactID={contactID} />
+          <Cases accountID={contactAccountID} />
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>

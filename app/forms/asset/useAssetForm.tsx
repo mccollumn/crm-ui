@@ -1,7 +1,14 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
-import { isObjectEmpty } from "@/app/utils/utils";
+import {
+  convertBooleanToString,
+  convertDateToISOString,
+  getChangedValues,
+  isObjectEmpty,
+  removeNullsFromObject,
+} from "@/app/utils/utils";
 import { useForm } from "../useForm";
+import { AssetData, AssetFormData } from "@/app/types/assets";
 
 export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
   const initialMenuOptions = {
@@ -16,6 +23,8 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     setMenuOptions,
     setCustomMenuOptions,
     appendMenuOptions,
+    setIsLoading,
+    isLoading,
     menuOptions,
     FormatCurrency,
     FormatNumber,
@@ -70,11 +79,84 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     setMenuOptions("SupportPlanType");
   }, [setCustomMenuOptions, setMenuOptions]);
 
+  const createAssetFormSubmissionData = (
+    values: AssetFormData,
+    assetData?: AssetData
+  ) => {
+    const data = {
+      AssetDetail: {
+        Assets_ID: values.id,
+        Assets_AccountID: values.account.id,
+        Accounts_Name: values.account.name,
+        Assets_Description: values.description,
+        Assets_IsTermLicense: convertBooleanToString(values.isTermLicense),
+        Assets_Name: values.name,
+        Assets_OpportunityID: values.opportunity.id,
+        Opportunities_Name: values.opportunity.name,
+        Assets_PageViews: values.pageViews,
+        Assets_Product2Id: values.product.id,
+        Product2_Name: values.product.name,
+        Assets_PurchaseDate: values.purchaseDate,
+        Assets_Quantity: values.quantity,
+        Assets_SerialNumber: values.serialNumber,
+        Assets_Status: values.status,
+      },
+      AssetSupportDetails: {
+        Assets_ID: values.id,
+        Assets_MaintenanceStatus: values.support.status,
+        Assets_SupportPlanBegin: convertDateToISOString(
+          values.support.beginDate
+        ),
+        Assets_SupportPlanEnd: convertDateToISOString(values.support.endDate),
+        Assets_SupportPlanType: values.support.planType,
+      },
+      AssetSystemInformation: {
+        Assets_ID: values.id,
+        Assets_CreatedByID: values.system.createdBy.id,
+        Users_Name: values.system.createdBy.name,
+        Assets_CreatedDate: convertDateToISOString(values.system.createDate),
+        Assets_LastModifiedByID: values.system.lastModifiedBy.id,
+        Assets_LastModifiedDate: convertDateToISOString(
+          values.system.lastModifiedDate
+        ),
+        Assets_PV: values.pageViews,
+      },
+    };
+    let newFormData: any = removeNullsFromObject(data);
+
+    // We only want to submit form values that were modified
+    newFormData = getChangedValues(newFormData, assetData);
+
+    // Add the asset and account IDs back in
+    if (assetData) {
+      newFormData = {
+        ...newFormData,
+        AssetDetail: {
+          ...newFormData.AssetDetail,
+          Assets_ID: assetData.AssetDetail.Assets_ID,
+          Assets_AccountID: assetData.AssetDetail.Assets_AccountID,
+        },
+        AssetSupportDetails: {
+          ...newFormData.AssetSupportDetails,
+          Assets_ID: assetData.AssetSupportDetails.Assets_ID,
+        },
+        AssetSystemInformation: {
+          ...newFormData,
+          Assets_ID: assetData.AssetSystemInformation.Assets_ID,
+        },
+      };
+    }
+    return newFormData;
+  };
+
   return {
     setMenuOptions,
+    setIsLoading,
+    isLoading,
     menuOptions,
     FormatCurrency,
     FormatNumber,
+    createAssetFormSubmissionData,
   };
 };
 

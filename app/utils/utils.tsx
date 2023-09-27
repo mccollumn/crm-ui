@@ -113,6 +113,16 @@ export const convertBooleanToString = (
 };
 
 /**
+ * Converts a number to a string.
+ * @param number Number to convert to string.
+ * @returns String containing the number.
+ */
+export const convertNumberToString = (number: number | null | undefined) => {
+  if (number) return String(number);
+  return number;
+};
+
+/**
  * Converts a delimited string into an array.
  * @param str String to convert to array.
  * @param delimiter Delimiter used to split the string. Default semicolon.

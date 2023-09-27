@@ -25,6 +25,7 @@ const EditOpportunity = async ({
       formTitle={`Edit Opportunity - ${opportunityName}`}
       defaultValues={values}
       menuItems={menuItems}
+      opportunityData={opportunityData}
     />
   );
 };

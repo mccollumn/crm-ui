@@ -412,7 +412,7 @@ const getAccountInfo = async (accountID: string) => {
         },
         {
           label: "Auto Renewal Notes",
-          value: accountData.AccountCreditStatus.Accounts_AutoRenewNotes,
+          value: accountData.AccountCreditStatus.AccountsCredit_AutoRenewNotes,
         },
       ],
       right: [
@@ -423,12 +423,12 @@ const getAccountInfo = async (accountID: string) => {
         {
           label: "PO Required",
           value: formatCheckbox(
-            accountData.AccountCreditStatus.Accounts_PORequired
+            accountData.AccountCreditStatus.AccountsCredit_PORequired
           ),
         },
         {
           label: "PO Required Notes",
-          value: accountData.AccountCreditStatus.Accounts_PORequiredNotes,
+          value: accountData.AccountCreditStatus.AccountsCredit_PORequiredNotes,
         },
         {
           label: "Credit Notes",
@@ -438,13 +438,14 @@ const getAccountInfo = async (accountID: string) => {
         {
           label: "Auto Renew OP",
           value: formatCheckbox(
-            accountData.AccountCreditStatus.Accounts_AutoRenewOP
+            accountData.AccountCreditStatus.AccountsCredit_AutoRenewOP
           ),
         },
         {
           label: "OP Cancellation Notice",
           value:
-            accountData.AccountCreditStatus.Accounts_OPCancellationNoticeDel,
+            accountData.AccountCreditStatus
+              .AccountsCredit_OPCancellationNoticeDel,
         },
       ],
     },
