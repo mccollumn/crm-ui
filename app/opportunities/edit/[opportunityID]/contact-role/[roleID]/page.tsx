@@ -23,14 +23,15 @@ const EditContactRole = async ({
       contactRole.OpportunityContactRoles_ID === roleID
   );
   const values = await createContactRoleFormData(contactRoleData);
-  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
+  const contactName = contactRoleData.Contacts_Name;
 
   return (
     <ContactRoleForm
-      formTitle="Edit Contact Role"
+      formTitle={`Edit Contact Role - ${contactName}`}
       defaultValues={values}
       menuItems={menuItems}
-      accountID={accountID}
+      opportunityData={opportunityData}
+      contactRoleData={contactRoleData}
     />
   );
 };

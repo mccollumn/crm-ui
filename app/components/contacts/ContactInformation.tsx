@@ -187,7 +187,13 @@ const getContactInfo = async (contactID: string) => {
         { label: "Name", value: contactData.ContactDetail.Contacts_FullName },
         {
           label: "Account Name",
-          value: contactData.ContactDetail.Accounts_Name,
+          value: (
+            <Link
+              href={`/accounts/view/${contactData.ContactDetail.Contacts_AccountId}`}
+            >
+              {contactData.ContactDetail.Accounts_Name}
+            </Link>
+          ),
         },
         { label: "Title", value: contactData.ContactDetail.Contacts_Title },
         // { label: "Reports To", value: "" },
@@ -199,7 +205,14 @@ const getContactInfo = async (contactID: string) => {
           label: "Contact Role",
           value: contactData.ContactDetail.Contacts_ContactRole,
         },
-        { label: "Email", value: contactData.ContactDetail.Contacts_Email },
+        {
+          label: "Email",
+          value: (
+            <Link href={`mailto:${contactData.ContactDetail.Contacts_Email}`}>
+              {contactData.ContactDetail.Contacts_Email}
+            </Link>
+          ),
+        },
         {
           label: "Unconfirmed Email",
           value: formatCheckbox(

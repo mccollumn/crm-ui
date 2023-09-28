@@ -6,20 +6,24 @@ import { AutocompleteElement, CheckboxElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
 import { useContactRoleForm } from "./useContactRoleForm";
+import { ContactRole, OpportunityData } from "@/app/types/opportunities";
 
 interface ContactRoleFormProps extends FormProps {
-  accountID: string;
+  opportunityData: OpportunityData;
+  contactRoleData?: ContactRole;
 }
 
 export const ContactRoleForm = ({
   formTitle,
   defaultValues,
   menuItems,
-  opportunityID,
+  opportunityData,
+  // contactRoleData,
   ...props
 }: ContactRoleFormProps) => {
   const router = useRouter();
-  const contactRoleID = defaultValues.OpportunityContactRoles_ID;
+  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
+  // const contactRoleID = contactRoleData?.OpportunityContactRoles_ID;
   const {
     menuOptions,
     setIsLoading,
@@ -32,19 +36,19 @@ export const ContactRoleForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createContactRoleFormSubmissionData(values, quoteData);
+    const data = createContactRoleFormSubmissionData(values, opportunityData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let isEdit = !!defaultValues?.id;
-    const url = isEdit
-      ? "/api/opportunities/update/quote"
-      : "/api/opportunities/insert/quote";
+    // const isEdit = !!defaultValues?.id;
+    // const url = isEdit
+    //   ? "/api/opportunities/update"
+    //   : "/api/opportunities/insert";
+    const url = "/api/opportunities/update";
     const request = new Request(url, {
       method: "POST",
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);
@@ -54,6 +58,7 @@ export const ContactRoleForm = ({
     // Invalidate cached account data
     fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
+    const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
     router.push(`/opportunities/view/${opportunityID}`);
   };
 
@@ -80,7 +85,6 @@ export const ContactRoleForm = ({
               autocompleteProps={{
                 getOptionLabel: (option) => option.name || "",
                 renderOption: (props, option) => {
-                  console.log("Contact option:", option);
                   return (
                     <li {...props} key={option.id}>
                       {option.name}

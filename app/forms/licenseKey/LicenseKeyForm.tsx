@@ -54,7 +54,6 @@ export const LicenseKeyForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);

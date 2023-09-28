@@ -13,7 +13,6 @@ export const preload = (fn: (a?: any) => void, args: any[] = []) => {
 export const getData = cache(async (path: string, tags?: string[]) => {
   try {
     const tagOptions = tags ? { next: { tags: tags } } : {};
-    console.log("Tag options:", tagOptions);
     const res = await fetch(
       `${process.env.CRM_API_ENDPOINT}/${path}`,
       tagOptions
@@ -42,7 +41,8 @@ export const postData = cache(async (url: string, data: any) => {
     if (!res.ok) {
       throw new Error("Network response was not OK");
     }
-    return res;
+    const responseData = await res.json();
+    return responseData;
   } catch (error) {
     console.error("POST failed:", error);
   }
@@ -93,6 +93,11 @@ export const getCasesByAccountPaginated = async (
   const data = await getData(
     `/case/list/all/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`
   );
+  return data;
+};
+
+export const getCasesByContact = async (contactID: string) => {
+  const data = await getData(`/case/list/all/by/contact/id/${contactID}`);
   return data;
 };
 

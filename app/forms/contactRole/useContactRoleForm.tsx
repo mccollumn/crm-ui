@@ -86,7 +86,17 @@ export const useContactRoleForm = ({
         OpportunityContactRoles_ID: contactRoleData.OpportunityContactRoles_ID,
       };
     }
-    return newFormData;
+
+    const newOpportunityData = {
+      OpportunityDetail: {
+        Opportunities_ID: opportunityData?.OpportunityDetail.Opportunities_ID,
+        Opportunities_AccountId:
+          opportunityData?.OpportunityDetail.Opportunities_AccountId,
+      },
+      OpportunityQuoteContactRoles: [newFormData],
+    };
+
+    return newOpportunityData;
   };
 
   return {

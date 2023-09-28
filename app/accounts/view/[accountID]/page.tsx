@@ -42,7 +42,7 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Contacts</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-contacts-content">
-          <Contacts accountID={accountID} />
+          <Contacts accountID={accountID} noTitle />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -54,7 +54,7 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Cases</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-cases-content">
-          <Cases accountID={accountID} />
+          <Cases accountID={accountID} noTitle />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -66,7 +66,7 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Opportunities</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-opportunities-content">
-          <Opportunities accountID={accountID} />
+          <Opportunities accountID={accountID} noTitle />
         </AccordionDetails>
       </Accordion>
       <Accordion>

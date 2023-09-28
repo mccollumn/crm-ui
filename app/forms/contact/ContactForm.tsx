@@ -50,7 +50,6 @@ export const ContactForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);
@@ -59,7 +58,7 @@ export const ContactForm = ({
 
     if (!id) {
       const responseData = await response.json();
-      id = responseData.ContactDetail.Contacts_ID;
+      id = responseData?.res?.ID;
     }
     // Invalidate cached account data
     fetch("/api/revalidate/tag?tag=contact");

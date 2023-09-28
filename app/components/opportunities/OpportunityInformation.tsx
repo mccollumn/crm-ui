@@ -259,7 +259,13 @@ const getOpportunityInfo = async (
         },
         {
           label: "Account Name",
-          value: opportunityData.OpportunityDetail.Accounts_Name,
+          value: (
+            <Link
+              href={`/accounts/view/${opportunityData.OpportunityDetail.Opportunities_AccountId}`}
+            >
+              {opportunityData.OpportunityDetail.Accounts_Name}
+            </Link>
+          ),
         },
         {
           label: "Opportunity Type",

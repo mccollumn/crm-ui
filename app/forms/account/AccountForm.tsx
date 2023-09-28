@@ -50,7 +50,6 @@ export const AccountForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);
@@ -59,9 +58,7 @@ export const AccountForm = ({
 
     if (!id) {
       const responseData = await response.json();
-      console.log("Account Response:", response.body);
-      console.log("Account Response Data:", responseData);
-      id = responseData?.AccountDetail?.Accounts_AccountID;
+      id = responseData?.res?.ID;
     }
     // Invalidate cached account data
     fetch("/api/revalidate/tag?tag=account");

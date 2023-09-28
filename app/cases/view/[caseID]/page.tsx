@@ -13,8 +13,6 @@ import { getCaseData } from "@/app/utils/getData";
 const CaseView = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
   const caseData = await getCaseData(caseID);
-  console.log("CaseID:", caseID);
-  console.log("CaseData:", caseData);
   const caseNumber = caseData?.CaseInformation.Cases_CaseNumber;
 
   return (

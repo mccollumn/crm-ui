@@ -291,7 +291,17 @@ const getAccountInfo = async (accountID: string) => {
         // { label: "Type Last Change Date", value: "" },
         // { label: "Vertical", value: "" },
         // { label: "Sector", value: "" },
-        { label: "Website", value: accountData.AccountDetail.Accounts_Website },
+        {
+          label: "Website",
+          value: (
+            <Link
+              href={accountData.AccountDetail.Accounts_Website || ""}
+              target="_blank"
+            >
+              {accountData.AccountDetail.Accounts_Website}
+            </Link>
+          ),
+        },
         // { label: "Misc. Info", value: "" },
         // { label: "Migrate to New Org", value: "" },
         // { label: "Migration External ID", value: "" },

@@ -47,7 +47,7 @@ export const QuoteForm = ({
     const data = createQuoteFormSubmissionData(values, quoteData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let isEdit = !!defaultValues?.id;
+    const isEdit = !!defaultValues?.id;
     const url = isEdit
       ? "/api/opportunities/update/quote"
       : "/api/opportunities/insert/quote";
@@ -56,7 +56,6 @@ export const QuoteForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);

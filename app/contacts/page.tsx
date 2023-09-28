@@ -5,7 +5,7 @@ import { DataTable } from "../components/DataTable";
 import { getContactsByAccount, getContacts } from "../utils/getData";
 import "server-only";
 
-const Contacts = async ({ accountID }: ContactsProps) => {
+const Contacts = async ({ accountID, noTitle = false }: ContactsProps) => {
   let contactsList = [];
   if (accountID) {
     contactsList = await getContactsByAccount(accountID);
@@ -15,7 +15,7 @@ const Contacts = async ({ accountID }: ContactsProps) => {
 
   return (
     <>
-      <Title title="Contacts" />
+      {!noTitle && <Title title="Contacts" />}
       <ButtonNav path="/contacts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading contacts...</p>}>
@@ -28,6 +28,7 @@ const Contacts = async ({ accountID }: ContactsProps) => {
 
 interface ContactsProps {
   accountID?: string;
+  noTitle?: boolean;
 }
 
 export default Contacts;

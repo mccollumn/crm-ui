@@ -18,14 +18,13 @@ const NewContactRole = async ({
     menuItemsPromise,
     valuesPromise,
   ]);
-  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
 
   return (
     <ContactRoleForm
       formTitle="New Contact Role"
       defaultValues={values}
       menuItems={menuItems}
-      accountID={accountID}
+      opportunityData={opportunityData}
     />
   );
 };

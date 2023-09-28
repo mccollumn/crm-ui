@@ -9,10 +9,11 @@ import Opportunities from "@/app/opportunities/page";
 import Cases from "@/app/cases/page";
 import ContactHistory from "@/app/components/contacts/ContactHistory";
 import { getContactData } from "@/app/utils/getData";
+import { ContactData } from "@/app/types/contacts";
 
 const ContactView = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
-  const contactData = await getContactData(contactID);
+  const contactData: ContactData = await getContactData(contactID);
   const contactName = contactData.ContactDetail.Contacts_FullName;
   const contactAccountID = contactData.ContactDetail.Contacts_AccountId;
 
@@ -51,7 +52,7 @@ const ContactView = async ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">Cases</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-cases-content">
-          <Cases accountID={contactAccountID} />
+          <Cases contactID={contactID} noTitle />
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>

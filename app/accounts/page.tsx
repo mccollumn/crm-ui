@@ -5,12 +5,12 @@ import { DataTable } from "../components/DataTable";
 import { getAccounts } from "@/app/utils/getData";
 import "server-only";
 
-const Accounts = async () => {
+const Accounts = async (noTitle = false) => {
   const accountsList = await getAccounts();
 
   return (
     <>
-      <Title title="Accounts" />
+      {!noTitle && <Title title="Accounts" />}
       <ButtonNav path="/accounts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading accounts...</p>}>

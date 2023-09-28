@@ -18,7 +18,7 @@ import { useOpportunityForm } from "./useOpportunityForm";
 import { OpportunityData } from "@/app/types/opportunities";
 
 interface OpportunityFormProps extends FormProps {
-  opportunityData: OpportunityData;
+  opportunityData?: OpportunityData;
 }
 
 export const OpportunityForm = ({
@@ -52,7 +52,6 @@ export const OpportunityForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);
@@ -61,7 +60,7 @@ export const OpportunityForm = ({
 
     if (!id) {
       const responseData = await response.json();
-      id = responseData.OpportunityDetail.Opportunities_ID;
+      id = responseData?.res?.ID;
     }
     // Invalidate cached opportunity data
     fetch("/api/revalidate/tag?tag=opportunity");

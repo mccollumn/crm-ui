@@ -15,6 +15,7 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAssetForm } from "./useAssetForm";
 import { AssetData } from "@/app/types/assets";
+import { constants } from "crypto";
 
 interface AssetFormProps extends FormProps {
   assetData?: AssetData;
@@ -45,7 +46,7 @@ export const AssetForm = ({
     const data = createAssetFormSubmissionData(values, assetData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    let isEdit = !!defaultValues?.account.id;
+    const isEdit = !!defaultValues?.account.id;
     const url = isEdit
       ? "/api/accounts/update/asset"
       : "/api/accounts/insert/asset";
@@ -54,7 +55,6 @@ export const AssetForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);

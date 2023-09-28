@@ -12,7 +12,10 @@ import {
 } from "../utils/getData";
 import "server-only";
 
-export default async function Opportunities({ accountID }: OpportunitiesProps) {
+export default async function Opportunities({
+  accountID,
+  noTitle = false,
+}: OpportunitiesProps) {
   let openOpportunitiesPromise;
   let wonOpportunitiesPromise;
   let deadOpportunitiesPromise;
@@ -39,7 +42,7 @@ export default async function Opportunities({ accountID }: OpportunitiesProps) {
 
   return (
     <>
-      <Title title="Opportunities" />
+      {!noTitle && <Title title="Opportunities" />}
       <ButtonNav path="/opportunities/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading opportunities...</p>}>
@@ -55,4 +58,5 @@ export default async function Opportunities({ accountID }: OpportunitiesProps) {
 
 interface OpportunitiesProps {
   accountID?: string;
+  noTitle?: boolean;
 }

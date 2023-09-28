@@ -52,7 +52,6 @@ export const CaseForm = ({
       body: JSON.stringify(data),
     });
     const response = await fetch(request);
-    console.log("Response:", response);
 
     if (!response.ok) {
       console.error("Unable to submit data:", response.statusText);
@@ -61,7 +60,7 @@ export const CaseForm = ({
 
     if (!id) {
       const responseData = await response.json();
-      id = responseData.CaseInformation.Cases_ID;
+      id = responseData?.res?.ID;
     }
     setIsLoading(false);
     router.push(`/cases/view/${id}`);

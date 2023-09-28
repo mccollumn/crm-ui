@@ -10,6 +10,7 @@ import { InformationSection } from "../InformationSection";
 import { CaseData } from "../../types/cases";
 import { formatCheckbox, formatCurrency, formatDate } from "@/app/utils/utils";
 import { getCaseData } from "@/app/utils/getData";
+import Link from "next/link";
 
 const CaseInformation = async ({ caseID }: CaseInformationProps) => {
   const caseInfo = await getCaseInfo(caseID);
@@ -94,11 +95,23 @@ const getCaseInfo = async (caseID: string) => {
         { label: "Subject", value: caseData.CaseInformation.Cases_Subject },
         {
           label: "Account Name",
-          value: caseData.CaseInformation.Accounts_Name,
+          value: (
+            <Link
+              href={`/accounts/view/${caseData.CaseInformation.Cases_AccountID}`}
+            >
+              {caseData.CaseInformation.Accounts_Name}
+            </Link>
+          ),
         },
         {
           label: "Contact Name",
-          value: caseData.CaseInformation.Contacts_FullName,
+          value: (
+            <Link
+              href={`/contacts/view/${caseData.CaseInformation.Cases_ContactId}`}
+            >
+              {caseData.CaseInformation.Contacts_FullName}
+            </Link>
+          ),
         },
         {
           label: "Case Origin",
@@ -110,7 +123,13 @@ const getCaseInfo = async (caseID: string) => {
         },
         {
           label: "Contact Email",
-          value: caseData.CaseInformation.Cases_ContactEmail,
+          value: (
+            <Link
+              href={`mailto:${caseData.CaseInformation.Cases_ContactEmail}`}
+            >
+              {caseData.CaseInformation.Cases_ContactEmail}
+            </Link>
+          ),
         },
         {
           label: "Case Number",
