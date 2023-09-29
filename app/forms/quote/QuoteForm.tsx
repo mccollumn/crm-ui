@@ -17,6 +17,7 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "../../types/types";
 import { useQuoteForm } from "./useQuoteForm";
 import { QuoteData } from "@/app/types/quotes";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface QuoteFormProps extends FormProps {
   quoteData?: QuoteData;
@@ -57,9 +58,10 @@ export const QuoteForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     // Invalidate cached account data

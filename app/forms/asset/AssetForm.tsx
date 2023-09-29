@@ -16,6 +16,7 @@ import { FormProps } from "@/app/types/types";
 import { useAssetForm } from "./useAssetForm";
 import { AssetData } from "@/app/types/assets";
 import { constants } from "crypto";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface AssetFormProps extends FormProps {
   assetData?: AssetData;
@@ -56,9 +57,10 @@ export const AssetForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     // Invalidate cached account and asset data

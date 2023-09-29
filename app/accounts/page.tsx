@@ -5,7 +5,7 @@ import { DataTable } from "../components/DataTable";
 import { getAccounts } from "@/app/utils/getData";
 import "server-only";
 
-const Accounts = async (noTitle = false) => {
+const Accounts = async ({ noTitle = false }) => {
   const accountsList = await getAccounts();
 
   return (

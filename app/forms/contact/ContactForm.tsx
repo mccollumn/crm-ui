@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { FormProps } from "@/app/types/types";
 import { useContactForm } from "./useContactForm";
 import { ContactData } from "@/app/types/contacts";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 // import DateFnsProvider from "../providers/DateFnsProvider";
 
 interface ContactFormProps extends FormProps {
@@ -51,9 +52,10 @@ export const ContactForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     if (!id) {

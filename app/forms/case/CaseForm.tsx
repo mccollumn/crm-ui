@@ -16,6 +16,7 @@ import DateFnsProvider from "@/app/providers/DateFnsProvider";
 import { FormProps, MenuItem } from "@/app/types/types";
 import { useCaseForm } from "./useCaseForm";
 import { CaseData } from "@/app/types/cases";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface CaseFormProps extends FormProps {
   caseData?: CaseData;
@@ -53,9 +54,10 @@ export const CaseForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     if (!id) {

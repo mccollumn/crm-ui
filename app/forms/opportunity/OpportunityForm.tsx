@@ -16,6 +16,7 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useOpportunityForm } from "./useOpportunityForm";
 import { OpportunityData } from "@/app/types/opportunities";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface OpportunityFormProps extends FormProps {
   opportunityData?: OpportunityData;
@@ -53,9 +54,10 @@ export const OpportunityForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     if (!id) {

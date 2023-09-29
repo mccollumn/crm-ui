@@ -15,6 +15,7 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAccountForm } from "./useAccountForm";
 import { AccountData } from "@/app/types/accounts";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface AccountFormProps extends FormProps {
   accountData?: AccountData;
@@ -51,9 +52,10 @@ export const AccountForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     if (!id) {

@@ -15,6 +15,7 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useLicenseKeyForm } from "./useLicenseKeyForm";
 import { LicenseKeyData } from "@/app/types/licenseKeys";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface LicenseKeyFormProps extends FormProps {
   licenseKeyData?: LicenseKeyData;
@@ -55,9 +56,10 @@ export const LicenseKeyForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     // Invalidate cached account data

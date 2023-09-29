@@ -45,6 +45,7 @@ export const postData = cache(async (url: string, data: any) => {
     return responseData;
   } catch (error) {
     console.error("POST failed:", error);
+    return { message: "error" };
   }
 });
 

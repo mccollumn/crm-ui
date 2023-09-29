@@ -7,6 +7,7 @@ import { CheckboxElement, TextareaAutosizeElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { useCaseCommentForm } from "./useCaseCommentForm";
 import { CaseComment, CaseData } from "@/app/types/cases";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 export const CaseCommentForm = ({
   formTitle,
@@ -36,9 +37,10 @@ export const CaseCommentForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     if (!id) {

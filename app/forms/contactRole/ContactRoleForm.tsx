@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
 import { useContactRoleForm } from "./useContactRoleForm";
 import { ContactRole, OpportunityData } from "@/app/types/opportunities";
+import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface ContactRoleFormProps extends FormProps {
   opportunityData: OpportunityData;
@@ -50,9 +51,10 @@ export const ContactRoleForm = ({
     });
     const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error("Unable to submit data:", response.statusText);
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
       router.push("/error");
+      return;
     }
 
     // Invalidate cached account data
@@ -82,6 +84,7 @@ export const ContactRoleForm = ({
             <AutocompleteElement
               label="Contact"
               name="contact"
+              required
               autocompleteProps={{
                 getOptionLabel: (option) => option.name || "",
                 renderOption: (props, option) => {
@@ -109,6 +112,7 @@ export const ContactRoleForm = ({
             <AutocompleteElement
               label="Role"
               name="role.name"
+              required
               autocompleteProps={{ size: "small" }}
               options={menuOptions.Role}
             />

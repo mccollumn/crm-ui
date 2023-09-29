@@ -10,6 +10,15 @@ export const isObjectEmpty = (objectName: any) => {
   );
 };
 
+export const isSuccessfulResponse = async (response: Response) => {
+  const responseData = await response.json();
+  if (!response.ok || responseData.res.message === "error") {
+    console.error("Unable to submit data:", response.statusText);
+    return false;
+  }
+  return true;
+};
+
 /**
  * Formats a date or date/time string as either UTC or the current locale.
  * @param dateString Date / time value.
