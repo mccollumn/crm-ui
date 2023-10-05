@@ -10,8 +10,10 @@ import OpportunityContactRoles from "@/app/components/opportunities/OpportunityC
 import OpportunityActivities from "@/app/components/opportunities/OpportunityActivities";
 import OpportunityProducts from "@/app/components/opportunities/OpportunityProducts";
 import OpportunityStage from "@/app/components/opportunities/OpportunityStage";
-import { getOpportunityData } from "@/app/utils/getData";
+import { getOpportunityData, getQuoteData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
+import QuoteInformation from "@/app/components/quotes/QuoteInformation";
+import QuoteProducts from "@/app/components/quotes/QuoteProducts";
 
 const QuoteView = async ({
   params,
@@ -20,10 +22,9 @@ const QuoteView = async ({
 }) => {
   const opportunityID = params.opportunityID;
   const quoteID = params.quoteID;
-  const opportunityData = await getOpportunityData(opportunityID);
-  const opportunityName = unEscape(
-    opportunityData?.OpportunityDetail?.Opportunities_Name
-  );
+  // const opportunityData = await getOpportunityData(opportunityID);
+  const quoteData = await getQuoteData(quoteID);
+  const opportunityName = unEscape(quoteData?.QuoteDetail?.Opportunities_Name);
 
   return (
     <div>
@@ -37,7 +38,7 @@ const QuoteView = async ({
           <Typography variant="h6">{opportunityName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-info-content">
-          <OpportunityInformation opportunityID={opportunityID} />
+          <QuoteInformation quoteID={quoteID} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -75,7 +76,7 @@ const QuoteView = async ({
         <AccordionDetails id="opportunity-activities-content">
           <OpportunityActivities opportunityID={opportunityID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -85,10 +86,10 @@ const QuoteView = async ({
           <Typography variant="h6">Products</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-products-content">
-          <OpportunityProducts opportunityID={opportunityID} />
+          <QuoteProducts quoteID={quoteID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-stage-content"

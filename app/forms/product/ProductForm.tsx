@@ -2,40 +2,43 @@
 
 import { FormWrapper } from "../FormWrapper";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
-import { AutocompleteElement, CheckboxElement } from "react-hook-form-mui";
+import { AutocompleteElement, TextFieldElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
-import { useContactRoleForm } from "./useContactRoleForm";
-import { ContactRole, OpportunityData } from "@/app/types/opportunities";
+import { OpportunityData, Product } from "@/app/types/opportunities";
 import { isSuccessfulResponse } from "@/app/utils/utils";
+import { useProductForm } from "./useProductForm";
 
-interface ContactRoleFormProps extends FormProps {
+interface ProductFormProps extends FormProps {
   opportunityData: OpportunityData;
-  contactRoleData?: ContactRole;
 }
 
-export const ContactRoleForm = ({
+export const ProductForm = ({
   formTitle,
   defaultValues,
   menuItems,
   opportunityData,
   ...props
-}: ContactRoleFormProps) => {
+}: ProductFormProps) => {
   const router = useRouter();
-  const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
   const {
     menuOptions,
     setIsLoading,
     isLoading,
-    createContactRoleFormSubmissionData,
-  } = useContactRoleForm({
+    setProductSelected,
+    productSelected,
+    FormatNumber,
+    FormatCurrency,
+    FormatPercent,
+    createProductFormSubmissionData,
+  } = useProductForm({
     menuItems,
-    accountID,
+    // accountID,
   });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createContactRoleFormSubmissionData(values, opportunityData);
+    const data = createProductFormSubmissionData(values, opportunityData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const url = "/api/opportunities/update";
@@ -79,43 +82,72 @@ export const ContactRoleForm = ({
         defaultValues={defaultValues}
       >
         <Grid container spacing={1}>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <Stack spacing={1}>
-              {/* Contact */}
+              {/* Product */}
               <AutocompleteElement
-                label="Contact"
-                name="contact"
+                label="Product"
+                name="product"
                 required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
-                        {option.name}
+                        <b>{option.name}</b>
+                        <pre
+                          style={{ margin: 0 }}
+                        >{` - ${option.code} (${option.unitPrice})`}</pre>
                       </li>
                     );
                   },
                   size: "small",
+                  onChange: (_, value) => {
+                    setProductSelected(value);
+                  },
                 }}
-                options={menuOptions.Contact}
-              />
-              {/* Is Primary */}
-              <CheckboxElement
-                label="Is Primary"
-                name="contact.isPrimary"
-                size="small"
+                options={menuOptions.Product}
               />
             </Stack>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* Role */}
-              <AutocompleteElement
-                label="Role"
-                name="role.name"
+              {/* Quantity */}
+              <TextFieldElement
+                label="Quantity"
+                name="quantity"
                 required
-                autocompleteProps={{ size: "small" }}
-                options={menuOptions.Role}
+                size="small"
+                InputProps={{ inputComponent: FormatNumber as any }}
+              />
+              {/* List Price */}
+              {/* TODO: Confirm that this is populating when a product is selected */}
+              <TextFieldElement
+                label="List Price"
+                name="product.unitPrice"
+                disabled
+                size="small"
+                value={productSelected?.OpportunityLineItems_UnitPrice || ""}
+                InputProps={{ inputComponent: FormatCurrency as any }}
+              />
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Discount */}
+              <TextFieldElement
+                label="Discount"
+                name="discount"
+                size="small"
+                InputProps={{ inputComponent: FormatPercent as any }}
+              />
+              {/* Sales Price */}
+              <TextFieldElement
+                label="Sales Price"
+                name="totalPrice"
+                required
+                size="small"
+                InputProps={{ inputComponent: FormatCurrency as any }}
               />
             </Stack>
           </Grid>

@@ -1,31 +1,31 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-
-const getOpportunityProducts = async (opportunityID: string) => {
-  const res = await fetch("https://dev.to/api/articles");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-};
+import { OpportunityData } from "@/app/types/opportunities";
+import { getOpportunityData } from "@/app/utils/getData";
+import { ButtonNav } from "../navigation/ButtonNav";
 
 export default async function OpportunityProducts({
   opportunityID,
 }: OpportunityProductsProps) {
-  const opportunityProducts = await getOpportunityProducts(opportunityID);
+  const opportunityData: OpportunityData = await getOpportunityData(
+    opportunityID
+  );
+  const opportunityProducts = opportunityData.OpportunityProducts;
 
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <ButtonNav
+        size="small"
+        path={`/opportunities/new/${opportunityID}/product/`}
+      >
+        New
+      </ButtonNav>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading products...</p>}>
           <DataTable
             rows={opportunityProducts}
             columnDefType="opportunityProducts"
-            // TODO: Update field name for opportunity number
-            queryField="id"
-            queryValue={opportunityID}
+            data={opportunityData}
           />
         </React.Suspense>
       </div>

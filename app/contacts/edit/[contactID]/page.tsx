@@ -10,7 +10,7 @@ const EditContact = async ({ params }: { params: { contactID: string } }) => {
     contactDataPromise,
     menuItemsPromise,
   ]);
-  const contactName = contactData?.ContactDetail?.Contacts_FullName;
+  const contactName = `${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}`;
   const values = await createContactFormData(contactData);
 
   return (

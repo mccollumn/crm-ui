@@ -74,7 +74,7 @@ const OpportunityView = async ({
         <AccordionDetails id="opportunity-activities-content">
           <OpportunityActivities opportunityID={opportunityID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -87,7 +87,7 @@ const OpportunityView = async ({
           <OpportunityProducts opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-stage-content"

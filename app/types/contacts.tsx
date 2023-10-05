@@ -18,6 +18,8 @@ interface ContactDetail {
   Contacts_EmailBouncedReason?: string | null;
   Contacts_EmailDomain?: string | null;
   Contacts_Fax?: string | null;
+  Contacts_FirstName?: string | null;
+  Contacts_LastName?: string | null;
   Contacts_FullName?: string | null;
   Contacts_HomePhone?: string | null;
   Contacts_JobRole?: string | null;

@@ -98,6 +98,33 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   );
 
   /**
+   * Custom inputComponent that formats the input value as a percantage.
+   */
+  const FormatPercent = React.forwardRef<NumericFormatProps, CustomInputProps>(
+    function NumericFormatCustom(props, ref) {
+      const { onChange, ...other } = props;
+
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+          suffix="%"
+        />
+      );
+    }
+  );
+
+  /**
    * Custom inputComponent that formats the input value as a number.
    */
   const FormatNumber = React.forwardRef<NumericFormatProps, CustomInputProps>(
@@ -131,6 +158,7 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
     isLoading,
     menuOptions: options,
     FormatCurrency,
+    FormatPercent,
     FormatNumber,
   };
 };

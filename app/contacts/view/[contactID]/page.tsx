@@ -14,7 +14,7 @@ import { ContactData } from "@/app/types/contacts";
 const ContactView = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
   const contactData: ContactData = await getContactData(contactID);
-  const contactName = contactData.ContactDetail.Contacts_FullName;
+  const contactName = `${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}`;
   const contactAccountID = contactData.ContactDetail.Contacts_AccountId;
 
   return (

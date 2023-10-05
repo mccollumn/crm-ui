@@ -28,7 +28,8 @@ type columnDefTypes =
   | "opportunityContactRoles"
   | "opportunityActivities"
   | "opportunityProducts"
-  | "opportunityStages";
+  | "opportunityStages"
+  | "quoteProducts";
 
 type ColumnDefs = {
   [key: string]: GridColDef[];
@@ -721,29 +722,37 @@ export const DataTable = ({
     ],
     opportunityProducts: [
       {
-        field: "product",
+        field: "Product_Name",
         headerName: "Product",
         flex: 1,
       },
       {
-        field: "productCode",
+        field: "OpportunityLineItems_ProductCode",
         headerName: "Product Code",
+        width: 200,
       },
       {
-        field: "quantity",
+        field: "OpportunityLineItems_Quantity",
         headerName: "Quantity",
+        type: "number",
       },
       {
-        field: "discount",
+        field: "OpportunityLineItems_Discount",
         headerName: "Discount",
+        type: "number",
+        valueFormatter: (params) => `${Number(params.value).toLocaleString()}%`,
       },
       {
-        field: "salesPrice",
+        field: "OpportunityLineItems_UnitPrice",
         headerName: "Sales Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
-        field: "totalPrice",
+        field: "OpportunityLineItems_TotalPrice",
         headerName: "Total Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
         field: "editLink",
@@ -752,7 +761,7 @@ export const DataTable = ({
         renderCell: (params) => {
           return (
             <Link
-              href={`/opportunities/edit/${data?.id}/product/${params.row.id}`}
+              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/product/${params.id}`}
             >
               Edit
             </Link>
@@ -791,6 +800,66 @@ export const DataTable = ({
         headerName: "Last Modified",
       },
     ],
+    quoteProducts: [
+      {
+        field: "QuoteProducts_Name",
+        headerName: "Line Item ID",
+      },
+      {
+        field: "QuoteProducts_ProductCode",
+        headerName: "Product Code",
+        width: 150,
+      },
+      {
+        field: "Product_Name",
+        headerName: "Product",
+        flex: 1,
+      },
+      {
+        field: "QuoteProducts_Quantity",
+        headerName: "Quantity",
+      },
+      {
+        field: "QuoteProducts_UOM",
+        headerName: "UOM",
+      },
+      {
+        field: "QuoteProducts_Discount",
+        headerName: "Discount",
+        type: "number",
+        valueFormatter: (params) => `${Number(params.value).toLocaleString()}%`,
+      },
+      {
+        field: "QuoteProducts_TotalSalePrice",
+        headerName: "Total Sales Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
+      },
+      {
+        field: "QuoteProducts_SKUGroup",
+        headerName: "SKU Group",
+        width: 150,
+      },
+      {
+        field: "QuoteProducts_ProductFamily",
+        headerName: "Product Family",
+      },
+      {
+        field: "editLink",
+        headerName: "Edit",
+        width: 50,
+        renderCell: (params) => {
+          console.log("Params:", params);
+          return (
+            <Link
+              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.QuoteProducts_QuoteID}/product/${params.id}`}
+            >
+              Edit
+            </Link>
+          );
+        },
+      },
+    ],
   });
 
   const rowIDs = {
@@ -809,8 +878,9 @@ export const DataTable = ({
     opportunityQuotes: "Quotes_ID",
     opportunityContactRoles: "OpportunityContactRoles_ID",
     opportunityActivities: "",
-    opportunityProducts: "",
+    opportunityProducts: "OpportunityLineItems_ID",
     opportunityStages: "",
+    quoteProducts: "QuoteProducts_ID",
   };
 
   const filterModel: GridFilterModel = {

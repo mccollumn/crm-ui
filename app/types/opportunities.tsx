@@ -169,7 +169,7 @@ interface SalesInvoice {
   SalesInvoices_Total: string | null;
 }
 
-interface Product {
+export interface Product {
   OpportunityLineItems_ID: string;
   OpportunityLineItems_Product2ID: string | null;
   Product_Name: string | null;
@@ -243,4 +243,17 @@ export type ContactRoleFormData = {
   role: {
     name?: string | null;
   };
+};
+
+export type ProductFormData = {
+  id: string;
+  product: {
+    id: string;
+    name?: string | null;
+    code?: string | null;
+    unitPrice?: string | null;
+  };
+  quantity?: string | null;
+  discount?: string | null;
+  totalPrice?: string | null;
 };

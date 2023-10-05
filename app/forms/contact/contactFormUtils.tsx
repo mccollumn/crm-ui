@@ -81,9 +81,8 @@ export const createContactFormData = async (contactData?: ContactData) => {
       name: contactData.ContactSystemInformation.Users_Name,
     },
     // salutation: null,
-    // TODO: Only full name in data?
-    firstName: null,
-    lastName: null,
+    firstName: contactData.ContactDetail.Contacts_FirstName,
+    lastName: contactData.ContactDetail.Contacts_LastName,
     account: {
       id: contactData.ContactDetail.Contacts_AccountId,
       name: contactData.ContactDetail.Accounts_Name,

@@ -184,7 +184,10 @@ const getContactInfo = async (contactID: string) => {
     info: {
       left: [
         // { label: "Contact Owner", value: "" },
-        { label: "Name", value: contactData.ContactDetail.Contacts_FullName },
+        {
+          label: "Name",
+          value: `${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}`,
+        },
         {
           label: "Account Name",
           value: (

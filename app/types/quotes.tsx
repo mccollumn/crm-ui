@@ -71,7 +71,7 @@ interface QuoteEntitlements {
 
 interface QuoteContact {}
 
-interface QuoteProduct {
+export interface QuoteProduct {
   QuoteProducts_ID: string;
   QuoteProducts_Discount: string | null;
   QuoteProducts_Name: string | null;
@@ -151,4 +151,21 @@ export type QuoteFormData = {
     pageViews?: string | null;
     existingPageViews?: string | null;
   };
+};
+
+export type QuoteProductFormData = {
+  id: string;
+  product: {
+    id: string;
+    lineItemId?: string | null;
+    name?: string | null;
+    code?: string | null;
+    family?: string | null;
+  };
+  quantity?: string | null;
+  discount?: string | null;
+  totalSalePrice?: string | null;
+  quoteId?: string | null;
+  skuGroup?: string | null;
+  uom?: string | null;
 };

@@ -85,6 +85,28 @@ export const formatNumber = (value: number | string | null | undefined) => {
 };
 
 /**
+ * Formats a percentage for display.
+ * @param value The number to format.
+ * @returns Formatted string.
+ */
+export const formatPercent = (value: number | string | null | undefined) => {
+  console.log("formatPercent value:", value);
+
+  if (!value) return value;
+  console.log(
+    "formatPercent value formatted:",
+    numericFormatter(value.toString(), {
+      thousandSeparator: true,
+      suffix: "%",
+    })
+  );
+  return numericFormatter(value.toString(), {
+    thousandSeparator: true,
+    suffix: "%",
+  });
+};
+
+/**
  * Unescapes an HTML string.
  * @param str String containing HTML escaped characters.
  * @returns String with characters unescaped.
