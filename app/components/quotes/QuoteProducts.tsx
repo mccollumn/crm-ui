@@ -1,6 +1,5 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-import { OpportunityData } from "@/app/types/opportunities";
 import { getOpportunityData, getQuoteData } from "@/app/utils/getData";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { QuoteData } from "@/app/types/quotes";

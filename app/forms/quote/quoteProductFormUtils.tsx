@@ -7,16 +7,7 @@ import { getOpportunityData } from "@/app/utils/getData";
  * @returns Initial quote product form data.
  */
 const generateInitialQuoteProductFormData = async (quoteData: QuoteData) => {
-  const getDefaultAccount = async (quoteData: QuoteData) => {
-    const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
-    if (!opportunityID) return { id: null, name: null };
-    const opportunityData: OpportunityData = await getOpportunityData(
-      opportunityID
-    );
-    const { Opportunities_AccountId, Accounts_Name } =
-      opportunityData.OpportunityDetail;
-    return { id: Opportunities_AccountId, name: Accounts_Name };
-  };
+  const { Quotes_ID, Quotes_Name } = quoteData.QuoteDetail;
 
   const initialQuoteProductFormData = {
     id: null,
@@ -28,12 +19,28 @@ const generateInitialQuoteProductFormData = async (quoteData: QuoteData) => {
       family: null,
       unitPrice: null,
     },
+    quote: {
+      id: Quotes_ID,
+      name: Quotes_Name,
+    },
     quantity: null,
     discount: null,
+    totalNetPriceDiscount: null,
     totalSalePrice: null,
-    quoteId: null,
+    oneYearAmount: null,
+    currency: null,
+    unitListPrice: null,
+    term: null,
     skuGroup: null,
     uom: null,
+    saleType: null,
+    parentQuoteProductId: null,
+    qmEditable: null,
+    cpmVolume: null,
+    startDate: null,
+    endDate: null,
+    entitlementId: null,
+    fulfillmentStatus: null,
   };
 
   return initialQuoteProductFormData;
@@ -46,17 +53,11 @@ const generateInitialQuoteProductFormData = async (quoteData: QuoteData) => {
  */
 export const createQuoteProductFormData = async (
   quoteData: QuoteData,
-  quoteProductID?: string
+  productData?: QuoteProduct
 ) => {
   const initialQuoteProductFormData = await generateInitialQuoteProductFormData(
     quoteData
   );
-  let productData;
-  if (quoteProductID) {
-    productData = quoteData.QuoteProducts.find(
-      (product) => product.QuoteProducts_ID === quoteProductID
-    );
-  }
 
   if (!productData) {
     return initialQuoteProductFormData;
@@ -72,11 +73,27 @@ export const createQuoteProductFormData = async (
       code: productData.QuoteProducts_ProductCode,
       family: productData.QuoteProducts_ProductFamily,
     },
+    quote: {
+      id: quoteData.QuoteDetail.Quotes_ID,
+      name: quoteData.QuoteDetail.Quotes_Name,
+    },
     quantity: productData.QuoteProducts_Quantity,
     discount: productData.QuoteProducts_Discount,
+    totalNetPriceDiscount: "",
     totalSalePrice: productData.QuoteProducts_TotalSalePrice,
-    quoteId: productData.QuoteProducts_QuoteID,
+    oneYearAmount: "",
+    currency: "",
+    unitListPrice: "",
+    term: "",
     skuGroup: productData.QuoteProducts_SKUGroup,
     uom: productData.QuoteProducts_UOM,
+    saleType: "",
+    parentQuoteProductId: "",
+    qmEditable: !!Number(""),
+    cpmVolume: "",
+    startDate: "",
+    endDate: "",
+    entitlementId: "",
+    fulfillmentStatus: "",
   };
 };

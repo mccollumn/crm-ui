@@ -14,6 +14,7 @@ import { getOpportunityData, getQuoteData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
 import QuoteInformation from "@/app/components/quotes/QuoteInformation";
 import QuoteProducts from "@/app/components/quotes/QuoteProducts";
+import QuoteFulfillment from "@/app/components/quotes/QuoteFulfillment";
 
 const QuoteView = async ({
   params,
@@ -29,6 +30,7 @@ const QuoteView = async ({
   return (
     <div>
       {/* TODO: All this needs to be updated. Was copied from opportunities. */}
+      {/* Contacts, Products, Fulfillment */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -44,18 +46,6 @@ const QuoteView = async ({
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-quotes-content"
-          id="opportunity-quotes-header"
-        >
-          <Typography variant="h6">Quotes</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-quotes-content">
-          <OpportunityQuotes opportunityID={opportunityID} />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
           aria-controls="opportunity-contact-roles-content"
           id="opportunity-contact-roles-header"
         >
@@ -65,42 +55,30 @@ const QuoteView = async ({
           <OpportunityContactRoles opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-activities-content"
-          id="opportunity-activities-header"
-        >
-          <Typography variant="h6">Activity</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-activities-content">
-          <OpportunityActivities opportunityID={opportunityID} />
-        </AccordionDetails>
-      </Accordion> */}
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-products-content"
-          id="opportunity-products-header"
+          aria-controls="quote-products-content"
+          id="quote-products-header"
         >
           <Typography variant="h6">Products</Typography>
         </AccordionSummary>
-        <AccordionDetails id="opportunity-products-content">
+        <AccordionDetails id="quote-products-content">
           <QuoteProducts quoteID={quoteID} />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-stage-content"
-          id="opportunity-stage-header"
+          aria-controls="quote-fulfillment-content"
+          id="quote-fulfillment-header"
         >
-          <Typography variant="h6">Stage History</Typography>
+          <Typography variant="h6">Quote Fulfillment</Typography>
         </AccordionSummary>
-        <AccordionDetails id="opportunity-stage-content">
-          <OpportunityStage opportunityID={opportunityID} />
+        <AccordionDetails id="quote-fulfillment-content">
+          <QuoteFulfillment quoteID={quoteID} />
         </AccordionDetails>
-      </Accordion> */}
+      </Accordion>
     </div>
   );
 };

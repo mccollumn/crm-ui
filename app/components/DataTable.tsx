@@ -29,7 +29,8 @@ type columnDefTypes =
   | "opportunityActivities"
   | "opportunityProducts"
   | "opportunityStages"
-  | "quoteProducts";
+  | "quoteProducts"
+  | "quoteFulfillment";
 
 type ColumnDefs = {
   [key: string]: GridColDef[];
@@ -544,6 +545,15 @@ export const DataTable = ({
         field: "Quotes_Name",
         headerName: "Quote ID",
         flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link
+              href={`/opportunities/view/${data.OpportunityDetail.Opportunities_ID}/quote/${params.id}`}
+            >
+              {params.value}
+            </Link>
+          );
+        },
       },
       {
         field: "Quotes_Status",
@@ -849,10 +859,52 @@ export const DataTable = ({
         headerName: "Edit",
         width: 50,
         renderCell: (params) => {
-          console.log("Params:", params);
           return (
             <Link
               href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.QuoteProducts_QuoteID}/product/${params.id}`}
+            >
+              Edit
+            </Link>
+          );
+        },
+      },
+    ],
+    quoteFulfillment: [
+      {
+        field: "QuoteFulfillment_Name",
+        headerName: "Fulfillment Name",
+        flex: 1,
+      },
+      {
+        field: "QuoteFulfillment_LicenseKeyID",
+        headerName: "License Key",
+        flex: 1,
+        valueFormatter(params) {
+          return data.LicenseKeyDetail.LicenseKeys_Name;
+        },
+      },
+      // {
+      //   field: "",
+      //   headerName: "Contract",
+      // },
+      {
+        field: "QuoteFulfillment_FulfillmentDate",
+        headerName: "Fulfillment Date",
+        type: "date",
+        valueGetter: displayDate,
+      },
+      // {
+      //   field: "",
+      //   headerName: "Created By",
+      // },
+      {
+        field: "editLink",
+        headerName: "Edit",
+        width: 50,
+        renderCell: (params) => {
+          return (
+            <Link
+              href={`/opportunities/edit/${data?.QuoteDetail.Quotes_OpportunityID}/quote/${data.QuoteDetail.Quotes_ID}/fulfillment/${params.id}`}
             >
               Edit
             </Link>
@@ -881,6 +933,7 @@ export const DataTable = ({
     opportunityProducts: "OpportunityLineItems_ID",
     opportunityStages: "",
     quoteProducts: "QuoteProducts_ID",
+    quoteFulfillment: "QuoteFulfillment_ID",
   };
 
   const filterModel: GridFilterModel = {

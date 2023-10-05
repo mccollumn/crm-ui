@@ -40,6 +40,7 @@ export const QuoteProductForm = ({
     createQuoteProductFormSubmissionData,
   } = useQuoteProductForm({
     menuItems,
+    quoteData,
   });
 
   const onSuccess = async (values: any) => {
@@ -93,10 +94,10 @@ export const QuoteProductForm = ({
           <Grid item xs={6}>
             <Stack spacing={1}>
               {/* Quote */}
-              {/* TODO: Default value of current quote name */}
+              {/* TODO: Update form to use /quoteproduct endpoint */}
               <AutocompleteElement
                 label="Quote"
-                name=""
+                name="quote"
                 required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
@@ -116,6 +117,7 @@ export const QuoteProductForm = ({
                 label="Sale Type"
                 name=""
                 required
+                autocompleteProps={{ size: "small" }}
                 options={menuOptions.SaleType}
               />
               {/* Product */}
@@ -129,9 +131,7 @@ export const QuoteProductForm = ({
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre
-                          style={{ margin: 0 }}
-                        >{` - ${option.code} (${option.unitPrice})`}</pre>
+                        <pre style={{ margin: 0 }}>{` - ${option.code}`}</pre>
                       </li>
                     );
                   },
@@ -154,12 +154,14 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Quote Fulfillment"
                 name=""
-                options={menuOptions}
+                autocompleteProps={{ size: "small" }}
+                options={menuOptions.Fulfillment}
               />
               {/* Product Family */}
               <AutocompleteElement
                 label="Product Family"
                 name="product.family"
+                autocompleteProps={{ size: "small" }}
                 options={menuOptions.Family}
               />
               {/* One Year Amount */}
@@ -177,7 +179,8 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Currency"
                 name=""
-                options={menuOptions}
+                autocompleteProps={{ size: "small" }}
+                options={menuOptions.Currency}
               />
               {/* Unit List Price */}
               <TextFieldElement
@@ -232,6 +235,7 @@ export const QuoteProductForm = ({
                 label="SKU Group"
                 name="skuGroup"
                 required
+                autocompleteProps={{ size: "small" }}
                 options={menuOptions.SkuGroup}
               />
             </Stack>
@@ -269,7 +273,8 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Fulfillment Status"
                 name=""
-                options={menuOptions}
+                autocompleteProps={{ size: "small" }}
+                options={menuOptions.FulfillmentStatus}
               />
             </Stack>
           </Grid>

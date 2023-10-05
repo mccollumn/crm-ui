@@ -343,6 +343,15 @@ export const getSalesOrdersByAccount = async (accountID: string) => {
 };
 
 /**
+ * Products
+ */
+
+export const getProducts = async () => {
+  const data = await getData("/product/list");
+  return data;
+};
+
+/**
  * Other Data
  */
 

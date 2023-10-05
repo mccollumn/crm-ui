@@ -162,10 +162,26 @@ export type QuoteProductFormData = {
     code?: string | null;
     family?: string | null;
   };
+  quote: {
+    id: string;
+    name?: string | null;
+  };
   quantity?: string | null;
   discount?: string | null;
+  totalNetPriceDiscount?: string | null;
   totalSalePrice?: string | null;
-  quoteId?: string | null;
+  oneYearAmount?: string | null;
+  currency?: string | null;
+  unitListPrice?: string | null;
+  term?: string | null;
   skuGroup?: string | null;
   uom?: string | null;
+  saleType?: string | null;
+  parentQuoteProductId?: string | null;
+  qmEditable?: boolean | null;
+  cpmVolume?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  entitlementId?: string | null;
+  fulfillmentStatus?: string | null;
 };
