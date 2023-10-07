@@ -15,7 +15,7 @@ const NewProduct = async ({
     quoteDataPromise,
     menuItemsPromise,
   ]);
-  const values = await createQuoteProductFormData(quoteData);
+  const values = await createQuoteProductFormData({ quoteData });
 
   return (
     <QuoteProductForm

@@ -1,7 +1,11 @@
 import { QuoteProductForm } from "@/app/forms/quote/QuoteProductForm";
 import { createQuoteProductFormData } from "@/app/forms/quote/quoteProductFormUtils";
 import { QuoteProduct } from "@/app/types/quotes";
-import { getMenuItems, getQuoteData } from "@/app/utils/getData";
+import {
+  getMenuItems,
+  getQuoteData,
+  getQuoteProductData,
+} from "@/app/utils/getData";
 
 const EditQuoteProduct = async ({
   params,
@@ -11,18 +15,16 @@ const EditQuoteProduct = async ({
   const opportunityID = params.opportunityID;
   const quoteID = params.quoteID;
   const productID = params.productID;
-
   const quoteDataPromise: Promise<any> = getQuoteData(quoteID);
+  const quoteProductDataPromise = getQuoteProductData(productID);
   const menuItemsPromise = getMenuItems();
-  const [quoteData, menuItems] = await Promise.all([
+  const [quoteData, productData, menuItems] = await Promise.all([
     quoteDataPromise,
+    quoteProductDataPromise,
     menuItemsPromise,
   ]);
-  const productData = quoteData.QuoteProducts.find(
-    (product: QuoteProduct) => product.QuoteProducts_ID === productID
-  );
-  const productName = productData.Product_Name;
-  const values = await createQuoteProductFormData(quoteData, productData);
+  const productName = productData.QuoteProductDetail.Product2_Name;
+  const values = await createQuoteProductFormData({ productData });
 
   return (
     <QuoteProductForm

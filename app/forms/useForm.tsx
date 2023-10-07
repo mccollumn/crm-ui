@@ -1,10 +1,37 @@
 import React from "react";
 import { NumericFormat, NumericFormatProps } from "react-number-format";
 import { MenuItem } from "../types/types";
+import { getSession } from "next-auth/react";
 
 export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   const [options, setOptions] = React.useState<any>(initialMenuOptions);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [user, setUser] = React.useState<{ id: string; name: string }>();
+
+  /**
+   * Get the internal user's name and ID.
+   * The logged in user's email must match the internal user's.
+   */
+  React.useEffect(() => {
+    const getUser = async () => {
+      const session = await getSession();
+      const result = await fetch("/api/users/internal");
+      const internalUsers = await result.json();
+      const userEmail = session?.user?.email;
+      const internalUser = internalUsers.data.find(
+        (user: any) => user.Users_Email === userEmail
+      );
+      setUser({
+        id: internalUser?.Users_ID || null,
+        name: internalUser?.Users_Name || null,
+      });
+      return {
+        id: internalUser?.Users_ID || null,
+        name: internalUser?.Users_Name || null,
+      };
+    };
+    getUser();
+  }, []);
 
   const getMenuOptions = React.useCallback(
     (menu: string, dependentValue: string = "") => {
@@ -157,6 +184,7 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions: options,
+    user,
     FormatCurrency,
     FormatPercent,
     FormatNumber,

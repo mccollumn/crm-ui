@@ -5,19 +5,20 @@ import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
-  DateTimePickerElement,
+  DatePickerElement,
   TextFieldElement,
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
 import { isSuccessfulResponse } from "@/app/utils/utils";
 import { useQuoteProductForm } from "./useQuoteProductForm";
-import { QuoteData } from "@/app/types/quotes";
+import { QuoteData, QuoteProductData } from "@/app/types/quotes";
 import { FormDivider } from "../FormDivider";
 import DateFnsProvider from "@/app/providers/DateFnsProvider";
 
 interface QuoteProductFormProps extends FormProps {
   quoteData: QuoteData;
+  quoteProductData?: QuoteProductData;
 }
 
 export const QuoteProductForm = ({
@@ -25,6 +26,7 @@ export const QuoteProductForm = ({
   defaultValues,
   menuItems,
   quoteData,
+  quoteProductData,
   ...props
 }: QuoteProductFormProps) => {
   const router = useRouter();
@@ -45,10 +47,13 @@ export const QuoteProductForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createQuoteProductFormSubmissionData(values, quoteData);
+    const data = createQuoteProductFormSubmissionData(values, quoteProductData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    const url = "/api/opportunities/update/quote";
+    const isEdit = !!defaultValues?.id;
+    const url = isEdit
+      ? "/api/opportunities/update/quote/product"
+      : "/api/opportunities/insert/quote/product";
     const request = new Request(url, {
       method: "POST",
       body: JSON.stringify(data),
@@ -98,7 +103,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Quote"
                 name="quote"
-                required
+                //required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -115,8 +120,8 @@ export const QuoteProductForm = ({
               {/* Sale Type */}
               <AutocompleteElement
                 label="Sale Type"
-                name=""
-                required
+                name="saleType"
+                //required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.SaleType}
               />
@@ -124,7 +129,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Product"
                 name="product"
-                required
+                //required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -145,7 +150,7 @@ export const QuoteProductForm = ({
               {/* Parent Quote Product ID */}
               <TextFieldElement
                 label="Parent Quote Product ID"
-                name=""
+                name="parentQuoteProductId"
                 size="small"
               />
               {/* QM Editable */}
@@ -153,8 +158,18 @@ export const QuoteProductForm = ({
               {/* Quote Fulfillment */}
               <AutocompleteElement
                 label="Quote Fulfillment"
-                name=""
-                autocompleteProps={{ size: "small" }}
+                name="fulfillment"
+                autocompleteProps={{
+                  getOptionLabel: (option) => option.name || "",
+                  renderOption: (props, option) => {
+                    return (
+                      <li {...props} key={option.id}>
+                        {`${option.name}`}
+                      </li>
+                    );
+                  },
+                  size: "small",
+                }}
                 options={menuOptions.Fulfillment}
               />
               {/* Product Family */}
@@ -167,7 +182,7 @@ export const QuoteProductForm = ({
               {/* One Year Amount */}
               <TextFieldElement
                 label="One Year Amount"
-                name=""
+                name="oneYearAmount"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
               />
@@ -178,14 +193,14 @@ export const QuoteProductForm = ({
               {/* Currency */}
               <AutocompleteElement
                 label="Currency"
-                name=""
+                name="currency"
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.Currency}
               />
               {/* Unit List Price */}
               <TextFieldElement
                 label="Unit List Price"
-                name=""
+                name="unitListPrice"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
               />
@@ -193,7 +208,7 @@ export const QuoteProductForm = ({
               <TextFieldElement
                 label="Quantity"
                 name="quantity"
-                required
+                //required
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
@@ -209,24 +224,24 @@ export const QuoteProductForm = ({
               {/* Total-Net-Price Discount */}
               <TextFieldElement
                 label="Total-Net-Price Discount"
-                name=""
+                name="totalNetPriceDiscount"
                 size="small"
                 InputProps={{ inputComponent: FormatPercent as any }}
               />
             </Stack>
           </Grid>
-          <FormDivider>CPM Information</FormDivider>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
-              {/* CPM Volume */}
-              <TextFieldElement
+          {/* <FormDivider>CPM Information</FormDivider> */}
+          {/* <Grid item xs={6}> */}
+          {/* <Stack spacing={1}> */}
+          {/* CPM Volume */}
+          {/* <TextFieldElement
                 label="CPM Volume"
                 name=""
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
-              />
-            </Stack>
-          </Grid>
+              /> */}
+          {/* </Stack> */}
+          {/* </Grid> */}
           <FormDivider>Product Information</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -234,7 +249,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="SKU Group"
                 name="skuGroup"
-                required
+                //required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.SkuGroup}
               />
@@ -244,17 +259,17 @@ export const QuoteProductForm = ({
             <Stack spacing={1}>
               {/* Start Date */}
               <DateFnsProvider>
-                <DateTimePickerElement
+                <DatePickerElement
                   label="Start Date"
-                  name=""
+                  name="startDate"
                   inputProps={{ size: "small" }}
                 />
               </DateFnsProvider>
               {/* End Date */}
               <DateFnsProvider>
-                <DateTimePickerElement
+                <DatePickerElement
                   label="End Date"
-                  name=""
+                  name="endDate"
                   inputProps={{ size: "small" }}
                 />
               </DateFnsProvider>
@@ -264,20 +279,20 @@ export const QuoteProductForm = ({
           <Grid item xs={6}>
             <Stack spacing={1}>
               {/* Entitlement ID */}
-              <TextFieldElement label="Entitlement ID" name="" size="small" />
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
+              {/* <TextFieldElement label="Entitlement ID" name="" size="small" /> */}
               {/* Fulfillment Status */}
               <AutocompleteElement
                 label="Fulfillment Status"
-                name=""
+                name="fulfillment.status"
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.FulfillmentStatus}
               />
             </Stack>
           </Grid>
+          {/* <Grid item xs={6}>
+            <Stack spacing={1}>
+            </Stack>
+          </Grid> */}
         </Grid>
       </FormWrapper>
     </>

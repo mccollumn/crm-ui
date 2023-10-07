@@ -114,6 +114,49 @@ interface QuoteSalesOrder {
   SalesOrders_Total: string | null;
 }
 
+export type QuoteProductData = {
+  QuoteProductDetail: QuoteProductDetail;
+  ProductInfo: ProductInfo;
+};
+
+type QuoteProductDetail = {
+  QuoteProducts_ID: string;
+  QuoteProducts_AnnualCost?: string | null;
+  QuoteProducts_BlendedDiscount?: string | null;
+  QuoteProducts_CreatedByID?: string | null;
+  QuoteProducts_CreatedDate?: string | null;
+  QuoteProducts_Discount?: string | null;
+  QuoteProducts_FulfillmentStatus?: string | null;
+  QuoteProducts_LastModifiedByID?: string | null;
+  QuoteProducts_LastModifiedDate?: string | null;
+  QuoteProducts_Name?: string | null;
+  QuoteProducts_OneYearAmount?: string | null;
+  QuoteProducts_Product2ID?: string | null;
+  Product2_Name?: string | null;
+  QuoteProducts_ProductCode?: string | null;
+  QuoteProducts_ProductFamily?: string | null;
+  QuoteProducts_Quantity?: string | null;
+  QuoteProducts_QuoteFulfillmentID?: string | null;
+  QuoteFulfillment_Name?: string | null;
+  QuoteProducts_QuoteID?: string | null;
+  Quotes_Name?: string | null;
+  QuoteProducts_SaleType?: string | null;
+  QuoteProducts_Term?: string | null;
+  QuoteProducts_TotalListPrice?: string | null;
+  QuoteProducts_TotalNetPriceDiscount?: string | null;
+  QuoteProducts_TotalSalePrice?: string | null;
+  QuoteProducts_UnitListPrice?: string | null;
+  QuoteProducts_UnitNetPrice?: string | null;
+  QuoteProducts_UOM?: string | null;
+};
+
+type ProductInfo = {
+  QuoteProducts_EndDate?: string | null;
+  QuoteProducts_RevRecTemplate?: string | null;
+  QuoteProducts_SKUGroup?: string | null;
+  QuoteProducts_StartDate?: string | null;
+};
+
 export type QuoteFormData = {
   id?: string | null;
   name?: string | null;
@@ -161,10 +204,16 @@ export type QuoteProductFormData = {
     name?: string | null;
     code?: string | null;
     family?: string | null;
+    unitPrice?: string | null;
   };
   quote: {
     id: string;
     name?: string | null;
+  };
+  fulfillment: {
+    id: string;
+    name?: string | null;
+    status?: string | null;
   };
   quantity?: string | null;
   discount?: string | null;
@@ -172,16 +221,13 @@ export type QuoteProductFormData = {
   totalSalePrice?: string | null;
   oneYearAmount?: string | null;
   currency?: string | null;
-  unitListPrice?: string | null;
+  // unitListPrice?: string | null;
   term?: string | null;
   skuGroup?: string | null;
   uom?: string | null;
   saleType?: string | null;
   parentQuoteProductId?: string | null;
   qmEditable?: boolean | null;
-  cpmVolume?: string | null;
-  startDate?: string | null;
-  endDate?: string | null;
-  entitlementId?: string | null;
-  fulfillmentStatus?: string | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
 };

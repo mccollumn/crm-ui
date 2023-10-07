@@ -333,6 +333,13 @@ export const getQuoteData = async (quoteID: string) => {
   return data;
 };
 
+export const getQuoteProductData = async (quoteProductID: string) => {
+  const data = await getData(`/quoteproduct/quoteproductid/${quoteProductID}`, [
+    "quote",
+  ]);
+  return data;
+};
+
 /**
  * Sales Orders
  */

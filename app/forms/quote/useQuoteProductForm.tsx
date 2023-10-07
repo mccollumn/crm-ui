@@ -1,13 +1,18 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
 import {
+  convertDateToISOString,
   getChangedValues,
   isObjectEmpty,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { Product } from "@/app/types/opportunities";
-import { QuoteData, QuoteProductFormData } from "@/app/types/quotes";
+import {
+  QuoteData,
+  QuoteProductData,
+  QuoteProductFormData,
+} from "@/app/types/quotes";
 
 export const useQuoteProductForm = ({
   menuItems,
@@ -15,7 +20,7 @@ export const useQuoteProductForm = ({
 }: useProductFormProps) => {
   const initialMenuOptions = {
     Quote: [],
-    SalesType: [],
+    SaleType: [],
     Product: [],
     Fulfillment: [],
     Family: [],
@@ -30,6 +35,7 @@ export const useQuoteProductForm = ({
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatPercent,
     FormatNumber,
     FormatCurrency,
@@ -121,48 +127,92 @@ export const useQuoteProductForm = ({
 
   const createQuoteProductFormSubmissionData = (
     values: QuoteProductFormData,
-    quoteData?: QuoteData
+    quoteProductData?: QuoteProductData
   ) => {
+    const totalListPrice = calculateTotalListPrice(
+      values.term,
+      values.product.unitPrice,
+      values.quantity
+    );
+    const annualCost = calculateAnnualCost(values.totalSalePrice, values.term);
+    const blendedDiscount = calculateBlendedDiscount(
+      values.totalSalePrice,
+      totalListPrice,
+      values.quantity
+    );
+    const unitNetPrice = calculateUnitNetPrice(
+      values.product.unitPrice,
+      values.discount
+    );
+    const RevRecTemplate = calculateRevRecTemplate(values.skuGroup);
     const data = {
-      QuoteProducts_ID: values.id,
-      QuoteProducts_Discount: values.discount,
-      QuoteProducts_Name: values.product.lineItemId,
-      QuoteProducts_Product2ID: values.product.id,
-      Product_Name: values.product.name,
-      QuoteProducts_ProductCode: values.product.code,
-      QuoteProducts_ProductFamily: values.product.family,
-      QuoteProducts_Quantity: values.quantity,
-      QuoteProducts_QuoteID: values.quote.id,
-      QuoteProducts_SKUGroup: values.skuGroup,
-      QuoteProducts_TotalSalePrice: values.totalSalePrice,
-      QuoteProducts_UOM: values.uom,
+      QuoteProductDetail: {
+        QuoteProducts_ID: values.id,
+        QuoteProducts_AnnualCost: annualCost,
+        QuoteProducts_BlendedDiscount: blendedDiscount,
+        QuoteProducts_Discount: values.discount,
+        QuoteProducts_FulfillmentStatus: values.fulfillment.status,
+        QuoteProducts_Name: values.product.lineItemId,
+        QuoteProducts_OneYearAmount: values.oneYearAmount,
+        QuoteProducts_Product2ID: values.product.id,
+        Product2_Name: values.product.name,
+        QuoteProducts_ProductCode: values.product.code,
+        QuoteProducts_ProductFamily: values.product.family,
+        QuoteProducts_Quantity: values.quantity,
+        QuoteProducts_QuoteFulfillmentID: values.fulfillment.id,
+        QuoteFulfillment_Name: values.fulfillment.name,
+        QuoteProducts_QuoteID: values.quote.id,
+        Quotes_Name: values.quote.name,
+        QuoteProducts_SaleType: values.saleType,
+        QuoteProducts_Term: values.term,
+        QuoteProducts_TotalListPrice: totalListPrice,
+        QuoteProducts_TotalNetPriceDiscount: values.totalNetPriceDiscount,
+        QuoteProducts_TotalSalePrice: values.totalSalePrice,
+        QuoteProducts_UnitListPrice: values.product.unitPrice,
+        QuoteProducts_UnitNetPrice: unitNetPrice,
+        QuoteProducts_UOM: values.uom,
+      },
+      ProductInfo: {
+        QuoteProducts_EndDate: convertDateToISOString(values.endDate),
+        QuoteProducts_RevRecTemplate: RevRecTemplate,
+        QuoteProducts_SKUGroup: values.skuGroup,
+        QuoteProducts_StartDate: convertDateToISOString(values.startDate),
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
     // We only want to submit form values that were modified
-    const productData = quoteData?.QuoteProducts.find(
-      (product) => product.QuoteProducts_ID === values.id
-    );
-    newFormData = getChangedValues(newFormData, productData);
+    newFormData = getChangedValues(newFormData, quoteProductData);
 
     // Add the quote and product IDs back in
-    if (productData) {
+    if (quoteProductData) {
       newFormData = {
         ...newFormData,
-        QuoteProducts_ID: productData.QuoteProducts_ID,
-        QuoteProducts_QuoteID: productData.QuoteProducts_QuoteID,
+        QuoteProductDetail: {
+          ...newFormData.QuoteProductDetail,
+          QuoteProducts_ID:
+            quoteProductData.QuoteProductDetail.QuoteProducts_ID,
+          QuoteProducts_QuoteID:
+            quoteProductData.QuoteProductDetail.QuoteProducts_QuoteID,
+        },
+        SubmissionDetails: {
+          QuoteProducts_ID:
+            quoteProductData.QuoteProductDetail.QuoteProducts_ID,
+          QuoteProducts_QuoteID:
+            quoteProductData.QuoteProductDetail.QuoteProducts_QuoteID,
+        },
       };
     }
 
-    const newQuoteData = {
-      QuoteDetail: {
-        Quotes_ID: quoteData?.QuoteDetail.Quotes_ID,
-        Quotes_OpportunityID: quoteData?.QuoteDetail.Quotes_OpportunityID,
+    newFormData = {
+      ...newFormData,
+      SubmissionDetails: {
+        ...newFormData.SubmissionDetails,
+        UserID: user?.id || null,
       },
-      QuoteProducts: [newFormData],
     };
 
-    return newQuoteData;
+    return newFormData;
   };
 
   return {
@@ -177,6 +227,53 @@ export const useQuoteProductForm = ({
     FormatCurrency,
     createQuoteProductFormSubmissionData,
   };
+};
+
+const calculateAnnualCost = (
+  totalSalePrice: string | null | undefined,
+  term: string | null | undefined
+) => {
+  if (!totalSalePrice || !term) return null;
+  return (Number(totalSalePrice) * 12) / Number(term);
+};
+
+const calculateBlendedDiscount = (
+  totalSalePrice: string | null | undefined,
+  totalListPrice: number | string | null | undefined,
+  quantity: string | null | undefined
+) => {
+  if (!totalSalePrice || !totalListPrice || !quantity) return null;
+  return (
+    1 - Number(totalSalePrice) / (Number(totalListPrice) * Number(quantity))
+  );
+};
+
+const calculateTotalListPrice = (
+  term: string | null | undefined,
+  unitListPrice: string | null | undefined,
+  quantity: string | null | undefined
+) => {
+  if (!term || !unitListPrice || !quantity) return null;
+  if (Number(term) >= 12) {
+    return Number(unitListPrice) * Number(quantity) * (Number(term) / 12);
+  }
+  return Number(unitListPrice) * Number(quantity);
+};
+
+const calculateUnitNetPrice = (
+  unitListPrice: string | null | undefined,
+  discount: string | null | undefined
+) => {
+  if (!unitListPrice || !discount) return null;
+  return Number(unitListPrice) * (1 - Number(discount));
+};
+
+const calculateRevRecTemplate = (skuGroup: string | null | undefined) => {
+  if (!skuGroup) return null;
+  if (skuGroup === "CON-Consulting") {
+    return "Pro Svcs Consulting";
+  }
+  return "Monthly Flexible";
 };
 
 interface useProductFormProps {
