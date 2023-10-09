@@ -3,6 +3,7 @@ import { DataTable } from "../DataTable";
 import { getLicenseKeyData, getQuoteData } from "@/app/utils/getData";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { QuoteData } from "@/app/types/quotes";
+import { isObjectEmpty } from "@/app/utils/utils";
 
 export default async function QuoteFulfillment_CreatedByID({
   quoteID,
@@ -11,7 +12,7 @@ export default async function QuoteFulfillment_CreatedByID({
   const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
   const licenseKeyID =
     quoteData.QuoteFullfillment.QuoteFulfillment_LicenseKeyID;
-  const quoteFulfillments = quoteData.QuoteFullfillment;
+  const quoteFulfillment = quoteData.QuoteFullfillment;
 
   let licenseKeyData = {};
   if (licenseKeyID) {
@@ -20,16 +21,18 @@ export default async function QuoteFulfillment_CreatedByID({
 
   return (
     <>
-      <ButtonNav
-        size="small"
-        path={`/opportunities/new/${opportunityID}/quote/${quoteID}/fulfillment`}
-      >
-        New
-      </ButtonNav>
+      {isObjectEmpty(quoteFulfillment) && (
+        <ButtonNav
+          size="small"
+          path={`/opportunities/new/${opportunityID}/quote/${quoteID}/fulfillment`}
+        >
+          New
+        </ButtonNav>
+      )}
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading fulfillments...</p>}>
           <DataTable
-            rows={[quoteFulfillments]}
+            rows={[quoteFulfillment]}
             columnDefType="quoteFulfillment"
             data={{ ...licenseKeyData, ...quoteData }}
           />

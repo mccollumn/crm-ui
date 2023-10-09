@@ -340,6 +340,14 @@ export const getQuoteProductData = async (quoteProductID: string) => {
   return data;
 };
 
+export const getQuoteFulfillmentData = async (quoteFulfillmentID: string) => {
+  const data = await getData(
+    `/quotefulfillment/quotefulfillmentid/${quoteFulfillmentID}`,
+    ["quote"]
+  );
+  return data;
+};
+
 /**
  * Sales Orders
  */

@@ -108,7 +108,7 @@ interface Asset {
   Assets_Status?: string | null;
 }
 
-interface LicenseKey {
+export interface LicenseKey {
   LicenseKeys_ID: string;
   LicenseKeys_Name: string;
   LicenseKeys_KeyType?: string | null;

@@ -95,23 +95,22 @@ export const useQuoteProductForm = ({
     setProducts();
 
     // Fulfillment
-    // TODO: Enable after API is passing fulfillment array
-    // const setFulfillment = async () => {
-    //   try {
-    //     const quoteFulfillments = quoteData.QuoteFullfillment;
-    //     const options = quoteFulfillments.map((fulfillment: any) => {
-    //       return {
-    //         id: fulfillment.QuoteFulfillment_ID,
-    //         name: fulfillment.QuoteFulfillment_Name,
-    //         date: fulfillment.QuoteFulfillment_FulfillmentDate,
-    //       };
-    //     });
-    //     setCustomMenuOptions("Product", options);
-    //   } catch {
-    //     console.error("Could not retrieve fulfillment list");
-    //   }
-    // };
-    // setFulfillment();
+    const setFulfillment = async () => {
+      try {
+        const quoteFulfillment = quoteData.QuoteFullfillment;
+        const options = [
+          {
+            id: quoteFulfillment.QuoteFulfillment_ID,
+            name: quoteFulfillment.QuoteFulfillment_Name,
+            date: quoteFulfillment.QuoteFulfillment_FulfillmentDate,
+          },
+        ];
+        setCustomMenuOptions("Fulfillment", options);
+      } catch {
+        console.error("Could not retrieve fulfillment list");
+      }
+    };
+    setFulfillment();
 
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("SalesType");
@@ -121,6 +120,7 @@ export const useQuoteProductForm = ({
     setMenuOptions("Family");
   }, [
     quoteData.QuoteDetail.Quotes_OpportunityID,
+    quoteData.QuoteFullfillment,
     setCustomMenuOptions,
     setMenuOptions,
   ]);

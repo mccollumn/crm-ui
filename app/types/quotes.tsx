@@ -114,12 +114,12 @@ interface QuoteSalesOrder {
   SalesOrders_Total: string | null;
 }
 
-export type QuoteProductData = {
+export interface QuoteProductData {
   QuoteProductDetail: QuoteProductDetail;
   ProductInfo: ProductInfo;
-};
+}
 
-type QuoteProductDetail = {
+interface QuoteProductDetail {
   QuoteProducts_ID: string;
   QuoteProducts_AnnualCost?: string | null;
   QuoteProducts_BlendedDiscount?: string | null;
@@ -148,14 +148,41 @@ type QuoteProductDetail = {
   QuoteProducts_UnitListPrice?: string | null;
   QuoteProducts_UnitNetPrice?: string | null;
   QuoteProducts_UOM?: string | null;
-};
+}
 
-type ProductInfo = {
+interface ProductInfo {
   QuoteProducts_EndDate?: string | null;
   QuoteProducts_RevRecTemplate?: string | null;
   QuoteProducts_SKUGroup?: string | null;
   QuoteProducts_StartDate?: string | null;
-};
+}
+
+export interface QuoteFulfillmentData {
+  QuoteFulfillmentDetail: QuoteFulfillmentDetail;
+  QuoteProducts: QuoteFulfillmentProducts[];
+}
+
+interface QuoteFulfillmentDetail {
+  QuoteFulfillment_ID: string;
+  QuoteFulfillment_CreatedByID?: string | null;
+  CreatedBy_Name?: string | null;
+  QuoteFulfillment_CreatedDate?: string | null;
+  QuoteFulfillment_Details?: string | null;
+  QuoteFulfillment_FulfillmentDate?: string | null;
+  QuoteFulfillment_LastModifiedByID?: string | null;
+  LastModifiedBy_Name?: string | null;
+  QuoteFulfillment_LastModifiedDate?: string | null;
+  QuoteFulfillment_LicenseKeyID?: string | null;
+  LicenseKeys_Name?: string | null;
+  QuoteFulfillment_Name?: string | null;
+  QuoteFulfillment_QuoteID?: string | null;
+  Quotes_Name?: string | null;
+}
+
+interface QuoteFulfillmentProducts {
+  QuoteProducts_ID: string;
+  QuoteProducts_Name?: string | null;
+}
 
 export type QuoteFormData = {
   id?: string | null;
@@ -230,4 +257,19 @@ export type QuoteProductFormData = {
   qmEditable?: boolean | null;
   startDate?: Date | null;
   endDate?: Date | null;
+};
+
+export type QuoteFulfillmentFormData = {
+  id: string;
+  name?: string | null;
+  details?: string | null;
+  date?: Date | null;
+  licenseKey: {
+    id?: string | null;
+    name?: string | null;
+  };
+  quote: {
+    id?: string | null;
+    name?: string | null;
+  };
 };

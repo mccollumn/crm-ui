@@ -99,11 +99,10 @@ export const QuoteProductForm = ({
           <Grid item xs={6}>
             <Stack spacing={1}>
               {/* Quote */}
-              {/* TODO: Update form to use /quoteproduct endpoint */}
               <AutocompleteElement
                 label="Quote"
                 name="quote"
-                //required
+                required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -121,7 +120,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Sale Type"
                 name="saleType"
-                //required
+                required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.SaleType}
               />
@@ -129,7 +128,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Product"
                 name="product"
-                //required
+                required
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -208,7 +207,7 @@ export const QuoteProductForm = ({
               <TextFieldElement
                 label="Quantity"
                 name="quantity"
-                //required
+                required
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
@@ -249,7 +248,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="SKU Group"
                 name="skuGroup"
-                //required
+                required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.SkuGroup}
               />
