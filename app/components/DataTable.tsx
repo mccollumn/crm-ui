@@ -4,12 +4,21 @@ import React from "react";
 import {
   DataGrid,
   GridColDef,
+  GridFilterInputDate,
+  GridFilterInputDateProps,
+  GridFilterItem,
   GridFilterModel,
+  GridFilterOperator,
+  GridToolbar,
   GridValueGetterParams,
+  getGridDateOperators,
 } from "@mui/x-data-grid";
 import { CheckBox } from "@mui/icons-material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Link from "next/link";
+import { DatePicker } from "@mui/x-date-pickers";
+import DateFnsProvider from "../providers/DateFnsProvider";
+import { Box } from "@mui/material";
 
 type columnDefTypes =
   | "casesList"
@@ -940,10 +949,32 @@ export const DataTable = ({
     items: [{ field: queryField, operator: "contains", value: queryValue }],
   };
 
+  const columns = React.useMemo(
+    () =>
+      columnDefs[columnDefType].map((col) => {
+        const dateOperators = getGridDateOperators();
+        return col.type === "date"
+          ? {
+              ...col,
+              filterOperators: [...dateOperators, datesBetweenOperator],
+            }
+          : col;
+      }),
+    [columnDefType, columnDefs]
+  );
+
   return (
     <DataGrid
       rows={rows}
+      // columns={columns}
       columns={columnDefs[columnDefType]}
+      slots={{ toolbar: GridToolbar }}
+      slotProps={{
+        toolbar: {
+          showQuickFilter: true,
+          csvOptions: { fileName: columnDefType },
+        },
+      }}
       initialState={{
         pagination: {
           paginationModel: { page: 0, pageSize: 10 },
@@ -959,6 +990,52 @@ export const DataTable = ({
       autoHeight
     />
   );
+};
+
+// TODO: This component will need to be completed for date range filtering.
+// Only DataGrid Pro allows multiple filters.
+// https://mui.com/x/react-data-grid/filtering/customization/#multiple-values-operator
+const InputDates = (props: GridFilterInputDateProps) => {
+  return (
+    <Box
+      sx={{
+        display: "inline-flex",
+        flexDirection: "row",
+        alignItems: "end",
+        height: 48,
+        pl: "20px",
+      }}
+    >
+      <DateFnsProvider>
+        <DatePicker label="Start" />
+        <DatePicker label="End" />
+      </DateFnsProvider>
+    </Box>
+  );
+};
+
+const datesBetweenOperator: GridFilterOperator = {
+  label: "is between",
+  value: "between",
+  getApplyFilterFn: (filterItem: GridFilterItem) => {
+    if (!Array.isArray(filterItem.value) || filterItem.value.length !== 2) {
+      return null;
+    }
+    if (filterItem.value[0] == null || filterItem.value[1] == null) {
+      return null;
+    }
+
+    return ({ value }) => {
+      return (
+        value !== null &&
+        filterItem.value[0] <= value &&
+        value <= filterItem.value[1]
+      );
+    };
+  },
+  // InputComponent: InputDates,
+  InputComponent: GridFilterInputDate,
+  InputComponentProps: { type: "date" },
 };
 
 const displayDate = (params: GridValueGetterParams) => {
