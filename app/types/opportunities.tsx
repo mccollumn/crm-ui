@@ -124,7 +124,7 @@ export interface Quote {
 }
 
 export interface ContactRole {
-  OpportunityContactRoles_ID: string;
+  OpportunityContactRoles_ID?: string;
   OpportunityContactRoles_ContactId: string | null;
   Contacts_Name: string | null;
   Contacts_Email: string | null;
@@ -134,7 +134,7 @@ export interface ContactRole {
 }
 
 interface Amount {
-  OpportunityAmounts_ID: string;
+  OpportunityAmounts_ID?: string;
   OpportunityAmounts_Amount: string | null;
   OpportunityAmounts_OneYearAmount: string | null;
   OpportunityAmounts_Product2ID: string | null;
@@ -170,7 +170,7 @@ interface SalesInvoice {
 }
 
 export interface Product {
-  OpportunityLineItems_ID: string;
+  OpportunityLineItems_ID?: string;
   OpportunityLineItems_Product2ID: string | null;
   Product_Name: string | null;
   OpportunityLineItems_ProductCode: string | null;

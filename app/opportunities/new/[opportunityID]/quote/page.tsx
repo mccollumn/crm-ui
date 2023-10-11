@@ -1,15 +1,16 @@
 import { QuoteForm } from "@/app/forms/quote/QuoteForm";
 import { createQuoteFormData } from "@/app/forms/quote/quoteFormUtils";
-import { getMenuItems } from "@/app/utils/getData";
+import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 
 const NewQuote = async ({ params }: { params: { opportunityID: string } }) => {
   const opportunityID = params.opportunityID;
   const menuItemsPromise = getMenuItems();
-  const valuesPromise = createQuoteFormData();
-  const [menuItems, values] = await Promise.all([
+  const opportunityDataPromise = getOpportunityData(opportunityID);
+  const [menuItems, opportunityData] = await Promise.all([
     menuItemsPromise,
-    valuesPromise,
+    opportunityDataPromise,
   ]);
+  const values = await createQuoteFormData(opportunityData);
 
   return (
     <QuoteForm

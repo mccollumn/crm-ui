@@ -151,10 +151,10 @@ interface QuoteProductDetail {
 }
 
 interface ProductInfo {
-  QuoteProducts_EndDate?: string | null;
+  QuoteProducts_EndDate: string | null;
   QuoteProducts_RevRecTemplate?: string | null;
   QuoteProducts_SKUGroup?: string | null;
-  QuoteProducts_StartDate?: string | null;
+  QuoteProducts_StartDate: string | null;
 }
 
 export interface QuoteFulfillmentData {

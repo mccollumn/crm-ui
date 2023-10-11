@@ -324,6 +324,14 @@ export const getOpportunityData = async (opportunityID: string) => {
   return data;
 };
 
+export const submitNewOpportunity = async (data: any) => {
+  const responseData = await postData(
+    `${process.env.CRM_API_ENDPOINT}/opportunity/insert`,
+    data
+  );
+  return responseData;
+};
+
 /**
  * Quotes
  */
@@ -346,6 +354,22 @@ export const getQuoteFulfillmentData = async (quoteFulfillmentID: string) => {
     ["quote"]
   );
   return data;
+};
+
+export const submitNewQuote = async (data: any) => {
+  const responseData = await postData(
+    `${process.env.CRM_API_ENDPOINT}/quote/insert`,
+    data
+  );
+  return responseData;
+};
+
+export const submitNewQuoteProduct = async (data: any) => {
+  const responseData = await postData(
+    `${process.env.CRM_API_ENDPOINT}/quoteproduct/insert`,
+    data
+  );
+  return responseData;
 };
 
 /**

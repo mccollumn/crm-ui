@@ -9,7 +9,7 @@ export const ButtonNav = ({ path, children, ...props }: ButtonNavProps) => {
   return (
     <ButtonStyled
       onClick={() => router.push(path)}
-      sx={{ mb: ".5em" }}
+      sx={{ mb: ".5em", mr: ".5em" }}
       {...props}
     >
       {children}

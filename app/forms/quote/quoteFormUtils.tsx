@@ -9,19 +9,25 @@ import { unEscape } from "@/app/utils/utils";
  * @returns Initial quote form data.
  */
 const generateInitialQuoteFormData = async (
-  quoteData: QuoteData | undefined
+  opportunityData: OpportunityData
+  // quoteData: QuoteData | undefined
 ) => {
   const defaultOwner = await getDefaultOwner();
-  const opportunityID = quoteData?.QuoteDetail.Quotes_OpportunityID;
-  const opportunityName = quoteData?.QuoteDetail.Opportunities_Name;
+  const opportunityID =
+    opportunityData.OpportunityDetail.Opportunities_ID || null;
+  const opportunityName = unEscape(
+    opportunityData.OpportunityDetail.Opportunities_Name || ""
+  );
+  // const opportunityID = quoteData?.QuoteDetail.Quotes_OpportunityID;
+  // const opportunityName = quoteData?.QuoteDetail.Opportunities_Name;
 
   const initialOpportunityFormData: QuoteFormData = {
     id: null,
     name: null,
     owner: defaultOwner,
     opportunity: {
-      id: opportunityID || null,
-      name: unEscape(opportunityName || ""),
+      id: opportunityID,
+      name: opportunityName,
     },
     isChannel: false,
     quoteComments: null,
@@ -67,9 +73,13 @@ const generateInitialQuoteFormData = async (
  * @param QuoteData Data from an existing quote. (optional)
  * @returns Quote data object.
  */
-export const createQuoteFormData = async (quoteData?: QuoteData) => {
+export const createQuoteFormData = async (
+  opportunityData: OpportunityData,
+  quoteData?: QuoteData
+) => {
   const initialOpportunityFormData = await generateInitialQuoteFormData(
-    quoteData
+    opportunityData
+    // quoteData
   );
 
   if (!quoteData) {

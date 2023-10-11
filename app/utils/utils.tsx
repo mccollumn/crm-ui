@@ -12,6 +12,7 @@ export const isObjectEmpty = (objectName: any) => {
 
 export const isSuccessfulResponse = async (response: Response) => {
   const responseData = await response.json();
+  console.log("isSuccessfulResponse response data:", responseData);
   if (!response.ok || responseData.res.message === "error") {
     console.error("Unable to submit data:", response.statusText);
     return false;
@@ -90,16 +91,7 @@ export const formatNumber = (value: number | string | null | undefined) => {
  * @returns Formatted string.
  */
 export const formatPercent = (value: number | string | null | undefined) => {
-  console.log("formatPercent value:", value);
-
   if (!value) return value;
-  console.log(
-    "formatPercent value formatted:",
-    numericFormatter(value.toString(), {
-      thousandSeparator: true,
-      suffix: "%",
-    })
-  );
   return numericFormatter(value.toString(), {
     thousandSeparator: true,
     suffix: "%",

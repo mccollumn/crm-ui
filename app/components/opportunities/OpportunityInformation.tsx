@@ -13,6 +13,7 @@ import {
   formatCheckbox,
   formatCurrency,
   formatDate,
+  formatPercent,
   unEscape,
 } from "@/app/utils/utils";
 import Link from "next/link";
@@ -41,6 +42,13 @@ const OpportunityInformation = async ({
         path={`/opportunities/edit/${opportunityData.OpportunityDetail.Opportunities_ID}`}
       >
         Edit
+      </ButtonNav>
+      <ButtonNav
+        size="small"
+        path={`/opportunities/clone/${opportunityData.OpportunityDetail.Opportunities_ID}`}
+        // path={`/api/opportunities/${opportunityData.OpportunityDetail.Opportunities_ID}/clone`}
+      >
+        Clone
       </ButtonNav>
       <Accordion defaultExpanded={true}>
         <AccordionSummary
@@ -345,7 +353,9 @@ const getOpportunityInfo = async (
         },
         {
           label: "Probability (%)",
-          value: `${opportunityData.OpportunityDetail.Opportunities_Probability}%`,
+          value: formatPercent(
+            opportunityData.OpportunityDetail.Opportunities_Probability
+          ),
         },
         {
           label: "Forecast Status",
