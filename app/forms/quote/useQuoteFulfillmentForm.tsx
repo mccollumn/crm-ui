@@ -1,6 +1,7 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
 import {
+  convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
   isObjectEmpty,
@@ -24,6 +25,7 @@ export const useQuoteFulfillmentForm = ({
     Quote: [],
     LicenseKey: [],
     Currency: [],
+    SupportPlanType: [],
   };
 
   const {
@@ -83,6 +85,7 @@ export const useQuoteFulfillmentForm = ({
 
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("Currency");
+    setMenuOptions("SupportPlanType");
   }, [
     accountData.LicenseKeys,
     quoteData.QuoteDetail.Quotes_OpportunityID,
@@ -101,9 +104,17 @@ export const useQuoteFulfillmentForm = ({
         QuoteFulfillment_FulfillmentDate: convertDateToISOString(values.date),
         QuoteFulfillment_LicenseKeyID: values.licenseKey.id,
         LicenseKeys_Name: values.licenseKey.name,
+        Assets_IsTermLicense: convertBooleanToString(values.licenseKey.isTerm),
         QuoteFulfillment_Name: values.name,
         QuoteFulfillment_QuoteID: values.quote.id,
         Quotes_Name: values.quote.name,
+      },
+      AssetSupportDetails: {
+        Assets_SupportPlanBegin: convertDateToISOString(
+          values.support.beginDate
+        ),
+        Assets_SupportPlanEnd: convertDateToISOString(values.support.endDate),
+        Assets_SupportPlanType: values.support.planType,
       },
     };
     let newFormData: any = removeNullsFromObject(data);

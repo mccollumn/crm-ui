@@ -1,3 +1,5 @@
+import { AssetSupportDetails } from "./assets";
+
 export interface QuoteData {
   QuoteDetail: QuoteDetail;
   QuotePaymentInfo: QuotePaymentInfo;
@@ -160,6 +162,7 @@ interface ProductInfo {
 export interface QuoteFulfillmentData {
   QuoteFulfillmentDetail: QuoteFulfillmentDetail;
   QuoteProducts: QuoteFulfillmentProducts[];
+  AssetSupportDetails: AssetSupportDetails;
 }
 
 interface QuoteFulfillmentDetail {
@@ -174,6 +177,7 @@ interface QuoteFulfillmentDetail {
   QuoteFulfillment_LastModifiedDate?: string | null;
   QuoteFulfillment_LicenseKeyID?: string | null;
   LicenseKeys_Name?: string | null;
+  Assets_IsTermLicense: "0" | "1";
   QuoteFulfillment_Name?: string | null;
   QuoteFulfillment_QuoteID?: string | null;
   Quotes_Name?: string | null;
@@ -267,9 +271,15 @@ export type QuoteFulfillmentFormData = {
   licenseKey: {
     id?: string | null;
     name?: string | null;
+    isTerm?: boolean | null;
   };
   quote: {
     id?: string | null;
     name?: string | null;
+  };
+  support: {
+    beginDate?: Date | null;
+    endDate?: Date | null;
+    planType?: string | null;
   };
 };

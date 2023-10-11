@@ -214,7 +214,11 @@ export const getChangedValues = (formData: any, origData: any) => {
       const subObj = formData[key];
       let subResult = {};
       Object.keys(subObj).forEach((subKey) => {
-        if (subObj[subKey] !== origData[key][subKey]) {
+        if (
+          key in origData &&
+          subKey in origData[key] &&
+          subObj[subKey] !== origData[key][subKey]
+        ) {
           subResult = { ...subResult, [subKey]: subObj[subKey] };
         }
       });

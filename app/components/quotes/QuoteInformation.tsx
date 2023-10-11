@@ -23,6 +23,8 @@ import { QuoteData } from "@/app/types/quotes";
 const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
   const quoteData: QuoteData = await getQuoteData(quoteID);
   const quoteInfo = await getQuoteInfo(quoteData);
+  const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
+  const fulfillmentID = quoteData?.QuoteFullfillment?.QuoteFulfillment_ID;
 
   return (
     <>
@@ -32,6 +34,22 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
       >
         Edit
       </ButtonNav>
+      {fulfillmentID ? (
+        <ButtonNav
+          size="small"
+          path={`/opportunities/edit/${opportunityID}/quote/${quoteID}/fulfillment/${fulfillmentID}`}
+        >
+          Fulfillment
+        </ButtonNav>
+      ) : (
+        <ButtonNav
+          size="small"
+          path={`/opportunities/new/${opportunityID}/quote/${quoteID}/fulfillment`}
+        >
+          Fulfillment
+        </ButtonNav>
+      )}
+
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

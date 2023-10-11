@@ -25,10 +25,16 @@ const generateInitialQuoteFulfillmentFormData = async (
     licenseKey: {
       id: null,
       name: null,
+      isTerm: null,
     },
     quote: {
       id: existingQuoteID,
       name: existingQuoteName,
+    },
+    support: {
+      beginDate: null,
+      endDate: null,
+      planType: null,
     },
   };
 
@@ -62,10 +68,16 @@ export const createQuoteFulfillmentFormData = async ({
     licenseKey: {
       id: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_LicenseKeyID,
       name: fulfillmentData.QuoteFulfillmentDetail.LicenseKeys_Name,
+      isTerm: fulfillmentData.QuoteFulfillmentDetail.Assets_IsTermLicense,
     },
     quote: {
       id: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_QuoteID,
       name: fulfillmentData.QuoteFulfillmentDetail.Quotes_Name,
+    },
+    support: {
+      beginDate: fulfillmentData?.AssetSupportDetails?.Assets_SupportPlanBegin,
+      endDate: fulfillmentData?.AssetSupportDetails?.Assets_SupportPlanEnd,
+      planType: fulfillmentData?.AssetSupportDetails?.Assets_SupportPlanType,
     },
   };
 };

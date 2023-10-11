@@ -14,9 +14,9 @@ const generateInitialQuoteFormData = async (
 ) => {
   const defaultOwner = await getDefaultOwner();
   const opportunityID =
-    opportunityData.OpportunityDetail.Opportunities_ID || null;
+    opportunityData?.OpportunityDetail?.Opportunities_ID || null;
   const opportunityName = unEscape(
-    opportunityData.OpportunityDetail.Opportunities_Name || ""
+    opportunityData?.OpportunityDetail?.Opportunities_Name || ""
   );
   // const opportunityID = quoteData?.QuoteDetail.Quotes_OpportunityID;
   // const opportunityName = quoteData?.QuoteDetail.Opportunities_Name;

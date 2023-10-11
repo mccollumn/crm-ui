@@ -136,10 +136,6 @@ export const QuoteFulfillmentForm = ({
                 rows={3}
                 size="small"
               />
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
               {/* Fulfillment Date */}
               <DateFnsProvider>
                 <DatePickerElement
@@ -148,12 +144,22 @@ export const QuoteFulfillmentForm = ({
                   inputProps={{ size: "small" }}
                 />
               </DateFnsProvider>
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
               {/* Currency */}
               <AutocompleteElement
                 label="Currency"
                 name="currency"
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.Currency}
+              />
+              {/* Is Term License */}
+              <CheckboxElement
+                label="Is Term License"
+                name="licenseKey.isTermLicense"
+                size="small"
               />
               {/* License Key */}
               <AutocompleteElement
@@ -183,6 +189,41 @@ export const QuoteFulfillmentForm = ({
               >
                 New License Key
               </ButtonNav>
+            </Stack>
+          </Grid>
+          <FormDivider>Support Details</FormDivider>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Support Plan Type */}
+              <AutocompleteElement
+                label="Support Plan Type"
+                name="support.planType"
+                required
+                autocompleteProps={{ size: "small" }}
+                options={menuOptions.SupportPlanType}
+              />
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Support Plan Begin */}
+              <DateFnsProvider>
+                <DatePickerElement
+                  label="Support Plan Begin"
+                  name="support.beginDate"
+                  required
+                  inputProps={{ size: "small" }}
+                />
+              </DateFnsProvider>
+              {/* Support Plan End */}
+              <DateFnsProvider>
+                <DatePickerElement
+                  label="Support Plan End"
+                  name="support.endDate"
+                  required
+                  inputProps={{ size: "small" }}
+                />
+              </DateFnsProvider>
             </Stack>
           </Grid>
         </Grid>

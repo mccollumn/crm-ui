@@ -22,8 +22,8 @@ interface AssetDetail {
   Assets_Status?: string | null;
 }
 
-interface AssetSupportDetails {
-  Assets_ID: string;
+export interface AssetSupportDetails {
+  Assets_ID?: string;
   Assets_MaintenanceStatus?: string | null;
   Assets_SupportPlanBegin?: string | null;
   Assets_SupportPlanEnd?: string | null;
