@@ -1,7 +1,13 @@
 "use client";
 
 import { FormWrapper } from "../FormWrapper";
-import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Stack,
+  createFilterOptions,
+} from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
@@ -78,6 +84,11 @@ export const QuoteProductForm = ({
     router.back();
   };
 
+  const productFilterOptions = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) => `${option.name} ${option.code}`,
+  });
+
   return (
     <>
       <Backdrop
@@ -129,6 +140,7 @@ export const QuoteProductForm = ({
                 label="Product"
                 name="product"
                 required
+                loading={menuOptions.Product.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -139,6 +151,7 @@ export const QuoteProductForm = ({
                       </li>
                     );
                   },
+                  filterOptions: productFilterOptions,
                   size: "small",
                   onChange: (_, value) => {
                     setProductSelected(value);

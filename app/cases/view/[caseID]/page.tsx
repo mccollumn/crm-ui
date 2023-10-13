@@ -57,7 +57,7 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
           <CaseEmails caseID={caseID} />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="case-attachments-content"
@@ -71,8 +71,8 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
             malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
-      </Accordion>
-      <Accordion>
+      </Accordion> */}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="case-history-content"
@@ -83,7 +83,7 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
         <AccordionDetails id="case-history-content">
           <CaseHistory caseID={caseID} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </div>
   );
 };

@@ -143,6 +143,7 @@ export const ContactForm = ({
                 label="Account Name"
                 name="account"
                 required
+                loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

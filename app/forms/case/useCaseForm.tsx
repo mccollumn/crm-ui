@@ -17,8 +17,8 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     Account: [],
     Contact: [],
     CaseOrigin: [],
-    Status: [],
-    SubStatus: [],
+    CaseStatus: [],
+    "Sub-Status": [],
     CaseOwner: [],
     SubOwner: [],
     ProductDeliveryMethod: [],
@@ -105,8 +105,8 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("ProductName");
     setMenuOptions("ProductDeliveryMethod");
-    setMenuOptions("Status");
-    setMenuOptions("SubStatus");
+    setMenuOptions("CaseStatus");
+    // setMenuOptions("Sub-Status");
     setMenuOptions("CaseOrigin");
     setMenuOptions("Priority");
     setMenuOptions("Severity");

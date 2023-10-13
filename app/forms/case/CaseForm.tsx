@@ -114,6 +114,7 @@ export const CaseForm = ({
                 label="Account Name"
                 name="account"
                 required
+                loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
                   size: "small",
                   getOptionLabel: (option) => option.name || "",
@@ -142,6 +143,7 @@ export const CaseForm = ({
                 label="Contact Name"
                 name="contact"
                 required
+                loading={menuOptions.Contact.length === 0}
                 autocompleteProps={{
                   size: "small",
                   getOptionLabel: (option) => option.name || "",
@@ -188,20 +190,20 @@ export const CaseForm = ({
                 required
                 autocompleteProps={{
                   size: "small",
-                  onChange: (_, value) => setMenuOptions("SubStatus", value),
+                  onChange: (_, value) => setMenuOptions("Sub-Status", value),
                 }}
-                options={menuOptions.Status}
+                options={menuOptions.CaseStatus}
               />
               {/* Sub-Status */}
               <AutocompleteElement
                 label="Sub-Status"
                 name="subStatus"
-                required={!!menuOptions.SubStatus.length}
+                required={!!menuOptions["Sub-Status"].length}
                 autocompleteProps={{
                   size: "small",
-                  disabled: !menuOptions.SubStatus.length,
+                  disabled: !menuOptions["Sub-Status"].length,
                 }}
-                options={menuOptions.SubStatus}
+                options={menuOptions["Sub-Status"]}
               />
               {/* Hibernate End Date */}
               <DateFnsProvider>
@@ -216,6 +218,7 @@ export const CaseForm = ({
                 label="Case Owner"
                 name="owner"
                 required
+                loading={menuOptions.CaseOwner.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -233,6 +236,7 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Case Sub-Owner"
                 name="subOwner"
+                loading={menuOptions.SubOwner.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
