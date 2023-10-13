@@ -22,6 +22,7 @@ const generateInitialQuoteFulfillmentFormData = async (
     name: null,
     details: null,
     date: null,
+    currency: null,
     licenseKey: {
       id: null,
       name: null,
@@ -65,6 +66,8 @@ export const createQuoteFulfillmentFormData = async ({
     details: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_Details,
     date: fulfillmentData.QuoteFulfillmentDetail
       .QuoteFulfillment_FulfillmentDate,
+    currency:
+      fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_CurrencyIsoCode,
     licenseKey: {
       id: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_LicenseKeyID,
       name: fulfillmentData.QuoteFulfillmentDetail.LicenseKeys_Name,

@@ -340,7 +340,10 @@ const getAccountInfo = async (accountID: string) => {
           label: "Super Region",
           value: accountData.AccountDetail.Accounts_Super_Region,
         },
-        // { label: "MSA", value: "" },
+        {
+          label: "MSA",
+          value: formatCheckbox(accountData.AccountDetail.Accounts_MSA),
+        },
         // { label: "Partner Status", value: "" },
       ],
     },

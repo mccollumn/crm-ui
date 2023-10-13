@@ -150,6 +150,7 @@ export const useQuoteProductForm = ({
         QuoteProducts_ID: values.id,
         QuoteProducts_AnnualCost: annualCost,
         QuoteProducts_BlendedDiscount: blendedDiscount,
+        QuoteProducts_CurrencyIsoCode: values.currency,
         QuoteProducts_Discount: values.discount,
         QuoteProducts_FulfillmentStatus: values.fulfillment.status,
         QuoteProducts_Name: values.product.lineItemId,

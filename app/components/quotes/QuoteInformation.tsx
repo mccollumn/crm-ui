@@ -7,7 +7,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
-import { getQuoteData } from "@/app/utils/getData";
+import { getAccountData, getQuoteData } from "@/app/utils/getData";
 import {
   convertStringToArray,
   formatCheckbox,
@@ -19,10 +19,19 @@ import {
 } from "@/app/utils/utils";
 import Link from "next/link";
 import { QuoteData } from "@/app/types/quotes";
+import { AccountData } from "@/app/types/accounts";
 
 const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
   const quoteData: QuoteData = await getQuoteData(quoteID);
-  const quoteInfo = await getQuoteInfo(quoteData);
+  const accountID = quoteData.QuoteDetail.Opportunities_AccountID;
+  let accountData: AccountData;
+  let quoteInfo;
+  if (accountID) {
+    accountData = await getAccountData(accountID);
+    quoteInfo = await getQuoteInfo(quoteData, accountData);
+  } else {
+    quoteInfo = await getQuoteInfo(quoteData);
+  }
   const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
   const fulfillmentID = quoteData?.QuoteFullfillment?.QuoteFulfillment_ID;
 
@@ -145,7 +154,10 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
 };
 
 // TODO: Fill in missing values
-const getQuoteInfo = async (quoteData: QuoteData) => {
+const getQuoteInfo = async (
+  quoteData: QuoteData,
+  accountData?: AccountData
+) => {
   return {
     info: {
       left: [
@@ -173,7 +185,9 @@ const getQuoteInfo = async (quoteData: QuoteData) => {
         },
         {
           label: "Super Region",
-          value: "",
+          value: accountData
+            ? accountData.AccountDetail.Accounts_Super_Region
+            : "",
         },
         {
           label: "Is Channel",
@@ -189,18 +203,18 @@ const getQuoteInfo = async (quoteData: QuoteData) => {
           label: "Status",
           value: quoteData.QuoteDetail.Quotes_Status,
         },
-        {
-          label: "Quote Office Location",
-          value: "",
-        },
+        // {
+        //   label: "Quote Office Location",
+        //   value: "",
+        // },
         {
           label: "Currency Code",
           value: quoteData.QuoteDetail.Quotes_CurrencyCode,
         },
-        {
-          label: "Currency Symbol",
-          value: quoteData.QuoteDetail.Quotes_CurrencySymbol,
-        },
+        // {
+        //   label: "Currency Symbol",
+        //   value: quoteData.QuoteDetail.Quotes_CurrencySymbol,
+        // },
         {
           label: "Valid Through",
           value: formatDate(quoteData.QuoteDetail.Quotes_ValidThrough),

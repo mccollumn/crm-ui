@@ -729,55 +729,59 @@ export const OpportunityForm = ({
               </DateFnsProvider>
             </Stack>
           </Grid>
-          {/* <FormDivider>System Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Holdover Expiration */}
-          {/* <DateFnsProvider>
+          <FormDivider>System Information</FormDivider>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Holdover Expiration */}
+              {/* <DateFnsProvider>
               <DatePickerElement
                 label="Holdover Expiration"
                 name=""
                 inputProps={{ size: "small" }}
               />
             </DateFnsProvider> */}
-          {/* Type */}
-          {/* <AutocompleteElement
-              label="Type"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* Refresh Product Family */}
-          {/* <CheckboxElement
+              {/* Type */}
+              <AutocompleteElement
+                label="Type"
+                name="type"
+                autocompleteProps={{ size: "small" }}
+                options={menuOptions.Type}
+              />
+              {/* Refresh Product Family */}
+              {/* <CheckboxElement
               label="Refresh Product Family"
               name=""
               size="small"
             /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Territory Override */}
-          {/* <AutocompleteElement
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Territory Override */}
+              {/* <AutocompleteElement
               label="Territory Override"
               name=""
               autocompleteProps={{ size: "small" }}
               options={[]}
             /> */}
-          {/* Territory Tracker */}
-          {/* <TextFieldElement label="Territory Tracker" name="" size="small" /> */}
-          {/* Deal Alert Sent */}
-          {/* <CheckboxElement label="Deal Alert Sent" name="" size="small" /> */}
-          {/* Quote Submitted */}
-          {/* <CheckboxElement label="Quote Submitted" name="" size="small" /> */}
-          {/* Do Not Run Trigger Test */}
-          {/* <CheckboxElement
+              {/* Territory Tracker */}
+              <TextFieldElement
+                label="Territory Tracker"
+                name="territory"
+                size="small"
+              />
+              {/* Deal Alert Sent */}
+              {/* <CheckboxElement label="Deal Alert Sent" name="" size="small" /> */}
+              {/* Quote Submitted */}
+              {/* <CheckboxElement label="Quote Submitted" name="" size="small" /> */}
+              {/* Do Not Run Trigger Test */}
+              {/* <CheckboxElement
               label="Do Not Run Trigger Test"
               name=""
               size="small"
             /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
+            </Stack>
+          </Grid>
         </Grid>
       </FormWrapper>
     </>

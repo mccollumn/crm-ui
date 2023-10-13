@@ -20,6 +20,7 @@ interface OpportunityDetail {
   Accounts_Name: string | null;
   Opportunities_Amount: string | null;
   Opportunities_CloseDate: string | null;
+  Opportunities_CommissionCategory: string | null;
   Opportunities_ContainsNewBusiness: "0" | "1";
   Opportunities_ExpectedRevenue: string | null;
   Opportunities_FastNotesNextSteps: string | null;
@@ -42,6 +43,7 @@ interface OpportunityDetail {
   Opportunities_SplitOpportunity: "0" | "1";
   Opportunities_StageName: string | null;
   Opportunities_Term: string | null;
+  Opportunities_Territory: string | null;
   Opportunities_Type: string | null;
 }
 
@@ -208,6 +210,8 @@ export type OpportunityFormData = {
   oneYearAmount?: string | null;
   firstYearContractAmount?: string | null;
   firstYearExpectedAmount?: string | null;
+  territory?: string | null;
+  type?: string | null;
   renewal: {
     baselineAmount?: string | null;
     servicesAmount?: string | null;

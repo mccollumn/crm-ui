@@ -282,7 +282,7 @@ export const AccountForm = ({
               options={menuOptions.Region}
             /> */}
               {/* MSA */}
-              {/* <CheckboxElement label="MSA" name="msa" size="small" /> */}
+              <CheckboxElement label="MSA" name="msa" size="small" />
               {/* Partner Status */}
               {/* <AutocompleteElement
               label="Partner Status"

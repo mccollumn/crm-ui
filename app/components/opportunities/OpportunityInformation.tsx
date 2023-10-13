@@ -277,7 +277,8 @@ const getOpportunityInfo = async (
         },
         {
           label: "Opportunity Type",
-          value: "",
+          value:
+            opportunityData.OpportunityDetail.Opportunities_CommissionCategory,
         },
         {
           label: "Account Type",
@@ -796,20 +797,23 @@ const getOpportunityInfo = async (
     },
     system: {
       left: [
-        { label: "Opportunity Territory", value: "" },
-        { label: "Holdover Expiration", value: "" },
+        // { label: "Holdover Expiration", value: "" },
         {
           label: "Type",
           value: opportunityData.OpportunityDetail.Opportunities_Type,
         },
-        { label: "Refresh Product Family", value: "" },
+        // { label: "Refresh Product Family", value: "" },
         // { label: "Created By", value: "" },
       ],
       right: [
-        { label: "Territory Override", value: "" },
-        { label: "Territory Tracker", value: "" },
-        { label: "Deal Alert Sent", value: "" },
-        { label: "Quote Submitted", value: "" },
+        {
+          label: "Opportunity Territory",
+          value: opportunityData.OpportunityDetail.Opportunities_Territory,
+        },
+        // { label: "Territory Override", value: "" },
+        // { label: "Territory Tracker", value: "" },
+        // { label: "Deal Alert Sent", value: "" },
+        // { label: "Quote Submitted", value: "" },
         // { label: "Do Not Run Trigger Test", value: "" },
         // { label: "Last Modified By", value: "" },
       ],

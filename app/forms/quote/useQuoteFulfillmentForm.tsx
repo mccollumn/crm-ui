@@ -100,6 +100,7 @@ export const useQuoteFulfillmentForm = ({
     const data = {
       QuoteFulfillmentDetail: {
         QuoteFulfillment_ID: values.id,
+        QuoteFulfillment_CurrencyIsoCode: values.currency,
         QuoteFulfillment_Details: values.details,
         QuoteFulfillment_FulfillmentDate: convertDateToISOString(values.date),
         QuoteFulfillment_LicenseKeyID: values.licenseKey.id,

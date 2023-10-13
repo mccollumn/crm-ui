@@ -34,6 +34,8 @@ const generateInitialOpportunityFormData = async () => {
     forecastStatus: null,
     term: null,
     oneYearAmount: null,
+    territory: null,
+    type: null,
     renewal: {
       baselineAmount: null,
       servicesAmount: null,
@@ -89,7 +91,8 @@ export const createOpportunityFormData = async (
       id: opportunityData.OpportunityDetail.Opportunities_AccountId,
       name: opportunityData.OpportunityDetail.Accounts_Name,
     },
-    opportunityType: opportunityData.OpportunityDetail.Opportunities_Type,
+    opportunityType:
+      opportunityData.OpportunityDetail.Opportunities_CommissionCategory,
     product: {
       name: opportunityData.OpportunityDetail.Opportunities_Product,
       family: opportunityData.OpportunityDetail.Opportunities_ProductFamily,
@@ -110,6 +113,8 @@ export const createOpportunityFormData = async (
     term: opportunityData.OpportunityDetail.Opportunities_Term,
     oneYearAmount:
       opportunityData.OpportunityDetail.Opportunities_MultiYearYear1Amount,
+    type: opportunityData.OpportunityDetail.Opportunities_Type,
+    territory: opportunityData.OpportunityDetail.Opportunities_Territory,
     renewal: {
       baselineAmount:
         opportunityData.OpportunityRenewalInfo

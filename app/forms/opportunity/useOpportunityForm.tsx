@@ -18,6 +18,7 @@ import {
 import { QuoteProduct } from "@/app/types/quotes";
 import { getProductData, getProducts } from "@/app/utils/getData";
 import { ProductData } from "@/app/types/products";
+import { AccountData } from "@/app/types/accounts";
 
 export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
   const initialMenuOptions = {
@@ -111,6 +112,11 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     values: OpportunityFormData,
     opportunityData?: OpportunityData
   ) => {
+    const accountID =
+      opportunityData?.OpportunityDetail.Opportunities_AccountId;
+    const accountData: AccountData = await (
+      await fetch(`/api/accounts/${accountID}`)
+    ).json();
     const firstYearContractAmount = calculateFirstYearContractAmount(
       values.oneYearAmount,
       values.amount
@@ -171,6 +177,10 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
       values.opportunityType,
       renewalGrowthPercentage
     );
+    const territory = calculateTerritory(
+      accountData.AccountDetail.Accounts_Super_Region,
+      values.territory
+    );
 
     const data = {
       OpportunityDetail: {
@@ -179,6 +189,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Accounts_Name: values.account.name,
         Opportunities_Amount: values.amount,
         Opportunities_CloseDate: convertDateToISOString(values.closeDate),
+        Opportunities_CommissionCategory: values.opportunityType,
         Opportunities_ContainsNewBusiness: convertBooleanToString(
           values.newBusiness
         ),
@@ -202,7 +213,8 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         // Opportunities_SplitOpportunity: "0",
         Opportunities_StageName: values.stage.name,
         Opportunities_Term: values.term,
-        Opportunities_Type: values.opportunityType,
+        Opportunities_Territory: territory,
+        Opportunities_Type: values.type,
       },
       OpportunitySolutionsOverview: {
         //   Opportunities_ID: values.id,
@@ -485,6 +497,14 @@ const calculateRenewalGrowthResults = (
   if (Number(renewalGrowthPercentage) < 0.08) return "Does Not Meet";
   if (Number(renewalGrowthPercentage) === 0.08) return "Meet";
   if (Number(renewalGrowthPercentage) > 0.08) return "Exceeds";
+};
+
+const calculateTerritory = (
+  accountTerritory: string | null | undefined,
+  opportunityTerritory: string | null | undefined
+) => {
+  if (!opportunityTerritory) return accountTerritory;
+  return opportunityTerritory;
 };
 
 interface CalculatePFFunctionProps {

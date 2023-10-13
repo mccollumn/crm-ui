@@ -161,13 +161,13 @@ export const QuoteForm = ({
                 autocompleteProps={{ size: "small" }}
               />
               {/* Quote Office Location */}
-              <AutocompleteElement
+              {/* <AutocompleteElement
                 label="Quote Office Location"
                 name="officeLocation"
                 // required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.OfficeLocation}
-              />
+              /> */}
               {/* Currency */}
               <AutocompleteElement
                 label="Currency"

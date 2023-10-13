@@ -15,6 +15,7 @@ export interface QuoteData {
 
 interface QuoteDetail {
   Quotes_ID: string;
+  Opportunities_AccountID: string | null;
   Quotes_AccountName: string | null;
   Quotes_Comments: string | null;
   Quotes_CurrencyCode: string | null;
@@ -129,6 +130,7 @@ interface QuoteProductDetail {
   QuoteProducts_BlendedDiscount?: string | null;
   QuoteProducts_CreatedByID?: string | null;
   QuoteProducts_CreatedDate?: string | null;
+  QuoteProducts_CurrencyIsoCode?: string | null;
   QuoteProducts_Discount?: string | null;
   QuoteProducts_FulfillmentStatus?: string | null;
   QuoteProducts_LastModifiedByID?: string | null;
@@ -170,6 +172,7 @@ export interface QuoteFulfillmentData {
 interface QuoteFulfillmentDetail {
   QuoteFulfillment_ID: string;
   QuoteFulfillment_CreatedByID?: string | null;
+  QuoteFulfillment_CurrencyIsoCode?: string | null;
   CreatedBy_Name?: string | null;
   QuoteFulfillment_CreatedDate?: string | null;
   QuoteFulfillment_Details?: string | null;
@@ -274,6 +277,7 @@ export type QuoteFulfillmentFormData = {
   name?: string | null;
   details?: string | null;
   date?: Date | null;
+  currency?: string | null;
   licenseKey: {
     id?: string | null;
     name?: string | null;

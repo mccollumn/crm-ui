@@ -104,6 +104,7 @@ export const formatPercent = (value: number | string | null | undefined) => {
  * @returns String with characters unescaped.
  */
 export const unEscape = (str: string) => {
+  if (!str) return str;
   return str
     .replace(/&gt;/g, ">")
     .replace(/&lt;/g, "<")

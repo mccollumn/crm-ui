@@ -105,6 +105,7 @@ useAccountFormProps) => {
         Accounts_AlternateAccountName: values.alternateName,
         Accounts_IsFedState: convertBooleanToString(values.isFederalState),
         Accounts_GovtType: values.governmentType,
+        Accounts_MSA: values.msa,
         Accounts_Name: values.name,
         Accounts_OwnerId: values.owner.id,
         OwnerName: values.owner.name,

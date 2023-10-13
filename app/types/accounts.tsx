@@ -15,6 +15,7 @@ interface AccountDetail {
   Accounts_Fax?: string | null;
   Accounts_IsFedState: "0" | "1";
   Accounts_GovtType?: string | null;
+  Accounts_MSA: "0" | "1";
   Accounts_Name: string;
   Accounts_OwnerId: string;
   OwnerName: string;
@@ -147,6 +148,7 @@ export type AccountFormData = {
   };
   isFederalState?: boolean | null;
   governmentType?: string | null;
+  msa?: boolean | null;
   superRegion?: string | null;
   address: {
     id?: string | null;

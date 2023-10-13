@@ -47,7 +47,7 @@ const generateInitialAccountFormData = async () => {
     // territory: null,
     // region: null,
     superRegion: null,
-    // msa: null,
+    msa: null,
     // partnerStatus: null,
     address: {
       id: null,
@@ -173,6 +173,7 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     },
     isFederalState: !!Number(accountData.AccountDetail.Accounts_IsFedState),
     governmentType: accountData.AccountDetail.Accounts_GovtType,
+    msa: !!Number(accountData.AccountDetail.Accounts_MSA),
     superRegion: accountData.AccountDetail.Accounts_Super_Region,
     address: {
       id: accountData.AddressInformation.AccountsAddress_ID,
