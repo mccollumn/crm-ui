@@ -390,6 +390,11 @@ export const getProducts = async () => {
   return data;
 };
 
+export const getProductData = async (productID: string) => {
+  const data = await getData(`/product/productid/${productID}`);
+  return data;
+};
+
 /**
  * Other Data
  */

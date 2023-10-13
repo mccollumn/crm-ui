@@ -8,7 +8,12 @@ import {
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
-import { QuoteData, QuoteFormData } from "@/app/types/quotes";
+import {
+  QuoteData,
+  QuoteFormData,
+  QuoteProduct,
+  QuoteProductData,
+} from "@/app/types/quotes";
 
 export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
   const initialMenuOptions = {
@@ -85,10 +90,49 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     setMenuOptions("DiscountReason");
   }, [setCustomMenuOptions, setMenuOptions]);
 
-  const createQuoteFormSubmissionData = (
+  const createQuoteFormSubmissionData = async (
     values: QuoteFormData,
     quoteData?: QuoteData
   ) => {
+    const quoteProducts = quoteData?.QuoteProducts || [];
+    const quoteProductsData: QuoteProductData[] = await getQuoteProductData(
+      quoteProducts
+    );
+    const totalListPrice = calculateTotalListPrice(quoteProductsData);
+    const totalPrice = calculateTotalPrice(quoteProducts);
+    const totalPriceProducts = calculateTotalPriceProducts(quoteProducts);
+    const totalOneYearAmount = calculateTotalOneYearAmount(quoteProductsData);
+    const usdTotalListPrice = calculateUSDTotalListPrice(
+      totalListPrice,
+      values.comments.exchangeRate
+    );
+    const usdTotalPrice = calculateUSDTotalPrice(
+      totalPrice,
+      values.comments.exchangeRate
+    );
+    const usdTotalOneYearAmount = calculateUSDTotalOneYearAmount(
+      totalOneYearAmount,
+      values.comments.exchangeRate
+    );
+    const totalAnalyticsSoftware =
+      calculateTotalAnalyticsSoftware(quoteProducts);
+    const totalAnalyticsMaintenance =
+      calculateTotalAnalyticsMaintenance(quoteProducts);
+    const totalConsultingTrainingOther =
+      calculateTotalConsultingTrainingOther(quoteProducts);
+    const highestProductDiscount =
+      calculateHighestProductDiscount(quoteProducts);
+    const highestServicesDiscount =
+      calculateHighestServicesDiscount(quoteProducts);
+    const netQuoteDiscount = calculateNetQuoteDiscount(
+      totalPrice,
+      totalListPrice
+    );
+    const paymentTermsResult = calculatePaymentTermsResult(
+      values.payment.terms,
+      values.payment.billingFrequency
+    );
+
     const data = {
       QuoteDetail: {
         Quotes_ID: values.id,
@@ -102,6 +146,8 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         Opportunities_Name: values.opportunity.name,
         Quotes_OwnerID: values.owner.id,
         Owners_Name: values.owner.name,
+        Quotes_SalesNotesToOM: values.notesToOM,
+        Quotes_Status: values.status,
         Quotes_ValidThrough: convertDateToISOString(values.validThrough),
       },
       QuotePaymentInfo: {
@@ -110,32 +156,32 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         Quotes_PaymentMethod: values.payment.method,
         Quotes_PaymentDocumentNumber: values.payment.docNumber,
         Quotes_PaymentTerms: values.payment.terms,
-        // Quotes_PaymentTermsResult: "Standard",
+        Quotes_PaymentTermsResult: paymentTermsResult,
       },
       QuoteTotals: {
         Quotes_ID: values.id,
         Quotes_ExchangeRateToUSD: values.comments.exchangeRate,
-        // Quotes_TotalListPrice: "53080.0000",
-        // Quotes_TotalOneYearAmount: "32608.00",
-        Quotes_TotalPrice: values.totalPrice,
-        // Quotes_TotalPriceProducts: "30708.00",
-        // Quotes_USDTotalListPrice: "53080.00",
-        Quotes_USDTotalOneYearAmount: values.USDTotalOneYearAmount,
-        Quotes_USDTotalPrice: values.USDTotalPrice,
+        Quotes_TotalListPrice: totalListPrice,
+        Quotes_TotalOneYearAmount: usdTotalOneYearAmount,
+        Quotes_TotalPrice: totalPrice,
+        Quotes_TotalPriceProducts: totalPriceProducts,
+        Quotes_USDTotalListPrice: usdTotalListPrice,
+        Quotes_USDTotalOneYearAmount: totalOneYearAmount,
+        Quotes_USDTotalPrice: usdTotalPrice,
       },
-      // QuoteProductTotals: {
-      //   Quotes_ID: values.id,
-      //   Quotes_TotalAnalyticsMaintenance: ".00",
-      //   Quotes_TotalAnalyticsSoftware: "30708.00",
-      //   Quotes_TotalCONTRNOTH: "1900.00",
-      // },
+      QuoteProductTotals: {
+        Quotes_ID: values.id,
+        Quotes_TotalAnalyticsMaintenance: totalAnalyticsMaintenance,
+        Quotes_TotalAnalyticsSoftware: totalAnalyticsSoftware,
+        Quotes_TotalCONTRNOTH: totalConsultingTrainingOther,
+      },
       QuoteDiscounts: {
         Quotes_ID: values.id,
         Quotes_DiscountPickList: values.comments.discountReasons,
         Quotes_DiscountReason: values.comments.discountReason,
-        // Quotes_HighestProductDiscount: "40.000000",
-        // Quotes_HighestServicesDiscount: ".000000",
-        // Quotes_NetQuoteDiscount: "38.6",
+        Quotes_HighestProductDiscount: highestProductDiscount,
+        Quotes_HighestServicesDiscount: highestServicesDiscount,
+        Quotes_NetQuoteDiscount: netQuoteDiscount,
       },
       QuoteEntitlements: {
         Quotes_ID: values.id,
@@ -262,6 +308,192 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     menuOptions,
     createQuoteFormSubmissionData,
   };
+};
+
+const getQuoteProductData = async (quoteProducts: QuoteProduct[]) => {
+  const quoteProductsData = await Promise.all(
+    quoteProducts?.map(async (product) => {
+      if (product.QuoteProducts_ID) {
+        const result = await fetch(
+          `/api/quote_products/${product.QuoteProducts_ID}`
+        );
+        return await result.json();
+      }
+      return {};
+    })
+  );
+  return quoteProductsData;
+};
+
+const calculateTotalListPrice = (quoteProductsData: QuoteProductData[]) => {
+  const total = quoteProductsData.reduce(
+    (total, product) =>
+      total + Number(product.QuoteProductDetail.QuoteProducts_TotalListPrice),
+    0
+  );
+  return String(total);
+};
+
+const calculateTotalPrice = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts.reduce(
+    (total, product) => total + Number(product.QuoteProducts_TotalSalePrice),
+    0
+  );
+  return String(total);
+};
+
+const calculateTotalPriceProducts = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        product.QuoteProducts_SKUGroup === "LIC-License" ||
+        product.QuoteProducts_SKUGroup === "HOS-Hosted" ||
+        product.QuoteProducts_SKUGroup === "MNT-Maintenance"
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_TotalSalePrice),
+      0
+    );
+  return String(total);
+};
+
+const calculateTotalOneYearAmount = (quoteProductsData: QuoteProductData[]) => {
+  const total = quoteProductsData.reduce(
+    (total, product) =>
+      total + Number(product.QuoteProductDetail.QuoteProducts_OneYearAmount),
+    0
+  );
+  return String(total);
+};
+
+const calculateUSDTotalListPrice = (
+  totalListPrice: string,
+  exchangeRate: number | null | undefined
+) => {
+  if (!totalListPrice || !exchangeRate) return null;
+  return String(Number(totalListPrice) * exchangeRate);
+};
+
+const calculateUSDTotalPrice = (
+  totalPrice: string,
+  exchangeRate: number | null | undefined
+) => {
+  if (!totalPrice || !exchangeRate) return null;
+  return String(Number(totalPrice) * exchangeRate);
+};
+
+const calculateUSDTotalOneYearAmount = (
+  totalOneYearAmount: string,
+  exchangeRate: number | null | undefined
+) => {
+  if (!totalOneYearAmount || !exchangeRate) return null;
+  return String(Number(totalOneYearAmount) * exchangeRate);
+};
+
+const calculateTotalAnalyticsSoftware = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        product.QuoteProducts_ProductFamily === "Analytics" &&
+        product.QuoteProducts_SKUGroup === "LIC-License"
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_TotalSalePrice),
+      0
+    );
+  return String(total);
+};
+
+const calculateTotalAnalyticsMaintenance = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        product.QuoteProducts_ProductFamily === "Analytics" &&
+        (product.QuoteProducts_SKUGroup === "MNT_LIC-Maintenance" ||
+          product.QuoteProducts_SKUGroup === "MNT_HOS-Maintenance")
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_TotalSalePrice),
+      0
+    );
+  return String(total);
+};
+
+const calculateTotalConsultingTrainingOther = (
+  quoteProducts: QuoteProduct[]
+) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        product.QuoteProducts_SKUGroup === "CON-Consulting" ||
+        product.QuoteProducts_SKUGroup === "TRN-Training" ||
+        product.QuoteProducts_SKUGroup === "OTH-Other"
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_TotalSalePrice),
+      0
+    );
+  return String(total);
+};
+
+const calculateHighestProductDiscount = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        !product.QuoteProducts_SKUGroup?.includes("CON-Consulting") &&
+        !product.QuoteProducts_SKUGroup?.includes("TRN-Training")
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_Discount),
+      0
+    );
+  return String(total);
+};
+
+const calculateHighestServicesDiscount = (quoteProducts: QuoteProduct[]) => {
+  const total = quoteProducts
+    .filter(
+      (product) =>
+        product.QuoteProducts_SKUGroup?.includes("CON-Consulting") ||
+        product.QuoteProducts_SKUGroup?.includes("TRN-Training")
+    )
+    .reduce(
+      (total, product) => total + Number(product.QuoteProducts_Discount),
+      0
+    );
+  return String(total);
+};
+
+const calculateNetQuoteDiscount = (
+  totalPrice: string,
+  totalListPrice: string
+) => {
+  const totalPriceNum = Number(totalPrice);
+  const totalListPriceNum = Number(totalListPrice);
+  if (totalPriceNum > 0 && totalListPriceNum > 0) {
+    return String(1 - totalPriceNum / totalListPriceNum);
+  }
+  return "0";
+};
+
+const calculatePaymentTermsResult = (
+  paymentTerms: string | null | undefined,
+  billingFrequency: string | null | undefined
+) => {
+  if (!paymentTerms || !billingFrequency) return null;
+  if (paymentTerms === "" && billingFrequency === "") {
+    return "Standard";
+  }
+  if (
+    (billingFrequency === "Annually" ||
+      billingFrequency === "Multi-Year Upfront" ||
+      billingFrequency === "Upfront" ||
+      billingFrequency === "As Performed, Hourly") &&
+    paymentTerms === "NET 30"
+  ) {
+    return "Standard";
+  }
+  return "Non-Standard";
 };
 
 interface useQuoteFormProps {

@@ -142,6 +142,13 @@ export const QuoteForm = ({
                 rows={3}
                 size="small"
               />
+              {/* Notes to OM */}
+              <TextareaAutosizeElement
+                label="Notes to OM"
+                name="notesToOM"
+                rows={3}
+                size="small"
+              />
             </Stack>
           </Grid>
           <Grid item xs={6}>

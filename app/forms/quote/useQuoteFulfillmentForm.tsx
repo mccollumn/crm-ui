@@ -104,12 +104,12 @@ export const useQuoteFulfillmentForm = ({
         QuoteFulfillment_FulfillmentDate: convertDateToISOString(values.date),
         QuoteFulfillment_LicenseKeyID: values.licenseKey.id,
         LicenseKeys_Name: values.licenseKey.name,
-        Assets_IsTermLicense: convertBooleanToString(values.licenseKey.isTerm),
         QuoteFulfillment_Name: values.name,
         QuoteFulfillment_QuoteID: values.quote.id,
         Quotes_Name: values.quote.name,
       },
       AssetSupportDetails: {
+        Assets_IsTermLicense: convertBooleanToString(values.licenseKey.isTerm),
         Assets_SupportPlanBegin: convertDateToISOString(
           values.support.beginDate
         ),
@@ -145,6 +145,8 @@ export const useQuoteFulfillmentForm = ({
       SubmissionDetails: {
         ...newFormData.SubmissionDetails,
         UserID: user?.id || null,
+        AccountID: accountData?.AccountDetail?.Accounts_AccountID || null,
+        OpportunityID: quoteData?.QuoteDetail?.Quotes_OpportunityID || null,
       },
     };
 

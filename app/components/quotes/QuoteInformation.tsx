@@ -163,7 +163,7 @@ const getQuoteInfo = async (quoteData: QuoteData) => {
             <Link
               href={`/opportunities/view/${quoteData.QuoteDetail.Quotes_OpportunityID}`}
             >
-              {quoteData.QuoteDetail.Opportunities_Name}
+              {unEscape(quoteData.QuoteDetail.Opportunities_Name || "")}
             </Link>
           ),
         },
@@ -187,7 +187,7 @@ const getQuoteInfo = async (quoteData: QuoteData) => {
       right: [
         {
           label: "Status",
-          value: "",
+          value: quoteData.QuoteDetail.Quotes_Status,
         },
         {
           label: "Quote Office Location",
@@ -208,6 +208,10 @@ const getQuoteInfo = async (quoteData: QuoteData) => {
         {
           label: "Is Primary",
           value: formatCheckbox(""),
+        },
+        {
+          label: "Notes to OM",
+          value: quoteData.QuoteDetail.Quotes_SalesNotesToOM,
         },
       ],
     },

@@ -390,13 +390,18 @@ const getOpportunityInfo = async (
           ),
         },
         {
+          label: "MSA",
+          value: formatCheckbox(
+            opportunityData.OpportunityDetail.Opportunities_MSA
+          ),
+        },
+        {
           label: "Fast Notes/Next Steps",
           value:
             opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps,
         },
         // { label: "1st Year Contract Amount", value: "" },
         // { label: "1st Year Expected Amount", value: "" },
-        // { label: "MSA", value: "" },
         // { label: "CHAMPP", value: "" },
       ],
     },

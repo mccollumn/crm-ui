@@ -68,7 +68,7 @@ export const createQuoteFulfillmentFormData = async ({
     licenseKey: {
       id: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_LicenseKeyID,
       name: fulfillmentData.QuoteFulfillmentDetail.LicenseKeys_Name,
-      isTerm: fulfillmentData.QuoteFulfillmentDetail.Assets_IsTermLicense,
+      isTerm: fulfillmentData?.AssetSupportDetails?.Assets_IsTermLicense,
     },
     quote: {
       id: fulfillmentData.QuoteFulfillmentDetail.QuoteFulfillment_QuoteID,

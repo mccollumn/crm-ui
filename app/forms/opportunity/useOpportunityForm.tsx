@@ -13,7 +13,11 @@ import { useForm } from "../useForm";
 import {
   OpportunityData,
   OpportunityFormData,
+  Product,
 } from "@/app/types/opportunities";
+import { QuoteProduct } from "@/app/types/quotes";
+import { getProductData, getProducts } from "@/app/utils/getData";
+import { ProductData } from "@/app/types/products";
 
 export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
   const initialMenuOptions = {
@@ -103,10 +107,71 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     setMenuOptions("TerritoryOverride");
   }, [setCustomMenuOptions, setMenuOptions]);
 
-  const createOpportunitytFormSubmissionData = (
+  const createOpportunitytFormSubmissionData = async (
     values: OpportunityFormData,
     opportunityData?: OpportunityData
   ) => {
+    const firstYearContractAmount = calculateFirstYearContractAmount(
+      values.oneYearAmount,
+      values.amount
+    );
+    const firstYearExpectedAmount = calculateFirstYearExpectedAmount(
+      values.oneYearAmount,
+      values.amount,
+      values.probability
+    );
+    const opportunityProducts = opportunityData?.OpportunityProducts || [];
+    const opportunityProductsData = await getOpportunityProductData(
+      opportunityProducts
+    );
+    const pfAnalyticsOP = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFAnalyticsOP
+    );
+    const pfOther = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFOther
+    );
+    const pfServices = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFServices
+    );
+    const pfConsulting = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFConsulting
+    );
+    const pfTraining = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFTraining
+    );
+    const pfEPS = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFEPS
+    );
+    const pfDigitalIntelligence = getPFValue(
+      opportunityProductsData,
+      opportunityProducts,
+      calculatePFDigitalIntelligence
+    );
+    const totalBaseline = calculateTotalBaseline(
+      values.renewal.baselineAmount,
+      values.renewal.servicesAmount
+    );
+    const renewalGrowthPercentage = calculateRenewalGrowthPercentage(
+      totalBaseline,
+      firstYearContractAmount
+    );
+    const renewalGrowthResults = calculateRenewalGrowthResults(
+      values.opportunityType,
+      renewalGrowthPercentage
+    );
+
     const data = {
       OpportunityDetail: {
         Opportunities_ID: values.id,
@@ -119,11 +184,11 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         ),
         // Opportunities_ExpectedRevenue: "6437.84",
         Opportunities_FastNotesNextSteps: values.fastNotes,
-        Opportunities_FirstYrContractAmt: values.oneYearAmount,
-        // Opportunities_FirstYrExpectedAmt: "6437.84",
+        Opportunities_FirstYrContractAmt: firstYearContractAmount,
+        Opportunities_FirstYrExpectedAmt: firstYearExpectedAmount,
         Opportunities_ForecastStatus: values.forecastStatus,
         Opportunities_Interest: convertArrayToString(values.interest),
-        // Opportunities_MultiYearYear1Amount: "8583.79",
+        Opportunities_MultiYearYear1Amount: values.oneYearAmount,
         Opportunities_Name: values.name,
         // Opportunities_OpsAudit: "0",
         // Opportunities_OrderException: "0",
@@ -139,16 +204,16 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_Term: values.term,
         Opportunities_Type: values.opportunityType,
       },
-      // OpportunitySolutionsOverview: {
-      //   Opportunities_ID: values.id,
-      //   Opportunities_PFConsulting: ".00",
-      //   Opportunities_PFDigitalIntelligence: ".00",
-      //   Opportunities_PFEPS: ".00",
-      //   Opportunities_PFLICAnalytics: "8583.79",
-      //   Opportunities_PFOther: ".00",
-      //   Opportunities_PFServices: ".00",
-      //   Opportunities_PFTraining: ".00",
-      // },
+      OpportunitySolutionsOverview: {
+        //   Opportunities_ID: values.id,
+        Opportunities_PFConsulting: pfConsulting,
+        Opportunities_PFDigitalIntelligence: pfDigitalIntelligence,
+        Opportunities_PFEPS: pfEPS,
+        Opportunities_PFLICAnalytics: pfAnalyticsOP,
+        Opportunities_PFOther: pfOther,
+        Opportunities_PFServices: pfServices,
+        Opportunities_PFTraining: pfTraining,
+      },
       OpportunityRenewalInfo: {
         Opportunities_ID: values.id,
         Opportunities_BaselineRenewalAmount: values.renewal.baselineAmount,
@@ -158,13 +223,12 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_RenewalStatus: values.renewal.status,
         Opportunities_RenewalStatusCommentsNextSteps: values.renewal.comments,
         Opportunities_ServicesRenewalAmount: values.renewal.servicesAmount,
-        // TODO: How is this different than Opportunities_BaselineRenewalAmount?
-        Opportunities_TotalBaseline: values.renewal.baselineAmount,
+        Opportunities_TotalBaseline: totalBaseline,
         Opportunities_MultiYearaddback: convertBooleanToString(
           values.renewal.multiYearAddBack
         ),
-        // Opportunities_RenewalGrowthPercentage: "5.00",
-        // Opportunities_RenewalGrowthResults: "Does Not Meet",
+        Opportunities_RenewalGrowthPercentage: renewalGrowthPercentage,
+        Opportunities_RenewalGrowthResults: renewalGrowthResults,
         Opportunities_Resell: values.renewal.resell,
       },
       // OpportunityAdditonalInfo: {
@@ -263,6 +327,174 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     createOpportunitytFormSubmissionData,
   };
 };
+
+const getOpportunityProductData = async (opportunityProducts: Product[]) => {
+  const opportunityProductsData = await Promise.all(
+    opportunityProducts?.map(async (product) => {
+      if (product.OpportunityLineItems_Product2ID) {
+        const result = await fetch(
+          `/api/products/${product.OpportunityLineItems_Product2ID}`
+        );
+        return await result.json();
+      }
+      return {};
+    })
+  );
+  return opportunityProductsData;
+};
+
+const calculateFirstYearContractAmount = (
+  oneYearAmount: string | null | undefined,
+  amount: string | null | undefined
+) => {
+  if (!oneYearAmount || !amount) return null;
+  if (Number(oneYearAmount) > 0 && Number(oneYearAmount) < Number(amount)) {
+    return oneYearAmount;
+  }
+  return amount;
+};
+
+const calculateFirstYearExpectedAmount = (
+  oneYearAmount: string | null | undefined,
+  amount: string | null | undefined,
+  probability: number | null | undefined
+) => {
+  if (!oneYearAmount || !amount || !probability) return null;
+  const oneYearAmountNum = Number(oneYearAmount);
+  const amountNum = Number(amount);
+  if (oneYearAmountNum > 0 && oneYearAmountNum < amountNum) {
+    return String(oneYearAmountNum * probability);
+  }
+  return String(amountNum * probability);
+};
+
+const getPFValue = (
+  opportunityProductsData: ProductData[],
+  opportunityProducts: Product[],
+  calcultePFFunction: CalculatePFFunction
+) => {
+  const pfValue = opportunityProductsData?.reduce((sum, currentProduct) => {
+    const productID = currentProduct.ProductDetail.Product2_ID;
+    const opportunityProduct = opportunityProducts.find(
+      (product) => product.OpportunityLineItems_Product2ID === productID
+    );
+    const value = calcultePFFunction({
+      skuGroup: currentProduct.ProductCategorization.Product2_SkuGroup,
+      productFamily: currentProduct.ProductCategorization.Product2_Family,
+      productFeature: currentProduct.ProductCategorization.Product2_Feature,
+      opportunityProduct: opportunityProduct,
+    });
+    return sum + value;
+  }, 0);
+  return String(pfValue);
+};
+
+const calculatePFAnalyticsOP = ({ ...args }: CalculatePFFunctionProps) => {
+  const { skuGroup, productFamily, opportunityProduct } = args;
+  if (!skuGroup || !productFamily || !opportunityProduct) return 0;
+  if (
+    (skuGroup === "LIC-License" || skuGroup === "MNT_LIC-Maintenance") &&
+    productFamily === "Analytics"
+  ) {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFOther = ({ ...args }: CalculatePFFunctionProps) => {
+  const { productFamily, opportunityProduct } = args;
+  if (!productFamily || !opportunityProduct) return 0;
+  if (productFamily === "Other") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFServices = ({ ...args }: CalculatePFFunctionProps) => {
+  const { productFamily, opportunityProduct } = args;
+  if (!productFamily || !opportunityProduct) return 0;
+  if (productFamily === "Services") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFConsulting = ({ ...args }: CalculatePFFunctionProps) => {
+  const { skuGroup, opportunityProduct } = args;
+  if (!skuGroup || !opportunityProduct) return 0;
+  if (skuGroup === "CON-Consulting") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFTraining = ({ ...args }: CalculatePFFunctionProps) => {
+  const { skuGroup, opportunityProduct } = args;
+  if (!skuGroup || !opportunityProduct) return 0;
+  if (skuGroup === "TRN-Training") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFEPS = ({ ...args }: CalculatePFFunctionProps) => {
+  const { productFeature, opportunityProduct } = args;
+  if (!productFeature || !opportunityProduct) return 0;
+  if (productFeature === "EPS") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculatePFDigitalIntelligence = ({
+  ...args
+}: CalculatePFFunctionProps) => {
+  const { productFeature, opportunityProduct } = args;
+  if (!productFeature || !opportunityProduct) return 0;
+  if (productFeature === "Digital Intelligence") {
+    return Number(opportunityProduct.OpportunityLineItems_TotalPrice);
+  }
+  return 0;
+};
+
+const calculateTotalBaseline = (
+  baselineRenewalAmount: string | null | undefined,
+  servicesRenewalAmount: string | null | undefined
+) => {
+  if (!baselineRenewalAmount || !servicesRenewalAmount) return "0";
+  return String(Number(baselineRenewalAmount) + Number(servicesRenewalAmount));
+};
+
+const calculateRenewalGrowthPercentage = (
+  totalBaseline: string | null | undefined,
+  firstYearContractAmount: string | null | undefined
+) => {
+  if (!totalBaseline || !firstYearContractAmount) return null;
+  return String(
+    (Number(firstYearContractAmount) - Number(totalBaseline)) /
+      Number(totalBaseline)
+  );
+};
+
+const calculateRenewalGrowthResults = (
+  opportunityType: string | null | undefined,
+  renewalGrowthPercentage: string | null | undefined
+) => {
+  if (!opportunityType || !renewalGrowthPercentage) return null;
+  if (opportunityType != "Renewal") return null;
+  if (Number(renewalGrowthPercentage) < 0.08) return "Does Not Meet";
+  if (Number(renewalGrowthPercentage) === 0.08) return "Meet";
+  if (Number(renewalGrowthPercentage) > 0.08) return "Exceeds";
+};
+
+interface CalculatePFFunctionProps {
+  skuGroup?: string | null | undefined;
+  productFamily?: string | null | undefined;
+  productFeature?: string | null | undefined;
+  opportunityProduct?: Product | undefined;
+}
+
+type CalculatePFFunction = ({}: CalculatePFFunctionProps) => number;
 
 interface useOpportunityFormProps {
   /**

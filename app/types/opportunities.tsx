@@ -27,6 +27,7 @@ interface OpportunityDetail {
   Opportunities_FirstYrExpectedAmt: string | null;
   Opportunities_ForecastStatus: string | null;
   Opportunities_Interest: string | null;
+  Opportunities_MSA: "0" | "1";
   Opportunities_MultiYearYear1Amount: string | null;
   Opportunities_Name: string | null;
   Opportunities_OpsAudit: "0" | "1";

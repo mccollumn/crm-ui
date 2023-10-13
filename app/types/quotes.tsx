@@ -25,6 +25,8 @@ interface QuoteDetail {
   Opportunities_Name: string | null;
   Quotes_OwnerID: string | null;
   Owners_Name: string | null;
+  Quotes_SalesNotesToOM: string | null;
+  Quotes_Status: string | null;
   Quotes_ValidThrough: string | null;
 }
 
@@ -162,7 +164,7 @@ interface ProductInfo {
 export interface QuoteFulfillmentData {
   QuoteFulfillmentDetail: QuoteFulfillmentDetail;
   QuoteProducts: QuoteFulfillmentProducts[];
-  AssetSupportDetails: AssetSupportDetails;
+  AssetSupportDetails: QuoteFulfillmentSupportDetails;
 }
 
 interface QuoteFulfillmentDetail {
@@ -177,7 +179,6 @@ interface QuoteFulfillmentDetail {
   QuoteFulfillment_LastModifiedDate?: string | null;
   QuoteFulfillment_LicenseKeyID?: string | null;
   LicenseKeys_Name?: string | null;
-  Assets_IsTermLicense: "0" | "1";
   QuoteFulfillment_Name?: string | null;
   QuoteFulfillment_QuoteID?: string | null;
   Quotes_Name?: string | null;
@@ -186,6 +187,10 @@ interface QuoteFulfillmentDetail {
 interface QuoteFulfillmentProducts {
   QuoteProducts_ID: string;
   QuoteProducts_Name?: string | null;
+}
+
+interface QuoteFulfillmentSupportDetails extends AssetSupportDetails {
+  Assets_IsTermLicense: "0" | "1";
 }
 
 export type QuoteFormData = {
@@ -201,6 +206,7 @@ export type QuoteFormData = {
   };
   isChannel?: boolean | null;
   quoteComments?: string | null;
+  notesToOM?: string | null;
   status?: string | null;
   officeLocation?: string | null;
   currencyCode?: string | null;
