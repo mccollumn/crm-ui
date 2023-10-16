@@ -79,7 +79,6 @@ export const CaseForm = ({
     getContactOptions(accountID);
   }, [defaultValues.account.id, getContactOptions]);
 
-  // TODO: Update option and setMenuOption values. I just guessed what they will be.
   return (
     <>
       <Backdrop
@@ -143,7 +142,7 @@ export const CaseForm = ({
                 label="Contact Name"
                 name="contact"
                 required
-                loading={menuOptions.Contact.length === 0}
+                loading={accountSelected.id && menuOptions.Contact.length === 0}
                 autocompleteProps={{
                   size: "small",
                   getOptionLabel: (option) => option.name || "",

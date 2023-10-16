@@ -10,8 +10,6 @@ import {
 import { useForm } from "../useForm";
 import { CaseCommentFormData, CaseData, CaseFormData } from "@/app/types/cases";
 
-// TODO: Update all the menu names. I just guessed what they will be.
-
 export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
   const initialMenuOptions = {
     Account: [],
@@ -103,10 +101,10 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setOwners();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("ProductName");
+    setMenuOptions("ProductName", "On Premises");
     setMenuOptions("ProductDeliveryMethod");
     setMenuOptions("CaseStatus");
-    // setMenuOptions("Sub-Status");
+    setMenuOptions("Sub-Status", "Open");
     setMenuOptions("CaseOrigin");
     setMenuOptions("Priority");
     setMenuOptions("Severity");
