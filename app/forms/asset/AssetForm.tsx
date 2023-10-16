@@ -130,6 +130,7 @@ export const AssetForm = ({
                 label="Account"
                 name="account"
                 required
+                loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -149,6 +150,7 @@ export const AssetForm = ({
                 label="Opportunity"
                 name="opportunity"
                 required
+                loading={menuOptions.Opportunity.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

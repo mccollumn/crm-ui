@@ -106,6 +106,7 @@ export const LicenseKeyForm = ({
                 label="Account"
                 name="account"
                 required
+                loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -263,6 +264,7 @@ export const LicenseKeyForm = ({
                 label="Key Created By"
                 name="system.createdBy"
                 required
+                loading={menuOptions.CreatedBy.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

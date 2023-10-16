@@ -98,6 +98,7 @@ export const QuoteForm = ({
               <AutocompleteElement
                 label="Owner"
                 name="owner"
+                loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -116,6 +117,7 @@ export const QuoteForm = ({
                 label="Opportunity"
                 name="opportunity"
                 required
+                loading={menuOptions.Opportunity.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

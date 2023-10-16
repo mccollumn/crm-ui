@@ -86,6 +86,7 @@ export const ContactRoleForm = ({
                 label="Contact"
                 name="contact"
                 required
+                loading={menuOptions.Contact.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

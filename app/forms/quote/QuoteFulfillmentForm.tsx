@@ -116,6 +116,7 @@ export const QuoteFulfillmentForm = ({
                 label="Quote"
                 name="quote"
                 required
+                loading={menuOptions.Quote.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

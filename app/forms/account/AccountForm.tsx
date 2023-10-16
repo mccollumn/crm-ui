@@ -97,6 +97,7 @@ export const AccountForm = ({
                 label="Account Owner"
                 name="owner"
                 required
+                loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

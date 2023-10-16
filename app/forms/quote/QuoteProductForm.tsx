@@ -114,6 +114,7 @@ export const QuoteProductForm = ({
                 label="Quote"
                 name="quote"
                 required
+                loading={menuOptions.Quote.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
@@ -171,6 +172,7 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Quote Fulfillment"
                 name="fulfillment"
+                loading={menuOptions.Fulfillment.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {

@@ -98,6 +98,7 @@ export const OpportunityForm = ({
                 label="Opportunity Owner"
                 name="owner"
                 required
+                loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
