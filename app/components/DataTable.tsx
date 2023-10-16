@@ -830,9 +830,13 @@ export const DataTable = ({
         width: 150,
       },
       {
-        field: "Product_Name",
+        field: "Product2_Name",
         headerName: "Product",
         flex: 1,
+      },
+      {
+        field: "QuoteProducts_SaleType",
+        headerName: "Sale Type",
       },
       {
         field: "QuoteProducts_Quantity",
@@ -841,6 +845,13 @@ export const DataTable = ({
       {
         field: "QuoteProducts_UOM",
         headerName: "UOM",
+        width: 50,
+      },
+      {
+        field: "QuoteProducts_UnitListPrice",
+        headerName: "Unit List Price",
+        type: "number",
+        valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
       },
       {
         field: "QuoteProducts_Discount",
@@ -853,6 +864,17 @@ export const DataTable = ({
         headerName: "Total Sales Price",
         type: "number",
         valueFormatter: (params) => `$${Number(params.value).toLocaleString()}`,
+      },
+      {
+        field: "QuoteProducts_Term",
+        headerName: "Term",
+        width: 50,
+      },
+      {
+        field: "QuoteProducts_EndDate",
+        headerName: "End Date",
+        type: "date",
+        valueGetter: displayDate,
       },
       {
         field: "QuoteProducts_SKUGroup",

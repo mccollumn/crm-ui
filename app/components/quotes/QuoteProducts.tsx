@@ -1,17 +1,28 @@
 import React from "react";
 import { DataTable } from "../DataTable";
-import { getOpportunityData, getQuoteData } from "@/app/utils/getData";
+import {
+  getOpportunityData,
+  getQuoteData,
+  getQuoteProductData,
+} from "@/app/utils/getData";
 import { ButtonNav } from "../navigation/ButtonNav";
-import { QuoteData } from "@/app/types/quotes";
+import { QuoteData, QuoteProductData } from "@/app/types/quotes";
 
-export default async function QuoteProducts({ quoteID }: QuoteProductsProps) {
+const QuoteProducts = async ({ quoteID }: QuoteProductsProps) => {
   const quoteData: QuoteData = await getQuoteData(quoteID);
+  const quoteProducts = await Promise.all(
+    quoteData.QuoteProducts.map(async (product) => {
+      const data: QuoteProductData = await getQuoteProductData(
+        product.QuoteProducts_ID
+      );
+      return { ...data.QuoteProductDetail, ...data.ProductInfo };
+    })
+  );
   const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
   let opportunityData = {};
   if (opportunityID) {
     opportunityData = await getOpportunityData(opportunityID);
   }
-  const quoteProducts = quoteData.QuoteProducts;
 
   return (
     <>
@@ -32,8 +43,10 @@ export default async function QuoteProducts({ quoteID }: QuoteProductsProps) {
       </div>
     </>
   );
-}
+};
 
 interface QuoteProductsProps {
   quoteID: string;
 }
+
+export default QuoteProducts;
