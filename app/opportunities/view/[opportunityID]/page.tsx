@@ -25,7 +25,7 @@ const OpportunityView = async ({
   );
 
   return (
-    <div>
+    <>
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -62,7 +62,6 @@ const OpportunityView = async ({
           <OpportunityContactRoles opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion>
-      {/* TODO */}
       {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -99,7 +98,7 @@ const OpportunityView = async ({
           <OpportunityStage opportunityID={opportunityID} />
         </AccordionDetails>
       </Accordion> */}
-    </div>
+    </>
   );
 };
 

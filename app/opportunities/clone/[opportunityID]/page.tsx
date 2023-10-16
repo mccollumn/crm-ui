@@ -55,7 +55,7 @@ const CloneOpportunity = async ({
   const newOpportunityID = await clone();
 
   redirect(
-    `${process.env.API_ENDPOINT}/opportunities/view/${newOpportunityID.ID}`
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/opportunities/view/${newOpportunityID.ID}`
   );
 };
 

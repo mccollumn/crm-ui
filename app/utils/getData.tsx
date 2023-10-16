@@ -14,7 +14,7 @@ export const getData = cache(async (path: string, tags?: string[]) => {
   try {
     const tagOptions = tags ? { next: { tags: tags } } : {};
     const res = await fetch(
-      `${process.env.CRM_API_ENDPOINT}/${path}`,
+      `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/${path}`,
       tagOptions
     );
 
@@ -326,7 +326,7 @@ export const getOpportunityData = async (opportunityID: string) => {
 
 export const submitNewOpportunity = async (data: any) => {
   const responseData = await postData(
-    `${process.env.CRM_API_ENDPOINT}/opportunity/insert`,
+    `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/opportunity/insert`,
     data
   );
   return responseData;
@@ -358,7 +358,7 @@ export const getQuoteFulfillmentData = async (quoteFulfillmentID: string) => {
 
 export const submitNewQuote = async (data: any) => {
   const responseData = await postData(
-    `${process.env.CRM_API_ENDPOINT}/quote/insert`,
+    `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/quote/insert`,
     data
   );
   return responseData;
@@ -366,7 +366,7 @@ export const submitNewQuote = async (data: any) => {
 
 export const submitNewQuoteProduct = async (data: any) => {
   const responseData = await postData(
-    `${process.env.CRM_API_ENDPOINT}/quoteproduct/insert`,
+    `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/quoteproduct/insert`,
     data
   );
   return responseData;

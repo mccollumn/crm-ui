@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const data = await request.json();
   const res = await postData(
-    `${process.env.CRM_API_ENDPOINT}/account/update`,
+    `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/update`,
     data
   );
   return NextResponse.json({ res });
