@@ -7,21 +7,22 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 
 export const navigationActions: NavigationAction[] = [
-  {
-    key: "Search",
-    label: "Search",
-    ariaLabel: "Search",
-    authFilter: "authorized",
-    position: "top",
-    Component: (
-      <SearchInput
-        searchHandler={() => console.log("Search")}
-        label="Search"
-        variant="outlined"
-      />
-    ),
-    snapPosition: "right",
-  },
+  // TODO: Reenable once search API and results page are ready
+  // {
+  //   key: "Search",
+  //   label: "Search",
+  //   ariaLabel: "Search",
+  //   authFilter: "authorized",
+  //   position: "top",
+  //   Component: (
+  //     <SearchInput
+  //       searchHandler={() => console.log("Search")}
+  //       label="Search"
+  //       variant="outlined"
+  //     />
+  //   ),
+  //   snapPosition: "right",
+  // },
   {
     key: "AccountMenu",
     label: "Account Menu",

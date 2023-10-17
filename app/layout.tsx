@@ -100,7 +100,10 @@ const Layout = ({
                 marginLeft: open
                   ? `${leftNavMaxWidth}px`
                   : `${leftNavMinWidth}px`,
-                width: "100%",
+                // TODO: Update width to work with Firefox
+                width: "-webkit-fill-available",
+                // width: "-moz-available",
+                // width: "100%",
                 height: "100%",
                 padding: "24px",
               }}
