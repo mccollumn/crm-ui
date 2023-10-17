@@ -36,13 +36,15 @@ export const useContactRoleForm = ({
     // Account Contacts
     const setContacts = async () => {
       try {
-        const results = await fetch(`/api/contacts/${accountID}`);
+        const results = await fetch("/api/contacts/");
         const contacts = await results.json();
         if (isObjectEmpty(contacts)) return;
         const options = contacts.data.map((contact: any) => {
           return {
             id: contact.Contacts_ID,
             name: contact.Contacts_Name,
+            title: contact.Contacts_Title,
+            accountName: contact.Accounts_Name,
           };
         });
         setCustomMenuOptions("Contact", options);

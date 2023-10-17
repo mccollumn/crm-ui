@@ -1,7 +1,13 @@
 "use client";
 
 import { FormWrapper } from "../FormWrapper";
-import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Stack,
+  createFilterOptions,
+} from "@mui/material";
 import { AutocompleteElement, CheckboxElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
@@ -62,6 +68,12 @@ export const ContactRoleForm = ({
     router.back();
   };
 
+  const contactFilterOptions = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) =>
+      `${option.name} ${option.accountName} ${option.title}`,
+  });
+
   return (
     <>
       <Backdrop
@@ -92,10 +104,14 @@ export const ContactRoleForm = ({
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
-                        {option.name}
+                        <b>{option.name}</b>
+                        <pre style={{ margin: 0 }}>{` - ${option.accountName}${
+                          option.title ? ` (${option.title})` : ""
+                        }`}</pre>
                       </li>
                     );
                   },
+                  filterOptions: contactFilterOptions,
                   size: "small",
                 }}
                 options={menuOptions.Contact}
