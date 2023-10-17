@@ -282,7 +282,7 @@ const getOpportunityInfo = async (
         },
         {
           label: "Account Type",
-          value: accountData.AccountDetail.AccountType_Description,
+          value: accountData.AccountDetail.AccountsType_Description,
         },
         {
           label: "Product",

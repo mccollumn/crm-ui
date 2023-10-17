@@ -198,7 +198,7 @@ export const DataTable = ({
         width: 150,
       },
       {
-        field: "AccountType_Description",
+        field: "AccountsType_Description",
         headerName: "Type",
         width: 150,
       },

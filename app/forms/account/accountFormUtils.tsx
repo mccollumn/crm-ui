@@ -156,7 +156,7 @@ export const createAccountFormData = async (accountData?: AccountData) => {
     },
     type: {
       id: accountData.AccountDetail.Accounts_Type,
-      value: accountData.AccountDetail.AccountType_Description,
+      value: accountData.AccountDetail.AccountsType_Description,
     },
     phone: accountData.AccountDetail.Accounts_Phone,
     orderValue: {

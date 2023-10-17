@@ -286,7 +286,7 @@ const getAccountInfo = async (accountID: string) => {
         // { label: "Account Record Type", value: "" },
         {
           label: "Type",
-          value: accountData.AccountDetail.AccountType_Description,
+          value: accountData.AccountDetail.AccountsType_Description,
         },
         // { label: "Type Last Change Date", value: "" },
         // { label: "Vertical", value: "" },

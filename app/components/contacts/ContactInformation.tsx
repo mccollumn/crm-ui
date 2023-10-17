@@ -271,7 +271,7 @@ const getContactInfo = async (contactID: string) => {
         },
         {
           label: "Account Type",
-          value: accountData.AccountDetail.AccountType_Description,
+          value: accountData.AccountDetail.AccountsType_Description,
         },
         // { label: "Target Account Type", value: "" },
         // { label: "WTOD Most Recent Login", value: "" },

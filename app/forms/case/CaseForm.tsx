@@ -64,6 +64,8 @@ export const CaseForm = ({
       const responseData = await response.json();
       id = responseData?.res?.ID;
     }
+    // Invalidate cached case data
+    fetch("/api/revalidate/tag?tag=case");
     setIsLoading(false);
     router.push(`/cases/view/${id}`);
   };

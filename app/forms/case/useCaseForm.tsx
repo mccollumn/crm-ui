@@ -73,7 +73,7 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
             site: account.Accounts_Site,
-            description: account.AccountType_Description,
+            description: account.AccountsType_Description,
           };
         });
         setCustomMenuOptions("Account", options);
