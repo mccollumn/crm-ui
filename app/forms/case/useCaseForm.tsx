@@ -108,7 +108,19 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setMenuOptions("CaseOrigin");
     setMenuOptions("Priority");
     setMenuOptions("Severity");
-  }, [defaultValues.owner.name, setCustomMenuOptions, setMenuOptions]);
+    setMenuOptions("ProductVersion", defaultValues?.product.name || "");
+    setMenuOptions("CaseType", defaultValues?.type || "");
+    setMenuOptions("Reason", defaultValues?.reason || "");
+    setMenuOptions("Category", defaultValues?.category || "");
+  }, [
+    defaultValues?.category,
+    defaultValues?.owner.name,
+    defaultValues?.product.name,
+    defaultValues?.reason,
+    defaultValues?.type,
+    setCustomMenuOptions,
+    setMenuOptions,
+  ]);
 
   const createCaseFormSubmissionData = (
     values: CaseFormData,
@@ -220,5 +232,5 @@ interface useCaseFormProps {
   /**
    * Default values that will be used to populate the form.
    */
-  defaultValues?: any;
+  defaultValues?: CaseFormData;
 }

@@ -11,8 +11,9 @@ export const isObjectEmpty = (objectName: any) => {
 };
 
 export const isSuccessfulResponse = async (response: Response) => {
-  const responseData = await response.json();
-  if (!response.ok || responseData.res.message === "error") {
+  // const responseData = await response.json();
+  // if (!response.ok || responseData.res.message === "error") {
+  if (!response.ok) {
     console.error("Unable to submit data:", response.statusText);
     return false;
   }

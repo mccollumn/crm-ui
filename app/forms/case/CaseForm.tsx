@@ -123,9 +123,9 @@ export const CaseForm = ({
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre
-                          style={{ margin: 0 }}
-                        >{` - ${option.site} (${option.description})`}</pre>
+                        <pre style={{ margin: 0 }}>{` - ${option.site}${
+                          option.description ? ` (${option.description})` : ""
+                        }`}</pre>
                       </li>
                     );
                   },
@@ -144,7 +144,9 @@ export const CaseForm = ({
                 label="Contact Name"
                 name="contact"
                 required
-                loading={accountSelected.id && menuOptions.Contact.length === 0}
+                loading={
+                  !!accountSelected?.id && menuOptions.Contact.length === 0
+                }
                 autocompleteProps={{
                   size: "small",
                   getOptionLabel: (option) => option.name || "",
@@ -324,11 +326,11 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Case Type"
                 name="type"
-                required={!!menuOptions.ProductName.length}
+                required={!!menuOptions.CaseType.length}
                 autocompleteProps={{
                   size: "small",
                   onChange: (_, value) => setMenuOptions("Reason", value),
-                  disabled: !menuOptions.ProductName.length,
+                  disabled: !menuOptions.CaseType.length,
                 }}
                 options={menuOptions.CaseType}
               />
@@ -336,11 +338,11 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Reason"
                 name="reason"
-                required={!!menuOptions.CaseType.length}
+                required={!!menuOptions.Reason.length}
                 autocompleteProps={{
                   size: "small",
                   onChange: (_, value) => setMenuOptions("Category", value),
-                  disabled: !menuOptions.CaseType.length,
+                  disabled: !menuOptions.Reason.length,
                 }}
                 options={menuOptions.Reason}
               />
@@ -348,10 +350,10 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Category"
                 name="category"
-                required={!!menuOptions.Reason.length}
+                required={!!menuOptions.Category.length}
                 autocompleteProps={{
                   size: "small",
-                  disabled: !menuOptions.Reason.length,
+                  disabled: !menuOptions.Category.length,
                 }}
                 options={menuOptions.Category}
               />
@@ -468,27 +470,27 @@ export const CaseForm = ({
             /> */}
           {/* </Stack> */}
           {/* </Grid> */}
-          <FormDivider>Assignment</FormDivider>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
-              {/* Assign using active assignment rule */}
-              <CheckboxElement
+          {/* <FormDivider>Assignment</FormDivider> */}
+          {/* <Grid item xs={6}> */}
+          {/* <Stack spacing={1}> */}
+          {/* Assign using active assignment rule */}
+          {/* <CheckboxElement
                 label="Assign using active assignment rule"
                 name=""
                 size="small"
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
-              {/* Send notification email to contact */}
-              <CheckboxElement
+              /> */}
+          {/* </Stack> */}
+          {/* </Grid> */}
+          {/* <Grid item xs={6}> */}
+          {/* <Stack spacing={1}> */}
+          {/* Send notification email to contact */}
+          {/* <CheckboxElement
                 label="Send notification email to contact"
                 name=""
                 size="small"
-              />
-            </Stack>
-          </Grid>
+              /> */}
+          {/* </Stack> */}
+          {/* </Grid> */}
         </Grid>
       </FormWrapper>
     </>
