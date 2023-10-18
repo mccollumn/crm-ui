@@ -6,7 +6,11 @@ export async function POST(request: NextRequest) {
 
   if (!path) {
     return NextResponse.json(
-      { message: "Missing path param" },
+      {
+        revalidated: false,
+        now: Date.now(),
+        message: "Missing path to revalidate",
+      },
       { status: 400 }
     );
   }

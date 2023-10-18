@@ -54,19 +54,20 @@ export const postData = cache(async (url: string, data: any) => {
  */
 
 export const getCases = async () => {
-  const data = await getData("/case/list/all");
+  const data = await getData("/case/list/all", ["case"]);
   return data;
 };
 
 export const getCasesPaginated = async (offset: string, rowCount: string) => {
   const data = await getData(
-    `/case/list/all/offset/${offset}/rowcount/${rowCount}`
+    `/case/list/all/offset/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getCasesByOwner = async (ownerID: string) => {
-  const data = await getData(`/case/list/all/by/owner/id/${ownerID}`);
+  const data = await getData(`/case/list/all/by/owner/id/${ownerID}`, ["case"]);
   return data;
 };
 
@@ -76,13 +77,16 @@ export const getCasesByOwnerPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/all/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`
+    `/case/list/all/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getCasesByAccount = async (accountID: string) => {
-  const data = await getData(`/case/list/all/by/account/id/${accountID}`);
+  const data = await getData(`/case/list/all/by/account/id/${accountID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -92,23 +96,28 @@ export const getCasesByAccountPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/all/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`
+    `/case/list/all/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getCasesByContact = async (contactID: string) => {
-  const data = await getData(`/case/list/all/by/contact/id/${contactID}`);
+  const data = await getData(`/case/list/all/by/contact/id/${contactID}`, [
+    "case",
+  ]);
   return data;
 };
 
 export const getOpenCases = async () => {
-  const data = await getData("/case/list/open");
+  const data = await getData("/case/list/open", ["case"]);
   return data;
 };
 
 export const getOpenCasesByOwner = async (ownerID: string) => {
-  const data = await getData(`/case/list/open/by/owner/id/${ownerID}`);
+  const data = await getData(`/case/list/open/by/owner/id/${ownerID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -118,13 +127,16 @@ export const getOpenCasesByOwnerPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/open/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`
+    `/case/list/open/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getOpenCasesByAccount = async (accountID: string) => {
-  const data = await getData(`/case/list/open/by/account/id/${accountID}`);
+  const data = await getData(`/case/list/open/by/account/id/${accountID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -134,18 +146,21 @@ export const getOpenCasesByAccountPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/open/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`
+    `/case/list/open/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getClosedCases = async () => {
-  const data = await getData("/case/list/closed");
+  const data = await getData("/case/list/closed", ["case"]);
   return data;
 };
 
 export const getClosedCasesByOwner = async (ownerID: string) => {
-  const data = await getData(`/case/list/closed/by/owner/id/${ownerID}`);
+  const data = await getData(`/case/list/closed/by/owner/id/${ownerID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -155,13 +170,16 @@ export const getClosedCasesByOwnerPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/closed/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`
+    `/case/list/closed/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getClosedCasesByAccount = async (accountID: string) => {
-  const data = await getData(`/case/list/closed/by/account/id/${accountID}`);
+  const data = await getData(`/case/list/closed/by/account/id/${accountID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -171,7 +189,8 @@ export const getClosedCasesByAccountPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/closed/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`
+    `/case/list/closed/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
@@ -182,7 +201,9 @@ export const getHibernatedCases = async () => {
 };
 
 export const getHibernatedCasesByOwner = async (ownerID: string) => {
-  const data = await getData(`/case/list/hibernated/by/owner/id/${ownerID}`);
+  const data = await getData(`/case/list/hibernated/by/owner/id/${ownerID}`, [
+    "case",
+  ]);
   return data;
 };
 
@@ -192,14 +213,16 @@ export const getHibernatedCasesByOwnerPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/hibernated/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`
+    `/case/list/hibernated/by/owner/id/${ownerID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
 
 export const getHibernatedCasesByAccount = async (accountID: string) => {
   const data = await getData(
-    `/case/list/hibernated/by/account/id/${accountID}`
+    `/case/list/hibernated/by/account/id/${accountID}`,
+    ["case"]
   );
   return data;
 };
@@ -210,7 +233,8 @@ export const getHibernatedCasesByAccountPaginated = async (
   rowCount: string
 ) => {
   const data = await getData(
-    `/case/list/hibernated/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`
+    `/case/list/hibernated/by/account/id/${accountID}/${offset}/rowcount/${rowCount}`,
+    ["case"]
   );
   return data;
 };
