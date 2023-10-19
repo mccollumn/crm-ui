@@ -23,7 +23,7 @@ export const useQuoteProductForm = ({
     SaleType: [],
     Product: [],
     Fulfillment: [],
-    Family: [],
+    ProductFamily: [],
     Currency: [],
     SkuGroup: [],
     FulfillmentStatus: [],
@@ -117,7 +117,7 @@ export const useQuoteProductForm = ({
     setMenuOptions("Currency");
     setMenuOptions("SkuGroup");
     setMenuOptions("FulfillmentStatus");
-    setMenuOptions("Family");
+    setMenuOptions("ProductFamily");
   }, [
     quoteData.QuoteDetail.Quotes_OpportunityID,
     quoteData.QuoteFullfillment,

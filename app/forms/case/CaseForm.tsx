@@ -43,7 +43,7 @@ export const CaseForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createCaseFormSubmissionData(values, caseData);
+    const data = await createCaseFormSubmissionData(values, caseData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     let id = defaultValues.caseID;

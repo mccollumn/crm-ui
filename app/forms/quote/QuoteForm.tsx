@@ -45,7 +45,7 @@ export const QuoteForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createQuoteFormSubmissionData(values, quoteData);
+    const data = await createQuoteFormSubmissionData(values, quoteData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const isEdit = !!defaultValues?.id;
@@ -65,7 +65,7 @@ export const QuoteForm = ({
     }
 
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=quote");
+    await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
     router.push(`/opportunities/view/${opportunityID}`);
   };

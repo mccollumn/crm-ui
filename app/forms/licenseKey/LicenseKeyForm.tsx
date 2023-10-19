@@ -43,7 +43,10 @@ export const LicenseKeyForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createLicenseKeyFormSubmissionData(values, licenseKeyData);
+    const data = await createLicenseKeyFormSubmissionData(
+      values,
+      licenseKeyData
+    );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const isEdit = !!defaultValues?.id;
@@ -63,8 +66,8 @@ export const LicenseKeyForm = ({
     }
 
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=account");
-    fetch("/api/revalidate/tag?tag=licenseKey");
+    await fetch("/api/revalidate/tag?tag=account");
+    await fetch("/api/revalidate/tag?tag=licenseKey");
 
     setIsLoading(false);
     router.push(`/accounts/view/${accountID}`);
@@ -173,7 +176,7 @@ export const LicenseKeyForm = ({
                 label="Status"
                 name="status"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Status}
+                options={menuOptions.KeyStatus}
               />
               {/* System Status */}
               <AutocompleteElement

@@ -41,7 +41,10 @@ export const ContactRoleForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createContactRoleFormSubmissionData(values, opportunityData);
+    const data = await createContactRoleFormSubmissionData(
+      values,
+      opportunityData
+    );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const url = "/api/opportunities/update";
@@ -58,7 +61,7 @@ export const ContactRoleForm = ({
     }
 
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=opportunity");
+    await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);
     const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
     router.push(`/opportunities/view/${opportunityID}`);

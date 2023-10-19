@@ -41,7 +41,7 @@ export const ContactForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createContactFormSubmissionData(values, contactData);
+    const data = await createContactFormSubmissionData(values, contactData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     let id = defaultValues.contactID;
@@ -63,7 +63,7 @@ export const ContactForm = ({
       id = responseData?.res?.ID;
     }
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=contact");
+    await fetch("/api/revalidate/tag?tag=contact");
     setIsLoading(false);
     router.push(`/contacts/view/${id}`);
   };

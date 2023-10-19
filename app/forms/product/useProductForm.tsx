@@ -1,12 +1,13 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
-import { getChangedValues, removeNullsFromObject } from "@/app/utils/utils";
-import { useForm } from "../useForm";
 import {
-  OpportunityData,
-  Product,
-  ProductFormData,
-} from "@/app/types/opportunities";
+  getChangedValues,
+  isObjectEmpty,
+  removeNullsFromObject,
+} from "@/app/utils/utils";
+import { useForm } from "../useForm";
+import { OpportunityData, ProductFormData } from "@/app/types/opportunities";
+import { ProductData } from "@/app/types/products";
 
 export const useProductForm = ({ menuItems }: useProductFormProps) => {
   const initialMenuOptions = {
@@ -19,6 +20,7 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatPercent,
     FormatNumber,
     FormatCurrency,
@@ -26,12 +28,49 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     initialMenuOptions,
     menuItems,
   });
-  const [productSelected, setProductSelected] = React.useState<Product>();
+  const [productSelected, setProductSelected] = React.useState<any>();
+  const [listPrice, setListPrice] = React.useState<any>(null);
 
   React.useEffect(() => {
-    // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Product");
-  }, [setMenuOptions]);
+    // Products
+    const setProducts = async () => {
+      try {
+        const results = await fetch("/api/products");
+        const products = await results.json();
+        if (isObjectEmpty(products)) return;
+        const options = products.data.map((product: any) => {
+          return {
+            id: product.Product2_ID,
+            name: product.Product2_Name,
+            code: product.Product2_ProductCode,
+            description: product.Product2_ProductDescriptionLong,
+            isActive: product.Product2_IsActive,
+          };
+        });
+        setCustomMenuOptions("Product", options);
+      } catch {
+        console.error("Could not retrieve list of products");
+      }
+    };
+    setProducts();
+  }, [setCustomMenuOptions]);
+
+  React.useEffect(() => {
+    // Product List Price
+    const setPrice = async (productSelected: any) => {
+      try {
+        const productID = productSelected?.id;
+        if (!productID) return;
+        const results = await fetch(`/api/products/${productID}`);
+        const product: { data: ProductData } = await results.json();
+        if (isObjectEmpty(product)) return;
+        setListPrice(product.data.ProductDetail.Product2_UnitPrice);
+      } catch {
+        console.error("Could not retrieve product data");
+      }
+    };
+    setPrice(productSelected);
+  }, [productSelected]);
 
   const createProductFormSubmissionData = (
     values: ProductFormData,
@@ -70,6 +109,14 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
           opportunityData?.OpportunityDetail.Opportunities_AccountId,
       },
       OpportunityProducts: [newFormData],
+      SubmissionDetails: {
+        ...newFormData.SubmissionDetails,
+        UserID: user?.id || null,
+        AccountID:
+          opportunityData?.OpportunityDetail.Opportunities_AccountId || null,
+        OpportunityID:
+          opportunityData?.OpportunityDetail.Opportunities_ID || null,
+      },
     };
 
     return newOpportunityData;
@@ -81,6 +128,7 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     isLoading,
     productSelected,
     setProductSelected,
+    listPrice,
     menuOptions,
     FormatPercent,
     FormatNumber,

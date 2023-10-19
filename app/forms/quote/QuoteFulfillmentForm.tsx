@@ -57,7 +57,7 @@ export const QuoteFulfillmentForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createQuoteFulfillmentFormSubmissionData(
+    const data = await createQuoteFulfillmentFormSubmissionData(
       values,
       quoteFulfillmentData
     );
@@ -80,7 +80,7 @@ export const QuoteFulfillmentForm = ({
     }
 
     // Invalidate cached quote data
-    fetch("/api/revalidate/tag?tag=quote");
+    await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
     const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
     const quoteID = quoteData.QuoteDetail.Quotes_ID;

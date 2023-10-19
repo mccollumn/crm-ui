@@ -41,7 +41,7 @@ export const AccountForm = ({
   });
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createAccountFormSubmissionData(values, accountData);
+    const data = await createAccountFormSubmissionData(values, accountData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     let id = defaultValues.accountID;
@@ -63,7 +63,7 @@ export const AccountForm = ({
       id = responseData?.res?.ID;
     }
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=account");
+    await fetch("/api/revalidate/tag?tag=account");
     setIsLoading(false);
     router.push(`/accounts/view/${id}`);
   };
@@ -165,14 +165,14 @@ export const AccountForm = ({
                   },
                   size: "small",
                 }}
-                options={menuOptions.AccountType}
+                options={menuOptions.Type}
               />
               {/* Super Region */}
               <AutocompleteElement
                 label="Super Region"
                 name="superRegion"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.SuperRegion}
+                options={menuOptions.Region}
                 required
               />
               {/* Type Last Change Date */}

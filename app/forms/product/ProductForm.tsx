@@ -27,6 +27,7 @@ export const ProductForm = ({
     isLoading,
     setProductSelected,
     productSelected,
+    listPrice,
     FormatNumber,
     FormatCurrency,
     FormatPercent,
@@ -38,7 +39,7 @@ export const ProductForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createProductFormSubmissionData(values, opportunityData);
+    const data = await createProductFormSubmissionData(values, opportunityData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const url = "/api/opportunities/update";
@@ -55,7 +56,7 @@ export const ProductForm = ({
     }
 
     // Invalidate cached account data
-    fetch("/api/revalidate/tag?tag=opportunity");
+    await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);
     const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
     router.push(`/opportunities/view/${opportunityID}`);
@@ -89,15 +90,16 @@ export const ProductForm = ({
                 label="Product"
                 name="product"
                 required
+                loading={menuOptions.Product.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre
-                          style={{ margin: 0 }}
-                        >{` - ${option.code} (${option.unitPrice})`}</pre>
+                        <pre style={{ margin: 0 }}>{` - ${option.code} (${
+                          option.isActive === "1" ? "Active" : "Inactive"
+                        })`}</pre>
                       </li>
                     );
                   },
@@ -121,14 +123,14 @@ export const ProductForm = ({
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
               {/* List Price */}
-              {/* TODO: Confirm that this is populating when a product is selected */}
               <TextFieldElement
                 label="List Price"
                 name="product.unitPrice"
-                disabled
                 size="small"
-                value={productSelected?.OpportunityLineItems_UnitPrice || ""}
-                InputProps={{ inputComponent: FormatCurrency as any }}
+                InputProps={{
+                  inputComponent: FormatCurrency as any,
+                  value: listPrice,
+                }}
               />
             </Stack>
           </Grid>

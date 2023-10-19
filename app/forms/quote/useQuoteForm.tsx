@@ -35,6 +35,7 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     setCustomMenuOptions,
     setIsLoading,
     isLoading,
+    user,
     FormatNumber,
     menuOptions,
   } = useForm({
@@ -265,6 +266,7 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
       //   },
       // ],
     };
+    console.log("Quote Form Submission Data - 1", data);
     let newFormData: any = removeNullsFromObject(data);
 
     // We only want to submit form values that were modified
@@ -295,8 +297,16 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
           ...newFormData.QuoteEntitlements,
           Quotes_ID: quoteData.QuoteEntitlements.Quotes_ID,
         },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID: quoteData.QuoteDetail.Opportunities_AccountID || null,
+          OpportunityID: quoteData.QuoteDetail.Quotes_OpportunityID || null,
+          QuoteID: quoteData.QuoteDetail.Quotes_ID || null,
+        },
       };
     }
+    console.log("Quote Form Submission Data - 2", newFormData);
     return newFormData;
   };
 

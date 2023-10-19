@@ -35,6 +35,7 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
 
   const getMenuOptions = React.useCallback(
     (menu: string, dependentValue: string = "") => {
+      if (!menuItems) return [];
       const optionObjs = menuItems.filter((item: MenuItem) => {
         if (Array.isArray(item.Menu_DependantValue)) {
           return (
@@ -200,7 +201,7 @@ interface UseFormProps {
   /**
    * Array of all possible menu options.
    */
-  menuItems: MenuItem[];
+  menuItems?: MenuItem[];
   /**
    * Initial menu options used to populate a new form.
    */

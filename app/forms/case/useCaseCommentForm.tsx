@@ -5,8 +5,10 @@ import {
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { CaseComment, CaseCommentFormData } from "@/app/types/cases";
+import { useForm } from "../useForm";
 
 export const useCaseCommentForm = () => {
+  const { user } = useForm({});
   const [isLoading, setIsLoading] = React.useState(false);
 
   const createCaseCommentFormSubmissionData = (
@@ -34,6 +36,12 @@ export const useCaseCommentForm = () => {
       newFormData = {
         ...newFormData,
         CaseComments_ID: values.caseCommentID,
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          CaseCommentID: caseCommentData.CaseComments_ID || null,
+          CaseID: caseCommentData.CaseComments_CaseID || null,
+        },
       };
     }
     return newFormData;

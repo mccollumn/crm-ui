@@ -44,7 +44,7 @@ export const AssetForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createAssetFormSubmissionData(values, assetData);
+    const data = await createAssetFormSubmissionData(values, assetData);
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const isEdit = !!defaultValues?.account.id;
@@ -64,8 +64,8 @@ export const AssetForm = ({
     }
 
     // Invalidate cached account and asset data
-    fetch("/api/revalidate/tag?tag=account");
-    fetch("/api/revalidate/tag?tag=asset");
+    await fetch("/api/revalidate/tag?tag=account");
+    await fetch("/api/revalidate/tag?tag=asset");
 
     setIsLoading(false);
     router.push(`/accounts/view/${accountID}`);
@@ -106,12 +106,16 @@ export const AssetForm = ({
                 label="Product"
                 name="product"
                 required
+                loading={menuOptions.Product.length === 0}
                 autocompleteProps={{
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
-                        {option.name}
+                        <b>{option.name}</b>
+                        <pre style={{ margin: 0 }}>{` - ${option.code} (${
+                          option.isActive === "1" ? "Active" : "Inactive"
+                        })`}</pre>
                       </li>
                     );
                   },

@@ -27,6 +27,7 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatCurrency,
     FormatNumber,
   } = useForm({
@@ -35,6 +36,28 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
   });
 
   React.useEffect(() => {
+    // Products
+    const setProducts = async () => {
+      try {
+        const results = await fetch("/api/products");
+        const products = await results.json();
+        if (isObjectEmpty(products)) return;
+        const options = products.data.map((product: any) => {
+          return {
+            id: product.Product2_ID,
+            name: product.Product2_Name,
+            code: product.Product2_ProductCode,
+            description: product.Product2_ProductDescriptionLong,
+            isActive: product.Product2_IsActive,
+          };
+        });
+        setCustomMenuOptions("Product", options);
+      } catch {
+        console.error("Could not retrieve list of products");
+      }
+    };
+    setProducts();
+
     // Active Accounts
     const setAccounts = async () => {
       try {
@@ -144,6 +167,14 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
         AssetSystemInformation: {
           ...newFormData,
           Assets_ID: assetData.AssetSystemInformation.Assets_ID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID: assetData.AssetDetail.Assets_AccountID || null,
+          AssetID: assetData.AssetDetail.Assets_ID || null,
+          OpportunityID: assetData.AssetDetail.Assets_OpportunityID || null,
+          ProductID: assetData.AssetDetail.Assets_Product2Id || null,
         },
       };
     }

@@ -27,6 +27,7 @@ export const useContactRoleForm = ({
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
   } = useForm({
     initialMenuOptions,
     menuItems,
@@ -96,6 +97,14 @@ export const useContactRoleForm = ({
           opportunityData?.OpportunityDetail.Opportunities_AccountId,
       },
       OpportunityQuoteContactRoles: [newFormData],
+      SubmissionDetails: {
+        ...newFormData.SubmissionDetails,
+        UserID: user?.id || null,
+        AccountID:
+          opportunityData?.OpportunityDetail.Opportunities_AccountId || null,
+        OpportunityID:
+          opportunityData?.OpportunityDetail.Opportunities_ID || null,
+      },
     };
 
     return newOpportunityData;

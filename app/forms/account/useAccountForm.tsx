@@ -18,11 +18,11 @@ useAccountFormProps) => {
     Owner: [],
     // ParentAccount: [],
     // AccountRecordType: [],
-    AccountType: [{ id: null, value: "Partner" }],
+    Type: [],
     // MigrateToNewOrg: [],
     // Territory: [],
-    // Region: [],
-    SuperRegion: [],
+    Region: [],
+    // SuperRegion: [],
     // PartnerStatus: [],
     CollectionsContact: [],
     // AnnualServerCalls: [],
@@ -37,6 +37,7 @@ useAccountFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatCurrency,
     FormatNumber,
   } = useForm({
@@ -84,11 +85,11 @@ useAccountFormProps) => {
 
     // Set menu options that are already known (i.e. aren't based on user input)
     // setMenuOptions("AccountRecordType");
-    appendMenuOptions("AccountType");
+    appendMenuOptions("Type");
     // setMenuOptions("MigrateToNewOrg");
     // setMenuOptions("Territory");
-    // setMenuOptions("Region");
-    setMenuOptions("SuperRegion");
+    setMenuOptions("Region");
+    // setMenuOptions("SuperRegion");
     // setMenuOptions("PartnerStatus");
     // setMenuOptions("AnnualServerCalls");
     // setMenuOptions("Industry");
@@ -199,6 +200,11 @@ useAccountFormProps) => {
         AccountDetail: {
           ...newFormData.AccountDetail,
           Accounts_AccountID: accountData.AccountDetail.Accounts_AccountID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID: accountData.AccountDetail.Accounts_AccountID || null,
         },
       };
     }

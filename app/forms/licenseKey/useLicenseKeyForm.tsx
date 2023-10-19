@@ -14,7 +14,7 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
   const initialMenuOptions = {
     Account: [],
     Type: [],
-    Status: [],
+    KeyStatus: [],
     SystemStatus: [],
     CreatedBy: [],
   };
@@ -26,6 +26,7 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatCurrency,
     FormatNumber,
   } = useForm({
@@ -72,7 +73,7 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
 
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("Type");
-    setMenuOptions("Status");
+    setMenuOptions("KeyStatus");
     setMenuOptions("SystemStatus");
   }, [setCustomMenuOptions, setMenuOptions]);
 
@@ -157,6 +158,12 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
         SystemInfo: {
           ...newFormData.SystemInfo,
           LicenseKeys_ID: licenseKeyData.SystemInfo.LicenseKeys_ID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID:
+            licenseKeyData.LicenseKeyDetail.LicenseKeys_AccountId || null,
         },
       };
     }

@@ -30,6 +30,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
   } = useForm({
     initialMenuOptions,
     menuItems,
@@ -199,6 +200,12 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         ContactSystemInformation: {
           ...newFormData.ContactSystemInformation,
           Contacts_ID: contactData.ContactSystemInformation.Contacts_ID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID: contactData.ContactDetail.Contacts_AccountId || null,
+          ContactID: contactData.ContactDetail.Contacts_ID || null,
         },
       };
     }

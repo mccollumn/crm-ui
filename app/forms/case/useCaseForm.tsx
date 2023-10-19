@@ -36,6 +36,7 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
   } = useForm({
     initialMenuOptions,
     menuItems,
@@ -205,6 +206,12 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
         CaseInformation: {
           ...newFormData.CaseInformation,
           Cases_ID: caseData.CaseInformation.Cases_ID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID: caseData.CaseInformation.Cases_AccountID || null,
+          CaseID: caseData.CaseInformation.Cases_ID || null,
         },
       };
     }

@@ -43,7 +43,10 @@ export const OpportunityForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createOpportunitytFormSubmissionData(values, opportunityData);
+    const data = await createOpportunitytFormSubmissionData(
+      values,
+      opportunityData
+    );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     let id = defaultValues.id;
@@ -65,7 +68,7 @@ export const OpportunityForm = ({
       id = responseData?.res?.ID;
     }
     // Invalidate cached opportunity data
-    fetch("/api/revalidate/tag?tag=opportunity");
+    await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);
     router.push(`/opportunities/view/${id}`);
   };
@@ -242,7 +245,7 @@ export const OpportunityForm = ({
                 autocompleteProps={{
                   size: "small",
                   onChange: (_, value) => {
-                    setMenuOptions("Status", value);
+                    setMenuOptions("ForecastStatus", value);
                   },
                 }}
                 options={menuOptions.Stage}
@@ -269,9 +272,9 @@ export const OpportunityForm = ({
                 name="forecastStatus"
                 autocompleteProps={{
                   size: "small",
-                  disabled: !menuOptions.Status.length,
+                  disabled: !menuOptions.ForecastStatus.length,
                 }}
-                options={menuOptions.Status}
+                options={menuOptions.ForecastStatus}
               />
               {/* Term (months) */}
               <AutocompleteElement

@@ -23,7 +23,7 @@ export const CaseCommentForm = ({
   const onSuccess = async (values: any) => {
     setIsLoading(true);
     let id = caseData?.CaseInformation.Cases_ID;
-    const data = createCaseCommentFormSubmissionData(
+    const data = await createCaseCommentFormSubmissionData(
       values,
       id,
       caseCommentData
@@ -48,7 +48,7 @@ export const CaseCommentForm = ({
       id = responseData?.res?.ID;
     }
     // Invalidate cached case data
-    fetch("/api/revalidate/tag?tag=case");
+    await fetch("/api/revalidate/tag?tag=case");
     setIsLoading(false);
     router.push(`/cases/view/${id}`);
   };

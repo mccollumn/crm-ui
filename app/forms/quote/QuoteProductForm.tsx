@@ -53,7 +53,10 @@ export const QuoteProductForm = ({
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = createQuoteProductFormSubmissionData(values, quoteProductData);
+    const data = await createQuoteProductFormSubmissionData(
+      values,
+      quoteProductData
+    );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
     const isEdit = !!defaultValues?.id;
@@ -73,7 +76,7 @@ export const QuoteProductForm = ({
     }
 
     // Invalidate cached quote data
-    fetch("/api/revalidate/tag?tag=quote");
+    await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
     const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
     const quoteID = quoteData.QuoteDetail.Quotes_ID;
@@ -148,7 +151,9 @@ export const QuoteProductForm = ({
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre style={{ margin: 0 }}>{` - ${option.code}`}</pre>
+                        <pre style={{ margin: 0 }}>{` - ${option.code} (${
+                          option.isActive === "1" ? "Active" : "Inactive"
+                        })`}</pre>
                       </li>
                     );
                   },
@@ -191,7 +196,7 @@ export const QuoteProductForm = ({
                 label="Product Family"
                 name="product.family"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Family}
+                options={menuOptions.ProductFamily}
               />
               {/* One Year Amount */}
               <TextFieldElement

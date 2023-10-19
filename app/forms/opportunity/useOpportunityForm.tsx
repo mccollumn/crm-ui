@@ -28,7 +28,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     Product: [],
     ProductFamily: [],
     Stage: [],
-    Status: [],
+    ForecastStatus: [],
     Term: [],
     Interest: [],
     RenewalStatus: [],
@@ -47,6 +47,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     setIsLoading,
     isLoading,
     menuOptions,
+    user,
     FormatCurrency,
     FormatNumber,
   } = useForm({
@@ -106,6 +107,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     setMenuOptions("Resell");
     setMenuOptions("Type");
     setMenuOptions("TerritoryOverride");
+    setMenuOptions("ForecastStatus");
   }, [setCustomMenuOptions, setMenuOptions]);
 
   const createOpportunitytFormSubmissionData = async (
@@ -323,6 +325,14 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
           ...newFormData.OpportunityStageTracking,
           Opportunities_ID:
             opportunityData.OpportunityStageTracking.Opportunities_ID,
+        },
+        SubmissionDetails: {
+          ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
+          AccountID:
+            opportunityData.OpportunityDetail.Opportunities_AccountId || null,
+          OpportunityID:
+            opportunityData.OpportunityDetail.Opportunities_ID || null,
         },
       };
     }
