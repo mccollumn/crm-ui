@@ -1,25 +1,25 @@
-// "use client";
-
 import React from "react";
 import QuotePDF from "./QuotePDF";
-import { useReactToPrint } from "react-to-print";
 
-const QuotePdfView = ({
+const QuotePdfView = async ({
   params,
 }: {
   params: { opportunityID: string; quoteID: string };
 }) => {
   const opportunityID = params.opportunityID;
   const quoteID = params.quoteID;
-  //   const componentRef = React.useRef<any>();
 
-  //   const handlePrint = useReactToPrint({
-  //     content: () => componentRef.current,
-  //     documentTitle: "Quote",
-  //   });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/pdf/quote/${quoteID}`
+  );
+  const html = await response.text();
 
-  //   return <QuotePDF quoteID={quoteID} ref={componentRef} />;
-  return <QuotePDF quoteID={quoteID} />;
+  const pdfHtml = html.replace(
+    "<title>Page Title</title>",
+    "<title>Quote</title>"
+  );
+
+  return <QuotePDF pdfHtml={pdfHtml} />;
 };
 
 export default QuotePdfView;

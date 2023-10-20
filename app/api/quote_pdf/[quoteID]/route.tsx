@@ -11,7 +11,6 @@ export async function GET(
     `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/pdf/quote/${quoteID}`
   );
   const data = await response.text();
-  //   console.log(data);
 
   return NextResponse.json({ data });
 }
