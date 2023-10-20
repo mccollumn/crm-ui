@@ -281,7 +281,7 @@ export const OpportunityForm = ({
                 label="Term (months)"
                 name="term"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Term}
+                options={menuOptions["Term(months)"]}
               />
               {/* Multi-Year Year 1 Amount */}
               <TextFieldElement
@@ -750,7 +750,7 @@ export const OpportunityForm = ({
                 label="Type"
                 name="type"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Type}
+                options={menuOptions.CustomerType}
               />
               {/* Refresh Product Family */}
               {/* <CheckboxElement

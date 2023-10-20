@@ -135,7 +135,7 @@ export const ContactRoleForm = ({
                 name="role.name"
                 required
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Role}
+                options={menuOptions.ContactRole}
               />
             </Stack>
           </Grid>

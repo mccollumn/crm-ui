@@ -17,7 +17,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // Salutation: [],
     JobRole: [],
     ContactRole: [],
-    Relationship: [],
+    RelationshipToWebtrends: [],
     ContactStatus: [],
     // SuperRegion: [],
     TimeZone: [],
@@ -78,7 +78,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // setMenuOptions("Salutation");
     setMenuOptions("JobRole");
     setMenuOptions("ContactRole");
-    setMenuOptions("Relationship");
+    setMenuOptions("RelationshipToWebtrends");
     setMenuOptions("ContactStatus");
     // setMenuOptions("SuperRegion");
     setMenuOptions("TimeZone");

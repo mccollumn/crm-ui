@@ -228,7 +228,7 @@ export type QuoteFormData = {
   comments: {
     exchangeRate?: number | null;
     discountReason?: string | null;
-    discountReasons?: string | null;
+    discountReasons?: string[] | null;
   };
   entitlements: {
     pageViews?: string | null;

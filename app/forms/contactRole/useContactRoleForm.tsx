@@ -18,7 +18,7 @@ export const useContactRoleForm = ({
 }: useContactRoleFormProps) => {
   const initialMenuOptions = {
     Contact: [],
-    Role: [],
+    ContactRole: [],
   };
 
   const {
@@ -56,7 +56,7 @@ export const useContactRoleForm = ({
     setContacts();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Role");
+    setMenuOptions("ContactRole");
   }, [accountID, setCustomMenuOptions, setMenuOptions]);
 
   const createContactRoleFormSubmissionData = (

@@ -24,7 +24,7 @@ export const useQuoteProductForm = ({
     Product: [],
     Fulfillment: [],
     ProductFamily: [],
-    Currency: [],
+    QuoteProductCurrency: [],
     SkuGroup: [],
     FulfillmentStatus: [],
   };
@@ -113,8 +113,8 @@ export const useQuoteProductForm = ({
     setFulfillment();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("SalesType");
-    setMenuOptions("Currency");
+    setMenuOptions("SaleType");
+    setMenuOptions("QuoteProductCurrency");
     setMenuOptions("SkuGroup");
     setMenuOptions("FulfillmentStatus");
     setMenuOptions("ProductFamily");

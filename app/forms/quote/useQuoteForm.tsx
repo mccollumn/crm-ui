@@ -1,6 +1,7 @@
 import React from "react";
 import { MenuItem } from "@/app/types/types";
 import {
+  convertArrayToString,
   convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
@@ -19,15 +20,15 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
   const initialMenuOptions = {
     Owner: [],
     Opportunity: [],
-    Status: [],
+    QuoteStatus: [],
     OfficeLocation: [],
-    Currency: [],
+    QuoteCurrency: [],
     // AuditStatus: [],
     PaymentMethod: [],
     BillingFrequency: [],
     PaymentTerms: [],
     // TermsAudit: [],
-    DiscountReason: [],
+    QuoteDiscountReason: [],
   };
 
   const {
@@ -80,15 +81,15 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     setOpportunities();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Status");
+    setMenuOptions("QuoteStatus");
     setMenuOptions("OfficeLocation");
-    setMenuOptions("Currency");
+    setMenuOptions("QuoteCurrency");
     // setMenuOptions("AuditStatus");
     setMenuOptions("PaymentMethod");
     setMenuOptions("BillingFrequency");
     setMenuOptions("PaymentTerms");
     // setMenuOptions("TermsAudit");
-    setMenuOptions("DiscountReason");
+    setMenuOptions("QuoteDiscountReason");
   }, [setCustomMenuOptions, setMenuOptions]);
 
   const createQuoteFormSubmissionData = async (
@@ -178,7 +179,9 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
       },
       QuoteDiscounts: {
         Quotes_ID: values.id,
-        Quotes_DiscountPickList: values.comments.discountReasons,
+        Quotes_DiscountPickList: convertArrayToString(
+          values.comments.discountReasons
+        ),
         Quotes_DiscountReason: values.comments.discountReason,
         Quotes_HighestProductDiscount: highestProductDiscount,
         Quotes_HighestServicesDiscount: highestServicesDiscount,

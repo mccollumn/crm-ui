@@ -24,7 +24,7 @@ export const useQuoteFulfillmentForm = ({
   const initialMenuOptions = {
     Quote: [],
     LicenseKey: [],
-    Currency: [],
+    QuoteFulfillmentCurrency: [],
     SupportPlanType: [],
   };
 
@@ -84,7 +84,7 @@ export const useQuoteFulfillmentForm = ({
     setLicenseKeys();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Currency");
+    setMenuOptions("QuoteFulfillmentCurrency");
     setMenuOptions("SupportPlanType");
   }, [
     accountData.LicenseKeys,

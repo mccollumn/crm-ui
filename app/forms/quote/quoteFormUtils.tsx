@@ -2,7 +2,7 @@ import { OpportunityData, Quote } from "@/app/types/opportunities";
 import { QuoteData, QuoteFormData } from "@/app/types/quotes";
 import { getDefaultOwner } from "@/app/utils/forms";
 import { getOpportunityData } from "@/app/utils/getData";
-import { unEscape } from "@/app/utils/utils";
+import { convertStringToArray, unEscape } from "@/app/utils/utils";
 
 /**
  * Generates an object containing the default values for a new/empty quote form.
@@ -55,7 +55,7 @@ const generateInitialQuoteFormData = async (
     comments: {
       exchangeRate: 1,
       discountReason: null,
-      discountReasons: null,
+      discountReasons: [],
     },
     entitlements: {
       pageViews: null,
@@ -126,7 +126,9 @@ export const createQuoteFormData = async (
     comments: {
       exchangeRate: quoteData.QuoteTotals.Quotes_ExchangeRateToUSD,
       discountReason: quoteData.QuoteDiscounts.Quotes_DiscountReason,
-      discountReasons: quoteData.QuoteDiscounts.Quotes_DiscountPickList,
+      discountReasons: convertStringToArray(
+        quoteData.QuoteDiscounts.Quotes_DiscountPickList
+      ),
     },
     entitlements: {
       pageViews: quoteData.QuoteEntitlements.Quotes_AnalyticsPageViews,

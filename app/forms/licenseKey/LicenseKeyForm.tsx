@@ -129,7 +129,7 @@ export const LicenseKeyForm = ({
                 label="Key Type"
                 name="type"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Type}
+                options={menuOptions.KeyType}
               />
               {/* Page Views */}
               <TextFieldElement

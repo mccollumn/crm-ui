@@ -29,7 +29,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     ProductFamily: [],
     Stage: [],
     ForecastStatus: [],
-    Term: [],
+    "Term(months)": [],
     Interest: [],
     RenewalStatus: [],
     Resell: [],
@@ -37,7 +37,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     // FulfillingPartner: [],
     // ReferringPartner: [],
     // InfluencingPartner: [],
-    Type: [],
+    CustomerType: [],
     TerritoryOverride: [],
   };
 
@@ -101,11 +101,11 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     setMenuOptions("Product");
     setMenuOptions("ProductFamily");
     setMenuOptions("Stage");
-    setMenuOptions("Term");
+    setMenuOptions("Term(months)");
     setMenuOptions("Interest");
     setMenuOptions("RenewalStatus");
     setMenuOptions("Resell");
-    setMenuOptions("Type");
+    setMenuOptions("CustomerType");
     setMenuOptions("TerritoryOverride");
     setMenuOptions("ForecastStatus");
   }, [setCustomMenuOptions, setMenuOptions]);

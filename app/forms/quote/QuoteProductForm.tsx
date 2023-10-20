@@ -214,7 +214,7 @@ export const QuoteProductForm = ({
                 label="Currency"
                 name="currency"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Currency}
+                options={menuOptions.QuoteProductCurrency}
               />
               {/* Unit List Price */}
               <TextFieldElement

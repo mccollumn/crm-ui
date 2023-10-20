@@ -13,7 +13,7 @@ import { LicenseKeyData, LicenseKeyFormData } from "@/app/types/licenseKeys";
 export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
   const initialMenuOptions = {
     Account: [],
-    Type: [],
+    KeyType: [],
     KeyStatus: [],
     SystemStatus: [],
     CreatedBy: [],
@@ -72,7 +72,7 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     setUsers();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    setMenuOptions("Type");
+    setMenuOptions("KeyType");
     setMenuOptions("KeyStatus");
     setMenuOptions("SystemStatus");
   }, [setCustomMenuOptions, setMenuOptions]);

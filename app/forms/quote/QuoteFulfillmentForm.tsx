@@ -154,7 +154,7 @@ export const QuoteFulfillmentForm = ({
                 label="Currency"
                 name="currency"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Currency}
+                options={menuOptions.QuoteFulfillmentCurrency}
               />
               {/* Is Term License */}
               <CheckboxElement

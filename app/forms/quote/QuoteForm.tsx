@@ -159,7 +159,7 @@ export const QuoteForm = ({
               <AutocompleteElement
                 label="Status"
                 name="status"
-                options={menuOptions.Status}
+                options={menuOptions.QuoteStatus}
                 autocompleteProps={{ size: "small" }}
               />
               {/* Quote Office Location */}
@@ -175,7 +175,7 @@ export const QuoteForm = ({
                 label="Currency"
                 name="currencyCode"
                 autocompleteProps={{ size: "small" }}
-                options={menuOptions.Currency}
+                options={menuOptions.QuoteCurrency}
               />
               {/* Valid Through */}
               <DateFnsProvider>
@@ -308,7 +308,7 @@ export const QuoteForm = ({
                 preserveOrder
                 showChips
                 size="small"
-                options={menuOptions.DiscountReason}
+                options={menuOptions.QuoteDiscountReason}
               />
             </Stack>
           </Grid>

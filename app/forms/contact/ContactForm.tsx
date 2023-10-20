@@ -242,7 +242,7 @@ export const ContactForm = ({
                 preserveOrder
                 showChips
                 size="small"
-                options={menuOptions.Relationship}
+                options={menuOptions.RelationshipToWebtrends}
               />
               {/* Contact Status */}
               <AutocompleteElement
@@ -512,7 +512,7 @@ export const ContactForm = ({
                 label="Preferred Language"
                 name="demographic.preferredLanguage"
                 autocompleteProps={{ size: "small" }}
-                options={[]}
+                options={menuOptions.PreferredLanguage}
               />
             </Stack>
           </Grid>
@@ -523,7 +523,7 @@ export const ContactForm = ({
                 label="Time Zone"
                 name="demographic.timezone"
                 autocompleteProps={{ size: "small" }}
-                options={[]}
+                options={menuOptions.TimeZone}
               />
             </Stack>
           </Grid>

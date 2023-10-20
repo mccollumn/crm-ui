@@ -72,6 +72,8 @@ export const AccountForm = ({
     router.back();
   };
 
+  console.log("Account form options:", menuOptions);
+
   return (
     <>
       <Backdrop
@@ -165,7 +167,7 @@ export const AccountForm = ({
                   },
                   size: "small",
                 }}
-                options={menuOptions.Type}
+                options={menuOptions.AccountType}
               />
               {/* Super Region */}
               <AutocompleteElement

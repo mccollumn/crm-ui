@@ -18,7 +18,7 @@ useAccountFormProps) => {
     Owner: [],
     // ParentAccount: [],
     // AccountRecordType: [],
-    Type: [],
+    AccountType: [],
     // MigrateToNewOrg: [],
     // Territory: [],
     Region: [],
@@ -46,25 +46,21 @@ useAccountFormProps) => {
   });
 
   React.useEffect(() => {
-    // Active Accounts
-    // const setAccounts = async () => {
-    //   try {
-    //     const results = await fetch("/api/accounts/active");
-    //     const accounts = await results.json();
-    //     if (isObjectEmpty(accounts)) return;
-    //     const options = accounts.data.map((account: any) => {
-    //       return {
-    //         id: account.Accounts_AccountID,
-    //         name: account.Accounts_Name,
-    //         site: account.Accounts_Site,
-    //       };
-    //     });
-    //     setCustomMenuOptions("ParentAccount", options);
-    //   } catch {
-    //     console.error("Could not retrieve list of accounts");
-    //   }
-    // };
-    // setAccounts();
+    // Account Types
+    const setAccounts = async () => {
+      try {
+        if (!menuItems) return [];
+        const options = menuItems
+          .filter((item: MenuItem) => item.Menu_Name === "AccountType")
+          .map((option) => {
+            return { id: option.Menu_Value, value: option.Menu_Display };
+          });
+        setCustomMenuOptions("AccountType", options);
+      } catch {
+        console.error("Could not retrieve list of account types");
+      }
+    };
+    setAccounts();
 
     // Account Owner
     const setOwners = async () => {
@@ -85,7 +81,7 @@ useAccountFormProps) => {
 
     // Set menu options that are already known (i.e. aren't based on user input)
     // setMenuOptions("AccountRecordType");
-    appendMenuOptions("Type");
+    // appendMenuOptions("AccountType");
     // setMenuOptions("MigrateToNewOrg");
     // setMenuOptions("Territory");
     setMenuOptions("Region");
@@ -94,7 +90,7 @@ useAccountFormProps) => {
     // setMenuOptions("AnnualServerCalls");
     // setMenuOptions("Industry");
     // setMenuOptions("Ownership");
-  }, [appendMenuOptions, setCustomMenuOptions, setMenuOptions]);
+  }, [appendMenuOptions, menuItems, setCustomMenuOptions, setMenuOptions]);
 
   const createAccountFormSubmissionData = (
     values: AccountFormData,
@@ -113,6 +109,7 @@ useAccountFormProps) => {
         Accounts_Phone: values.phone,
         Accounts_Super_Region: values.superRegion,
         Accounts_Type: values.type.id,
+        AccountsType_Description: values.type.value,
       },
       AddressInformation: {
         AccountsAddress_ID: values.address.id,
