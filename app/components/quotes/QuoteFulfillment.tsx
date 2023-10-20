@@ -32,7 +32,7 @@ export default async function QuoteFulfillment_CreatedByID({
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading fulfillments...</p>}>
           <DataTable
-            rows={[quoteFulfillment]}
+            rows={isObjectEmpty(quoteFulfillment) ? [] : [quoteFulfillment]}
             columnDefType="quoteFulfillment"
             data={{ ...licenseKeyData, ...quoteData }}
           />
