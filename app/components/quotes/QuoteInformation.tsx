@@ -39,7 +39,7 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
     <>
       <ButtonNav
         size="small"
-        path={`/opportunities/edit/${quoteData.QuoteDetail.Quotes_OpportunityID}/quote/${quoteData.QuoteDetail.Quotes_ID}`}
+        path={`/opportunities/edit/${opportunityID}/quote/${quoteID}`}
       >
         Edit
       </ButtonNav>
@@ -58,6 +58,12 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
           Fulfillment
         </ButtonNav>
       )}
+      <ButtonNav
+        size="small"
+        path={`/opportunities/view/${opportunityID}/quote/${quoteID}/pdf`}
+      >
+        Quote PDF
+      </ButtonNav>
 
       <Accordion defaultExpanded={true}>
         <AccordionSummary
