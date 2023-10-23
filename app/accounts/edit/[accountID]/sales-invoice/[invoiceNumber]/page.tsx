@@ -3,6 +3,10 @@
 import { useRouter } from "next/navigation";
 import { SalesInvoiceForm } from "@/app/forms/SalesInvoiceForm";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditSalesInvoice = ({
   params,
 }: {

@@ -8,6 +8,10 @@ import {
 import { ButtonNav } from "../navigation/ButtonNav";
 import { QuoteData, QuoteProductData } from "@/app/types/quotes";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const QuoteProducts = async ({ quoteID }: QuoteProductsProps) => {
   const quoteData: QuoteData = await getQuoteData(quoteID);
   const quoteProducts = await Promise.all(

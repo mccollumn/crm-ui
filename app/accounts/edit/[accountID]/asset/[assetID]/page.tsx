@@ -2,6 +2,10 @@ import { AssetForm } from "@/app/forms/asset/AssetForm";
 import { createAssetFormData } from "@/app/forms/asset/assetFormUtils";
 import { getAssetData, getMenuItems } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditAsset = async ({
   params,
 }: {

@@ -5,6 +5,10 @@ import { ButtonNav } from "../navigation/ButtonNav";
 import { QuoteData } from "@/app/types/quotes";
 import { isObjectEmpty } from "@/app/utils/utils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function QuoteFulfillment_CreatedByID({
   quoteID,
 }: QuoteFulfillmentProps) {

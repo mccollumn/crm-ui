@@ -3,6 +3,10 @@ import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { getAccountData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const AccountAssets = async ({ accountID }: AccountAssetsProps) => {
   const accountData = await getAccountData(accountID);
   const accountAssets = accountData?.Assets || [];

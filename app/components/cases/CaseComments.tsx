@@ -3,6 +3,10 @@ import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { getCaseData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const CaseComments = async ({ caseID }: CaseCommentsProps) => {
   const caseData = await getCaseData(caseID);
   const rows = caseData?.CaseComments;

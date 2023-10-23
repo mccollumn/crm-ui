@@ -2,6 +2,10 @@ import { ContactForm } from "@/app/forms/contact/ContactForm";
 import { createContactFormData } from "@/app/forms/contact/contactFormUtils";
 import { getContactData, getMenuItems } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditContact = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
   const contactDataPromise = getContactData(contactID);
@@ -18,6 +22,7 @@ const EditContact = async ({ params }: { params: { contactID: string } }) => {
       formTitle={`Edit Contact - ${contactName}`}
       defaultValues={values}
       menuItems={menuItems}
+      contactData={contactData}
     />
   );
 };

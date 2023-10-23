@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
@@ -67,6 +68,10 @@ export const OpportunityForm = ({
       const responseData = await response.json();
       id = responseData?.res?.ID;
     }
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached opportunity data
     await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);

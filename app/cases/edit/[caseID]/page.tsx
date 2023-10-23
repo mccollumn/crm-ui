@@ -2,6 +2,10 @@ import { CaseForm } from "@/app/forms/case/CaseForm";
 import { getCaseData, getMenuItems } from "@/app/utils/getData";
 import { createCaseFormData } from "@/app/forms/case/caseFormUtils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditCase = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
   const caseDataPromise = getCaseData(caseID);

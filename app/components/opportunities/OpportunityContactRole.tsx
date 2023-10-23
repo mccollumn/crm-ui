@@ -4,6 +4,10 @@ import { getOpportunityData } from "@/app/utils/getData";
 import { OpportunityData } from "@/app/types/opportunities";
 import { ButtonNav } from "../navigation/ButtonNav";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const OpportunityContactRoles = async ({
   opportunityID,
 }: OpportunityContactRolesProps) => {

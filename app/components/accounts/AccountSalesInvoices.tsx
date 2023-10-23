@@ -2,6 +2,10 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const getSalesInvoices = async (accountID: string) => {
   // TODO: Retrieve sales invoices for provided account
   const res = await fetch("https://dev.to/api/articles");

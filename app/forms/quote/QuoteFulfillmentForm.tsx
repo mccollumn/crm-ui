@@ -1,23 +1,18 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
   DatePickerElement,
-  TextFieldElement,
   TextareaAutosizeElement,
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
 import { isSuccessfulResponse } from "@/app/utils/utils";
-import { useQuoteProductForm } from "./useQuoteProductForm";
-import {
-  QuoteData,
-  QuoteFulfillmentData,
-  QuoteProductData,
-} from "@/app/types/quotes";
+import { QuoteData, QuoteFulfillmentData } from "@/app/types/quotes";
 import { FormDivider } from "../FormDivider";
 import DateFnsProvider from "@/app/providers/DateFnsProvider";
 import { ButtonNav } from "@/app/components/navigation/ButtonNav";
@@ -79,6 +74,10 @@ export const QuoteFulfillmentForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached quote data
     await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);

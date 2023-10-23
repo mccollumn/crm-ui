@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import {
   Backdrop,
@@ -75,6 +76,10 @@ export const QuoteProductForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached quote data
     await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);

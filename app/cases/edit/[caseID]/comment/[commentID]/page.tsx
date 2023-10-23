@@ -2,6 +2,10 @@ import { getCaseData } from "@/app/utils/getData";
 import { CaseCommentForm } from "@/app/forms/case/CaseCommentForm";
 import { createCaseCommentFormData } from "@/app/forms/case/caseCommentFormUtils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditCaseComment = async ({
   params,
 }: {

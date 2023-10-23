@@ -11,6 +11,10 @@ import ContactHistory from "@/app/components/contacts/ContactHistory";
 import { getContactData } from "@/app/utils/getData";
 import { ContactData } from "@/app/types/contacts";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const ContactView = async ({ params }: { params: { contactID: string } }) => {
   const contactID = params.contactID;
   const contactData: ContactData = await getContactData(contactID);

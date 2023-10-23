@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
@@ -64,6 +65,10 @@ export const QuoteForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached account data
     await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);

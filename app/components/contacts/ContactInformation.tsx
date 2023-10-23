@@ -14,6 +14,10 @@ import { Address } from "../Address";
 import Link from "next/link";
 import { formatCheckbox, formatDate } from "@/app/utils/utils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const ContactInformation = async ({ contactID }: ContactInformationProps) => {
   const contactInfo = await getContactInfo(contactID);
   if (!contactInfo) return null;

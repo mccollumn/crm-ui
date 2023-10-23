@@ -3,6 +3,10 @@ import { createContactRoleFormData } from "@/app/forms/contactRole/contactRoleFo
 import { ContactRole } from "@/app/types/opportunities";
 import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditContactRole = async ({
   params,
 }: {

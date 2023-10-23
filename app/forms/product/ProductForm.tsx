@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
 import { AutocompleteElement, TextFieldElement } from "react-hook-form-mui";
@@ -55,6 +56,10 @@ export const ProductForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached account data
     await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);

@@ -18,6 +18,10 @@ import {
   formatNumber,
 } from "@/app/utils/utils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const AccountInformation = async ({ accountID }: AccountInformationProps) => {
   const accountInfo = await getAccountInfo(accountID);
   if (!accountInfo) return null;

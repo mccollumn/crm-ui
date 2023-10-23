@@ -3,6 +3,10 @@ import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { getSalesOrdersByAccount } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function AccountSalesOrders({
   accountID,
 }: AccountSalesOrdersProps) {

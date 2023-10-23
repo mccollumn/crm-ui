@@ -21,6 +21,10 @@ import Link from "next/link";
 import { QuoteData } from "@/app/types/quotes";
 import { AccountData } from "@/app/types/accounts";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
   const quoteData: QuoteData = await getQuoteData(quoteID);
   const accountID = quoteData.QuoteDetail.Opportunities_AccountID;

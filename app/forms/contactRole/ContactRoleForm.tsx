@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import {
   Backdrop,
@@ -60,6 +61,10 @@ export const ContactRoleForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached account data
     await fetch("/api/revalidate/tag?tag=opportunity");
     setIsLoading(false);

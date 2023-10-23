@@ -4,6 +4,10 @@ import { createProductFormData } from "@/app/forms/product/productFormUtils";
 import { Product } from "@/app/types/opportunities";
 import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditProduct = async ({
   params,
 }: {

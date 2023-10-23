@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
 import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
@@ -15,7 +16,6 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAssetForm } from "./useAssetForm";
 import { AssetData } from "@/app/types/assets";
-import { constants } from "crypto";
 import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface AssetFormProps extends FormProps {
@@ -63,6 +63,10 @@ export const AssetForm = ({
       return;
     }
 
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached account and asset data
     await fetch("/api/revalidate/tag?tag=account");
     await fetch("/api/revalidate/tag?tag=asset");

@@ -1,6 +1,10 @@
 import React from "react";
 import { DataTable } from "../DataTable";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const getOpportunityStages = async (opportunityID: string) => {
   const res = await fetch("https://dev.to/api/articles");
 

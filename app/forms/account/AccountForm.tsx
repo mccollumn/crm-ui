@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
 import {
@@ -62,6 +63,10 @@ export const AccountForm = ({
       const responseData = await response.json();
       id = responseData?.res?.ID;
     }
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
     // Invalidate cached account data
     await fetch("/api/revalidate/tag?tag=account");
     setIsLoading(false);

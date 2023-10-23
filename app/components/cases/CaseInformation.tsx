@@ -12,6 +12,10 @@ import { formatCheckbox, formatCurrency, formatDate } from "@/app/utils/utils";
 import { getCaseData } from "@/app/utils/getData";
 import Link from "next/link";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const CaseInformation = async ({ caseID }: CaseInformationProps) => {
   const caseInfo = await getCaseInfo(caseID);
   if (!caseInfo) return null;

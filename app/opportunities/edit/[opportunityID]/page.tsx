@@ -3,6 +3,10 @@ import { createOpportunityFormData } from "@/app/forms/opportunity/opportunityFo
 import { getMenuItems, getOpportunityData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const EditOpportunity = async ({
   params,
 }: {

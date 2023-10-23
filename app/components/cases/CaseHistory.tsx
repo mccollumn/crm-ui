@@ -2,6 +2,10 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { getCaseData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const CaseHistory = async ({ caseID }: CaseHistoryProps) => {
   const caseData = await getCaseData(caseID);
   const rows = caseData?.CaseHistory || [];

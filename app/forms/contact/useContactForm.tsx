@@ -176,6 +176,9 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, contactData);
 
+    console.log("Contact - user:", user);
+    console.log("Contact - contactData:", contactData);
+
     // Add the contact and account IDs back in
     if (contactData) {
       newFormData = {
@@ -209,6 +212,9 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         },
       };
     }
+
+    console.log("Contact - new form data:", newFormData);
+
     return newFormData;
   };
 

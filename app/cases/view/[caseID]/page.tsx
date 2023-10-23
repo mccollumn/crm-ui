@@ -10,6 +10,10 @@ import CaseEmails from "@/app/components/cases/CaseEmails";
 import CaseHistory from "@/app/components/cases/CaseHistory";
 import { getCaseData } from "@/app/utils/getData";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const CaseView = async ({ params }: { params: { caseID: string } }) => {
   const caseID = params.caseID;
   const caseData = await getCaseData(caseID);

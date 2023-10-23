@@ -14,6 +14,10 @@ import AccountAssets from "@/app/components/accounts/AccountAssets";
 import { getAccountData } from "@/app/utils/getData";
 import Cases from "@/app/cases/page";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const AccountView = async ({ params }: { params: { accountID: string } }) => {
   const accountID = params.accountID;
   const accountData = await getAccountData(accountID);

@@ -5,6 +5,10 @@ import { DataTable } from "../components/DataTable";
 import { getAccounts } from "@/app/utils/getData";
 import "server-only";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const Accounts = async ({ noTitle = false }) => {
   const accountsList = await getAccounts();
 

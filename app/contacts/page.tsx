@@ -5,6 +5,10 @@ import { DataTable } from "../components/DataTable";
 import { getContactsByAccount, getContacts } from "../utils/getData";
 import "server-only";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const Contacts = async ({ accountID, noTitle = false }: ContactsProps) => {
   let contactsList = [];
   if (accountID) {
