@@ -269,23 +269,19 @@ const getQuoteInfo = async (
       left: [
         {
           label: "Total List Price",
-          value: formatCurrency(quoteData.QuoteTotals.Quotes_TotalListPrice),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalListPrice),
         },
         {
           label: "Total Price",
-          value: formatCurrency(quoteData.QuoteTotals.Quotes_TotalPrice),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPrice),
         },
         {
           label: "Total Price - Products",
-          value: formatCurrency(
-            quoteData.QuoteTotals.Quotes_TotalPriceProducts
-          ),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPriceProducts),
         },
         {
           label: "Total One Year Amount",
-          value: formatCurrency(
-            quoteData.QuoteTotals.Quotes_TotalOneYearAmount
-          ),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalOneYearAmount),
         },
       ],
       right: [

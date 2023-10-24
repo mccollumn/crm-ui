@@ -97,7 +97,8 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     quoteData?: QuoteData
   ) => {
     const quoteProducts = quoteData?.QuoteProducts || [];
-    const quoteProductsData: QuoteProductData[] = await getQuoteProductData(
+
+    const quoteProductsData: ProductData[] = await getQuoteProductData(
       quoteProducts
     );
     const totalListPrice = calculateTotalListPrice(quoteProductsData);
@@ -269,7 +270,6 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
       //   },
       // ],
     };
-    console.log("Quote Form Submission Data - 1", data);
     let newFormData: any = removeNullsFromObject(data);
 
     // We only want to submit form values that were modified
@@ -309,7 +309,6 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         },
       };
     }
-    console.log("Quote Form Submission Data - 2", newFormData);
     return newFormData;
   };
 
@@ -338,10 +337,11 @@ const getQuoteProductData = async (quoteProducts: QuoteProduct[]) => {
   return quoteProductsData;
 };
 
-const calculateTotalListPrice = (quoteProductsData: QuoteProductData[]) => {
+const calculateTotalListPrice = (quoteProductsData: ProductData[]) => {
   const total = quoteProductsData.reduce(
     (total, product) =>
-      total + Number(product.QuoteProductDetail.QuoteProducts_TotalListPrice),
+      total +
+      Number(product.data.QuoteProductDetail.QuoteProducts_TotalListPrice),
     0
   );
   return String(total);
@@ -370,10 +370,11 @@ const calculateTotalPriceProducts = (quoteProducts: QuoteProduct[]) => {
   return String(total);
 };
 
-const calculateTotalOneYearAmount = (quoteProductsData: QuoteProductData[]) => {
+const calculateTotalOneYearAmount = (quoteProductsData: ProductData[]) => {
   const total = quoteProductsData.reduce(
     (total, product) =>
-      total + Number(product.QuoteProductDetail.QuoteProducts_OneYearAmount),
+      total +
+      Number(product.data.QuoteProductDetail.QuoteProducts_OneYearAmount),
     0
   );
   return String(total);
@@ -507,6 +508,10 @@ const calculatePaymentTermsResult = (
     return "Standard";
   }
   return "Non-Standard";
+};
+
+type ProductData = {
+  ["data"]: QuoteProductData;
 };
 
 interface useQuoteFormProps {

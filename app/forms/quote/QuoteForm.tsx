@@ -69,7 +69,7 @@ export const QuoteForm = ({
     React.startTransition(() => {
       router.refresh();
     });
-    // Invalidate cached account data
+    // Invalidate cached quote data
     await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
     router.push(`/opportunities/view/${opportunityID}`);
@@ -179,6 +179,7 @@ export const QuoteForm = ({
               <AutocompleteElement
                 label="Currency"
                 name="currencyCode"
+                required
                 autocompleteProps={{ size: "small" }}
                 options={menuOptions.QuoteCurrency}
               />
