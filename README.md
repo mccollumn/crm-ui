@@ -1,8 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CRM User Interface
 
-## Getting Started
+## Setup - Dev
 
-First, run the development server:
+Install packages:
+
+```bash
+nvm use
+npm install
+```
+
+Create a `.env.local` file with the `NEXTAUTH_SECRET` and `OKTA_CLIENT_SECRET` values. See `.env.local_example` for an example.
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -14,21 +23,40 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup - Production
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Install packages:
 
-## Learn More
+```bash
+nvm use
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Edit the `.env.production` file and provide the `NEXTAUTH_SECRET` and `OKTA_CLIENT_SECRET` values.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `NEXTAUTH_SECRET` - Found in [Passwordstate](https://secrets.webtrends.io/). Search for `crm`.
+- `OKTA_CLIENT_SECRET` - Found in the Okta application configuration for CRM.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Create production build:
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Start the server (port 80):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run start
+```
+
+The above steps can also be completed by running the included `start_server.sh` script.
+
+## Versioning
+
+Update the `version` in `package.json`.
+
+## Documentation
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [MUI Data Grid](https://mui.com/x/react-data-grid/)
+- [react-hook-form-mui](https://www.npmjs.com/package/react-hook-form-mui)
