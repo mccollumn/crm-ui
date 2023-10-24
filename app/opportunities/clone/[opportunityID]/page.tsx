@@ -9,7 +9,7 @@ import {
   submitNewQuoteProduct,
 } from "@/app/utils/getData";
 import { add } from "date-fns";
-import { removeNullsFromObject } from "@/app/utils/utils";
+import { removeNullsFromObject, unEscape } from "@/app/utils/utils";
 import { redirect } from "next/navigation";
 
 const CloneOpportunity = async ({
@@ -30,24 +30,24 @@ const CloneOpportunity = async ({
     console.log("Clone newOpportunityID:", newOpportunityID);
 
     // Iterate over the original opportunity quotes
-    opportunityData.OpportunityQuotes.forEach(async (quote) => {
-      // Get data for existing quote
-      const quoteData: QuoteData = await getQuoteData(quote.Quotes_ID);
-      // Generate new quote data and submit
-      const newQuoteID = await cloneQuote(quoteData, newOpportunityID.ID);
-      console.log("Clone newQuoteID:", newQuoteID);
-      // Iterate over each quote product
-      quoteData.QuoteProducts.forEach(async (product) => {
-        // Get data for existing quote product
-        const productData = await getQuoteProductData(product.QuoteProducts_ID);
-        // Generate new quote product data and submit
-        const newQuoteProductID = await cloneQuoteProduct(
-          productData,
-          newQuoteID.ID
-        );
-        console.log("Clone newQuoteProductID:", newQuoteProductID);
-      });
-    });
+    // opportunityData.OpportunityQuotes.forEach(async (quote) => {
+    //   // Get data for existing quote
+    //   const quoteData: QuoteData = await getQuoteData(quote.Quotes_ID);
+    //   // Generate new quote data and submit
+    //   const newQuoteID = await cloneQuote(quoteData, newOpportunityID.ID);
+    //   console.log("Clone newQuoteID:", newQuoteID);
+    //   // Iterate over each quote product
+    //   quoteData.QuoteProducts.forEach(async (product) => {
+    //     // Get data for existing quote product
+    //     const productData = await getQuoteProductData(product.QuoteProducts_ID);
+    //     // Generate new quote product data and submit
+    //     const newQuoteProductID = await cloneQuoteProduct(
+    //       productData,
+    //       newQuoteID.ID
+    //     );
+    //     console.log("Clone newQuoteProductID:", newQuoteProductID);
+    //   });
+    // });
 
     return newOpportunityID;
   };
@@ -83,6 +83,11 @@ const cloneOpportunity = async (opportunityData: OpportunityData) => {
     OpportunityDetail: removeNullsFromObject({
       ...opportunityData.OpportunityDetail,
       Opportunities_ID: null,
+      Opportunities_Name: unEscape(
+        `${
+          opportunityData.OpportunityDetail.Opportunities_Name
+        } (${new Date().toLocaleDateString()})`
+      ),
       Opportunities_CloseDate: addYear(
         opportunityData.OpportunityDetail.Opportunities_CloseDate
       ),
@@ -130,8 +135,8 @@ const cloneOpportunity = async (opportunityData: OpportunityData) => {
     }),
   };
 
-  // console.log("Clone opportunityData:", opportunityData);
-  // console.log("Clone newOpportunity:", JSON.stringify(newOpportunity));
+  console.log("Clone opportunityData:", opportunityData);
+  console.log("Clone newOpportunity:", JSON.stringify(newOpportunity));
 
   const responseData = await submitNewOpportunity(newOpportunity);
   return responseData;

@@ -9,6 +9,7 @@ import {
   GridFilterItem,
   GridFilterModel,
   GridFilterOperator,
+  GridSortModel,
   GridToolbar,
   GridValueGetterParams,
   getGridDateOperators,
@@ -49,8 +50,8 @@ export const DataTable = ({
   rows,
   columnDefType,
   data,
-  queryField = "*",
-  queryValue = "*",
+  filterModel,
+  sortModel,
   ...props
 }: DataTableProps) => {
   /**
@@ -967,10 +968,6 @@ export const DataTable = ({
     quoteFulfillment: "QuoteFulfillment_ID",
   };
 
-  const filterModel: GridFilterModel = {
-    items: [{ field: queryField, operator: "contains", value: queryValue }],
-  };
-
   const columns = React.useMemo(
     () =>
       columnDefs[columnDefType].map((col) => {
@@ -1002,11 +999,13 @@ export const DataTable = ({
           paginationModel: { page: 0, pageSize: 10 },
         },
         filter: {
-          filterModel: filterModel,
+          ...(filterModel && { filterModel: filterModel }),
+        },
+        sorting: {
+          ...(sortModel && { sortModel: sortModel }),
         },
       }}
       pageSizeOptions={[5, 10, 25, 50, 100]}
-      //   paginationMode="server"
       getRowId={(row) => row[rowIDs[columnDefType]]}
       {...props}
       autoHeight
@@ -1055,7 +1054,6 @@ const datesBetweenOperator: GridFilterOperator = {
       );
     };
   },
-  // InputComponent: InputDates,
   InputComponent: GridFilterInputDate,
   InputComponentProps: { type: "date" },
 };
@@ -1066,7 +1064,6 @@ const displayDate = (params: GridValueGetterParams) => {
   }
 };
 
-// interface DataTableProps extends ComponentPropsWithoutRef<"DataGridComponent"> {
 interface DataTableProps {
   /**
    * DataGrid row data
@@ -1082,13 +1079,15 @@ interface DataTableProps {
    */
   data?: any;
   /**
-   * The field on which the DataGrid should be filtered
+   * MUI Data Grid filter model that will be used to initialize the grid.
+   * https://mui.com/x/react-data-grid/filtering/#pass-filters-to-the-data-grid
    */
-  queryField?: string;
+  filterModel?: GridFilterModel;
   /**
-   * The queryField value to look for
+   * MUI Data Grid sort model that will be used to initialize the grid.
+   * https://mui.com/x/react-data-grid/sorting/#pass-sorting-rules-to-the-data-grid
    */
-  queryValue?: string;
+  sortModel?: GridSortModel;
   /**
    * All other props
    */

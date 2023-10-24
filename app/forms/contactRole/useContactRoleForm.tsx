@@ -72,7 +72,7 @@ export const useContactRoleForm = ({
       OpportunityContactRoles_IsPrimary: convertBooleanToString(
         values.contact.isPrimary
       ),
-      OpportunityContactRoles_Role: values.role,
+      OpportunityContactRoles_Role: values.role.name,
     };
     let newFormData: any = removeNullsFromObject(data);
 

@@ -53,6 +53,7 @@ export default async function Opportunities({
           <DataTable
             rows={opportunitiesList}
             columnDefType="opportunitiesList"
+            sortModel={[{ field: "Opportunities_CloseDate", sort: "desc" }]}
           />
         </React.Suspense>
       </div>

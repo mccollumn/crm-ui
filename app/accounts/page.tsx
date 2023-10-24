@@ -18,7 +18,19 @@ const Accounts = async ({ noTitle = false }) => {
       <ButtonNav path="/accounts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<p>Loading accounts...</p>}>
-          <DataTable rows={accountsList} columnDefType="accountsList" />
+          <DataTable
+            rows={accountsList}
+            columnDefType="accountsList"
+            filterModel={{
+              items: [
+                {
+                  field: "AccountsType_Description",
+                  operator: "equals",
+                  value: "Customer",
+                },
+              ],
+            }}
+          />
         </React.Suspense>
       </div>
     </>
