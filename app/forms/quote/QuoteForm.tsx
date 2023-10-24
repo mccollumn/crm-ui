@@ -72,7 +72,7 @@ export const QuoteForm = ({
     // Invalidate cached quote data
     await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
-    router.push(`/opportunities/view/${opportunityID}`);
+    router.back();
   };
 
   const onCancel = () => {

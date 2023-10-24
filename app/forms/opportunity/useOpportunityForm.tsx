@@ -116,7 +116,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
   ) => {
     const accountID =
       opportunityData?.OpportunityDetail.Opportunities_AccountId;
-    const accountData: AccountData = await (
+    const accountData: OpportunityAccountData = await (
       await fetch(`/api/accounts/${accountID}`)
     ).json();
     const firstYearContractAmount = calculateFirstYearContractAmount(
@@ -179,8 +179,9 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
       values.opportunityType,
       renewalGrowthPercentage
     );
+    console.log("accountData:", accountData);
     const territory = calculateTerritory(
-      accountData.AccountDetail.Accounts_Super_Region,
+      accountData.data.AccountDetail.Accounts_Super_Region,
       values.territory
     );
 
@@ -525,6 +526,10 @@ interface CalculatePFFunctionProps {
 }
 
 type CalculatePFFunction = ({}: CalculatePFFunctionProps) => number;
+
+type OpportunityAccountData = {
+  ["data"]: AccountData;
+};
 
 interface useOpportunityFormProps {
   /**
