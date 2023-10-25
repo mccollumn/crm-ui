@@ -179,7 +179,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
       values.opportunityType,
       renewalGrowthPercentage
     );
-    console.log("accountData:", accountData);
     const territory = calculateTerritory(
       accountData.data.AccountDetail.Accounts_Super_Region,
       values.territory
@@ -484,15 +483,17 @@ const calculateTotalBaseline = (
   baselineRenewalAmount: string | null | undefined,
   servicesRenewalAmount: string | null | undefined
 ) => {
-  if (!baselineRenewalAmount || !servicesRenewalAmount) return "0";
-  return String(Number(baselineRenewalAmount) + Number(servicesRenewalAmount));
+  return String(
+    Number(baselineRenewalAmount || 0) + Number(servicesRenewalAmount || 0)
+  );
 };
 
 const calculateRenewalGrowthPercentage = (
   totalBaseline: string | null | undefined,
   firstYearContractAmount: string | null | undefined
 ) => {
-  if (!totalBaseline || !firstYearContractAmount) return null;
+  if (!totalBaseline || Number(totalBaseline) === 0 || !firstYearContractAmount)
+    return null;
   return String(
     (Number(firstYearContractAmount) - Number(totalBaseline)) /
       Number(totalBaseline)
