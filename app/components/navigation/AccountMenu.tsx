@@ -10,11 +10,14 @@ import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 export default function AccountMenu() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [userInitials, setUserInitials] = React.useState("");
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,6 +27,19 @@ export default function AccountMenu() {
   const handleLogout = () => {
     router.push("/api/auth/signout");
   };
+
+  React.useEffect(() => {
+    const getUserInitials = async () => {
+      const session = await getSession();
+      const name = session?.user?.name;
+      if (!name) return "";
+      const initials = name.match(/(\b\S)?/g)?.join("") || "";
+      setUserInitials(initials);
+      return initials;
+    };
+    getUserInitials();
+  }, []);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -36,7 +52,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{userInitials}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
