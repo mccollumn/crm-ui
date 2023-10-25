@@ -7,6 +7,7 @@ export interface AccountData {
   TotalOrderValue: TotalOrderValue;
   Assets: Asset[];
   LicenseKeys: LicenseKey[];
+  SystemInformation: SystemInformation;
 }
 
 interface AccountDetail {
@@ -120,6 +121,17 @@ export interface LicenseKey {
   LicenseKeys_SystemStatus?: string | null;
   LicenseKeys_ParentKey?: string | null;
   LicenseKeys_KeyCreatedDate?: string | null;
+}
+
+interface SystemInformation {
+  Accounts_CreatedDate?: string | null;
+  Accounts_CreatedById?: string | null;
+  Created_By_Name?: string | null;
+  Accounts_CustomerSinceDate?: string | null;
+  Accounts_LastModifiedById?: string | null;
+  LastModified_By_Name?: string | null;
+  Accounts_LastModifiedDate?: string | null;
+  Accounts_MostRecentPurchaseDate?: string | null;
 }
 
 export type AccountFormData = {

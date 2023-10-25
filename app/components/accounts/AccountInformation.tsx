@@ -721,13 +721,29 @@ const getAccountInfo = async (accountID: string) => {
     // },
     system: {
       left: [
-        { label: "Created By", value: "" },
-        { label: "Customer Since Date", value: "" },
-        { label: "ODUI Notification Processed", value: "" },
+        {
+          label: "Created By",
+          value: accountData.SystemInformation.Created_By_Name,
+        },
+        {
+          label: "Customer Since Date",
+          value: formatDate(
+            accountData.SystemInformation.Accounts_CustomerSinceDate
+          ),
+        },
+        // { label: "ODUI Notification Processed", value: "" },
       ],
       right: [
-        { label: "Last Modified By", value: "" },
-        { label: "Most Recent Purchase Date", value: "" },
+        {
+          label: "Last Modified By",
+          value: accountData.SystemInformation.LastModified_By_Name,
+        },
+        {
+          label: "Most Recent Purchase Date",
+          value: formatDate(
+            accountData.SystemInformation.Accounts_MostRecentPurchaseDate
+          ),
+        },
       ],
     },
   };
