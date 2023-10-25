@@ -28,7 +28,7 @@ const Cases = async ({
       {!noTitle && <Title title="Cases" />}
       <ButtonNav path="/cases/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading cases...</p>}>
+        <React.Suspense fallback={<>Loading cases...</>}>
           <DataTable rows={rows} columnDefType="casesList" />
         </React.Suspense>
       </div>

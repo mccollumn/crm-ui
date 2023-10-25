@@ -22,7 +22,7 @@ const Contacts = async ({ accountID, noTitle = false }: ContactsProps) => {
       {!noTitle && <Title title="Contacts" />}
       <ButtonNav path="/contacts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading contacts...</p>}>
+        <React.Suspense fallback={<>Loading contacts...</>}>
           <DataTable rows={contactsList} columnDefType="contactsList" />
         </React.Suspense>
       </div>

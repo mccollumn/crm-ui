@@ -13,7 +13,7 @@ const CaseHistory = async ({ caseID }: CaseHistoryProps) => {
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading case history...</p>}>
+        <React.Suspense fallback={<>Loading case history...</>}>
           <DataTable rows={rows} columnDefType="caseHistory" />
         </React.Suspense>
       </div>

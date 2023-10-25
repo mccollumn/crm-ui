@@ -31,7 +31,7 @@ export default async function AccountSalesInvoices({
         New
       </ButtonNav>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading sales invoices...</p>}>
+        <React.Suspense fallback={<>Loading sales invoices...</>}>
           <DataTable
             rows={accountSalesInvoices}
             columnDefType="accountSalesInvoices"

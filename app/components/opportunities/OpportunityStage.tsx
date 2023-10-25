@@ -23,7 +23,7 @@ export default async function OpportunityStage({
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading stage history...</p>}>
+        <React.Suspense fallback={<>Loading stage history...</>}>
           <DataTable
             rows={opportunityStages}
             columnDefType="opportunityStages"

@@ -49,7 +49,7 @@ export default async function Opportunities({
       {!noTitle && <Title title="Opportunities" />}
       <ButtonNav path="/opportunities/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading opportunities...</p>}>
+        <React.Suspense fallback={<>Loading opportunities...</>}>
           <DataTable
             rows={opportunitiesList}
             columnDefType="opportunitiesList"

@@ -17,7 +17,7 @@ const CaseComments = async ({ caseID }: CaseCommentsProps) => {
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading cases...</p>}>
+        <React.Suspense fallback={<>Loading cases...</>}>
           <DataTable rows={rows} columnDefType="caseComments" data={caseData} />
         </React.Suspense>
       </div>

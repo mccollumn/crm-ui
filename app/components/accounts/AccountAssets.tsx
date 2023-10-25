@@ -17,7 +17,7 @@ const AccountAssets = async ({ accountID }: AccountAssetsProps) => {
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading assets...</p>}>
+        <React.Suspense fallback={<>Loading assets...</>}>
           <DataTable
             rows={accountAssets}
             columnDefType="accountAssets"

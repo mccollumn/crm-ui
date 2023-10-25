@@ -25,7 +25,7 @@ export default async function OpportunityProducts({
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading products...</p>}>
+        <React.Suspense fallback={<>Loading products...</>}>
           <DataTable
             rows={opportunityProducts}
             columnDefType="opportunityProducts"

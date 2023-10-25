@@ -13,7 +13,7 @@ const ContactHistory = async ({ contactID }: ContactHistoryProps) => {
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading contact history...</p>}>
+        <React.Suspense fallback={<>Loading contact history...</>}>
           <DataTable rows={rows} columnDefType="contactHistory" />
         </React.Suspense>
       </div>

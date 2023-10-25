@@ -17,7 +17,7 @@ const AccountLicenseKeys = async ({ accountID }: AccountLicenseKeysProps) => {
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading license keys...</p>}>
+        <React.Suspense fallback={<>Loading license keys...</>}>
           <DataTable
             rows={accountLicenseKeys}
             columnDefType="accountLicenseKeys"

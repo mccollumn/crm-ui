@@ -37,7 +37,7 @@ const QuoteProducts = async ({ quoteID }: QuoteProductsProps) => {
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading products...</p>}>
+        <React.Suspense fallback={<>Loading products...</>}>
           <DataTable
             rows={quoteProducts}
             columnDefType="quoteProducts"

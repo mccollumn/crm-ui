@@ -25,7 +25,7 @@ const OpportunityContactRoles = async ({
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading contact roles...</p>}>
+        <React.Suspense fallback={<>Loading contact roles...</>}>
           <DataTable
             rows={opportunityContactRoles}
             columnDefType="opportunityContactRoles"

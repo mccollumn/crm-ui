@@ -23,7 +23,7 @@ const OpportunityQuotes = async ({ opportunityID }: OpportunityQuotesProps) => {
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading quotes...</p>}>
+        <React.Suspense fallback={<>Loading quotes...</>}>
           <DataTable
             rows={opportunityQuotes}
             columnDefType="opportunityQuotes"

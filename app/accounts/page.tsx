@@ -17,7 +17,7 @@ const Accounts = async ({ noTitle = false }) => {
       {!noTitle && <Title title="Accounts" />}
       <ButtonNav path="/accounts/new">New</ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading accounts...</p>}>
+        <React.Suspense fallback={<>Loading accounts...</>}>
           <DataTable
             rows={accountsList}
             columnDefType="accountsList"

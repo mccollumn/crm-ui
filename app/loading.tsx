@@ -1,5 +1,10 @@
 const Loading = ({ label = "" }) => {
-  return <p>{`Loading ${label}...`}</p>;
+  return (
+    <>
+      {`Loading ${label}...`}
+      <br />
+    </>
+  );
 };
 
 export default Loading;

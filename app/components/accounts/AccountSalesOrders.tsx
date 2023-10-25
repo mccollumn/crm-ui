@@ -18,7 +18,7 @@ export default async function AccountSalesOrders({
         New
       </ButtonNav>
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading sales orders...</p>}>
+        <React.Suspense fallback={<>Loading sales orders...</>}>
           <DataTable
             rows={accountSalesOrders}
             columnDefType="accountSalesOrders"

@@ -34,7 +34,7 @@ export default async function QuoteFulfillment_CreatedByID({
         </ButtonNav>
       )}
       <div style={{ width: "100%" }}>
-        <React.Suspense fallback={<p>Loading fulfillments...</p>}>
+        <React.Suspense fallback={<>Loading fulfillments...</>}>
           <DataTable
             rows={isObjectEmpty(quoteFulfillment) ? [] : [quoteFulfillment]}
             columnDefType="quoteFulfillment"

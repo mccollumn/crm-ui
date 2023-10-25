@@ -20,7 +20,7 @@ const OpportunityActivities = async ({
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <React.Suspense fallback={<p>Loading activities...</p>}>
+        <React.Suspense fallback={<>Loading activities...</>}>
           <DataTable
             rows={opportunityActivities}
             columnDefType="opportunityActivities"
