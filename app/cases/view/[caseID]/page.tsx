@@ -9,6 +9,7 @@ import CaseInformation from "@/app/components/cases/CaseInformation";
 import CaseEmails from "@/app/components/cases/CaseEmails";
 import CaseHistory from "@/app/components/cases/CaseHistory";
 import { getCaseData } from "@/app/utils/getData";
+import Loading from "@/app/loading";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -34,7 +35,9 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
           >{`Case ${caseNumber}`}</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-info-content">
-          <CaseInformation caseID={caseID} />
+          <React.Suspense fallback={<Loading label="information" />}>
+            <CaseInformation caseID={caseID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -46,7 +49,9 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
           <Typography variant="h6">Case Comments</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-comments-content">
-          <CaseComments caseID={caseID} />
+          <React.Suspense fallback={<Loading label="case comments" />}>
+            <CaseComments caseID={caseID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -58,7 +63,9 @@ const CaseView = async ({ params }: { params: { caseID: string } }) => {
           <Typography variant="h6">Emails</Typography>
         </AccordionSummary>
         <AccordionDetails id="case-emails-content">
-          <CaseEmails caseID={caseID} />
+          <React.Suspense fallback={<Loading label="case emails" />}>
+            <CaseEmails caseID={caseID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>

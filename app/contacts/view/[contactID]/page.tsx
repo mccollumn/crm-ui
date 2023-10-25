@@ -10,6 +10,7 @@ import Cases from "@/app/cases/page";
 import ContactHistory from "@/app/components/contacts/ContactHistory";
 import { getContactData } from "@/app/utils/getData";
 import { ContactData } from "@/app/types/contacts";
+import Loading from "@/app/loading";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -32,7 +33,9 @@ const ContactView = async ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">{contactName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-info-content">
-          <ContactInformation contactID={contactID} />
+          <React.Suspense fallback={<Loading label="information" />}>
+            <ContactInformation contactID={contactID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>
@@ -56,7 +59,9 @@ const ContactView = async ({ params }: { params: { contactID: string } }) => {
           <Typography variant="h6">Cases</Typography>
         </AccordionSummary>
         <AccordionDetails id="contact-cases-content">
-          <Cases contactID={contactID} noTitle />
+          <React.Suspense fallback={<Loading label="cases" />}>
+            <Cases contactID={contactID} noTitle />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>

@@ -13,6 +13,7 @@ import AccountLicenseKeys from "@/app/components/accounts/AccountLicenseKeys";
 import AccountAssets from "@/app/components/accounts/AccountAssets";
 import { getAccountData } from "@/app/utils/getData";
 import Cases from "@/app/cases/page";
+import Loading from "@/app/loading";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -34,7 +35,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">{accountName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-info-content">
-          <AccountInformation accountID={accountID} />
+          <React.Suspense fallback={<Loading label="information" />}>
+            <AccountInformation accountID={accountID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -46,7 +49,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Contacts</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-contacts-content">
-          <Contacts accountID={accountID} noTitle />
+          <React.Suspense fallback={<Loading label="contacts" />}>
+            <Contacts accountID={accountID} noTitle />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -58,7 +63,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Cases</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-cases-content">
-          <Cases accountID={accountID} noTitle />
+          <React.Suspense fallback={<Loading label="cases" />}>
+            <Cases accountID={accountID} noTitle />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -70,7 +77,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Opportunities</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-opportunities-content">
-          <Opportunities accountID={accountID} noTitle />
+          <React.Suspense fallback={<Loading label="opportunities" />}>
+            <Opportunities accountID={accountID} noTitle />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -82,7 +91,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Sales Orders</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-orders-content">
-          <AccountSalesOrders accountID={accountID} />
+          <React.Suspense fallback={<Loading label="sales orders" />}>
+            <AccountSalesOrders accountID={accountID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* TODO: Update each of the following components once the API is finished */}
@@ -107,7 +118,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">Assets</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-assets-content">
-          <AccountAssets accountID={accountID} />
+          <React.Suspense fallback={<Loading label="assets" />}>
+            <AccountAssets accountID={accountID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -119,7 +132,9 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           <Typography variant="h6">License Keys</Typography>
         </AccordionSummary>
         <AccordionDetails id="account-keys-content">
-          <AccountLicenseKeys accountID={accountID} />
+          <React.Suspense fallback={<Loading label="license keys" />}>
+            <AccountLicenseKeys accountID={accountID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
     </div>

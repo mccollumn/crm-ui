@@ -4,17 +4,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import OpportunityInformation from "@/app/components/opportunities/OpportunityInformation";
-import OpportunityQuotes from "@/app/components/opportunities/OpportunityQuotes";
 import OpportunityContactRoles from "@/app/components/opportunities/OpportunityContactRole";
-import OpportunityActivities from "@/app/components/opportunities/OpportunityActivities";
-import OpportunityProducts from "@/app/components/opportunities/OpportunityProducts";
-import OpportunityStage from "@/app/components/opportunities/OpportunityStage";
-import { getOpportunityData, getQuoteData } from "@/app/utils/getData";
+import { getQuoteData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
 import QuoteInformation from "@/app/components/quotes/QuoteInformation";
 import QuoteProducts from "@/app/components/quotes/QuoteProducts";
 import QuoteFulfillment from "@/app/components/quotes/QuoteFulfillment";
+import Loading from "@/app/loading";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -27,14 +23,11 @@ const QuoteView = async ({
 }) => {
   const opportunityID = params.opportunityID;
   const quoteID = params.quoteID;
-  // const opportunityData = await getOpportunityData(opportunityID);
   const quoteData = await getQuoteData(quoteID);
   const opportunityName = unEscape(quoteData?.QuoteDetail?.Opportunities_Name);
 
   return (
     <div>
-      {/* TODO: All this needs to be updated. Was copied from opportunities. */}
-      {/* Contacts, Products, Fulfillment */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -44,7 +37,9 @@ const QuoteView = async ({
           <Typography variant="h6">{opportunityName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-info-content">
-          <QuoteInformation quoteID={quoteID} />
+          <React.Suspense fallback={<Loading label="information" />}>
+            <QuoteInformation quoteID={quoteID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -56,7 +51,9 @@ const QuoteView = async ({
           <Typography variant="h6">Contact Roles</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-contact-roles-content">
-          <OpportunityContactRoles opportunityID={opportunityID} />
+          <React.Suspense fallback={<Loading label="contact roles" />}>
+            <OpportunityContactRoles opportunityID={opportunityID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -68,7 +65,9 @@ const QuoteView = async ({
           <Typography variant="h6">Products</Typography>
         </AccordionSummary>
         <AccordionDetails id="quote-products-content">
-          <QuoteProducts quoteID={quoteID} />
+          <React.Suspense fallback={<Loading label="products" />}>
+            <QuoteProducts quoteID={quoteID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -80,7 +79,9 @@ const QuoteView = async ({
           <Typography variant="h6">Quote Fulfillment</Typography>
         </AccordionSummary>
         <AccordionDetails id="quote-fulfillment-content">
-          <QuoteFulfillment quoteID={quoteID} />
+          <React.Suspense fallback={<Loading label="fulfillment" />}>
+            <QuoteFulfillment quoteID={quoteID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
     </div>

@@ -12,6 +12,7 @@ import OpportunityProducts from "@/app/components/opportunities/OpportunityProdu
 import OpportunityStage from "@/app/components/opportunities/OpportunityStage";
 import { getOpportunityData } from "@/app/utils/getData";
 import { unEscape } from "@/app/utils/utils";
+import Loading from "@/app/loading";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -39,7 +40,9 @@ const OpportunityView = async ({
           <Typography variant="h6">{opportunityName}</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-info-content">
-          <OpportunityInformation opportunityID={opportunityID} />
+          <React.Suspense fallback={<Loading label="information" />}>
+            <OpportunityInformation opportunityID={opportunityID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -51,7 +54,9 @@ const OpportunityView = async ({
           <Typography variant="h6">Quotes</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-quotes-content">
-          <OpportunityQuotes opportunityID={opportunityID} />
+          <React.Suspense fallback={<Loading label="quotes" />}>
+            <OpportunityQuotes opportunityID={opportunityID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -63,7 +68,9 @@ const OpportunityView = async ({
           <Typography variant="h6">Contact Roles</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-contact-roles-content">
-          <OpportunityContactRoles opportunityID={opportunityID} />
+          <React.Suspense fallback={<Loading label="contact roles" />}>
+            <OpportunityContactRoles opportunityID={opportunityID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>
@@ -87,7 +94,9 @@ const OpportunityView = async ({
           <Typography variant="h6">Products</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-products-content">
-          <OpportunityProducts opportunityID={opportunityID} />
+          <React.Suspense fallback={<Loading label="products" />}>
+            <OpportunityProducts opportunityID={opportunityID} />
+          </React.Suspense>
         </AccordionDetails>
       </Accordion>
       {/* <Accordion>
