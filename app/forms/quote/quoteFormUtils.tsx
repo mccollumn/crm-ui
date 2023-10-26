@@ -89,7 +89,6 @@ export const createQuoteFormData = async (
 
   return {
     ...initialOpportunityFormData,
-    // TODO: Fill in missing info
     id: quoteData.QuoteDetail.Quotes_ID,
     name: quoteData.QuoteDetail.Quotes_Name,
     owner: {

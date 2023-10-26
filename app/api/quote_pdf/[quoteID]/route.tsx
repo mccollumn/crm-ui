@@ -6,7 +6,6 @@ export async function GET(
   { params }: { params: { quoteID: string } }
 ) {
   const quoteID = params.quoteID;
-  console.log("Quote ID:", quoteID);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/pdf/quote/${quoteID}`
   );

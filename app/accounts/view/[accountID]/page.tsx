@@ -96,7 +96,6 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           </React.Suspense>
         </AccordionDetails>
       </Accordion>
-      {/* TODO: Update each of the following components once the API is finished */}
       {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

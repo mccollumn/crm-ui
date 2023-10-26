@@ -163,7 +163,6 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
   );
 };
 
-// TODO: Fill in missing values
 const getQuoteInfo = async (
   quoteData: QuoteData,
   accountData?: AccountData

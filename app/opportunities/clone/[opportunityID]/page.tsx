@@ -27,7 +27,6 @@ const CloneOpportunity = async ({
 
     // Generate new opportunity data (excluding quotes) and submit
     const newOpportunityID = await cloneOpportunity(opportunityData);
-    console.log("Clone newOpportunityID:", newOpportunityID);
 
     // Iterate over the original opportunity quotes
     // opportunityData.OpportunityQuotes.forEach(async (quote) => {
@@ -35,7 +34,6 @@ const CloneOpportunity = async ({
     //   const quoteData: QuoteData = await getQuoteData(quote.Quotes_ID);
     //   // Generate new quote data and submit
     //   const newQuoteID = await cloneQuote(quoteData, newOpportunityID.ID);
-    //   console.log("Clone newQuoteID:", newQuoteID);
     //   // Iterate over each quote product
     //   quoteData.QuoteProducts.forEach(async (product) => {
     //     // Get data for existing quote product
@@ -45,7 +43,6 @@ const CloneOpportunity = async ({
     //       productData,
     //       newQuoteID.ID
     //     );
-    //     console.log("Clone newQuoteProductID:", newQuoteProductID);
     //   });
     // });
 
@@ -135,9 +132,6 @@ const cloneOpportunity = async (opportunityData: OpportunityData) => {
     }),
   };
 
-  console.log("Clone opportunityData:", opportunityData);
-  console.log("Clone newOpportunity:", JSON.stringify(newOpportunity));
-
   const responseData = await submitNewOpportunity(newOpportunity);
   return responseData;
 };
@@ -220,8 +214,6 @@ const cloneQuoteProduct = async (
       ),
     }),
   };
-
-  // console.log("cloneQuoteProduct data:", JSON.stringify(newQuoteProduct));
 
   const responseData = await submitNewQuoteProduct(newQuoteProduct);
   return responseData;

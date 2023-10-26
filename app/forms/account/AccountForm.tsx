@@ -77,8 +77,6 @@ export const AccountForm = ({
     router.back();
   };
 
-  console.log("Account form options:", menuOptions);
-
   return (
     <>
       <Backdrop
