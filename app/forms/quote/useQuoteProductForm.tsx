@@ -85,6 +85,7 @@ export const useQuoteProductForm = ({
             name: product.Product2_Name,
             code: product.Product2_ProductCode,
             description: product.Product2_ProductDescriptionLong,
+            isActive: product.Product2_IsActive,
           };
         });
         setCustomMenuOptions("Product", options);
@@ -179,6 +180,10 @@ export const useQuoteProductForm = ({
         QuoteProducts_SKUGroup: values.skuGroup,
         QuoteProducts_StartDate: convertDateToISOString(values.startDate),
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        QuoteID: values?.quote?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -197,21 +202,12 @@ export const useQuoteProductForm = ({
             quoteProductData.QuoteProductDetail.QuoteProducts_QuoteID,
         },
         SubmissionDetails: {
-          QuoteProducts_ID:
-            quoteProductData.QuoteProductDetail.QuoteProducts_ID,
-          QuoteProducts_QuoteID:
-            quoteProductData.QuoteProductDetail.QuoteProducts_QuoteID,
+          ...newFormData.SubmissionDetails,
+          ProductID: quoteProductData.QuoteProductDetail.QuoteProducts_ID,
+          QuoteID: quoteProductData.QuoteProductDetail.QuoteProducts_QuoteID,
         },
       };
     }
-
-    newFormData = {
-      ...newFormData,
-      SubmissionDetails: {
-        ...newFormData.SubmissionDetails,
-        UserID: user?.id || null,
-      },
-    };
 
     return newFormData;
   };

@@ -117,6 +117,10 @@ export const useQuoteFulfillmentForm = ({
         Assets_SupportPlanEnd: convertDateToISOString(values.support.endDate),
         Assets_SupportPlanType: values.support.planType,
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        QuoteID: values?.quote?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -145,9 +149,9 @@ export const useQuoteFulfillmentForm = ({
       ...newFormData,
       SubmissionDetails: {
         ...newFormData.SubmissionDetails,
-        UserID: user?.id || null,
         AccountID: accountData?.AccountDetail?.Accounts_AccountID || null,
         OpportunityID: quoteData?.QuoteDetail?.Quotes_OpportunityID || null,
+        QuoteID: quoteData.QuoteDetail.Quotes_ID || null,
       },
     };
 

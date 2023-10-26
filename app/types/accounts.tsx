@@ -143,7 +143,7 @@ export type AccountFormData = {
     name?: string | null;
   };
   type: {
-    id?: string | null;
+    display?: string | null;
     value?: string | null;
   };
   phone?: string | null;

@@ -34,7 +34,11 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
   }, []);
 
   const getMenuOptions = React.useCallback(
-    (menu: string, dependentValue: string = "") => {
+    (
+      menu: string,
+      dependentValue: string = "",
+      type: "string" | "object" = "string"
+    ) => {
       if (!menuItems) return [];
       const optionObjs = menuItems.filter((item: MenuItem) => {
         if (Array.isArray(item.Menu_DependantValue)) {
@@ -49,6 +53,15 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
           );
         }
       });
+      if (type === "object") {
+        return optionObjs.map((item: MenuItem) => {
+          return {
+            display: item.Menu_Display,
+            value: item.Menu_Value,
+            order: item.Menu_Order,
+          };
+        });
+      }
       return optionObjs.map((item: MenuItem) => item.Menu_Display);
     },
     [menuItems]
@@ -56,11 +69,18 @@ export const useForm = ({ menuItems, initialMenuOptions }: UseFormProps) => {
 
   /**
    * Sets the options for the provided menu name with the specified dependent value.
-   * The dependent value can be a string or array of strings.
+   * @param menu Name of the menu.
+   * @param dependentValue Dependant value that you want options for. Can be a string or array of strings.
+   * @param type Indicates whether an array of display strings or an array of objects (containing display, value, and order strings) should be returned.
+   * @returns Array of menu options.
    */
   const setMenuOptions = React.useCallback(
-    (menu: string, dependentValue: string = "") => {
-      const optionsArray = getMenuOptions(menu, dependentValue);
+    (
+      menu: string,
+      dependentValue: string = "",
+      type: "string" | "object" = "string"
+    ) => {
+      const optionsArray = getMenuOptions(menu, dependentValue, type);
       setOptions((prev: any) => {
         return { ...prev, [menu]: optionsArray };
       });

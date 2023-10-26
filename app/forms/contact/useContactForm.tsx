@@ -170,6 +170,10 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         // Contacts_LastReferencedDate: null,
         // Contacts_LastViewedDate: null,
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID: values?.account?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -203,7 +207,6 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID: contactData.ContactDetail.Contacts_AccountId || null,
           ContactID: contactData.ContactDetail.Contacts_ID || null,
         },

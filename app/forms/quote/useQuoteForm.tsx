@@ -269,6 +269,11 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
       //     SalesOrders_Total: "32608.00",
       //   },
       // ],
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        OpportunityID: values?.opportunity?.id || null,
+        OwnerID: values?.owner?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -302,9 +307,9 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID: quoteData.QuoteDetail.Opportunities_AccountID || null,
           OpportunityID: quoteData.QuoteDetail.Quotes_OpportunityID || null,
+          OwnerID: quoteData.QuoteDetail.Quotes_OwnerID || null,
           QuoteID: quoteData.QuoteDetail.Quotes_ID || null,
         },
       };

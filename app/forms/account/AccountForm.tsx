@@ -160,11 +160,19 @@ export const AccountForm = ({
                 label="Account Type"
                 name="type"
                 autocompleteProps={{
-                  getOptionLabel: (option) => option.value || "",
+                  // getOptionLabel: (option) => option.value || "",
+                  // renderOption: (props, option) => {
+                  //   return (
+                  //     <li {...props} key={option.id}>
+                  //       {option.value}
+                  //     </li>
+                  //   );
+                  // },
+                  getOptionLabel: (option) => option.display || "",
                   renderOption: (props, option) => {
                     return (
-                      <li {...props} key={option.id}>
-                        {option.value}
+                      <li {...props} key={option.value}>
+                        {option.display}
                       </li>
                     );
                   },

@@ -21,6 +21,10 @@ export const useCaseCommentForm = () => {
       CaseComments_ID: values.caseCommentID,
       CaseComments_CommentBody: values.comment,
       CaseComments_IsPublic: convertBooleanToString(values.isPublic),
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        CaseID: values?.caseID || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -36,9 +40,9 @@ export const useCaseCommentForm = () => {
       newFormData = {
         ...newFormData,
         CaseComments_ID: values.caseCommentID,
+        CaseComments_CaseID: caseCommentData.CaseComments_CaseID || null,
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           CaseCommentID: caseCommentData.CaseComments_ID || null,
           CaseID: caseCommentData.CaseComments_CaseID || null,
         },

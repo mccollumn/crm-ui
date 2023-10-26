@@ -114,8 +114,7 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     values: OpportunityFormData,
     opportunityData?: OpportunityData
   ) => {
-    const accountID =
-      opportunityData?.OpportunityDetail.Opportunities_AccountId;
+    const accountID = values.account.id;
     const accountData: OpportunityAccountData = await (
       await fetch(`/api/accounts/${accountID}`)
     ).json();
@@ -295,6 +294,10 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
           values.stage.stageFiveDate
         ),
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID: values?.account?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -328,7 +331,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID:
             opportunityData.OpportunityDetail.Opportunities_AccountId || null,
           OpportunityID:

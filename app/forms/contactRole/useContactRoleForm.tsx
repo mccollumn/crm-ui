@@ -73,6 +73,15 @@ export const useContactRoleForm = ({
         values.contact.isPrimary
       ),
       OpportunityContactRoles_Role: values.role.name,
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID:
+          opportunityData?.OpportunityDetail?.Opportunities_AccountId || null,
+        OpportunityID:
+          opportunityData?.OpportunityDetail?.Opportunities_ID || null,
+        ContactID: values?.contact?.id || null,
+        ContactRoleID: values?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -104,6 +113,8 @@ export const useContactRoleForm = ({
           opportunityData?.OpportunityDetail.Opportunities_AccountId || null,
         OpportunityID:
           opportunityData?.OpportunityDetail.Opportunities_ID || null,
+        ContactID: values.contact.id || null,
+        ContactRoleID: values.id || null,
       },
     };
 

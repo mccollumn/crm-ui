@@ -46,22 +46,6 @@ useAccountFormProps) => {
   });
 
   React.useEffect(() => {
-    // Account Types
-    const setAccounts = async () => {
-      try {
-        if (!menuItems) return [];
-        const options = menuItems
-          .filter((item: MenuItem) => item.Menu_Name === "AccountType")
-          .map((option) => {
-            return { id: option.Menu_Value, value: option.Menu_Display };
-          });
-        setCustomMenuOptions("AccountType", options);
-      } catch {
-        console.error("Could not retrieve list of account types");
-      }
-    };
-    setAccounts();
-
     // Account Owner
     const setOwners = async () => {
       try {
@@ -81,7 +65,7 @@ useAccountFormProps) => {
 
     // Set menu options that are already known (i.e. aren't based on user input)
     // setMenuOptions("AccountRecordType");
-    // appendMenuOptions("AccountType");
+    setMenuOptions("AccountType", "", "object");
     // setMenuOptions("MigrateToNewOrg");
     // setMenuOptions("Territory");
     setMenuOptions("Region");
@@ -108,8 +92,8 @@ useAccountFormProps) => {
         OwnerName: values.owner.name,
         Accounts_Phone: values.phone,
         Accounts_Super_Region: values.superRegion,
-        Accounts_Type: values.type.id,
-        AccountsType_Description: values.type.value,
+        Accounts_Type: values.type.value,
+        AccountsType_Description: values.type.display,
       },
       AddressInformation: {
         AccountsAddress_ID: values.address.id,
@@ -184,6 +168,9 @@ useAccountFormProps) => {
         AccountsTotal_Services: values.orderValue.services,
         AccountsTotal_Training: values.orderValue.training,
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -200,7 +187,6 @@ useAccountFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID: accountData.AccountDetail.Accounts_AccountID || null,
         },
       };

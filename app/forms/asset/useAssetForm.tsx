@@ -145,6 +145,11 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
         ),
         Assets_PV: values.pageViews,
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID: values?.account?.id || null,
+        OpportunityID: values?.opportunity?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -170,7 +175,6 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID: assetData.AssetDetail.Assets_AccountID || null,
           AssetID: assetData.AssetDetail.Assets_ID || null,
           OpportunityID: assetData.AssetDetail.Assets_OpportunityID || null,

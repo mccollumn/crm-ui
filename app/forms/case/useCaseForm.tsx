@@ -8,7 +8,7 @@ import {
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
-import { CaseCommentFormData, CaseData, CaseFormData } from "@/app/types/cases";
+import { CaseData, CaseFormData } from "@/app/types/cases";
 
 export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
   const initialMenuOptions = {
@@ -166,33 +166,11 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
         Cases_Subject: values.subject,
         Cases_Type: values.type,
       },
-    };
-    let newFormData: any = removeNullsFromObject(data);
-
-    // We only want to submit form values that were modified
-    newFormData = getChangedValues(newFormData, caseData);
-
-    // Add the case ID back in
-    if (caseData) {
-      newFormData = {
-        ...newFormData,
-        CaseInformation: {
-          ...newFormData.CaseInformation,
-          Cases_ID: caseData.CaseInformation.Cases_ID,
-        },
-      };
-    }
-    return newFormData;
-  };
-
-  const createCaseCommentFormSubmissionData = (
-    values: CaseCommentFormData,
-    caseData?: CaseData
-  ) => {
-    const data = {
-      CaseComments_ID: values.caseID,
-      CaseComments_CommentBody: values.comment,
-      CaseComments_IsPublic: convertBooleanToString(values.isPublic),
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID: values?.account?.id || null,
+        OwnerID: values?.owner?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -209,9 +187,9 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
-          AccountID: caseData.CaseInformation.Cases_AccountID || null,
           CaseID: caseData.CaseInformation.Cases_ID || null,
+          AccountID: caseData.CaseInformation.Cases_AccountID || null,
+          OwnerID: caseData.CaseInformation.Cases_OwnerId || null,
         },
       };
     }
@@ -227,7 +205,6 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     menuOptions,
     accountSelected,
     createCaseFormSubmissionData,
-    createCaseCommentFormSubmissionData,
   };
 };
 

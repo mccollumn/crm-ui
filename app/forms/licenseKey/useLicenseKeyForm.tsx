@@ -127,6 +127,10 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
         ),
         LicenseKeys_KeyCreatedBy: values.system.createdBy.name,
       },
+      SubmissionDetails: {
+        UserID: user?.id || null,
+        AccountID: values?.account?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -161,7 +165,6 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
-          UserID: user?.id || null,
           AccountID:
             licenseKeyData.LicenseKeyDetail.LicenseKeys_AccountId || null,
         },

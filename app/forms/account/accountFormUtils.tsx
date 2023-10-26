@@ -19,7 +19,7 @@ const generateInitialAccountFormData = async () => {
     // },
     owner: defaultOwner,
     type: {
-      id: null,
+      display: null,
       value: null,
       //   lastChangeDate: null,
     },

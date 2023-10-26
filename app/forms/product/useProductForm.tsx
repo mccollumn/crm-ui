@@ -85,6 +85,9 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
       OpportunityLineItems_Discount: values.discount,
       OpportunityLineItems_TotalPrice: values.totalPrice,
       OpportunityLineItems_UnitPrice: values.product.unitPrice,
+      SubmissionDetails: {
+        UserID: user?.id || null,
+      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -111,7 +114,6 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
       OpportunityProducts: [newFormData],
       SubmissionDetails: {
         ...newFormData.SubmissionDetails,
-        UserID: user?.id || null,
         AccountID:
           opportunityData?.OpportunityDetail.Opportunities_AccountId || null,
         OpportunityID:
