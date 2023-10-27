@@ -75,7 +75,7 @@ export const LicenseKeyForm = ({
     await fetch("/api/revalidate/tag?tag=licenseKey");
 
     setIsLoading(false);
-    router.push(`/accounts/view/${accountID}`);
+    router.back();
   };
 
   const onCancel = () => {

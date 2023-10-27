@@ -172,9 +172,9 @@ export const QuoteFulfillmentForm = ({
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre
-                          style={{ margin: 0 }}
-                        >{` - ${option.type} (${option.status})`}</pre>
+                        <pre style={{ margin: 0 }}>{`${
+                          option.type ? ` - ${option.type}` : ""
+                        }${option.status ? ` (${option.status})` : ""}`}</pre>
                       </li>
                     );
                   },
