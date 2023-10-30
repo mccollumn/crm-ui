@@ -51,6 +51,11 @@ const CloneOpportunity = async ({
 
   const newOpportunityID = await clone();
 
+  // Invalidate cached opportunity data
+  await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/revalidate/tag?tag=opportunity`
+  );
+
   redirect(
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/opportunities/view/${newOpportunityID.ID}`
   );
@@ -91,7 +96,7 @@ const cloneOpportunity = async (opportunityData: OpportunityData) => {
       Opportunities_ContainsNewBusiness: null,
       Opportunities_ForecastStatus: null,
       Opportunities_Probability: null,
-      Opportunities_StageName: null,
+      Opportunities_StageName: "04 Commit",
     }),
     OpportunitySolutionsOverview: removeNullsFromObject({
       ...opportunityData.OpportunitySolutionsOverview,
