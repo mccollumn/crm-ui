@@ -526,6 +526,11 @@ export const DataTable = ({
         flex: 1,
       },
       {
+        field: "Opportunities_StageName",
+        headerName: "Stage",
+        width: 175,
+      },
+      {
         field: "Opportunities_Amount",
         headerName: "Amount",
         type: "number",
