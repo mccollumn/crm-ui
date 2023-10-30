@@ -31,7 +31,9 @@ export const CaseCommentForm = ({
     );
     console.log("Success values", values);
     console.log("Submitted Data:", data);
-    const url = id ? "/api/cases/update/comment" : "/api/cases/insert/comment";
+    const url = caseCommentData
+      ? "/api/cases/update/comment"
+      : "/api/cases/insert/comment";
     const request = new Request(url, {
       method: "POST",
       body: JSON.stringify(data),
