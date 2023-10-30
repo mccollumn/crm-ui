@@ -211,6 +211,11 @@ export const getChangedValues = (formData: any, origData: any) => {
   if (!origData) return formData;
   let result = {};
   Object.keys(formData).forEach((key) => {
+    // Don't touch SubmissionDetails
+    if (key === "SubmissionDetails") {
+      result = { ...result, [key]: formData[key] };
+    }
+    // Only include data that is different between formData and origData
     if (formData[key] && typeof formData[key] === "object") {
       const subObj = formData[key];
       let subResult = {};
