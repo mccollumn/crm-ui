@@ -1,29 +1,26 @@
+"use client";
+
+import React from "react";
 import { OpportunityData } from "@/app/types/opportunities";
 import { QuoteData, QuoteProductData } from "@/app/types/quotes";
-import {
-  getOpportunityData,
-  getQuoteData,
-  getQuoteProductData,
-  submitNewOpportunity,
-  submitNewQuote,
-  submitNewQuoteProduct,
-} from "@/app/utils/getData";
-import { add } from "date-fns";
 import { removeNullsFromObject, unEscape } from "@/app/utils/utils";
-import { redirect } from "next/navigation";
+import { add } from "date-fns";
+import { useRouter } from "next/navigation";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-const CloneOpportunity = async ({
+const CloneOpportunity = ({
   params,
 }: {
   params: { opportunityID: string };
 }) => {
   const opportunityID = params.opportunityID;
+  const router = useRouter();
 
   const clone = async () => {
     // Get data for existing opportunity
-    const opportunityData: OpportunityData = await getOpportunityData(
-      opportunityID
-    );
+    const response = await fetch(`/api/opportunities/${opportunityID}`);
+    const responseData = await response.json();
+    const opportunityData = responseData.data;
 
     // Generate new opportunity data (excluding quotes) and submit
     const newOpportunityID = await cloneOpportunity(opportunityData);
@@ -49,15 +46,32 @@ const CloneOpportunity = async ({
     return newOpportunityID;
   };
 
-  const newOpportunityID = await clone();
+  const opportunityIDRef = React.useRef(null);
+  React.useEffect(() => {
+    const runClone = async () => {
+      const newOpportunityID = await clone();
+      opportunityIDRef.current = newOpportunityID.ID;
 
-  // Invalidate cached opportunity data
-  await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/revalidate/tag?tag=opportunity`
-  );
+      // Invalidate cached opportunity data
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/revalidate/tag?tag=opportunity`
+      );
 
-  redirect(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/opportunities/view/${newOpportunityID.ID}`
+      router.push(`/opportunities/view/${opportunityIDRef.current}`);
+    };
+    if (!opportunityIDRef.current) {
+      runClone();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={true}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
   );
 };
 
@@ -137,8 +151,15 @@ const cloneOpportunity = async (opportunityData: OpportunityData) => {
     }),
   };
 
-  const responseData = await submitNewOpportunity(newOpportunity);
-  return responseData;
+  const request = new Request("/api/opportunities/insert", {
+    method: "POST",
+    body: JSON.stringify(newOpportunity),
+  });
+  const response = await fetch(request);
+  const responseData = await response.json();
+  const newOpportunityData = responseData.res;
+
+  return newOpportunityData;
 };
 
 /**
@@ -180,8 +201,15 @@ const cloneQuote = async (quoteData: QuoteData, opportunityID: string) => {
     QuoteContacts: quoteData.QuoteContacts,
   };
 
-  const responseData = await submitNewQuote(newQuote);
-  return responseData;
+  const request = new Request("/api/opportunities/insert/quote", {
+    method: "POST",
+    body: JSON.stringify(newQuote),
+  });
+  const response = await fetch(request);
+  const responseData = await response.json();
+  const newQuoteData = responseData.res;
+
+  return newQuoteData;
 };
 
 /**
@@ -220,8 +248,15 @@ const cloneQuoteProduct = async (
     }),
   };
 
-  const responseData = await submitNewQuoteProduct(newQuoteProduct);
-  return responseData;
+  const request = new Request("/api/opportunities/insert/quote/product", {
+    method: "POST",
+    body: JSON.stringify(newQuoteProduct),
+  });
+  const response = await fetch(request);
+  const responseData = await response.json();
+  const newQuoteProductData = responseData.res;
+
+  return newQuoteProductData;
 };
 
 export default CloneOpportunity;

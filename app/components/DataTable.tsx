@@ -20,6 +20,7 @@ import Link from "next/link";
 import { DatePicker } from "@mui/x-date-pickers";
 import DateFnsProvider from "../providers/DateFnsProvider";
 import { Box } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 type columnDefTypes =
   | "casesList"
@@ -54,6 +55,8 @@ export const DataTable = ({
   sortModel,
   ...props
 }: DataTableProps) => {
+  const router = useRouter();
+
   /**
    * Column def configs are here, rather than being passed down from the parent,
    * so that the parent components can be rendered server-side.
@@ -986,6 +989,10 @@ export const DataTable = ({
       }),
     [columnDefType, columnDefs]
   );
+
+  React.useEffect(() => {
+    router.refresh();
+  }, [router]);
 
   return (
     <DataGrid
