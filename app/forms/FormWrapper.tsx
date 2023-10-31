@@ -24,8 +24,13 @@ export const FormWrapper = ({
     <FormContainer onSuccess={onSuccess} defaultValues={defaultValues}>
       <FormWrapperStyled className="form-wrapper-container">
         <FormTitle title={title} />
-
         <FormDescription description={description} />
+
+        <FormButtonRow
+          submitButtonText={submitButtonText}
+          resetButtonText={resetButtonText}
+          onCancel={onCancel}
+        />
 
         {children}
 

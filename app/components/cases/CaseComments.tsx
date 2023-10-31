@@ -18,7 +18,12 @@ const CaseComments = async ({ caseID }: CaseCommentsProps) => {
       </ButtonNav>
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading cases...</>}>
-          <DataTable rows={rows} columnDefType="caseComments" data={caseData} />
+          <DataTable
+            rows={rows}
+            columnDefType="caseComments"
+            data={caseData}
+            sortModel={[{ field: "CaseComments_CreatedDate", sort: "desc" }]}
+          />
         </React.Suspense>
       </div>
     </>

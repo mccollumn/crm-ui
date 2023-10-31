@@ -8,7 +8,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { InformationSection } from "../InformationSection";
 import { CaseData } from "../../types/cases";
-import { formatCheckbox, formatCurrency, formatDate } from "@/app/utils/utils";
+import {
+  formatCheckbox,
+  formatCurrency,
+  formatDate,
+  unEscape,
+} from "@/app/utils/utils";
 import { getCaseData } from "@/app/utils/getData";
 import Link from "next/link";
 
@@ -200,7 +205,7 @@ const getCaseInfo = async (caseID: string) => {
         { label: "Bug Number", value: caseData.CaseProfile.Cases_BugNumber },
         {
           label: "Bug Description",
-          value: caseData.CaseProfile.Cases_BugDescription,
+          value: unEscape(caseData.CaseProfile.Cases_BugDescription || ""),
         },
       ],
       right: [
@@ -217,7 +222,7 @@ const getCaseInfo = async (caseID: string) => {
       fullWidth: [
         {
           label: "Description",
-          value: caseData.CaseProfile.Cases_Description,
+          value: unEscape(caseData.CaseProfile.Cases_Description || ""),
         },
         // { label: "Internal Comments", value: "" },
         // { label: "Visible in Self-Service Portal", value: "" },
