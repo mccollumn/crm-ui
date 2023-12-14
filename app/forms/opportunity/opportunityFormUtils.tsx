@@ -1,15 +1,18 @@
-import { convertStringToArray, unEscape } from "@/app/utils/utils";
+import { convertStringToArray, formatDate, unEscape } from "@/app/utils/utils";
 import {
   OpportunityData,
   OpportunityFormData,
 } from "@/app/types/opportunities";
 import { getDefaultOwner } from "@/app/utils/forms";
+import { AccountData } from "@/app/types/accounts";
 
 /**
  * Generates an object containing the default values for a new/empty opportunity form.
  * @returns Initial opportunity form data.
  */
-const generateInitialOpportunityFormData = async () => {
+const generateInitialOpportunityFormData = async (
+  accountData?: AccountData | null
+) => {
   const defaultOwner = await getDefaultOwner();
 
   const initialOpportunityFormData: OpportunityFormData = {
@@ -17,8 +20,8 @@ const generateInitialOpportunityFormData = async () => {
     name: null,
     owner: defaultOwner,
     account: {
-      id: null,
-      name: null,
+      id: accountData?.AccountDetail.Accounts_AccountID || null,
+      name: accountData?.AccountDetail.Accounts_Name || null,
     },
     opportunityType: null,
     product: {
@@ -70,10 +73,13 @@ const generateInitialOpportunityFormData = async () => {
  * @param opportunityData Data from an existing opportunity. (optional)
  * @returns Opportunity data object.
  */
-export const createOpportunityFormData = async (
-  opportunityData?: OpportunityData
-) => {
-  const initialOpportunityFormData = await generateInitialOpportunityFormData();
+export const createOpportunityFormData = async ({
+  opportunityData,
+  accountData,
+}: CreateOpportunityFormDataProps) => {
+  const initialOpportunityFormData = await generateInitialOpportunityFormData(
+    accountData
+  );
 
   if (!opportunityData) {
     return initialOpportunityFormData;
@@ -92,7 +98,7 @@ export const createOpportunityFormData = async (
       name: opportunityData.OpportunityDetail.Accounts_Name,
     },
     opportunityType:
-      opportunityData.OpportunityDetail.Opportunities_CommissionCategory,
+      opportunityData.OpportunityDetail.Opportunities_OpportunityType,
     product: {
       name: opportunityData.OpportunityDetail.Opportunities_Product,
       family: opportunityData.OpportunityDetail.Opportunities_ProductFamily,
@@ -106,8 +112,12 @@ export const createOpportunityFormData = async (
     fastNotes:
       opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps,
     amount: opportunityData.OpportunityDetail.Opportunities_Amount,
-    closeDate: opportunityData.OpportunityDetail.Opportunities_CloseDate,
-    probability: opportunityData.OpportunityDetail.Opportunities_Probability,
+    closeDate: opportunityData.OpportunityDetail.Opportunities_CloseDate
+      ? formatDate(opportunityData.OpportunityDetail.Opportunities_CloseDate)
+      : null,
+    probability: Number(
+      opportunityData.OpportunityDetail.Opportunities_Probability
+    ),
     forecastStatus:
       opportunityData.OpportunityDetail.Opportunities_ForecastStatus,
     term: opportunityData.OpportunityDetail.Opportunities_Term,
@@ -125,9 +135,13 @@ export const createOpportunityFormData = async (
       multiYearAddBack: !!Number(
         opportunityData.OpportunityRenewalInfo.Opportunities_MultiYearaddback
       ),
-      baselineRenewalDate:
-        opportunityData.OpportunityRenewalInfo
-          .Opportunities_BaselineRenewalDate,
+      baselineRenewalDate: opportunityData.OpportunityRenewalInfo
+        .Opportunities_BaselineRenewalDate
+        ? formatDate(
+            opportunityData.OpportunityRenewalInfo
+              .Opportunities_BaselineRenewalDate
+          )
+        : null,
       status:
         opportunityData.OpportunityRenewalInfo.Opportunities_RenewalStatus,
       comments:
@@ -154,16 +168,46 @@ export const createOpportunityFormData = async (
     },
     stage: {
       name: opportunityData.OpportunityDetail.Opportunities_StageName,
-      stageOneDate:
-        opportunityData.OpportunityStageTracking.Opportunities_Stage1Date,
-      stageTwoDate:
-        opportunityData.OpportunityStageTracking.Opportunities_Stage2Date,
-      stageThreeDate:
-        opportunityData.OpportunityStageTracking.Opportunities_Stage3Date,
-      stageFourDate:
-        opportunityData.OpportunityStageTracking.Opportunities_Stage4Date,
-      stageFiveDate:
-        opportunityData.OpportunityStageTracking.Opportunities_Stage5Date,
+      stageOneDate: opportunityData.OpportunityStageTracking
+        .Opportunities_Stage1Date
+        ? formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage1
+          )
+        : null,
+      stageTwoDate: opportunityData.OpportunityStageTracking
+        .Opportunities_Stage2Date
+        ? formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage2
+          )
+        : null,
+      stageThreeDate: opportunityData.OpportunityStageTracking
+        .Opportunities_Stage3Date
+        ? formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage3
+          )
+        : null,
+      stageFourDate: opportunityData.OpportunityStageTracking
+        .Opportunities_Stage4Date
+        ? formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage4
+          )
+        : null,
+      stageFiveDate: opportunityData.OpportunityStageTracking
+        .Opportunities_Stage5Date
+        ? formatDate(
+            opportunityData.OpportunityStageTracking
+              .Opportunities_MostRecentStage5
+          )
+        : null,
     },
   };
 };
+
+interface CreateOpportunityFormDataProps {
+  opportunityData?: OpportunityData;
+  accountData?: AccountData | null;
+}

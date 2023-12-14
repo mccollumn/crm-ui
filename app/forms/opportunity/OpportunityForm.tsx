@@ -16,8 +16,11 @@ import { useRouter } from "next/navigation";
 import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useOpportunityForm } from "./useOpportunityForm";
-import { OpportunityData } from "@/app/types/opportunities";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import {
+  OpportunityData,
+  OpportunityFormData,
+} from "@/app/types/opportunities";
+import { StyledPopper, VirtualizedListbox } from "../VirtualizedListbox";
 
 interface OpportunityFormProps extends FormProps {
   opportunityData?: OpportunityData;
@@ -37,43 +40,24 @@ export const OpportunityForm = ({
     setMenuOptions,
     setIsLoading,
     isLoading,
-    createOpportunitytFormSubmissionData,
+    submitOpportunity,
   } = useOpportunityForm({
     menuItems,
   });
 
-  const onSuccess = async (values: any) => {
+  const onSuccess = async (values: OpportunityFormData) => {
     setIsLoading(true);
-    const data = await createOpportunitytFormSubmissionData(
+    const responseData = await submitOpportunity(
       values,
+      defaultValues,
       opportunityData
     );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
+
     let id = defaultValues.id;
-    const url = id ? "/api/opportunities/update" : "/api/opportunities/insert";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
     if (!id) {
-      const responseData = await response.json();
       id = responseData?.res?.ID;
     }
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached opportunity data
-    await fetch("/api/revalidate/tag?tag=opportunity");
+
     setIsLoading(false);
     router.push(`/opportunities/view/${id}`);
   };
@@ -108,6 +92,8 @@ export const OpportunityForm = ({
                 required
                 loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -134,12 +120,19 @@ export const OpportunityForm = ({
                 required
                 loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  disableListWrap: true,
+                  ListboxComponent: VirtualizedListbox,
+                  PopperComponent: StyledPopper,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                        <pre style={{ margin: 0 }}>{`${
+                          option.site ? ` - ${option.site}` : ""
+                        }`}</pre>
                       </li>
                     );
                   },
@@ -152,7 +145,11 @@ export const OpportunityForm = ({
                 label="Opportunity Type"
                 name="opportunityType"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.OpportunityType}
               />
               {/* Product */}
@@ -160,7 +157,11 @@ export const OpportunityForm = ({
                 label="Product"
                 name="product.name"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.Product}
               />
               {/* Product Family */}
@@ -168,7 +169,11 @@ export const OpportunityForm = ({
                 label="Product Family"
                 name="product.family"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.ProductFamily}
               />
               {/* Interest */}
@@ -180,12 +185,6 @@ export const OpportunityForm = ({
                 showChips
                 size="small"
                 options={menuOptions.Interest}
-              />
-              {/* Contains New Business */}
-              <CheckboxElement
-                label="Contains New Business"
-                name="newBusiness"
-                size="small"
               />
               {/* Ops Audit */}
               {/* <CheckboxElement label="Ops Audit" name="" size="small" /> */}
@@ -202,13 +201,6 @@ export const OpportunityForm = ({
               {/* <CheckboxElement label="Split Opportunity" name="" size="small" /> */}
               {/* Quarter Bank */}
               {/* <CheckboxElement label="Quarter Bank" name="" size="small" /> */}
-              {/* Fast Notes/Next Steps */}
-              <TextareaAutosizeElement
-                label="Fast Notes/Next Steps"
-                name="fastNotes"
-                rows={3}
-                size="small"
-              />
               {/* Optimize Product Type */}
               {/* <AutocompleteElement
               label="Optimize Product Type"
@@ -248,6 +240,8 @@ export const OpportunityForm = ({
                 name="stage.name"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   onChange: (_, value) => {
                     setMenuOptions("ForecastStatus", value);
@@ -276,6 +270,8 @@ export const OpportunityForm = ({
                 label="Forecast Status"
                 name="forecastStatus"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   disabled: !menuOptions.ForecastStatus.length,
                 }}
@@ -285,16 +281,33 @@ export const OpportunityForm = ({
               <AutocompleteElement
                 label="Term (months)"
                 name="term"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions["Term(months)"]}
               />
+              {/* Contains New Business */}
+              <CheckboxElement
+                label="Contains New Business"
+                name="newBusiness"
+                size="small"
+              />
+              {/* Fast Notes/Next Steps */}
+              <TextareaAutosizeElement
+                label="Fast Notes/Next Steps"
+                name="fastNotes"
+                rows={3}
+                size="small"
+              />
               {/* Multi-Year Year 1 Amount */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="Multi-Year Year 1 Amount"
                 name="oneYearAmount"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
-              />
+              /> */}
               {/* CHAMPP */}
               {/* <TextareaAutosizeElement
               label="CHAMPP"
@@ -308,29 +321,19 @@ export const OpportunityForm = ({
           <Grid item xs={6}>
             <Stack spacing={1}>
               {/* Baseline Renewal Amount */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="Baseline Renewal Amount"
                 name="renewal.baselineAmount"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
-              />
+              /> */}
               {/* Services Renewal Amount */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="Services Renewal Amount"
                 name="renewal.servicesAmount"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
-              />
-              {/* Multi-Year Add Back */}
-              <CheckboxElement
-                label="Multi-Year Add Back"
-                name="renewal.multiYearAddBack"
-                size="small"
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
+              /> */}
               {/* Baseline Renewal Date */}
               <DateFnsProvider>
                 <DatePickerElement
@@ -343,7 +346,11 @@ export const OpportunityForm = ({
               <AutocompleteElement
                 label="Renewal Status"
                 name="renewal.status"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.RenewalStatus}
               />
               {/* Renewal Status Comments & Next Steps */}
@@ -353,11 +360,25 @@ export const OpportunityForm = ({
                 rows={3}
                 size="small"
               />
+            </Stack>
+          </Grid>
+          <Grid item xs={6}>
+            <Stack spacing={1}>
+              {/* Multi-Year Add Back */}
+              <CheckboxElement
+                label="Multi-Year Add Back"
+                name="renewal.multiYearAddBack"
+                size="small"
+              />
               {/* Resell */}
               <AutocompleteElement
                 label="Resell"
                 name="renewal.resell"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.Resell}
               />
             </Stack>
@@ -476,6 +497,8 @@ export const OpportunityForm = ({
                 label="Originating Partner"
                 name="partner.originatingPartner"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -493,6 +516,8 @@ export const OpportunityForm = ({
                 label="Fulfilling Partner"
                 name="partner.fulfillingPartner"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -510,6 +535,8 @@ export const OpportunityForm = ({
                 label="Referring Partner"
                 name="partner.referringPartner"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -531,6 +558,8 @@ export const OpportunityForm = ({
                 label="Influencing Partner"
                 name="partner.influencingPartner"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -754,7 +783,11 @@ export const OpportunityForm = ({
               <AutocompleteElement
                 label="Type"
                 name="type"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.CustomerType}
               />
               {/* Refresh Product Family */}

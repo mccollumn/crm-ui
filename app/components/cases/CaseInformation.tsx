@@ -101,14 +101,17 @@ const getCaseInfo = async (caseID: string) => {
   return {
     info: {
       left: [
-        { label: "Subject", value: caseData.CaseInformation.Cases_Subject },
+        {
+          label: "Subject",
+          value: unEscape(caseData.CaseInformation.Cases_Subject),
+        },
         {
           label: "Account Name",
           value: (
             <Link
               href={`/accounts/view/${caseData.CaseInformation.Cases_AccountID}`}
             >
-              {caseData.CaseInformation.Accounts_Name}
+              {unEscape(caseData.CaseInformation.Accounts_Name)}
             </Link>
           ),
         },
@@ -118,7 +121,7 @@ const getCaseInfo = async (caseID: string) => {
             <Link
               href={`/contacts/view/${caseData.CaseInformation.Cases_ContactId}`}
             >
-              {caseData.CaseInformation.Contacts_FullName}
+              {unEscape(caseData.CaseInformation.Contacts_FullName)}
             </Link>
           ),
         },

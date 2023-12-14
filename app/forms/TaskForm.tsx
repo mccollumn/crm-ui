@@ -52,7 +52,11 @@ export const TaskForm = ({
             <AutocompleteElement
               label="Type"
               name="type"
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Assigned To */}
@@ -75,21 +79,33 @@ export const TaskForm = ({
             <AutocompleteElement
               label="Name"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Related To */}
             <AutocompleteElement
               label="Related To"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Conversation Outcome */}
             <AutocompleteElement
               label="Conversation Outcome"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
           </Stack>
@@ -102,14 +118,22 @@ export const TaskForm = ({
               name=""
               required
               options={[]}
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
             />
             {/* Priority */}
             <AutocompleteElement
               label="Priority"
               name=""
               required
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
           </Stack>

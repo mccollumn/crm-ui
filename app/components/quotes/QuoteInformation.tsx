@@ -47,6 +47,12 @@ const QuoteInformation = async ({ quoteID }: QuoteInformationProps) => {
       >
         Edit
       </ButtonNav>
+      <ButtonNav
+        size="small"
+        path={`/opportunities/clone/${opportunityID}/quote/${quoteID}`}
+      >
+        Clone
+      </ButtonNav>
       {fulfillmentID ? (
         <ButtonNav
           size="small"
@@ -176,7 +182,7 @@ const getQuoteInfo = async (
         },
         {
           label: "Quote Name",
-          value: unEscape(quoteData.QuoteDetail.Quotes_Name || ""),
+          value: unEscape(quoteData.QuoteDetail.Quotes_Name),
         },
         {
           label: "Opportunity Name",
@@ -184,13 +190,13 @@ const getQuoteInfo = async (
             <Link
               href={`/opportunities/view/${quoteData.QuoteDetail.Quotes_OpportunityID}`}
             >
-              {unEscape(quoteData.QuoteDetail.Opportunities_Name || "")}
+              {unEscape(quoteData.QuoteDetail.Opportunities_Name)}
             </Link>
           ),
         },
         {
           label: "Account Name",
-          value: quoteData.QuoteDetail.Quotes_AccountName,
+          value: unEscape(quoteData.QuoteDetail.Quotes_AccountName),
         },
         {
           label: "Super Region",
@@ -204,7 +210,7 @@ const getQuoteInfo = async (
         },
         {
           label: "Additional Quote Comments",
-          value: quoteData.QuoteDetail.Quotes_Comments,
+          value: unEscape(quoteData.QuoteDetail.Quotes_Comments),
         },
       ],
       right: [
@@ -230,11 +236,11 @@ const getQuoteInfo = async (
         },
         {
           label: "Is Primary",
-          value: formatCheckbox(""),
+          value: formatCheckbox(quoteData.QuoteDetail.Quotes_Primary),
         },
         {
           label: "Notes to OM",
-          value: quoteData.QuoteDetail.Quotes_SalesNotesToOM,
+          value: unEscape(quoteData.QuoteDetail.Quotes_SalesNotesToOM),
         },
       ],
     },
@@ -293,7 +299,7 @@ const getQuoteInfo = async (
           value: formatCurrency(quoteData.QuoteTotals.Quotes_USDTotalPrice),
         },
         {
-          label: "Current Financual Exchange Rate to USD",
+          label: "Current Financial Exchange Rate to USD",
           value: quoteData.QuoteTotals.Quotes_ExchangeRateToUSD,
         },
         {

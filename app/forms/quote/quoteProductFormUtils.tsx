@@ -102,7 +102,6 @@ export const createQuoteProductFormData = async ({
     totalSalePrice: productData.QuoteProductDetail.QuoteProducts_TotalSalePrice,
     oneYearAmount: productData.QuoteProductDetail.QuoteProducts_OneYearAmount,
     currency: productData.QuoteProductDetail.QuoteProducts_CurrencyIsoCode,
-    // unitListPrice: productData.QuoteProductDetail.QuoteProducts_UnitListPrice,
     term: productData.QuoteProductDetail.QuoteProducts_Term,
     skuGroup: productData.ProductInfo.QuoteProducts_SKUGroup,
     uom: productData.QuoteProductDetail.QuoteProducts_UOM,

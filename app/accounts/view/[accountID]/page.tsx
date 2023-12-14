@@ -14,6 +14,7 @@ import AccountAssets from "@/app/components/accounts/AccountAssets";
 import { getAccountData } from "@/app/utils/getData";
 import Cases from "@/app/cases/page";
 import Loading from "@/app/loading";
+import { SupportStatus } from "@/app/components/SupportStatus";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -32,7 +33,10 @@ const AccountView = async ({ params }: { params: { accountID: string } }) => {
           aria-controls="account-info-content"
           id="account-info-header"
         >
-          <Typography variant="h6">{accountName}</Typography>
+          <Typography variant="h6" sx={{ flex: 1 }}>
+            {accountName}
+          </Typography>
+          <SupportStatus accountID={accountID} />
         </AccordionSummary>
         <AccordionDetails id="account-info-content">
           <React.Suspense fallback={<Loading label="information" />}>

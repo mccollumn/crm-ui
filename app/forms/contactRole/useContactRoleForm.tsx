@@ -1,9 +1,10 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
@@ -16,6 +17,7 @@ export const useContactRoleForm = ({
   menuItems,
   accountID,
 }: useContactRoleFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Contact: [],
     ContactRole: [],
@@ -37,10 +39,12 @@ export const useContactRoleForm = ({
     // Account Contacts
     const setContacts = async () => {
       try {
-        const results = await fetch("/api/contacts/");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/contact/list`
+        );
         const contacts = await results.json();
-        if (isObjectEmpty(contacts)) return;
-        const options = contacts.data.map((contact: any) => {
+        if (!Array.isArray(contacts)) return;
+        const options = contacts.map((contact: any) => {
           return {
             id: contact.Contacts_ID,
             name: contact.Contacts_Name,
@@ -73,15 +77,6 @@ export const useContactRoleForm = ({
         values.contact.isPrimary
       ),
       OpportunityContactRoles_Role: values.role.name,
-      SubmissionDetails: {
-        UserID: user?.id || null,
-        AccountID:
-          opportunityData?.OpportunityDetail?.Opportunities_AccountId || null,
-        OpportunityID:
-          opportunityData?.OpportunityDetail?.Opportunities_ID || null,
-        ContactID: values?.contact?.id || null,
-        ContactRoleID: values?.id || null,
-      },
     };
     let newFormData: any = removeNullsFromObject(data);
 
@@ -121,12 +116,48 @@ export const useContactRoleForm = ({
     return newOpportunityData;
   };
 
+  const submitContactRole = async (
+    values: ContactRoleFormData,
+    opportunityData?: OpportunityData
+  ) => {
+    const data = await createContactRoleFormSubmissionData(
+      values,
+      opportunityData
+    );
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const url = "/api/opportunities/update";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached account data
+    await fetch("/api/revalidate/tag?tag=opportunity");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
     isLoading,
     menuOptions,
     createContactRoleFormSubmissionData,
+    submitContactRole,
   };
 };
 

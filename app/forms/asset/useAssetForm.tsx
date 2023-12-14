@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
@@ -6,12 +7,14 @@ import {
   convertNumberToString,
   getChangedValues,
   isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { AssetData, AssetFormData } from "@/app/types/assets";
 
 export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Product: [],
     Account: [],
@@ -39,10 +42,12 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     // Products
     const setProducts = async () => {
       try {
-        const results = await fetch("/api/products");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/product/list`
+        );
         const products = await results.json();
-        if (isObjectEmpty(products)) return;
-        const options = products.data.map((product: any) => {
+        if (!Array.isArray(products)) return;
+        const options = products.map((product: any) => {
           return {
             id: product.Product2_ID,
             name: product.Product2_Name,
@@ -61,10 +66,12 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     // Active Accounts
     const setAccounts = async () => {
       try {
-        const results = await fetch("/api/accounts/active");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts/type/active`
+        );
         const accounts = await results.json();
-        if (isObjectEmpty(accounts)) return;
-        const options = accounts.data.map((account: any) => {
+        if (!Array.isArray(accounts)) return;
+        const options = accounts.map((account: any) => {
           return {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
@@ -81,10 +88,12 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     // Open Opportunities
     const setOpportunities = async () => {
       try {
-        const results = await fetch("/api/opportunities/open");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/opportunity/list/open`
+        );
         const opportunities = await results.json();
-        if (isObjectEmpty(opportunities)) return;
-        const options = opportunities.data.map((opportunity: any) => {
+        if (!Array.isArray(opportunities)) return;
+        const options = opportunities.map((opportunity: any) => {
           return {
             id: opportunity.Opportunities_ID,
             name: opportunity.Opportunities_Name,
@@ -185,6 +194,43 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     return newFormData;
   };
 
+  const submitAsset = async (
+    values: AssetFormData,
+    defaultValues: AssetFormData,
+    assetData?: AssetData
+  ) => {
+    const data = await createAssetFormSubmissionData(values, assetData);
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const isEdit = !!defaultValues?.account.id;
+    const url = isEdit
+      ? "/api/accounts/update/asset"
+      : "/api/accounts/insert/asset";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached account and asset data
+    await fetch("/api/revalidate/tag?tag=account");
+    await fetch("/api/revalidate/tag?tag=asset");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -193,6 +239,7 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
     FormatCurrency,
     FormatNumber,
     createAssetFormSubmissionData,
+    submitAsset,
   };
 };
 

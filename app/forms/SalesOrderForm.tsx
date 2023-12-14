@@ -50,14 +50,22 @@ export const SalesOrderForm = ({
             <AutocompleteElement
               label="Account"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Opportunity */}
             <AutocompleteElement
               label="Opportunity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Document Number */}
@@ -77,14 +85,22 @@ export const SalesOrderForm = ({
             <AutocompleteElement
               label="Quote"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* End Customer Account */}
             <AutocompleteElement
               label="End Customer Account"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Is Channel */}
@@ -107,21 +123,33 @@ export const SalesOrderForm = ({
             <AutocompleteElement
               label="Parent Entity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Intacct Entity */}
             <AutocompleteElement
               label="Intacct Entity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Owner */}
             <AutocompleteElement
               label="Owner"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Date */}
@@ -151,7 +179,11 @@ export const SalesOrderForm = ({
             <AutocompleteElement
               label="Currency"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Subtotal */}
@@ -196,14 +228,22 @@ export const SalesOrderForm = ({
             <AutocompleteElement
               label="Renewal Opportunity Status"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Renewal Opportunity */}
             <AutocompleteElement
               label="Renewal Opportunity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
           </Stack>

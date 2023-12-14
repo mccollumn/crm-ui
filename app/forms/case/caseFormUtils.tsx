@@ -1,3 +1,4 @@
+import { ContactData } from "@/app/types/contacts";
 import { CaseData, CaseFormData } from "../../types/cases";
 import { getDefaultOwner } from "@/app/utils/forms";
 
@@ -5,21 +6,30 @@ import { getDefaultOwner } from "@/app/utils/forms";
  * Generates and object containing the default values for a new/empty case form.
  * @returns Initial case form data.
  */
-const generateInitialCaseFormData = async () => {
+const generateInitialCaseFormData = async (
+  contactData?: ContactData | null
+) => {
   const defaultOwner = await getDefaultOwner();
 
   const initialCaseFormData: CaseFormData = {
     caseID: null,
     caseNumber: null,
     subject: null,
-    account: { id: null, name: null, site: null, description: null },
+    account: {
+      id: contactData?.ContactDetail.Contacts_AccountId || null,
+      name: contactData?.ContactDetail.Accounts_Name || null,
+      site: null,
+      description: null,
+    },
     contact: {
-      id: null,
-      name: null,
-      email: null,
-      fax: null,
-      phone: null,
-      mobile: null,
+      id: contactData?.ContactDetail.Contacts_ID || null,
+      name: contactData
+        ? `${contactData?.ContactDetail.Contacts_FirstName} ${contactData?.ContactDetail.Contacts_LastName}`
+        : null,
+      email: contactData?.ContactDetail.Contacts_Email || null,
+      fax: contactData?.ContactDetail.Contacts_Fax || null,
+      phone: contactData?.ContactDetail.Contacts_Phone || null,
+      mobile: contactData?.ContactDetail.Contacts_MobilePhone || null,
     },
     origin: null,
     status: "Open",
@@ -52,8 +62,11 @@ const generateInitialCaseFormData = async () => {
  * @param caseData Data from an existing case. (optional)
  * @returns Case data object.
  */
-export const createCaseFormData = async (caseData?: CaseData) => {
-  const initialCaseFormData = await generateInitialCaseFormData();
+export const createCaseFormData = async ({
+  caseData,
+  contactData,
+}: CreateCaseFormDataProps) => {
+  const initialCaseFormData = await generateInitialCaseFormData(contactData);
 
   if (!caseData) {
     return initialCaseFormData;
@@ -105,3 +118,8 @@ export const createCaseFormData = async (caseData?: CaseData) => {
     description: caseData.CaseProfile.Cases_Description,
   };
 };
+
+interface CreateCaseFormDataProps {
+  caseData?: CaseData;
+  contactData?: ContactData | null;
+}

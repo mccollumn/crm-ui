@@ -26,6 +26,7 @@ interface QuoteDetail {
   Opportunities_Name: string | null;
   Quotes_OwnerID: string | null;
   Owners_Name: string | null;
+  Quotes_Primary: "0" | "1";
   Quotes_SalesNotesToOM: string | null;
   Quotes_Status: string | null;
   Quotes_ValidThrough: string | null;
@@ -215,7 +216,7 @@ export type QuoteFormData = {
   currencyCode?: string | null;
   totalPrice?: string | null;
   USDTotalPrice?: string | null;
-  validThrough?: Date | null;
+  validThrough?: Date | string | null;
   USDTotalOneYearAmount?: string | null;
   isPrimary?: boolean | null;
   lastSendDate?: Date | null;
@@ -236,16 +237,20 @@ export type QuoteFormData = {
   };
 };
 
+export type QuoteProductFormProductData = {
+  id: string;
+  lineItemId?: string | null;
+  name?: string | null;
+  code?: string | null;
+  family?: string | null;
+  unitListPrice?: string | null;
+  description?: string | null;
+  isActive?: string | null;
+};
+
 export type QuoteProductFormData = {
   id: string;
-  product: {
-    id: string;
-    lineItemId?: string | null;
-    name?: string | null;
-    code?: string | null;
-    family?: string | null;
-    unitPrice?: string | null;
-  };
+  product: QuoteProductFormProductData;
   quote: {
     id: string;
     name?: string | null;
@@ -261,7 +266,6 @@ export type QuoteProductFormData = {
   totalSalePrice?: string | null;
   oneYearAmount?: string | null;
   currency?: string | null;
-  // unitListPrice?: string | null;
   term?: string | null;
   skuGroup?: string | null;
   uom?: string | null;

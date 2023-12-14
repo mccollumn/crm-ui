@@ -2,6 +2,7 @@ import React from "react";
 import { DataTable } from "../DataTable";
 import { ButtonNav } from "../navigation/ButtonNav";
 import { getCaseData } from "@/app/utils/getData";
+import CaseCommentsModal from "./CaseCommentsModal";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -16,6 +17,10 @@ const CaseComments = async ({ caseID }: CaseCommentsProps) => {
       <ButtonNav size="small" path={`/cases/new/${caseID}/comment/`}>
         New
       </ButtonNav>
+      <CaseCommentsModal
+        caseComments={rows}
+        caseNumber={caseData.CaseInformation.Cases_CaseNumber}
+      />
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading cases...</>}>
           <DataTable

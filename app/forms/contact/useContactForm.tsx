@@ -1,16 +1,18 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertArrayToString,
   convertBooleanToString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { ContactData, ContactFormData } from "@/app/types/contacts";
 
 export const useContactForm = ({ menuItems }: useContactFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Owner: [],
     Account: [],
@@ -40,14 +42,17 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // Active Accounts
     const setAccounts = async () => {
       try {
-        const results = await fetch("/api/accounts/active");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts/type/active`
+        );
         const accounts = await results.json();
-        if (isObjectEmpty(accounts)) return;
-        const options = accounts.data.map((account: any) => {
+        if (!Array.isArray(accounts)) return;
+        const options = accounts.map((account: any) => {
           return {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
             site: account.Accounts_Site,
+            description: account.AccountsType_Description,
           };
         });
         setCustomMenuOptions("Account", options);
@@ -60,10 +65,12 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // Contact Owner
     const setOwners = async () => {
       try {
-        const results = await fetch("/api/users/internal");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/user/list/internal`
+        );
         const owners = await results.json();
-        if (isObjectEmpty(owners)) return;
-        const options = owners.data.map((owner: any) => {
+        if (!Array.isArray(owners)) return;
+        const options = owners.map((owner: any) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("Owner", options);
@@ -104,7 +111,9 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         // Contacts_EmailBouncedReason: null,
         // Contacts_EmailDomain: "kp.org",
         // Contacts_Fax: "(510) 267-2601",
-        Contacts_FullName: `${values.firstName} ${values.lastName}`,
+        Contacts_FirstName: values.firstName,
+        Contacts_LastName: values.lastName,
+        // Contacts_FullName: `${values.firstName} ${values.lastName}`,
         // Contacts_HomePhone: null,
         Contacts_JobRole: values.jobRole,
         Contacts_MobilePhone: values.mobile,
@@ -216,12 +225,47 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     return newFormData;
   };
 
+  const submitContact = async (
+    values: ContactFormData,
+    defaultValues: ContactFormData,
+    contactData?: ContactData
+  ) => {
+    const data = await createContactFormSubmissionData(values, contactData);
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    let id = defaultValues.contactID;
+    const url = id ? "/api/contacts/update" : "/api/contacts/insert";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached account data
+    await fetch("/api/revalidate/tag?tag=contact");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
     isLoading,
     menuOptions,
     createContactFormSubmissionData,
+    submitContact,
   };
 };
 

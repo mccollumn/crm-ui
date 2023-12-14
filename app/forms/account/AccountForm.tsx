@@ -16,7 +16,6 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAccountForm } from "./useAccountForm";
 import { AccountData } from "@/app/types/accounts";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface AccountFormProps extends FormProps {
   accountData?: AccountData;
@@ -34,7 +33,7 @@ export const AccountForm = ({
     menuOptions,
     FormatCurrency,
     FormatNumber,
-    createAccountFormSubmissionData,
+    submitAccount,
     setIsLoading,
     isLoading,
   } = useAccountForm({
@@ -42,33 +41,17 @@ export const AccountForm = ({
   });
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createAccountFormSubmissionData(values, accountData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
+    const responseData = await submitAccount(
+      values,
+      defaultValues,
+      accountData
+    );
+
     let id = defaultValues.accountID;
-    const url = id ? "/api/accounts/update" : "/api/accounts/insert";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
     if (!id) {
-      const responseData = await response.json();
       id = responseData?.res?.ID;
     }
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account data
-    await fetch("/api/revalidate/tag?tag=account");
+
     setIsLoading(false);
     router.push(`/accounts/view/${id}`);
   };
@@ -104,6 +87,8 @@ export const AccountForm = ({
                 required
                 loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -160,14 +145,8 @@ export const AccountForm = ({
                 label="Account Type"
                 name="type"
                 autocompleteProps={{
-                  // getOptionLabel: (option) => option.value || "",
-                  // renderOption: (props, option) => {
-                  //   return (
-                  //     <li {...props} key={option.id}>
-                  //       {option.value}
-                  //     </li>
-                  //   );
-                  // },
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.display || "",
                   renderOption: (props, option) => {
                     return (
@@ -184,7 +163,11 @@ export const AccountForm = ({
               <AutocompleteElement
                 label="Super Region"
                 name="superRegion"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.Region}
                 required
               />
@@ -477,6 +460,8 @@ export const AccountForm = ({
                 label="Collections Contact"
                 name="collections.contact"
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (

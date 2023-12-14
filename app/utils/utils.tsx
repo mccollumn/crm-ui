@@ -1,6 +1,8 @@
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { numericFormatter } from "react-number-format";
+import { add } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 export const isObjectEmpty = (objectName: any) => {
   return (
@@ -21,7 +23,23 @@ export const isSuccessfulResponse = async (response: Response) => {
 };
 
 /**
- * Formats a date or date/time string as either UTC or the current locale.
+ * Generates a date object with the correct time zone.
+ * @param date Date / time string.
+ * @returns Date object.
+ */
+export const getZonedDate = (date: string) => {
+  const isZonedRegex = /:\d+\.?\d+[Z$|\-|\+]/g;
+  const isZoned = !!date.match(isZonedRegex);
+  // Many date strings have no time zone and are assumed to be UTC.
+  // Add the Z zone designator in these cases.
+  if (!isZoned) {
+    date = `${date}Z`;
+  }
+  return new Date(date);
+};
+
+/**
+ * Formats a date or date/time string.
  * @param dateString Date / time value.
  * @param locale Use current locale? Default true.
  * @param time Should the time be included? Default false.
@@ -34,14 +52,13 @@ export const formatDate = (
   if (!dateString) return dateString;
   const locale = typeof props?.locale === "undefined" ? true : props?.locale;
   const time = props?.time;
+  const timeZone = process.env.NEXT_PUBLIC_TIME_ZONE || "Etc/UTC";
+  const zonedDate = utcToZonedTime(getZonedDate(dateString), timeZone);
+
   if (locale) {
-    return time
-      ? new Date(dateString).toLocaleString()
-      : new Date(dateString).toLocaleDateString();
+    return time ? zonedDate.toLocaleString() : zonedDate.toLocaleDateString();
   }
-  return time
-    ? new Date(dateString).toString()
-    : new Date(dateString).toDateString();
+  return time ? zonedDate.toString() : zonedDate.toDateString();
 };
 
 /**
@@ -99,11 +116,21 @@ export const formatPercent = (value: number | string | null | undefined) => {
 };
 
 /**
+ * Escapes an HTML string.
+ * @param str String containing special characters.
+ * @returns String with HTMl escaped characters.
+ */
+export const htmlEscape = (str: string) => {
+  if (!str) return str;
+  return str.replaceAll("'", "&#39;");
+};
+
+/**
  * Unescapes an HTML string.
  * @param str String containing HTML escaped characters.
  * @returns String with characters unescaped.
  */
-export const unEscape = (str: string) => {
+export const unEscape = (str: string | null | undefined) => {
   if (!str) return str;
   return str
     .replace(/&gt;/g, ">")
@@ -143,7 +170,7 @@ export const convertBooleanToString = (
  */
 export const convertNumberToString = (number: number | null | undefined) => {
   if (number) return String(number);
-  return number;
+  return null;
 };
 
 /**
@@ -156,7 +183,7 @@ export const convertStringToArray = (
   str: string | null | undefined,
   delimiter: string = ";"
 ) => {
-  if (!str) return str;
+  if (!str) return null;
   return str.split(delimiter);
 };
 
@@ -172,6 +199,25 @@ export const convertArrayToString = (
 ) => {
   if (!arr) return arr;
   return arr.join(delimiter);
+};
+
+/**
+ * Appends a new value to a delimited string.
+ * @param delimitedString String on which to append new value.
+ * @param newString New string to be appended.
+ * @param delimiter Delimiter used in the input and output strings. Default semicolon.
+ * @returns String with all values.
+ */
+export const appendToDelimitedString = (
+  delimitedString: string | null | undefined,
+  newString: string | null | undefined,
+  delimiter: string = ";"
+) => {
+  if (!newString) return delimitedString;
+  if (!delimitedString) return newString;
+  const strArray = convertStringToArray(delimitedString, delimiter);
+  strArray?.push(newString);
+  return convertArrayToString(strArray);
 };
 
 /**
@@ -214,17 +260,14 @@ export const getChangedValues = (formData: any, origData: any) => {
     // Don't touch SubmissionDetails
     if (key === "SubmissionDetails") {
       result = { ...result, [key]: formData[key] };
+      return;
     }
     // Only include data that is different between formData and origData
     if (formData[key] && typeof formData[key] === "object") {
       const subObj = formData[key];
       let subResult = {};
       Object.keys(subObj).forEach((subKey) => {
-        if (
-          key in origData &&
-          subKey in origData[key] &&
-          subObj[subKey] !== origData[key][subKey]
-        ) {
+        if (!origData[key] || subObj[subKey] !== origData[key][subKey]) {
           subResult = { ...subResult, [subKey]: subObj[subKey] };
         }
       });
@@ -236,4 +279,16 @@ export const getChangedValues = (formData: any, origData: any) => {
     }
   });
   return result;
+};
+
+/**
+ * Increments the provided date by one year.
+ * @param currentDateStr Date string.
+ * @returns New date string.
+ */
+export const addYear = (currentDateStr: string | null) => {
+  if (!currentDateStr) {
+    return add(new Date(), { years: 1 }).toISOString();
+  }
+  return add(new Date(currentDateStr), { years: 1 }).toISOString();
 };

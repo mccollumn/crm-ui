@@ -20,7 +20,11 @@ const Contacts = async ({ accountID, noTitle = false }: ContactsProps) => {
   return (
     <>
       {!noTitle && <Title title="Contacts" />}
-      <ButtonNav path="/contacts/new">New</ButtonNav>
+      {accountID ? (
+        <ButtonNav path={`/contacts/new?accountID=${accountID}`}>New</ButtonNav>
+      ) : (
+        <ButtonNav path="/contacts/new">New</ButtonNav>
+      )}
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading contacts...</>}>
           <DataTable rows={contactsList} columnDefType="contactsList" />

@@ -1,16 +1,18 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { LicenseKeyData, LicenseKeyFormData } from "@/app/types/licenseKeys";
 
 export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Account: [],
     KeyType: [],
@@ -38,10 +40,12 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     // Active Accounts
     const setAccounts = async () => {
       try {
-        const results = await fetch("/api/accounts/active");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts/type/active`
+        );
         const accounts = await results.json();
-        if (isObjectEmpty(accounts)) return;
-        const options = accounts.data.map((account: any) => {
+        if (!Array.isArray(accounts)) return;
+        const options = accounts.map((account: any) => {
           return {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
@@ -58,10 +62,12 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     // Created By
     const setUsers = async () => {
       try {
-        const results = await fetch("/api/users/internal");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/user/list/internal`
+        );
         const users = await results.json();
-        if (isObjectEmpty(users)) return;
-        const options = users.data.map((owner: any) => {
+        if (!Array.isArray(users)) return;
+        const options = users.map((owner: any) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("CreatedBy", options);
@@ -173,6 +179,46 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     return newFormData;
   };
 
+  const submitLicenseKey = async (
+    values: LicenseKeyFormData,
+    defaultValues: LicenseKeyFormData,
+    licenseKeyData?: LicenseKeyData
+  ) => {
+    const data = await createLicenseKeyFormSubmissionData(
+      values,
+      licenseKeyData
+    );
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const isEdit = !!defaultValues?.id;
+    const url = isEdit
+      ? "/api/accounts/update/license-key"
+      : "/api/accounts/insert/license-key";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached account data
+    await fetch("/api/revalidate/tag?tag=account");
+    await fetch("/api/revalidate/tag?tag=licenseKey");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -181,6 +227,7 @@ export const useLicenseKeyForm = ({ menuItems }: useLicenseKeyFormProps) => {
     FormatCurrency,
     FormatNumber,
     createLicenseKeyFormSubmissionData,
+    submitLicenseKey,
   };
 };
 

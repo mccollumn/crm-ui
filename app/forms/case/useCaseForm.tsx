@@ -1,16 +1,18 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { CaseData, CaseFormData } from "@/app/types/cases";
 
 export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Account: [],
     Contact: [],
@@ -30,6 +32,8 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     Severity: [],
   };
 
+  type Menus = keyof typeof initialMenuOptions;
+
   const {
     setMenuOptions,
     setCustomMenuOptions,
@@ -47,29 +51,84 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
 
   const getContactOptions = React.useCallback(
     async (accountID: string) => {
-      const results = await fetch(`/api/contacts/${accountID}`);
+      if (!accountID) return;
+      const results = await fetch(
+        `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/contact/list/by/account/${accountID}`
+      );
       const contacts = await results.json();
-      if (isObjectEmpty(contacts)) return;
-      const options = contacts.data.map((contact: any) => {
+      if (!Array.isArray(contacts)) return;
+      const options = contacts.map((contact: any) => {
         return {
           id: contact.Contacts_ID,
           name: contact.Contacts_Name,
           email: contact.Contacts_Email,
+          title: contact.Contacts_Title,
+          accountName: contact.Accounts_Name,
+          accountID: contact.Contacts_AccountId,
         };
       });
+      const showAllContactsEntry = {
+        id: "-1",
+        name: "Show All Contacts",
+        email: null,
+        title: null,
+        accountName: null,
+        accountID: null,
+      };
+      options.push(showAllContactsEntry);
       setCustomMenuOptions("Contact", options);
     },
     [setCustomMenuOptions]
   );
 
+  const clearMenuOptions = React.useCallback(
+    (menu: Menus) => {
+      setCustomMenuOptions(menu, []);
+    },
+    [setCustomMenuOptions]
+  );
+
+  const setContacts = React.useCallback(async () => {
+    try {
+      const results = await fetch(
+        `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/contact/list`
+      );
+      const contacts = await results.json();
+      if (!Array.isArray(contacts)) return;
+      const options = contacts.map((contact: any) => {
+        return {
+          id: contact.Contacts_ID,
+          name: contact.Contacts_Name,
+          title: contact.Contacts_Title,
+          email: contact.Contacts_Email,
+          accountName: contact.Accounts_Name,
+          accountID: contact.Contacts_AccountId,
+        };
+      });
+      setCustomMenuOptions("Contact", options);
+    } catch {
+      console.error("Could not retrieve list of contacts");
+    }
+  }, [setCustomMenuOptions]);
+
+  React.useEffect(() => {
+    // Contacts
+    if (!accountSelected?.id) {
+      setContacts();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountSelected]);
+
   React.useEffect(() => {
     // Accounts
     const setAccounts = async () => {
       try {
-        const results = await fetch("/api/accounts");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts`
+        );
         const accounts = await results.json();
-        if (isObjectEmpty(accounts)) return;
-        const options = accounts.data.map((account: any) => {
+        if (!Array.isArray(accounts)) return;
+        const options = accounts.map((account: any) => {
           return {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
@@ -87,10 +146,12 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     // Case Owner
     const setOwners = async () => {
       try {
-        const results = await fetch("/api/users/internal");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/user/list/internal`
+        );
         const owners = await results.json();
-        if (isObjectEmpty(owners)) return;
-        const options = owners.data.map((owner: any) => {
+        if (!Array.isArray(owners)) return;
+        const options = owners.map((owner: any) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("CaseOwner", options);
@@ -105,7 +166,7 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setMenuOptions("ProductName", "On Premises");
     setMenuOptions("ProductDeliveryMethod");
     setMenuOptions("CaseStatus");
-    setMenuOptions("Sub-Status", "Open");
+    setMenuOptions("Sub-Status", defaultValues?.status || "Open");
     setMenuOptions("CaseOrigin");
     setMenuOptions("Priority");
     setMenuOptions("Severity");
@@ -115,9 +176,9 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     setMenuOptions("Category", defaultValues?.category || "");
   }, [
     defaultValues?.category,
-    defaultValues?.owner.name,
     defaultValues?.product.name,
     defaultValues?.reason,
+    defaultValues?.status,
     defaultValues?.type,
     setCustomMenuOptions,
     setMenuOptions,
@@ -196,15 +257,52 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     return newFormData;
   };
 
+  const submitCase = async (
+    values: CaseFormData,
+    defaultValues: CaseFormData,
+    caseData?: CaseData
+  ) => {
+    const data = await createCaseFormSubmissionData(values, caseData);
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    let id = defaultValues.caseID;
+    const url = id ? "/api/cases/update" : "/api/cases/insert";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached case data
+    await fetch("/api/revalidate/tag?tag=case");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     getContactOptions,
+    setContacts,
+    clearMenuOptions,
     setAccountSelected,
     setIsLoading,
     isLoading,
     menuOptions,
     accountSelected,
     createCaseFormSubmissionData,
+    submitCase,
   };
 };
 

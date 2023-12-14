@@ -1,10 +1,16 @@
 import { OpportunityForm } from "@/app/forms/opportunity/OpportunityForm";
 import { createOpportunityFormData } from "@/app/forms/opportunity/opportunityFormUtils";
-import { getMenuItems } from "@/app/utils/getData";
+import { getAccountData, getMenuItems } from "@/app/utils/getData";
 
-const NewOpportunity = async () => {
+const NewOpportunity = async ({
+  searchParams,
+}: {
+  searchParams: { accountID: string };
+}) => {
+  const accountID = searchParams.accountID;
+  const accountData = accountID ? await getAccountData(accountID) : null;
   const menuItems = await getMenuItems();
-  const values = await createOpportunityFormData();
+  const values = await createOpportunityFormData({ accountData });
 
   return (
     <OpportunityForm

@@ -1,10 +1,16 @@
 import { CaseForm } from "@/app/forms/case/CaseForm";
 import { createCaseFormData } from "@/app/forms/case/caseFormUtils";
-import { getMenuItems } from "@/app/utils/getData";
+import { getContactData, getMenuItems } from "@/app/utils/getData";
 
-const NewCase = async () => {
+const NewCase = async ({
+  searchParams,
+}: {
+  searchParams: { contactID: string };
+}) => {
+  const contactID = searchParams.contactID;
+  const contactData = contactID ? await getContactData(contactID) : null;
   const menuItems = await getMenuItems();
-  const values = await createCaseFormData();
+  const values = await createCaseFormData({ contactData });
 
   return (
     <CaseForm

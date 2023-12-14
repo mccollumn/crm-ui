@@ -1,8 +1,7 @@
-import { OpportunityData, Quote } from "@/app/types/opportunities";
+import { OpportunityData } from "@/app/types/opportunities";
 import { QuoteData, QuoteFormData } from "@/app/types/quotes";
 import { getDefaultOwner } from "@/app/utils/forms";
-import { getOpportunityData } from "@/app/utils/getData";
-import { convertStringToArray, unEscape } from "@/app/utils/utils";
+import { convertStringToArray, formatDate, unEscape } from "@/app/utils/utils";
 
 /**
  * Generates an object containing the default values for a new/empty quote form.
@@ -10,7 +9,6 @@ import { convertStringToArray, unEscape } from "@/app/utils/utils";
  */
 const generateInitialQuoteFormData = async (
   opportunityData: OpportunityData
-  // quoteData: QuoteData | undefined
 ) => {
   const defaultOwner = await getDefaultOwner();
   const opportunityID =
@@ -18,10 +16,8 @@ const generateInitialQuoteFormData = async (
   const opportunityName = unEscape(
     opportunityData?.OpportunityDetail?.Opportunities_Name || ""
   );
-  // const opportunityID = quoteData?.QuoteDetail.Quotes_OpportunityID;
-  // const opportunityName = quoteData?.QuoteDetail.Opportunities_Name;
 
-  const initialOpportunityFormData: QuoteFormData = {
+  const initialQuoteFormData: QuoteFormData = {
     id: null,
     name: null,
     owner: defaultOwner,
@@ -66,7 +62,7 @@ const generateInitialQuoteFormData = async (
     },
   };
 
-  return initialOpportunityFormData;
+  return initialQuoteFormData;
 };
 
 /**
@@ -77,18 +73,17 @@ const generateInitialQuoteFormData = async (
 export const createQuoteFormData = async (
   opportunityData: OpportunityData,
   quoteData?: QuoteData
-) => {
-  const initialOpportunityFormData = await generateInitialQuoteFormData(
+): Promise<QuoteFormData> => {
+  const initialQuoteFormData = await generateInitialQuoteFormData(
     opportunityData
-    // quoteData
   );
 
   if (!quoteData) {
-    return initialOpportunityFormData;
+    return initialQuoteFormData;
   }
 
   return {
-    ...initialOpportunityFormData,
+    ...initialQuoteFormData,
     id: quoteData.QuoteDetail.Quotes_ID,
     name: quoteData.QuoteDetail.Quotes_Name,
     owner: {
@@ -107,9 +102,11 @@ export const createQuoteFormData = async (
     currencyCode: quoteData.QuoteDetail.Quotes_CurrencyCode,
     totalPrice: quoteData.QuoteTotals.Quotes_TotalPrice,
     USDTotalPrice: quoteData.QuoteTotals.Quotes_USDTotalPrice,
-    validThrough: quoteData.QuoteDetail.Quotes_ValidThrough,
+    validThrough: quoteData.QuoteDetail.Quotes_ValidThrough
+      ? formatDate(quoteData.QuoteDetail.Quotes_ValidThrough)
+      : null,
     USDTotalOneYearAmount: quoteData.QuoteTotals.Quotes_USDTotalOneYearAmount,
-    isPrimary: !!Number(null),
+    isPrimary: !!Number(quoteData.QuoteDetail.Quotes_Primary),
     lastSendDate: null,
     // audit: {
     //   status: null,
@@ -123,7 +120,7 @@ export const createQuoteFormData = async (
       // termsAudit: null,
     },
     comments: {
-      exchangeRate: quoteData.QuoteTotals.Quotes_ExchangeRateToUSD,
+      exchangeRate: Number(quoteData.QuoteTotals.Quotes_ExchangeRateToUSD),
       discountReason: quoteData.QuoteDiscounts.Quotes_DiscountReason,
       discountReasons: convertStringToArray(
         quoteData.QuoteDiscounts.Quotes_DiscountPickList

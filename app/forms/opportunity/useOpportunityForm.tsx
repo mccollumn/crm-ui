@@ -1,12 +1,14 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
+  appendToDelimitedString,
   convertArrayToString,
   convertBooleanToString,
   convertDateToISOString,
   convertNumberToString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
@@ -14,13 +16,14 @@ import {
   OpportunityData,
   OpportunityFormData,
   Product,
+  Quote,
 } from "@/app/types/opportunities";
-import { QuoteProduct } from "@/app/types/quotes";
-import { getProductData, getProducts } from "@/app/utils/getData";
+import { QuoteData } from "@/app/types/quotes";
 import { ProductData } from "@/app/types/products";
 import { AccountData } from "@/app/types/accounts";
 
 export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Owner: [],
     Account: [],
@@ -59,10 +62,12 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     // Active Accounts
     const setAccounts = async () => {
       try {
-        const results = await fetch("/api/accounts/active");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts/type/active`
+        );
         const accounts = await results.json();
-        if (isObjectEmpty(accounts)) return;
-        const options = accounts.data.map((account: any) => {
+        if (!Array.isArray(accounts)) return;
+        const options = accounts.map((account: any) => {
           return {
             id: account.Accounts_AccountID,
             name: account.Accounts_Name,
@@ -83,10 +88,12 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     // Contact Owner
     const setOwners = async () => {
       try {
-        const results = await fetch("/api/users/internal");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/user/list/internal`
+        );
         const owners = await results.json();
-        if (isObjectEmpty(owners)) return;
-        const options = owners.data.map((owner: any) => {
+        if (!Array.isArray(owners)) return;
+        const options = owners.map((owner: any) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("Owner", options);
@@ -110,21 +117,49 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     setMenuOptions("ForecastStatus");
   }, [setCustomMenuOptions, setMenuOptions]);
 
-  const createOpportunitytFormSubmissionData = async (
+  const createOpportunityFormSubmissionData = async (
     values: OpportunityFormData,
-    opportunityData?: OpportunityData
+    opportunityData?: OpportunityData,
+    submitType?: SubmitType
   ) => {
     const accountID = values.account.id;
     const accountData: OpportunityAccountData = await (
       await fetch(`/api/accounts/${accountID}`)
     ).json();
+    const primaryQuote = opportunityData
+      ? getPrimaryQuote(opportunityData)
+      : null;
+    const primaryQuoteData: { data: QuoteData } = primaryQuote
+      ? await (await fetch(`/api/quotes/${primaryQuote?.Quotes_ID}`)).json()
+      : null;
+    const usdOneYearAmount = primaryQuoteData?.data.QuoteTotals
+      ?.Quotes_USDTotalOneYearAmount
+      ? primaryQuoteData?.data.QuoteTotals.Quotes_USDTotalOneYearAmount
+      : null;
+    // The opportunity amount can be specified in the form,
+    // but also updates automatically to match the primary quote amount.
+    // submitType = "auto" indicates the opportunity is being updated as the result of a quote / quote product update.
+    let amount;
+    if (submitType === "auto") {
+      amount = primaryQuote ? getAmount(primaryQuote) : values.amount || "0";
+    } else {
+      amount = values.amount
+        ? values.amount
+        : opportunityData?.OpportunityDetail.Opportunities_Amount || "0";
+    }
+    const baselineRenewalAmount = opportunityData
+      ? getBaselineRenewalAmount(opportunityData, primaryQuoteData?.data)
+      : null;
+    const servicesRenewalAmount = opportunityData
+      ? getServicesRenewalAmount(opportunityData, primaryQuoteData?.data)
+      : null;
     const firstYearContractAmount = calculateFirstYearContractAmount(
-      values.oneYearAmount,
-      values.amount
+      usdOneYearAmount,
+      amount
     );
     const firstYearExpectedAmount = calculateFirstYearExpectedAmount(
-      values.oneYearAmount,
-      values.amount,
+      usdOneYearAmount,
+      amount,
       values.probability
     );
     const opportunityProducts = opportunityData?.OpportunityProducts || [];
@@ -188,8 +223,10 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_ID: values.id,
         Opportunities_AccountId: values.account.id,
         Accounts_Name: values.account.name,
-        Opportunities_Amount: values.amount,
-        Opportunities_CloseDate: convertDateToISOString(values.closeDate),
+        Opportunities_Amount: amount,
+        Opportunities_CloseDate: convertDateToISOString(
+          new Date(values.closeDate || 0)
+        ),
         Opportunities_CommissionCategory: values.opportunityType,
         Opportunities_ContainsNewBusiness: convertBooleanToString(
           values.newBusiness
@@ -200,8 +237,9 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_FirstYrExpectedAmt: firstYearExpectedAmount,
         Opportunities_ForecastStatus: values.forecastStatus,
         Opportunities_Interest: convertArrayToString(values.interest),
-        Opportunities_MultiYearYear1Amount: values.oneYearAmount,
+        Opportunities_MultiYearYear1Amount: usdOneYearAmount,
         Opportunities_Name: values.name,
+        Opportunities_OpportunityType: values.opportunityType,
         // Opportunities_OpsAudit: "0",
         // Opportunities_OrderException: "0",
         // Opportunities_OrderExceptionNotes: null,
@@ -229,13 +267,13 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
       },
       OpportunityRenewalInfo: {
         Opportunities_ID: values.id,
-        Opportunities_BaselineRenewalAmount: values.renewal.baselineAmount,
+        Opportunities_BaselineRenewalAmount: baselineRenewalAmount,
         Opportunities_BaselineRenewalDate: convertDateToISOString(
-          values.renewal.baselineRenewalDate
+          new Date(values.renewal.baselineRenewalDate || 0)
         ),
         Opportunities_RenewalStatus: values.renewal.status,
         Opportunities_RenewalStatusCommentsNextSteps: values.renewal.comments,
-        Opportunities_ServicesRenewalAmount: values.renewal.servicesAmount,
+        Opportunities_ServicesRenewalAmount: servicesRenewalAmount,
         Opportunities_TotalBaseline: totalBaseline,
         Opportunities_MultiYearaddback: convertBooleanToString(
           values.renewal.multiYearAddBack
@@ -273,26 +311,51 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
       },
       OpportunityStageTracking: {
         Opportunities_ID: values.id,
-        // Opportunities_MostRecentStage1: "2022-10-05 00:00:00.0000000",
-        // Opportunities_MostRecentStage2: null,
-        // Opportunities_MostRecentStage3: null,
-        // Opportunities_MostRecentStage4: "2023-07-27 00:00:00.0000000",
-        // Opportunities_MostRecentStage5: null,
-        Opportunities_Stage1Date: convertDateToISOString(
-          values.stage.stageOneDate
+        Opportunities_MostRecentStage1: convertDateToISOString(
+          new Date(values.stage.stageOneDate || 0)
         ),
-        Opportunities_Stage2Date: convertDateToISOString(
-          values.stage.stageTwoDate
+        Opportunities_MostRecentStage2: convertDateToISOString(
+          new Date(values.stage.stageTwoDate || 0)
         ),
-        Opportunities_Stage3Date: convertDateToISOString(
-          values.stage.stageThreeDate
+        Opportunities_MostRecentStage3: convertDateToISOString(
+          new Date(values.stage.stageThreeDate || 0)
         ),
-        Opportunities_Stage4Date: convertDateToISOString(
-          values.stage.stageFourDate
+        Opportunities_MostRecentStage4: convertDateToISOString(
+          new Date(values.stage.stageFourDate || 0)
         ),
-        Opportunities_Stage5Date: convertDateToISOString(
-          values.stage.stageFiveDate
+        Opportunities_MostRecentStage5: convertDateToISOString(
+          new Date(values.stage.stageFiveDate || 0)
         ),
+        Opportunities_Stage1Date: opportunityData
+          ? appendToDelimitedString(
+              opportunityData.OpportunityStageTracking.Opportunities_Stage1Date,
+              convertDateToISOString(new Date(values.stage.stageOneDate || 0))
+            )
+          : null,
+        Opportunities_Stage2Date: opportunityData
+          ? appendToDelimitedString(
+              opportunityData.OpportunityStageTracking.Opportunities_Stage2Date,
+              convertDateToISOString(new Date(values.stage.stageTwoDate || 0))
+            )
+          : null,
+        Opportunities_Stage3Date: opportunityData
+          ? appendToDelimitedString(
+              opportunityData.OpportunityStageTracking.Opportunities_Stage3Date,
+              convertDateToISOString(new Date(values.stage.stageThreeDate || 0))
+            )
+          : null,
+        Opportunities_Stage4Date: opportunityData
+          ? appendToDelimitedString(
+              opportunityData.OpportunityStageTracking.Opportunities_Stage4Date,
+              convertDateToISOString(new Date(values.stage.stageFourDate || 0))
+            )
+          : null,
+        Opportunities_Stage5Date: opportunityData
+          ? appendToDelimitedString(
+              opportunityData.OpportunityStageTracking.Opportunities_Stage5Date,
+              convertDateToISOString(new Date(values.stage.stageFiveDate || 0))
+            )
+          : null,
       },
       SubmissionDetails: {
         UserID: user?.id || null,
@@ -341,6 +404,45 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     return newFormData;
   };
 
+  const submitOpportunity = async (
+    values: OpportunityFormData,
+    defaultValues: OpportunityFormData,
+    opportunityData?: OpportunityData,
+    submitType?: SubmitType
+  ) => {
+    const data = await createOpportunityFormSubmissionData(
+      values,
+      opportunityData,
+      submitType
+    );
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    let id = defaultValues.id;
+    const url = id ? "/api/opportunities/update" : "/api/opportunities/insert";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached opportunity data
+    await fetch("/api/revalidate/tag?tag=opportunity");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -348,8 +450,46 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     menuOptions,
     FormatCurrency,
     FormatNumber,
-    createOpportunitytFormSubmissionData,
+    createOpportunityFormSubmissionData,
+    submitOpportunity,
   };
+};
+
+const getPrimaryQuote = (opportunityData: OpportunityData) => {
+  return opportunityData.OpportunityQuotes.find(
+    (quote) => quote.Quotes_Primary === "1"
+  );
+};
+
+const getAmount = (primaryQuote: Quote) => {
+  return primaryQuote ? primaryQuote.Quotes_USDTotalPrice : "0";
+};
+
+const getBaselineRenewalAmount = (
+  opportunityData: OpportunityData,
+  primaryQuoteData: QuoteData
+) => {
+  if (
+    opportunityData.OpportunityDetail.Opportunities_OpportunityType !==
+    "Renewal"
+  )
+    return "0";
+  const totalAnalyticsMaintenance = Number(
+    primaryQuoteData?.QuoteProductTotals.Quotes_TotalAnalyticsMaintenance || 0
+  );
+  const totalAnalyticsSoftware = Number(
+    primaryQuoteData?.QuoteProductTotals.Quotes_TotalAnalyticsSoftware || 0
+  );
+  return String(totalAnalyticsMaintenance + totalAnalyticsSoftware);
+};
+
+const getServicesRenewalAmount = (
+  opportunityData: OpportunityData,
+  primaryQuoteData: QuoteData
+) => {
+  if (opportunityData.OpportunityDetail.Opportunities_Type !== "Renewal")
+    return "0";
+  return primaryQuoteData?.QuoteProductTotals.Quotes_TotalCONTRNOTH || 0;
 };
 
 const getOpportunityProductData = async (opportunityProducts: Product[]) => {
@@ -386,10 +526,11 @@ const calculateFirstYearExpectedAmount = (
   if (!oneYearAmount || !amount || !probability) return null;
   const oneYearAmountNum = Number(oneYearAmount);
   const amountNum = Number(amount);
+  const probabilityPercent = probability / 100;
   if (oneYearAmountNum > 0 && oneYearAmountNum < amountNum) {
-    return String(oneYearAmountNum * probability);
+    return String(oneYearAmountNum * probabilityPercent);
   }
-  return String(amountNum * probability);
+  return String(amountNum * probabilityPercent);
 };
 
 const getPFValue = (
@@ -398,14 +539,14 @@ const getPFValue = (
   calcultePFFunction: CalculatePFFunction
 ) => {
   const pfValue = opportunityProductsData?.reduce((sum, currentProduct) => {
-    const productID = currentProduct.ProductDetail.Product2_ID;
+    const productID = currentProduct.ProductDetail?.Product2_ID;
     const opportunityProduct = opportunityProducts.find(
       (product) => product.OpportunityLineItems_Product2ID === productID
     );
     const value = calcultePFFunction({
-      skuGroup: currentProduct.ProductCategorization.Product2_SkuGroup,
-      productFamily: currentProduct.ProductCategorization.Product2_Family,
-      productFeature: currentProduct.ProductCategorization.Product2_Feature,
+      skuGroup: currentProduct.ProductCategorization?.Product2_SkuGroup,
+      productFamily: currentProduct.ProductCategorization?.Product2_Family,
+      productFeature: currentProduct.ProductCategorization?.Product2_Feature,
       opportunityProduct: opportunityProduct,
     });
     return sum + value;
@@ -533,6 +674,8 @@ type CalculatePFFunction = ({}: CalculatePFFunctionProps) => number;
 type OpportunityAccountData = {
   ["data"]: AccountData;
 };
+
+type SubmitType = "form" | "auto";
 
 interface useOpportunityFormProps {
   /**

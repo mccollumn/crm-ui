@@ -14,13 +14,20 @@ import {
   GridValueGetterParams,
   getGridDateOperators,
 } from "@mui/x-data-grid";
-import { CheckBox } from "@mui/icons-material";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import {
+  CheckBox,
+  CheckBoxOutlineBlank,
+  ContentCopy,
+  EditNote,
+  DeleteForever,
+} from "@mui/icons-material";
 import Link from "next/link";
 import { DatePicker } from "@mui/x-date-pickers";
 import DateFnsProvider from "../providers/DateFnsProvider";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
+import useDeleteItem from "./useDeleteItem";
+import { getZonedDate } from "../utils/utils";
 
 type columnDefTypes =
   | "casesList"
@@ -41,7 +48,9 @@ type columnDefTypes =
   | "opportunityProducts"
   | "opportunityStages"
   | "quoteProducts"
-  | "quoteFulfillment";
+  | "quoteFulfillment"
+  | "assetSearchResults"
+  | "caseCommentSearchResults";
 
 type ColumnDefs = {
   [key: string]: GridColDef[];
@@ -56,6 +65,7 @@ export const DataTable = ({
   ...props
 }: DataTableProps) => {
   const router = useRouter();
+  const { DeleteItemDialog, deleteStatus } = useDeleteItem();
 
   /**
    * Column def configs are here, rather than being passed down from the parent,
@@ -66,7 +76,7 @@ export const DataTable = ({
       {
         field: "Cases_CaseNumber",
         headerName: "Case Number",
-        width: 130,
+        width: 75,
         renderCell: (params) => {
           return (
             <Link href={`/cases/view/${params.row.Cases_ID}`}>
@@ -76,17 +86,46 @@ export const DataTable = ({
         },
       },
       { field: "Cases_Subject", headerName: "Subject", flex: 1 },
-      { field: "Accounts_Name", headerName: "Account Name", width: 250 },
+      {
+        field: "Accounts_Name",
+        headerName: "Account Name",
+        flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link href={`/accounts/view/${params.row.Cases_AccountID}`}>
+              {params.value}
+            </Link>
+          );
+        },
+      },
+      {
+        field: "Contacts_FullName",
+        headerName: "Contact Name",
+        flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link href={`/contacts/view/${params.row.Cases_ContactId}`}>
+              {params.value}
+            </Link>
+          );
+        },
+      },
       {
         field: "Cases_Status",
         headerName: "Status",
-        width: 90,
+        width: 80,
       },
       {
         field: "Cases_CreatedDate",
         headerName: "Opened",
-        description: "This column has a value getter and is not sortable.",
-        width: 180,
+        width: 160,
+        type: "dateTime",
+        valueGetter: displayDate,
+      },
+      {
+        field: "Cases_LastModifiedDate",
+        headerName: "Last Modified",
+        width: 160,
         type: "dateTime",
         valueGetter: displayDate,
       },
@@ -159,7 +198,7 @@ export const DataTable = ({
             );
             publicComment = Number(comment?.CaseComments_IsPublic) || false;
           }
-          return publicComment ? <CheckBox /> : <CheckBoxOutlineBlankIcon />;
+          return publicComment ? <CheckBox /> : <CheckBoxOutlineBlank />;
         },
       },
       {
@@ -174,13 +213,39 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/cases/edit/${data?.CaseInformation.Cases_ID}/comment/${params.row.CaseComments_ID}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/cases/edit/${data?.CaseInformation.Cases_ID}/comment/${params.row.CaseComments_ID}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
+          );
+        },
+      },
+      {
+        field: "deleteLink",
+        headerName: "Delete",
+        width: 50,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => {
+          return (
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              onClick={() => deleteStatus.caseComment.handleClick(params.row)}
+            >
+              <DeleteForever />
+            </IconButton>
           );
         },
       },
@@ -209,12 +274,12 @@ export const DataTable = ({
       {
         field: "AccountsAddress_BillingCountry",
         headerName: "Billing Country",
-        width: 150,
+        width: 120,
       },
       {
-        field: "Accounts_Region",
+        field: "Accounts_Super_Region",
         headerName: "Super Region",
-        width: 150,
+        width: 120,
       },
     ],
     accountSalesOrders: [
@@ -256,11 +321,7 @@ export const DataTable = ({
         headerName: "Is Channel",
         type: "boolean",
         renderCell: (params) => {
-          return params.value === "0" ? (
-            <CheckBoxOutlineBlankIcon />
-          ) : (
-            <CheckBox />
-          );
+          return params.value === "0" ? <CheckBoxOutlineBlank /> : <CheckBox />;
         },
       },
       {
@@ -278,13 +339,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/accounts/edit/${data?.id}/sales-order/${params.row.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/accounts/edit/${data?.id}/sales-order/${params.row.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -323,13 +392,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/accounts/edit/${data?.id}/sales-invoice/${params.row.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/accounts/edit/${data?.id}/sales-invoice/${params.row.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -379,13 +456,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/accounts/edit/${data.AccountDetail.Accounts_AccountID}/asset/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/accounts/edit/${data.AccountDetail.Accounts_AccountID}/asset/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -432,13 +517,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/accounts/edit/${data.AccountDetail.Accounts_AccountID}/license-key/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/accounts/edit/${data.AccountDetail.Accounts_AccountID}/license-key/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -463,11 +556,18 @@ export const DataTable = ({
         field: "Accounts_Name",
         headerName: "Account Name",
         flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link href={`/accounts/view/${params.row.Contacts_AccountId}`}>
+              {params.value}
+            </Link>
+          );
+        },
       },
       {
         field: "Contacts_Email",
         headerName: "Email",
-        width: 250,
+        width: 200,
         renderCell: (params) => {
           return <Link href={`mailto:${params.value}`}>{params.value}</Link>;
         },
@@ -475,15 +575,15 @@ export const DataTable = ({
       {
         field: "Contacts_CreatedDate",
         headerName: "Created",
+        width: 75,
         type: "date",
-        width: 150,
         valueGetter: displayDate,
       },
       {
         field: "Contacts_LastActivityDate",
         headerName: "Last Activity",
+        width: 75,
         type: "date",
-        width: 150,
         valueGetter: displayDate,
       },
     ],
@@ -527,11 +627,18 @@ export const DataTable = ({
         field: "Account_Name",
         headerName: "Account Name",
         flex: 1,
+        renderCell: (params) => {
+          return (
+            <Link href={`/accounts/view/${params.row.Opportunities_AccountId}`}>
+              {params.value}
+            </Link>
+          );
+        },
       },
       {
         field: "Opportunities_StageName",
         headerName: "Stage",
-        width: 175,
+        width: 150,
       },
       {
         field: "Opportunities_Amount",
@@ -612,24 +719,50 @@ export const DataTable = ({
         headerName: "Primary",
         width: 50,
         renderCell: (params) => {
-          return params.value === "0" ? (
-            <CheckBoxOutlineBlankIcon />
-          ) : (
-            <CheckBox />
-          );
+          return params.value === "0" ? <CheckBoxOutlineBlank /> : <CheckBox />;
         },
       },
       {
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
+          );
+        },
+      },
+      {
+        field: "copyLink",
+        headerName: "Copy",
+        width: 50,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => {
+          return (
+            <IconButton
+              aria-label="copy"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/clone/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.Quotes_ID}`
+                )
+              }
+            >
+              <ContentCopy />
+            </IconButton>
           );
         },
       },
@@ -658,11 +791,7 @@ export const DataTable = ({
         field: "OpportunityContactRoles_IsPrimary",
         headerName: "Primary",
         renderCell: (params) => {
-          return params.value === "0" ? (
-            <CheckBoxOutlineBlankIcon />
-          ) : (
-            <CheckBox />
-          );
+          return params.value === "0" ? <CheckBoxOutlineBlank /> : <CheckBox />;
         },
       },
       {
@@ -683,13 +812,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/contact-role/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/contact-role/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -737,13 +874,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.id}/activity/${params.row.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.id}/activity/${params.row.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -786,13 +931,21 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/product/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/product/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
           );
         },
       },
@@ -898,13 +1051,61 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.QuoteProducts_QuoteID}/product/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.QuoteProducts_QuoteID}/product/${params.id}`
+                )
+              }
             >
-              Edit
-            </Link>
+              <EditNote />
+            </IconButton>
+          );
+        },
+      },
+      {
+        field: "copyLink",
+        headerName: "Copy",
+        width: 50,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => {
+          return (
+            <IconButton
+              aria-label="copy"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/clone/${data?.OpportunityDetail.Opportunities_ID}/quote/${params.row.QuoteProducts_QuoteID}/product/${params.id}`
+                )
+              }
+            >
+              <ContentCopy />
+            </IconButton>
+          );
+        },
+      },
+      {
+        field: "deleteLink",
+        headerName: "Delete",
+        width: 50,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => {
+          return (
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              onClick={() => deleteStatus.quoteProduct.handleClick(params.row)}
+            >
+              <DeleteForever />
+            </IconButton>
           );
         },
       },
@@ -920,7 +1121,7 @@ export const DataTable = ({
         headerName: "License Key",
         flex: 1,
         valueFormatter(params) {
-          return data.LicenseKeyDetail.LicenseKeys_Name;
+          return data?.LicenseKeyDetail?.LicenseKeys_Name || "";
         },
       },
       // {
@@ -941,15 +1142,69 @@ export const DataTable = ({
         field: "editLink",
         headerName: "Edit",
         width: 50,
+        sortable: false,
+        filterable: false,
         renderCell: (params) => {
           return (
-            <Link
-              href={`/opportunities/edit/${data?.QuoteDetail.Quotes_OpportunityID}/quote/${data.QuoteDetail.Quotes_ID}/fulfillment/${params.id}`}
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() =>
+                router.push(
+                  `/opportunities/edit/${data?.QuoteDetail.Quotes_OpportunityID}/quote/${data.QuoteDetail.Quotes_ID}/fulfillment/${params.id}`
+                )
+              }
             >
-              Edit
+              <EditNote />
+            </IconButton>
+          );
+        },
+      },
+    ],
+    assetSearchResults: [
+      {
+        field: "Accounts_Name",
+        headerName: "Account Name",
+        renderCell: (params) => {
+          return (
+            <Link href={`/accounts/view/${params.row.Assets_AccountID}`}>
+              {params.value}
             </Link>
           );
         },
+        flex: 1,
+      },
+      {
+        field: "Assets_Name",
+        headerName: "Asset Name",
+        flex: 1,
+      },
+      {
+        field: "Assets_SerialNumber",
+        headerName: "Serial Number",
+        flex: 1,
+      },
+    ],
+    caseCommentSearchResults: [
+      {
+        field: "CaseComments_CaseID",
+        headerName: "Case Number",
+        renderCell: (params) => {
+          return (
+            <Link href={`/cases/view/${params.row.CaseComments_CaseID}`}>
+              {params.value}
+            </Link>
+          );
+        },
+      },
+      { field: "CaseComments_CommentBody", headerName: "Comment", flex: 1 },
+      { field: "Owner_Name", headerName: "Owner" },
+      {
+        field: "CaseComments_CreatedDate",
+        headerName: "Created Date",
+        type: "dateTime",
+        width: 150,
+        valueGetter: displayDate,
       },
     ],
   });
@@ -974,6 +1229,8 @@ export const DataTable = ({
     opportunityStages: "",
     quoteProducts: "QuoteProducts_ID",
     quoteFulfillment: "QuoteFulfillment_ID",
+    assetSearchResults: "Assets_ID",
+    caseCommentSearchResults: "CaseComments_ID",
   };
 
   const columns = React.useMemo(
@@ -995,33 +1252,36 @@ export const DataTable = ({
   }, [router]);
 
   return (
-    <DataGrid
-      rows={rows}
-      // columns={columns}
-      columns={columnDefs[columnDefType]}
-      slots={{ toolbar: GridToolbar }}
-      slotProps={{
-        toolbar: {
-          showQuickFilter: true,
-          csvOptions: { fileName: columnDefType },
-        },
-      }}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-        filter: {
-          ...(filterModel && { filterModel: filterModel }),
-        },
-        sorting: {
-          ...(sortModel && { sortModel: sortModel }),
-        },
-      }}
-      pageSizeOptions={[5, 10, 25, 50, 100]}
-      getRowId={(row) => row[rowIDs[columnDefType]]}
-      {...props}
-      autoHeight
-    />
+    <>
+      <DeleteItemDialog deleteStatus={deleteStatus} />
+      <DataGrid
+        rows={rows}
+        // columns={columns}
+        columns={columnDefs[columnDefType]}
+        slots={{ toolbar: GridToolbar }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+            csvOptions: { fileName: columnDefType },
+          },
+        }}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+          filter: {
+            ...(filterModel && { filterModel: filterModel }),
+          },
+          sorting: {
+            ...(sortModel && { sortModel: sortModel }),
+          },
+        }}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        getRowId={(row) => row[rowIDs[columnDefType]]}
+        {...props}
+        autoHeight
+      />
+    </>
   );
 };
 
@@ -1071,9 +1331,8 @@ const datesBetweenOperator: GridFilterOperator = {
 };
 
 const displayDate = (params: GridValueGetterParams) => {
-  if (params.value) {
-    return new Date(params.value);
-  }
+  if (!params.value) return null;
+  return getZonedDate(params.value);
 };
 
 interface DataTableProps {

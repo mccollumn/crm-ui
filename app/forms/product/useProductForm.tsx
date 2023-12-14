@@ -1,8 +1,10 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   getChangedValues,
   isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
@@ -10,6 +12,7 @@ import { OpportunityData, ProductFormData } from "@/app/types/opportunities";
 import { ProductData } from "@/app/types/products";
 
 export const useProductForm = ({ menuItems }: useProductFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Product: [],
   };
@@ -35,10 +38,12 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     // Products
     const setProducts = async () => {
       try {
-        const results = await fetch("/api/products");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/product/list`
+        );
         const products = await results.json();
-        if (isObjectEmpty(products)) return;
-        const options = products.data.map((product: any) => {
+        if (!Array.isArray(products)) return;
+        const options = products.map((product: any) => {
           return {
             id: product.Product2_ID,
             name: product.Product2_Name,
@@ -61,10 +66,12 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
       try {
         const productID = productSelected?.id;
         if (!productID) return;
-        const results = await fetch(`/api/products/${productID}`);
-        const product: { data: ProductData } = await results.json();
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/product/productid/${productID}`
+        );
+        const product: ProductData = await results.json();
         if (isObjectEmpty(product)) return;
-        setListPrice(product.data.ProductDetail.Product2_UnitPrice);
+        setListPrice(product.ProductDetail.Product2_UnitPrice);
       } catch {
         console.error("Could not retrieve product data");
       }
@@ -124,6 +131,38 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     return newOpportunityData;
   };
 
+  const submitProduct = async (
+    values: ProductFormData,
+    opportunityData?: OpportunityData
+  ) => {
+    const data = await createProductFormSubmissionData(values, opportunityData);
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const url = "/api/opportunities/update";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached account data
+    await fetch("/api/revalidate/tag?tag=opportunity");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -136,6 +175,7 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
     FormatNumber,
     FormatCurrency,
     createProductFormSubmissionData,
+    submitProduct,
   };
 };
 

@@ -47,7 +47,13 @@ export default async function Opportunities({
   return (
     <>
       {!noTitle && <Title title="Opportunities" />}
-      <ButtonNav path="/opportunities/new">New</ButtonNav>
+      {accountID ? (
+        <ButtonNav path={`/opportunities/new?accountID=${accountID}`}>
+          New
+        </ButtonNav>
+      ) : (
+        <ButtonNav path="/opportunities/new">New</ButtonNav>
+      )}
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading opportunities...</>}>
           <DataTable

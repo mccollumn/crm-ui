@@ -71,10 +71,12 @@ export interface CaseComment {
   CaseComments_CaseID: string;
   CaseComments_CommentBody: string;
   CaseComments_CreatedById?: string | null;
+  CreatedBy_Name?: string | null;
   CaseComments_CreatedDate: string;
   CaseComments_IsDeleted: "0" | "1";
   CaseComments_IsPublic: "0" | "1";
   CaseComments_LastModifiedById?: string | null;
+  LastModifiedBy_Name?: string | null;
   CaseComments_LastModifiedDate?: string | null;
 }
 

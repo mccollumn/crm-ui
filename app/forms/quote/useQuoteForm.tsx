@@ -1,11 +1,12 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertArrayToString,
   convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
-  isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
@@ -17,6 +18,7 @@ import {
 } from "@/app/types/quotes";
 
 export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Owner: [],
     Opportunity: [],
@@ -48,10 +50,12 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     // Quote Owner
     const setOwners = async () => {
       try {
-        const results = await fetch("/api/users/internal");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/user/list/internal`
+        );
         const owners = await results.json();
-        if (isObjectEmpty(owners)) return;
-        const options = owners.data.map((owner: any) => {
+        if (!Array.isArray(owners)) return;
+        const options = owners.map((owner: any) => {
           return { id: owner.Users_ID, name: owner.Users_Name };
         });
         setCustomMenuOptions("Owner", options);
@@ -64,10 +68,12 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     // Open Opportunities
     const setOpportunities = async () => {
       try {
-        const results = await fetch("/api/opportunities/open");
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/opportunity/list/open`
+        );
         const opportunities = await results.json();
-        if (isObjectEmpty(opportunities)) return;
-        const options = opportunities.data.map((opportunity: any) => {
+        if (!Array.isArray(opportunities)) return;
+        const options = opportunities.map((opportunity: any) => {
           return {
             id: opportunity.Opportunities_ID,
             name: opportunity.Opportunities_Name,
@@ -98,7 +104,7 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
   ) => {
     const quoteProducts = quoteData?.QuoteProducts || [];
 
-    const quoteProductsData: ProductData[] = await getQuoteProductData(
+    const quoteProductsData: ProductData[] = await getAllQuoteProductData(
       quoteProducts
     );
     const totalListPrice = calculateTotalListPrice(quoteProductsData);
@@ -149,9 +155,12 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         Opportunities_Name: values.opportunity.name,
         Quotes_OwnerID: values.owner.id,
         Owners_Name: values.owner.name,
+        Quotes_Primary: convertBooleanToString(values.isPrimary),
         Quotes_SalesNotesToOM: values.notesToOM,
         Quotes_Status: values.status,
-        Quotes_ValidThrough: convertDateToISOString(values.validThrough),
+        Quotes_ValidThrough: convertDateToISOString(
+          new Date(values.validThrough || 0)
+        ),
       },
       QuotePaymentInfo: {
         Quotes_ID: values.id,
@@ -163,13 +172,13 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
       },
       QuoteTotals: {
         Quotes_ID: values.id,
-        Quotes_ExchangeRateToUSD: values.comments.exchangeRate,
+        Quotes_ExchangeRateToUSD: String(values.comments.exchangeRate),
         Quotes_TotalListPrice: totalListPrice,
-        Quotes_TotalOneYearAmount: usdTotalOneYearAmount,
+        Quotes_TotalOneYearAmount: totalOneYearAmount,
         Quotes_TotalPrice: totalPrice,
         Quotes_TotalPriceProducts: totalPriceProducts,
         Quotes_USDTotalListPrice: usdTotalListPrice,
-        Quotes_USDTotalOneYearAmount: totalOneYearAmount,
+        Quotes_USDTotalOneYearAmount: usdTotalOneYearAmount,
         Quotes_USDTotalPrice: usdTotalPrice,
       },
       QuoteProductTotals: {
@@ -307,6 +316,7 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
+          UserID: user?.id || null,
           AccountID: quoteData.QuoteDetail.Opportunities_AccountID || null,
           OpportunityID: quoteData.QuoteDetail.Quotes_OpportunityID || null,
           OwnerID: quoteData.QuoteDetail.Quotes_OwnerID || null,
@@ -317,6 +327,42 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     return newFormData;
   };
 
+  const submitQuote = async (
+    values: QuoteFormData,
+    defaultValues: QuoteFormData,
+    quoteData?: QuoteData
+  ) => {
+    const data = await createQuoteFormSubmissionData(values, quoteData);
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const isEdit = !!defaultValues?.id;
+    const url = isEdit
+      ? "/api/opportunities/update/quote"
+      : "/api/opportunities/insert/quote";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached quote data
+    await fetch("/api/revalidate/tag?tag=quote");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -324,10 +370,11 @@ export const useQuoteForm = ({ menuItems }: useQuoteFormProps) => {
     FormatNumber,
     menuOptions,
     createQuoteFormSubmissionData,
+    submitQuote,
   };
 };
 
-const getQuoteProductData = async (quoteProducts: QuoteProduct[]) => {
+const getAllQuoteProductData = async (quoteProducts: QuoteProduct[]) => {
   const quoteProductsData = await Promise.all(
     quoteProducts?.map(async (product) => {
       if (product.QuoteProducts_ID) {

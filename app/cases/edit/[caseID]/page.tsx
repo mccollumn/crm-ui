@@ -15,7 +15,7 @@ const EditCase = async ({ params }: { params: { caseID: string } }) => {
     menuItemsPromise,
   ]);
   const caseNumber = caseData?.CaseInformation?.Cases_CaseNumber;
-  const values = await createCaseFormData(caseData);
+  const values = await createCaseFormData({ caseData });
 
   return (
     <CaseForm

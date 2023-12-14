@@ -12,7 +12,7 @@ import { AccountData } from "@/app/types/accounts";
 import { getAccountData, getContactData } from "@/app/utils/getData";
 import { Address } from "../Address";
 import Link from "next/link";
-import { formatCheckbox, formatDate } from "@/app/utils/utils";
+import { formatCheckbox, formatDate, unEscape } from "@/app/utils/utils";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
@@ -26,6 +26,9 @@ const ContactInformation = async ({ contactID }: ContactInformationProps) => {
     <>
       <ButtonNav size="small" path={`/contacts/edit/${contactID}`}>
         Edit
+      </ButtonNav>
+      <ButtonNav size="small" path={`/cases/new/?contactID=${contactID}`}>
+        New Case
       </ButtonNav>
       <Accordion defaultExpanded={true}>
         <AccordionSummary
@@ -198,11 +201,14 @@ const getContactInfo = async (contactID: string) => {
             <Link
               href={`/accounts/view/${contactData.ContactDetail.Contacts_AccountId}`}
             >
-              {contactData.ContactDetail.Accounts_Name}
+              {unEscape(contactData.ContactDetail.Accounts_Name)}
             </Link>
           ),
         },
-        { label: "Title", value: contactData.ContactDetail.Contacts_Title },
+        {
+          label: "Title",
+          value: unEscape(contactData.ContactDetail.Contacts_Title),
+        },
         // { label: "Reports To", value: "" },
         {
           label: "Job Role",
@@ -297,19 +303,21 @@ const getContactInfo = async (contactID: string) => {
           label: "Mailing Address",
           value: (
             <Address
-              street={
+              street={unEscape(
                 contactData.ContactAddressInformation.Contacts_MailingStreet
-              }
-              city={contactData.ContactAddressInformation.Contacts_MailingCity}
-              state={
+              )}
+              city={unEscape(
+                contactData.ContactAddressInformation.Contacts_MailingCity
+              )}
+              state={unEscape(
                 contactData.ContactAddressInformation.Contacts_MailingState
-              }
-              postalCode={
+              )}
+              postalCode={unEscape(
                 contactData.ContactAddressInformation.Contacts_MailingPostalCode
-              }
-              country={
+              )}
+              country={unEscape(
                 contactData.ContactAddressInformation.Contacts_MailingCountry
-              }
+              )}
             />
           ),
         },
@@ -319,17 +327,21 @@ const getContactInfo = async (contactID: string) => {
           label: "Other Address",
           value: (
             <Address
-              street={
+              street={unEscape(
                 contactData.ContactAddressInformation.Contacts_OtherStreet
-              }
-              city={contactData.ContactAddressInformation.Contacts_OtherCity}
-              state={contactData.ContactAddressInformation.Contacts_OtherState}
-              postalCode={
+              )}
+              city={unEscape(
+                contactData.ContactAddressInformation.Contacts_OtherCity
+              )}
+              state={unEscape(
+                contactData.ContactAddressInformation.Contacts_OtherState
+              )}
+              postalCode={unEscape(
                 contactData.ContactAddressInformation.Contacts_OtherPostalCode
-              }
-              country={
+              )}
+              country={unEscape(
                 contactData.ContactAddressInformation.Contacts_OtherCountry
-              }
+              )}
             />
           ),
         },
@@ -389,7 +401,7 @@ const getContactInfo = async (contactID: string) => {
           label: "System Sent Email History",
           value: (
             <Link
-              href={`https://crm.webtrends.io/EmailHistory/default.aspx?email=${contactData.ContactDetail.Contacts_Email}&name=${contactData.ContactDetail.Contacts_FullName}&object=Contact&id=${contactData.ContactDetail.Contacts_ID}`}
+              href={`https://crm.webtrends.io/EmailHistory/default.aspx?email=${contactData.ContactDetail.Contacts_Email}&name=${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}&object=Contact&id=${contactData.ContactDetail.Contacts_ID}`}
               target="_blank"
             >
               System Sent Email History

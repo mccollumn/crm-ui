@@ -31,6 +31,7 @@ interface OpportunityDetail {
   Opportunities_MSA: "0" | "1";
   Opportunities_MultiYearYear1Amount: string | null;
   Opportunities_Name: string | null;
+  Opportunities_OpportunityType: string | null;
   Opportunities_OpsAudit: "0" | "1";
   Opportunities_OrderException: "0" | "1";
   Opportunities_OrderExceptionNotes: string | null;
@@ -203,7 +204,7 @@ export type OpportunityFormData = {
   newBusiness?: boolean | null;
   fastNotes?: string | null;
   amount?: string | null;
-  closeDate?: Date | null;
+  closeDate?: Date | string | null;
   probability?: number | null;
   forecastStatus?: string | null;
   term?: string | null;
@@ -216,7 +217,7 @@ export type OpportunityFormData = {
     baselineAmount?: string | null;
     servicesAmount?: string | null;
     multiYearAddBack?: boolean | null;
-    baselineRenewalDate?: Date | null;
+    baselineRenewalDate?: Date | string | null;
     status?: string | null;
     comments?: string | null;
     resell?: string | null;
@@ -230,11 +231,11 @@ export type OpportunityFormData = {
   };
   stage: {
     name?: string | null;
-    stageOneDate?: Date | null;
-    stageTwoDate?: Date | null;
-    stageThreeDate?: Date | null;
-    stageFourDate?: Date | null;
-    stageFiveDate?: Date | null;
+    stageOneDate?: Date | string | null;
+    stageTwoDate?: Date | string | null;
+    stageThreeDate?: Date | string | null;
+    stageFourDate?: Date | string | null;
+    stageFiveDate?: Date | string | null;
   };
 };
 

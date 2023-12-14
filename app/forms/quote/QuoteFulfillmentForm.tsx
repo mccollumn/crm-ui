@@ -11,7 +11,6 @@ import {
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 import { QuoteData, QuoteFulfillmentData } from "@/app/types/quotes";
 import { FormDivider } from "../FormDivider";
 import DateFnsProvider from "@/app/providers/DateFnsProvider";
@@ -42,44 +41,18 @@ export const QuoteFulfillmentForm = ({
     FormatNumber,
     FormatCurrency,
     FormatPercent,
-    createQuoteFulfillmentFormSubmissionData,
+    submitQuoteFulfillment,
   } = useQuoteFulfillmentForm({
     menuItems,
     quoteData,
     accountData,
   });
   const accountID = accountData.AccountDetail.Accounts_AccountID;
+  const assetID = defaultValues.support.assetID;
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createQuoteFulfillmentFormSubmissionData(
-      values,
-      quoteFulfillmentData
-    );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const isEdit = !!defaultValues?.id;
-    const url = isEdit
-      ? "/api/opportunities/update/quote/fulfillment"
-      : "/api/opportunities/insert/quote/fulfillment";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached quote data
-    await fetch("/api/revalidate/tag?tag=quote");
+    await submitQuoteFulfillment(values, defaultValues, quoteFulfillmentData);
     setIsLoading(false);
     const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
     const quoteID = quoteData.QuoteDetail.Quotes_ID;
@@ -117,6 +90,8 @@ export const QuoteFulfillmentForm = ({
                 required
                 loading={menuOptions.Quote.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -152,14 +127,12 @@ export const QuoteFulfillmentForm = ({
               <AutocompleteElement
                 label="Currency"
                 name="currency"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.QuoteFulfillmentCurrency}
-              />
-              {/* Is Term License */}
-              <CheckboxElement
-                label="Is Term License"
-                name="licenseKey.isTermLicense"
-                size="small"
               />
               {/* License Key */}
               <AutocompleteElement
@@ -167,6 +140,8 @@ export const QuoteFulfillmentForm = ({
                 name="licenseKey"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -191,41 +166,72 @@ export const QuoteFulfillmentForm = ({
               </ButtonNav>
             </Stack>
           </Grid>
-          <FormDivider>Support Details</FormDivider>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
-              {/* Support Plan Type */}
-              <AutocompleteElement
-                label="Support Plan Type"
-                name="support.planType"
-                required
-                autocompleteProps={{ size: "small" }}
-                options={menuOptions.SupportPlanType}
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack spacing={1}>
-              {/* Support Plan Begin */}
-              <DateFnsProvider>
-                <DatePickerElement
-                  label="Support Plan Begin"
-                  name="support.beginDate"
-                  required
-                  inputProps={{ size: "small" }}
-                />
-              </DateFnsProvider>
-              {/* Support Plan End */}
-              <DateFnsProvider>
-                <DatePickerElement
-                  label="Support Plan End"
-                  name="support.endDate"
-                  required
-                  inputProps={{ size: "small" }}
-                />
-              </DateFnsProvider>
-            </Stack>
-          </Grid>
+          {!defaultValues?.id && (
+            <>
+              <FormDivider>Support Details</FormDivider>
+              <Grid item xs={6}>
+                <Stack spacing={1}>
+                  {/* Support Plan Type */}
+                  <AutocompleteElement
+                    label="Support Plan Type"
+                    name="support.planType"
+                    required
+                    autocompleteProps={{
+                      autoSelect: true,
+                      autoHighlight: true,
+                      size: "small",
+                      readOnly: defaultValues.support.planType ? true : false,
+                      disabled: defaultValues.support.planType ? true : false,
+                    }}
+                    options={menuOptions.SupportPlanType}
+                  />
+                  {/* Is Term License */}
+                  <CheckboxElement
+                    label="Is Term License"
+                    name="licenseKey.isTermLicense"
+                    size="small"
+                    readOnly={defaultValues.licenseKey.isTerm}
+                    disabled={defaultValues.licenseKey.isTerm}
+                  />
+                  {assetID && (
+                    <ButtonNav
+                      size="small"
+                      path={`/accounts/edit/${accountID}/asset/${assetID}`}
+                      style={{ width: "125px" }}
+                    >
+                      Edit Asset
+                    </ButtonNav>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={6}>
+                <Stack spacing={1}>
+                  {/* Support Plan Begin */}
+                  <DateFnsProvider>
+                    <DatePickerElement
+                      label="Support Plan Begin"
+                      name="support.beginDate"
+                      required
+                      readOnly={defaultValues.support.beginDate}
+                      disabled={defaultValues.support.beginDate}
+                      inputProps={{ size: "small" }}
+                    />
+                  </DateFnsProvider>
+                  {/* Support Plan End */}
+                  <DateFnsProvider>
+                    <DatePickerElement
+                      label="Support Plan End"
+                      name="support.endDate"
+                      required
+                      readOnly={defaultValues.support.endDate}
+                      disabled={defaultValues.support.endDate}
+                      inputProps={{ size: "small" }}
+                    />
+                  </DateFnsProvider>
+                </Stack>
+              </Grid>
+            </>
+          )}
         </Grid>
       </FormWrapper>
     </>

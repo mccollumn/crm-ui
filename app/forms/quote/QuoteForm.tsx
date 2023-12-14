@@ -17,61 +17,82 @@ import { useRouter } from "next/navigation";
 import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "../../types/types";
 import { useQuoteForm } from "./useQuoteForm";
-import { QuoteData } from "@/app/types/quotes";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import { QuoteData, QuoteFormData } from "@/app/types/quotes";
+import { useOpportunityForm } from "../opportunity/useOpportunityForm";
+import {
+  OpportunityData,
+  OpportunityFormData,
+} from "@/app/types/opportunities";
 
 interface QuoteFormProps extends FormProps {
   quoteData?: QuoteData;
-  opportunityID: string;
+  opportunityValues: OpportunityFormData;
+  opportunityData: OpportunityData;
 }
 
 export const QuoteForm = ({
   formTitle,
   defaultValues,
+  opportunityValues,
   menuItems,
   quoteData,
-  opportunityID,
+  opportunityData,
   ...props
 }: QuoteFormProps) => {
   const router = useRouter();
-  const {
-    menuOptions,
-    FormatNumber,
-    setIsLoading,
-    isLoading,
-    createQuoteFormSubmissionData,
-  } = useQuoteForm({
-    menuItems,
-  });
+  const { menuOptions, FormatNumber, setIsLoading, isLoading, submitQuote } =
+    useQuoteForm({
+      menuItems,
+    });
+  const { submitOpportunity } = useOpportunityForm({ menuItems });
 
-  const onSuccess = async (values: any) => {
+  const onSuccess = async (values: QuoteFormData) => {
     setIsLoading(true);
-    const data = await createQuoteFormSubmissionData(values, quoteData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const isEdit = !!defaultValues?.id;
-    const url = isEdit
-      ? "/api/opportunities/update/quote"
-      : "/api/opportunities/insert/quote";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
+    const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
 
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
+    console.log("Quote - Submitting");
+    console.log("Quote - Submitting - values:", values);
+    console.log("Quote - Submitting - defaultValues:", defaultValues);
+    console.log("Quote - Submitting - quoteData:", quoteData);
+
+    await submitQuote(values, defaultValues, quoteData);
+
+    console.log("Quote - Submitted");
+
+    // Opportunity data needs to be updated if this is the primary quote
+    console.log("Quote - Is Primary:", values.isPrimary);
+
+    if (!!Number(values.isPrimary)) {
+      console.log("Quote - Fetching Opportunity:", opportunityID);
+
+      const opportunityNewDataResponse = await fetch(
+        `/api/opportunities/${opportunityID}`
+      );
+      const { data: opportunityNewData }: { data: OpportunityData } =
+        await opportunityNewDataResponse.json();
+
+      console.log("Quote - Submitting Opportunity");
+      console.log(
+        "Quote - Submitting Opportunity - opportunityValues:",
+        opportunityValues
+      );
+      console.log(
+        "Quote - Submitting Opportunity - opportunityNewData:",
+        opportunityNewData
+      );
+
+      await submitOpportunity(
+        opportunityValues,
+        opportunityValues,
+        opportunityNewData,
+        "auto"
+      );
+
+      console.log("Quote - Submitted Opportunity");
     }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached quote data
-    await fetch("/api/revalidate/tag?tag=quote");
     setIsLoading(false);
+
+    console.log("Quote - Routing");
     router.back();
   };
 
@@ -105,6 +126,8 @@ export const QuoteForm = ({
                 name="owner"
                 loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -124,6 +147,8 @@ export const QuoteForm = ({
                 required
                 loading={menuOptions.Opportunity.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -165,7 +190,11 @@ export const QuoteForm = ({
                 label="Status"
                 name="status"
                 options={menuOptions.QuoteStatus}
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
               />
               {/* Quote Office Location */}
               {/* <AutocompleteElement
@@ -180,7 +209,11 @@ export const QuoteForm = ({
                 label="Currency"
                 name="currencyCode"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.QuoteCurrency}
               />
               {/* Valid Through */}
@@ -225,7 +258,11 @@ export const QuoteForm = ({
               <AutocompleteElement
                 label="Payment Method"
                 name="payment.method"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.PaymentMethod}
               />
               {/* Payment Document Number */}
@@ -248,14 +285,22 @@ export const QuoteForm = ({
               <AutocompleteElement
                 label="Billing Frequency"
                 name="payment.billingFrequency"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.BillingFrequency}
               />
               {/* Payment Terms */}
               <AutocompleteElement
                 label="Payment Terms"
                 name="payment.terms"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.PaymentTerms}
               />
               {/* Terms Audit */}

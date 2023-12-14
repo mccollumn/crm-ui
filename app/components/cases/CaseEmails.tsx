@@ -12,7 +12,7 @@ export default async function CaseEmails({ caseID }: CaseEmailsProps) {
 
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading case emails...</>}>
           <DataTable rows={caseEmails} columnDefType="caseEmails" />
         </React.Suspense>

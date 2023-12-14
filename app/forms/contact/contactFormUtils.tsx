@@ -1,3 +1,4 @@
+import { AccountData } from "@/app/types/accounts";
 import { ContactData, ContactFormData } from "@/app/types/contacts";
 import { getDefaultOwner } from "@/app/utils/forms";
 import { convertStringToArray } from "@/app/utils/utils";
@@ -6,7 +7,9 @@ import { convertStringToArray } from "@/app/utils/utils";
  * Generates and object containing the default values for a new/empty contact form.
  * @returns Initial contact form data.
  */
-const generateInitialContactFormData = async () => {
+const generateInitialContactFormData = async (
+  accountData: AccountData | null | undefined
+) => {
   const defaultOwner = await getDefaultOwner();
 
   const initialContactFormData: ContactFormData = {
@@ -15,7 +18,10 @@ const generateInitialContactFormData = async () => {
     // salutation: null,
     firstName: null,
     lastName: null,
-    account: { id: null, name: null },
+    account: {
+      id: accountData?.AccountDetail.Accounts_AccountID || null,
+      name: accountData?.AccountDetail.Accounts_Name || null,
+    },
     title: null,
     jobRole: null,
     contactRole: null,
@@ -37,11 +43,19 @@ const generateInitialContactFormData = async () => {
     },
     address: {
       mailing: {
-        street: null,
-        city: null,
-        state: null,
-        postalCode: null,
-        country: null,
+        street:
+          accountData?.AddressInformation.AccountsAddress_ShippingStreet ||
+          null,
+        city:
+          accountData?.AddressInformation.AccountsAddress_ShippingCity || null,
+        state:
+          accountData?.AddressInformation.AccountsAddress_ShippingState || null,
+        postalCode:
+          accountData?.AddressInformation.AccountsAddress_ShippingPostalCode ||
+          null,
+        country:
+          accountData?.AddressInformation.AccountsAddress_ShippingCountry ||
+          null,
       },
       other: {
         street: null,
@@ -66,8 +80,13 @@ const generateInitialContactFormData = async () => {
  * @param contactData Data from an existing contact. (optional)
  * @returns Contact data object.
  */
-export const createContactFormData = async (contactData?: ContactData) => {
-  const initialContactFormData = await generateInitialContactFormData();
+export const createContactFormData = async ({
+  contactData,
+  accountData,
+}: CreateContactFormDataProps) => {
+  const initialContactFormData = await generateInitialContactFormData(
+    accountData
+  );
 
   if (!contactData) {
     return initialContactFormData;
@@ -151,3 +170,8 @@ export const createContactFormData = async (contactData?: ContactData) => {
     },
   };
 };
+
+interface CreateContactFormDataProps {
+  contactData?: ContactData;
+  accountData?: AccountData | null;
+}

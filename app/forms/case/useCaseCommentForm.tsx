@@ -1,13 +1,16 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   convertBooleanToString,
   getChangedValues,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
-import { CaseComment, CaseCommentFormData } from "@/app/types/cases";
+import { CaseComment, CaseCommentFormData, CaseData } from "@/app/types/cases";
 import { useForm } from "../useForm";
 
 export const useCaseCommentForm = () => {
+  const router = useRouter();
   const { user } = useForm({});
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -51,9 +54,50 @@ export const useCaseCommentForm = () => {
     return newFormData;
   };
 
+  const submitCaseComment = async (
+    values: CaseCommentFormData,
+    caseData: CaseData,
+    caseCommentData?: CaseComment
+  ) => {
+    let id = caseData?.CaseInformation.Cases_ID;
+    const data = await createCaseCommentFormSubmissionData(
+      values,
+      id,
+      caseCommentData
+    );
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const url = caseCommentData
+      ? "/api/cases/update/comment"
+      : "/api/cases/insert/comment";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached case data
+    await fetch("/api/revalidate/tag?tag=case");
+
+    return responseData;
+  };
+
   return {
     setIsLoading,
     isLoading,
     createCaseCommentFormSubmissionData,
+    submitCaseComment,
   };
 };

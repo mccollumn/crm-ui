@@ -1,9 +1,16 @@
 "use client";
 
 import React from "react";
-import { FormWrapper } from "../FormWrapper";
+import { useFormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
-import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Grid,
+  Stack,
+  createFilterOptions,
+} from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
@@ -13,10 +20,11 @@ import {
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import DateFnsProvider from "@/app/providers/DateFnsProvider";
-import { FormProps, MenuItem } from "@/app/types/types";
+import { FormProps } from "@/app/types/types";
 import { useCaseForm } from "./useCaseForm";
 import { CaseData } from "@/app/types/cases";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import { SupportStatus } from "@/app/components/SupportStatus";
+import { StyledPopper, VirtualizedListbox } from "../VirtualizedListbox";
 
 interface CaseFormProps extends FormProps {
   caseData?: CaseData;
@@ -33,43 +41,26 @@ export const CaseForm = ({
   const {
     setMenuOptions,
     getContactOptions,
+    setContacts,
+    clearMenuOptions,
     setAccountSelected,
-    createCaseFormSubmissionData,
+    submitCase,
     setIsLoading,
     isLoading,
     menuOptions,
     accountSelected,
   } = useCaseForm({ menuItems, defaultValues });
+  const { FormWrapper, formContext } = useFormWrapper(defaultValues);
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createCaseFormSubmissionData(values, caseData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
+    const responseData = await submitCase(values, defaultValues, caseData);
+
     let id = defaultValues.caseID;
-    const url = id ? "/api/cases/update" : "/api/cases/insert";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
     if (!id) {
-      const responseData = await response.json();
       id = responseData?.res?.ID;
     }
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached case data
-    await fetch("/api/revalidate/tag?tag=case");
+
     setIsLoading(false);
     router.push(`/cases/view/${id}`);
   };
@@ -77,6 +68,93 @@ export const CaseForm = ({
   const onCancel = () => {
     router.back();
   };
+
+  const [allContactsFlag, setAllContactsFlag] = React.useState(false);
+  const onShowAllContacts = () => {
+    formContext.resetField("contact");
+    clearMenuOptions("Contact");
+    setContacts();
+    setAllContactsFlag(true);
+  };
+
+  const onAccountChange = (value: any) => {
+    // If account value was cleared
+    if (!value) {
+      clearMenuOptions("Contact");
+      setContacts();
+      setAllContactsFlag(false);
+      return;
+    }
+    setMenuOptions("Contact");
+    if (value?.id) {
+      clearMenuOptions("Contact");
+      getContactOptions(value.id);
+    }
+    setAccountSelected(value);
+  };
+
+  const onContactChange = (value: any) => {
+    // Show All Contacts option was clicked
+    if (value.id === "-1") {
+      onShowAllContacts();
+      return;
+    }
+    // Set the account and repopulate menu with the account's contacts,
+    // unless the Show All Contacts option was used.
+    if (!allContactsFlag) {
+      const account = {
+        id: value.accountID,
+        name: value.accountName,
+      };
+      formContext.setValue("account", account);
+      setAccountSelected(account);
+      getContactOptions(account.id);
+    }
+  };
+
+  const renderAccountOptions = (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: any
+  ) => {
+    return (
+      <li {...props} key={option.id}>
+        <b>{option.name}</b>
+        <pre style={{ margin: 0 }}>{`${option.site ? ` - ${option.site}` : ""}${
+          option.description ? ` (${option.description})` : ""
+        }`}</pre>
+      </li>
+    );
+  };
+
+  const renderContactOptions = (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: any
+  ) => {
+    // Show All Contacts option
+    if (option.id === "-1") {
+      return (
+        <li {...props} key={option.id}>
+          <Button fullWidth>Show All Contacts</Button>
+        </li>
+      );
+    }
+    return (
+      <li {...props} key={option.id}>
+        <b>{option.name}</b>
+        <pre style={{ margin: 0 }}>{`${
+          option.email ? ` - ${option.email}` : ""
+        }${option.accountName ? ` - ${option.accountName}` : ""}${
+          option.title ? ` (${option.title})` : ""
+        }`}</pre>
+      </li>
+    );
+  };
+
+  const contactFilterOptions = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) =>
+      `${option.name} ${option.email} ${option.accountName} ${option.title}`,
+  });
 
   // Populate contact options if an account ID was provided when the form loaded
   React.useEffect(() => {
@@ -100,8 +178,10 @@ export const CaseForm = ({
         onSuccess={onSuccess}
         onCancel={onCancel}
         defaultValues={defaultValues}
+        formContext={formContext}
       >
         <Grid container spacing={1}>
+          <SupportStatus accountID={accountSelected?.id} />
           <FormDivider>Case Information</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -112,58 +192,49 @@ export const CaseForm = ({
                 required
                 size="small"
               />
+              {/* Contact Name */}
+              <AutocompleteElement
+                label="Contact Name"
+                name="contact"
+                required
+                loading={menuOptions.Contact.length === 0}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  disableListWrap: true,
+                  ListboxComponent: VirtualizedListbox,
+                  PopperComponent: StyledPopper,
+                  size: "small",
+                  getOptionLabel: (option) => option.name || "",
+                  renderOption: (props, option) =>
+                    renderContactOptions(props, option),
+                  filterOptions: contactFilterOptions,
+                  onChange: (_, value) => onContactChange(value),
+                }}
+                options={menuOptions.Contact}
+              />
               {/* Account Name */}
-              {/* May need to virtualize the list if performance is bad. */}
-              {/* https://mui.com/material-ui/react-autocomplete/#virtualization */}
               <AutocompleteElement
                 label="Account Name"
                 name="account"
                 required
                 loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  disableListWrap: true,
+                  ListboxComponent: VirtualizedListbox,
+                  PopperComponent: StyledPopper,
                   size: "small",
                   getOptionLabel: (option) => option.name || "",
-                  renderOption: (props, option) => {
-                    return (
-                      <li {...props} key={option.id}>
-                        <b>{option.name}</b>
-                        <pre style={{ margin: 0 }}>{` - ${option.site}${
-                          option.description ? ` (${option.description})` : ""
-                        }`}</pre>
-                      </li>
-                    );
-                  },
+                  renderOption: (props, option) =>
+                    renderAccountOptions(props, option),
                   isOptionEqualToValue(option, value) {
                     return option.id === value.id;
                   },
-                  onChange: (_, value) => {
-                    getContactOptions(value.id);
-                    setAccountSelected(value);
-                  },
+                  onChange: (_, value) => onAccountChange(value),
                 }}
                 options={menuOptions.Account}
-              />
-              {/* Contact Name */}
-              <AutocompleteElement
-                label="Contact Name"
-                name="contact"
-                required
-                loading={
-                  !!accountSelected?.id && menuOptions.Contact.length === 0
-                }
-                autocompleteProps={{
-                  size: "small",
-                  getOptionLabel: (option) => option.name || "",
-                  renderOption: (props, option) => {
-                    return (
-                      <li {...props} key={option.id}>
-                        {`${option.name} (${option.email})`}
-                      </li>
-                    );
-                  },
-                  disabled: !accountSelected,
-                }}
-                options={menuOptions.Contact}
               />
               {/* Case Origin */}
               <AutocompleteElement
@@ -171,6 +242,8 @@ export const CaseForm = ({
                 name="origin"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                 }}
                 options={menuOptions.CaseOrigin}
@@ -196,8 +269,14 @@ export const CaseForm = ({
                 name="status"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
-                  onChange: (_, value) => setMenuOptions("Sub-Status", value),
+                  onChange: (_, value) => {
+                    clearMenuOptions("Sub-Status");
+                    formContext.setValue("subStatus", null);
+                    setMenuOptions("Sub-Status", value);
+                  },
                 }}
                 options={menuOptions.CaseStatus}
               />
@@ -207,6 +286,8 @@ export const CaseForm = ({
                 name="subStatus"
                 required={!!menuOptions["Sub-Status"].length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   disabled: !menuOptions["Sub-Status"].length,
                 }}
@@ -227,6 +308,8 @@ export const CaseForm = ({
                 required
                 loading={menuOptions.CaseOwner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -245,6 +328,8 @@ export const CaseForm = ({
                 name="subOwner"
                 loading={menuOptions.SubOwner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -268,6 +353,8 @@ export const CaseForm = ({
                 name="product.deliveryMethod"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                 }}
                 options={menuOptions.ProductDeliveryMethod}
@@ -278,9 +365,15 @@ export const CaseForm = ({
                 name="product.name"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   onChange: (_, value) => {
+                    clearMenuOptions("ProductVersion");
+                    formContext.setValue("product.version", null);
                     setMenuOptions("ProductVersion", value);
+                    clearMenuOptions("CaseType");
+                    formContext.setValue("type", null);
                     setMenuOptions("CaseType", value);
                   },
                 }}
@@ -290,8 +383,9 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Product Version"
                 name="product.version"
-                required={!!menuOptions.ProductVersion.length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   onChange: (_, value) =>
                     setMenuOptions("ProductSubVersion", value),
@@ -303,8 +397,9 @@ export const CaseForm = ({
               <AutocompleteElement
                 label="Product Sub-Version"
                 name="product.subVersion"
-                required={!!menuOptions.ProductSubVersion.length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   disabled: !menuOptions.ProductSubVersion.length,
                 }}
@@ -332,8 +427,14 @@ export const CaseForm = ({
                 name="type"
                 required={!!menuOptions.CaseType.length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
-                  onChange: (_, value) => setMenuOptions("Reason", value),
+                  onChange: (_, value) => {
+                    clearMenuOptions("Reason");
+                    formContext.setValue("reason", null);
+                    setMenuOptions("Reason", value);
+                  },
                   disabled: !menuOptions.CaseType.length,
                 }}
                 options={menuOptions.CaseType}
@@ -344,8 +445,14 @@ export const CaseForm = ({
                 name="reason"
                 required={!!menuOptions.Reason.length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
-                  onChange: (_, value) => setMenuOptions("Category", value),
+                  onChange: (_, value) => {
+                    clearMenuOptions("Category");
+                    formContext.setValue("category", null);
+                    setMenuOptions("Category", value);
+                  },
                   disabled: !menuOptions.Reason.length,
                 }}
                 options={menuOptions.Reason}
@@ -356,6 +463,8 @@ export const CaseForm = ({
                 name="category"
                 required={!!menuOptions.Category.length}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                   disabled: !menuOptions.Category.length,
                 }}
@@ -367,6 +476,8 @@ export const CaseForm = ({
                 name="priority"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                 }}
                 options={menuOptions.Priority}
@@ -377,6 +488,8 @@ export const CaseForm = ({
                 name="severity"
                 required
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   size: "small",
                 }}
                 options={menuOptions.Severity}

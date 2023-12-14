@@ -8,13 +8,13 @@ export const dynamic = "force-dynamic";
 
 const CaseHistory = async ({ caseID }: CaseHistoryProps) => {
   const caseData = await getCaseData(caseID);
-  const rows = caseData?.CaseHistory || [];
+  // const rows = caseData?.CaseHistory || [];
 
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
         <React.Suspense fallback={<>Loading case history...</>}>
-          <DataTable rows={rows} columnDefType="caseHistory" />
+          <DataTable rows={[]} columnDefType="caseHistory" />
         </React.Suspense>
       </div>
     </>

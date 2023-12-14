@@ -1,3 +1,4 @@
+import { createOpportunityFormData } from "@/app/forms/opportunity/opportunityFormUtils";
 import { QuoteForm } from "@/app/forms/quote/QuoteForm";
 import { createQuoteFormData } from "@/app/forms/quote/quoteFormUtils";
 import {
@@ -27,14 +28,18 @@ const EditQuote = async ({
   ]);
   const quoteName = quoteData?.QuoteDetail.Quotes_Name;
   const values = await createQuoteFormData(opportunityData, quoteData);
+  const opportunityValues = await createOpportunityFormData({
+    opportunityData,
+  });
 
   return (
     <QuoteForm
       formTitle={`Edit Quote - ${quoteName}`}
       defaultValues={values}
+      opportunityValues={opportunityValues}
       menuItems={menuItems}
       quoteData={quoteData}
-      opportunityID={opportunityID}
+      opportunityData={opportunityData}
     />
   );
 };

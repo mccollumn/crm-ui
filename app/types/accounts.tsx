@@ -1,4 +1,5 @@
 export interface AccountData {
+  AccountStatusSummary: AccountStatusSummary;
   AccountDetail: AccountDetail;
   AddressInformation: AddressInformation;
   AccountCreditStatus: AccountCreditStatus;
@@ -8,6 +9,11 @@ export interface AccountData {
   Assets: Asset[];
   LicenseKeys: LicenseKey[];
   SystemInformation: SystemInformation;
+}
+
+interface AccountStatusSummary {
+  Assets_SupportPlanEnd?: string | null;
+  Assets_SupportPlanType?: string | null;
 }
 
 interface AccountDetail {

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FormWrapper } from "../FormWrapper";
+import { useFormWrapper } from "../FormWrapper";
 import {
   Backdrop,
   CircularProgress,
@@ -17,22 +17,33 @@ import {
 } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 import { useQuoteProductForm } from "./useQuoteProductForm";
-import { QuoteData, QuoteProductData } from "@/app/types/quotes";
+import { QuoteData, QuoteFormData, QuoteProductData } from "@/app/types/quotes";
 import { FormDivider } from "../FormDivider";
 import DateFnsProvider from "@/app/providers/DateFnsProvider";
+import { useQuoteForm } from "./useQuoteForm";
+import { useOpportunityForm } from "../opportunity/useOpportunityForm";
+import {
+  OpportunityData,
+  OpportunityFormData,
+} from "@/app/types/opportunities";
 
 interface QuoteProductFormProps extends FormProps {
   quoteData: QuoteData;
+  opportunityData: OpportunityData;
+  quoteValues: QuoteFormData;
+  opportunityValues: OpportunityFormData;
   quoteProductData?: QuoteProductData;
 }
 
 export const QuoteProductForm = ({
   formTitle,
   defaultValues,
+  quoteValues,
+  opportunityValues,
   menuItems,
   quoteData,
+  opportunityData,
   quoteProductData,
   ...props
 }: QuoteProductFormProps) => {
@@ -43,48 +54,87 @@ export const QuoteProductForm = ({
     isLoading,
     setProductSelected,
     productSelected,
+    productData,
     FormatNumber,
     FormatCurrency,
     FormatPercent,
-    createQuoteProductFormSubmissionData,
+    submitQuoteProduct,
   } = useQuoteProductForm({
     menuItems,
     quoteData,
   });
+  const { submitQuote } = useQuoteForm({ menuItems });
+  const { submitOpportunity } = useOpportunityForm({ menuItems });
+  const { FormWrapper, formContext } = useFormWrapper(defaultValues);
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createQuoteProductFormSubmissionData(
-      values,
-      quoteProductData
-    );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const isEdit = !!defaultValues?.id;
-    const url = isEdit
-      ? "/api/opportunities/update/quote/product"
-      : "/api/opportunities/insert/quote/product";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached quote data
-    await fetch("/api/revalidate/tag?tag=quote");
-    setIsLoading(false);
     const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
     const quoteID = quoteData.QuoteDetail.Quotes_ID;
+
+    console.log("Quote Product - Submitting");
+    console.log("Quote Product - Submitting - values:", values);
+    console.log("Quote Product - Submitting - defaultValues:", defaultValues);
+    console.log(
+      "Quote Product - Submitting - quoteProductData:",
+      quoteProductData
+    );
+
+    await submitQuoteProduct(values, defaultValues, quoteProductData);
+
+    console.log("Quote Product - Submitted");
+
+    // Quote data needs to be updated when a quote product is added/updated.
+    console.log("Quote Product - Fetching Quote:", quoteID);
+
+    const quoteNewDataResponse = await fetch(`/api/quotes/${quoteID}`);
+    const { data: quoteNewData }: { data: QuoteData } =
+      await quoteNewDataResponse.json();
+
+    console.log("Quote Product - Submitting Quote");
+    console.log("Quote Product - Submitting Quote - quoteValues:", quoteValues);
+    console.log(
+      "Quote Product - Submitting Quote - quoteNewData:",
+      quoteNewData
+    );
+
+    await submitQuote(quoteValues, quoteValues, quoteNewData);
+
+    console.log("Quote Product - Submitted Quote");
+
+    // Opportunity data needs to be updated when the primary quote is added/updated.
+    console.log("Quote Product - Fetching Opportunity:", opportunityID);
+
+    const opportunityNewDataResponse = await fetch(
+      `/api/opportunities/${opportunityID}`
+    );
+    const { data: opportunityNewData }: { data: OpportunityData } =
+      await opportunityNewDataResponse.json();
+
+    console.log("Quote - Is Primary:", quoteNewData.QuoteDetail.Quotes_Primary);
+
+    if (quoteNewData.QuoteDetail.Quotes_Primary === "1") {
+      console.log("Quote Product - Submitting Opportunity");
+      console.log(
+        "Quote Product - Submitting Opportunity - opportunityValues:",
+        opportunityValues
+      );
+      console.log(
+        "Quote Product - Submitting Opportunity - opportunityNewData:",
+        opportunityNewData
+      );
+
+      await submitOpportunity(
+        opportunityValues,
+        opportunityValues,
+        opportunityNewData,
+        "auto"
+      );
+      console.log("Quote Product - Submitted Opportunity");
+    }
+    setIsLoading(false);
+
+    console.log("Quote Product - Routing");
     router.push(`/opportunities/view/${opportunityID}/quote/${quoteID}`);
   };
 
@@ -96,6 +146,31 @@ export const QuoteProductForm = ({
     matchFrom: "any",
     stringify: (option: any) => `${option.name} ${option.code}`,
   });
+
+  // Set form values when the product selection changes
+  React.useEffect(() => {
+    formContext.setValue(
+      "product.unitListPrice",
+      productData?.ProductDetail.Product2_UnitPrice ||
+        defaultValues.product.unitPrice
+    );
+    formContext.setValue(
+      "skuGroup",
+      productData?.ProductCategorization.Product2_SkuGroup ||
+        defaultValues.skuGroup
+    );
+    formContext.setValue(
+      "product.family",
+      productData?.ProductCategorization.Product2_Family ||
+        defaultValues.product.family
+    );
+  }, [
+    defaultValues.product.family,
+    defaultValues.product.unitPrice,
+    defaultValues.skuGroup,
+    formContext,
+    productData,
+  ]);
 
   return (
     <>
@@ -112,6 +187,7 @@ export const QuoteProductForm = ({
         onSuccess={onSuccess}
         onCancel={onCancel}
         defaultValues={defaultValues}
+        formContext={formContext}
       >
         <Grid container spacing={1}>
           <FormDivider>Information</FormDivider>
@@ -124,6 +200,8 @@ export const QuoteProductForm = ({
                 required
                 loading={menuOptions.Quote.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -141,7 +219,11 @@ export const QuoteProductForm = ({
                 label="Sale Type"
                 name="saleType"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.SaleType}
               />
               {/* Product */}
@@ -151,6 +233,8 @@ export const QuoteProductForm = ({
                 required
                 loading={menuOptions.Product.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -171,19 +255,21 @@ export const QuoteProductForm = ({
                 options={menuOptions.Product}
               />
               {/* Parent Quote Product ID */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="Parent Quote Product ID"
                 name="parentQuoteProductId"
                 size="small"
-              />
+              /> */}
               {/* QM Editable */}
-              <CheckboxElement label="QM Editable" name="" size="small" />
+              {/* <CheckboxElement label="QM Editable" name="" size="small" /> */}
               {/* Quote Fulfillment */}
               <AutocompleteElement
                 label="Quote Fulfillment"
                 name="fulfillment"
                 loading={menuOptions.Fulfillment.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -200,16 +286,21 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Product Family"
                 name="product.family"
-                autocompleteProps={{ size: "small" }}
+                required
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.ProductFamily}
               />
               {/* One Year Amount */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="One Year Amount"
                 name="oneYearAmount"
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
-              />
+              /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -218,15 +309,21 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Currency"
                 name="currency"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.QuoteProductCurrency}
               />
               {/* Unit List Price */}
               <TextFieldElement
                 label="Unit List Price"
-                name="unitListPrice"
+                name="product.unitListPrice"
                 size="small"
-                InputProps={{ inputComponent: FormatCurrency as any }}
+                InputProps={{
+                  inputComponent: FormatCurrency as any,
+                }}
               />
               {/* Quantity */}
               <TextFieldElement
@@ -237,7 +334,7 @@ export const QuoteProductForm = ({
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
               {/* Term */}
-              <TextFieldElement label="Term" name="" size="small" />
+              <TextFieldElement label="Term" name="term" size="small" />
               {/* Discount */}
               <TextFieldElement
                 label="Discount"
@@ -246,12 +343,12 @@ export const QuoteProductForm = ({
                 InputProps={{ inputComponent: FormatPercent as any }}
               />
               {/* Total-Net-Price Discount */}
-              <TextFieldElement
+              {/* <TextFieldElement
                 label="Total-Net-Price Discount"
                 name="totalNetPriceDiscount"
                 size="small"
                 InputProps={{ inputComponent: FormatPercent as any }}
-              />
+              /> */}
             </Stack>
           </Grid>
           {/* <FormDivider>CPM Information</FormDivider> */}
@@ -274,7 +371,11 @@ export const QuoteProductForm = ({
                 label="SKU Group"
                 name="skuGroup"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.SkuGroup}
               />
             </Stack>
@@ -308,7 +409,11 @@ export const QuoteProductForm = ({
               <AutocompleteElement
                 label="Fulfillment Status"
                 name="fulfillment.status"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.FulfillmentStatus}
               />
             </Stack>

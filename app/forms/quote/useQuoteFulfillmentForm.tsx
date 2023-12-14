@@ -1,14 +1,15 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MenuItem } from "@/app/types/types";
 import {
   convertBooleanToString,
   convertDateToISOString,
   getChangedValues,
   isObjectEmpty,
+  isSuccessfulResponse,
   removeNullsFromObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
-import { Product } from "@/app/types/opportunities";
 import {
   QuoteData,
   QuoteFulfillmentData,
@@ -21,6 +22,7 @@ export const useQuoteFulfillmentForm = ({
   quoteData,
   accountData,
 }: useQuoteFulfillmentFormProps) => {
+  const router = useRouter();
   const initialMenuOptions = {
     Quote: [],
     LicenseKey: [],
@@ -48,19 +50,19 @@ export const useQuoteFulfillmentForm = ({
     const setQuotes = async () => {
       try {
         const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
-        const results = await fetch(`/api/opportunities/${opportunityID}`);
+        const results = await fetch(
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/opportunity/opportunityid/${opportunityID}`
+        );
         const opportunityData = await results.json();
         if (isObjectEmpty(opportunityData)) return;
-        const options = opportunityData.data.OpportunityQuotes.map(
-          (quote: any) => {
-            return {
-              id: quote.Quotes_ID,
-              name: quote.Quotes_Name,
-              status: quote.Quotes_Status,
-              primary: quote.Quotes_Primary,
-            };
-          }
-        );
+        const options = opportunityData.OpportunityQuotes.map((quote: any) => {
+          return {
+            id: quote.Quotes_ID,
+            name: quote.Quotes_Name,
+            status: quote.Quotes_Status,
+            primary: quote.Quotes_Primary,
+          };
+        });
         setCustomMenuOptions("Quote", options);
       } catch {
         console.error("Could not retrieve quote data");
@@ -158,6 +160,45 @@ export const useQuoteFulfillmentForm = ({
     return newFormData;
   };
 
+  const submitQuoteFulfillment = async (
+    values: QuoteFulfillmentFormData,
+    defaultValues: QuoteFulfillmentFormData,
+    quoteFulfillmentData?: QuoteFulfillmentData
+  ) => {
+    const data = await createQuoteFulfillmentFormSubmissionData(
+      values,
+      quoteFulfillmentData
+    );
+    console.log("Success values", values);
+    console.log("Submitted Data:", data);
+    const isEdit = !!defaultValues?.id;
+    const url = isEdit
+      ? "/api/opportunities/update/quote/fulfillment"
+      : "/api/opportunities/insert/quote/fulfillment";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await fetch(request);
+
+    if (!(await isSuccessfulResponse(response))) {
+      setIsLoading(false);
+      router.push("/error");
+      return;
+    }
+
+    const responseData = await response.json();
+
+    // Refresh the page cache
+    React.startTransition(() => {
+      router.refresh();
+    });
+    // Invalidate cached quote data
+    await fetch("/api/revalidate/tag?tag=quote");
+
+    return responseData;
+  };
+
   return {
     setMenuOptions,
     setIsLoading,
@@ -167,6 +208,7 @@ export const useQuoteFulfillmentForm = ({
     FormatNumber,
     FormatCurrency,
     createQuoteFulfillmentFormSubmissionData,
+    submitQuoteFulfillment,
   };
 };
 

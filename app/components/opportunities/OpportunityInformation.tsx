@@ -50,7 +50,6 @@ const OpportunityInformation = async ({
       <ButtonNav
         size="small"
         path={`/opportunities/clone/${opportunityData.OpportunityDetail.Opportunities_ID}`}
-        // path={`/api/opportunities/${opportunityData.OpportunityDetail.Opportunities_ID}/clone`}
       >
         Clone
       </ButtonNav>
@@ -265,9 +264,7 @@ const getOpportunityInfo = async (
         },
         {
           label: "Opportunity Name",
-          value: unEscape(
-            opportunityData.OpportunityDetail.Opportunities_Name || ""
-          ),
+          value: unEscape(opportunityData.OpportunityDetail.Opportunities_Name),
         },
         {
           label: "Account Name",
@@ -275,14 +272,14 @@ const getOpportunityInfo = async (
             <Link
               href={`/accounts/view/${opportunityData.OpportunityDetail.Opportunities_AccountId}`}
             >
-              {opportunityData.OpportunityDetail.Accounts_Name}
+              {unEscape(opportunityData.OpportunityDetail.Accounts_Name)}
             </Link>
           ),
         },
         {
           label: "Opportunity Type",
           value:
-            opportunityData.OpportunityDetail.Opportunities_CommissionCategory,
+            opportunityData.OpportunityDetail.Opportunities_OpportunityType,
         },
         {
           label: "Account Type",
@@ -320,8 +317,9 @@ const getOpportunityInfo = async (
         },
         {
           label: "Order Exception Notes",
-          value:
-            opportunityData.OpportunityDetail.Opportunities_OrderExceptionNotes,
+          value: unEscape(
+            opportunityData.OpportunityDetail.Opportunities_OrderExceptionNotes
+          ),
         },
         {
           label: "Split Opportunity",
@@ -366,12 +364,12 @@ const getOpportunityInfo = async (
           label: "Forecast Status",
           value: opportunityData.OpportunityDetail.Opportunities_ForecastStatus,
         },
-        {
-          label: "Expected Revenue",
-          value: formatCurrency(
-            opportunityData.OpportunityDetail.Opportunities_ExpectedRevenue
-          ),
-        },
+        // {
+        //   label: "Expected Revenue",
+        //   value: formatCurrency(
+        //     opportunityData.OpportunityDetail.Opportunities_ExpectedRevenue
+        //   ),
+        // },
         {
           label: "Term (months)",
           value: opportunityData.OpportunityDetail.Opportunities_Term,
@@ -402,8 +400,9 @@ const getOpportunityInfo = async (
         },
         {
           label: "Fast Notes/Next Steps",
-          value:
-            opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps,
+          value: unEscape(
+            opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps
+          ),
         },
         // { label: "1st Year Contract Amount", value: "" },
         // { label: "1st Year Expected Amount", value: "" },
@@ -533,9 +532,10 @@ const getOpportunityInfo = async (
         },
         {
           label: "Renewal Status Comments & Next Steps",
-          value:
+          value: unEscape(
             opportunityData.OpportunityRenewalInfo
-              .Opportunities_RenewalStatusCommentsNextSteps,
+              .Opportunities_RenewalStatusCommentsNextSteps
+          ),
         },
         {
           label: "Resell",
@@ -547,15 +547,17 @@ const getOpportunityInfo = async (
       fullWidth: [
         {
           label: "Opportunity Notes",
-          value:
+          value: unEscape(
             opportunityData.OpportunityAdditonalInfo
-              .Opportunities_OpportunityNotes,
+              .Opportunities_OpportunityNotes
+          ),
         },
         {
           label: "Compelling Event",
-          value:
+          value: unEscape(
             opportunityData.OpportunityAdditonalInfo
-              .Opportunities_CPCompellingEvent,
+              .Opportunities_CPCompellingEvent
+          ),
         },
       ],
     },
@@ -584,9 +586,10 @@ const getOpportunityInfo = async (
         },
         {
           label: "Change from Renewal Baseline Reason",
-          value:
+          value: unEscape(
             opportunityData.OpportunityWinLossDetail
-              .Opportunities_ChangeFromRenewalBaselineReason,
+              .Opportunities_ChangeFromRenewalBaselineReason
+          ),
         },
       ],
       right: [

@@ -16,7 +16,6 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useLicenseKeyForm } from "./useLicenseKeyForm";
 import { LicenseKeyData } from "@/app/types/licenseKeys";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface LicenseKeyFormProps extends FormProps {
   licenseKeyData?: LicenseKeyData;
@@ -37,43 +36,14 @@ export const LicenseKeyForm = ({
     FormatNumber,
     setIsLoading,
     isLoading,
-    createLicenseKeyFormSubmissionData,
+    submitLicenseKey,
   } = useLicenseKeyForm({
     menuItems,
   });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createLicenseKeyFormSubmissionData(
-      values,
-      licenseKeyData
-    );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const isEdit = !!defaultValues?.id;
-    const url = isEdit
-      ? "/api/accounts/update/license-key"
-      : "/api/accounts/insert/license-key";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account data
-    await fetch("/api/revalidate/tag?tag=account");
-    await fetch("/api/revalidate/tag?tag=licenseKey");
-
+    await submitLicenseKey(values, defaultValues, licenseKeyData);
     setIsLoading(false);
     router.back();
   };
@@ -116,12 +86,16 @@ export const LicenseKeyForm = ({
                 required
                 loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                        <pre style={{ margin: 0 }}>{`${
+                          option.site ? ` - ${option.site}` : ""
+                        }`}</pre>
                       </li>
                     );
                   },
@@ -133,7 +107,11 @@ export const LicenseKeyForm = ({
               <AutocompleteElement
                 label="Key Type"
                 name="type"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.KeyType}
               />
               {/* Page Views */}
@@ -180,14 +158,22 @@ export const LicenseKeyForm = ({
               <AutocompleteElement
                 label="Status"
                 name="status"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.KeyStatus}
               />
               {/* System Status */}
               <AutocompleteElement
                 label="System Status"
                 name="systemStatus"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.SystemStatus}
               />
               {/* Notes */}
@@ -274,6 +260,8 @@ export const LicenseKeyForm = ({
                 required
                 loading={menuOptions.CreatedBy.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (

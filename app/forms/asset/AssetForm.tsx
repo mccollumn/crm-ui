@@ -3,7 +3,7 @@
 import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
-import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Stack, createFilterOptions } from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
@@ -16,7 +16,6 @@ import DateFnsProvider from "../../providers/DateFnsProvider";
 import { FormProps } from "@/app/types/types";
 import { useAssetForm } from "./useAssetForm";
 import { AssetData } from "@/app/types/assets";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 
 interface AssetFormProps extends FormProps {
   assetData?: AssetData;
@@ -32,45 +31,14 @@ export const AssetForm = ({
   ...props
 }: AssetFormProps) => {
   const router = useRouter();
-  const {
-    menuOptions,
-    FormatNumber,
-    setIsLoading,
-    isLoading,
-    createAssetFormSubmissionData,
-  } = useAssetForm({
-    menuItems,
-  });
+  const { menuOptions, FormatNumber, setIsLoading, isLoading, submitAsset } =
+    useAssetForm({
+      menuItems,
+    });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createAssetFormSubmissionData(values, assetData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const isEdit = !!defaultValues?.account.id;
-    const url = isEdit
-      ? "/api/accounts/update/asset"
-      : "/api/accounts/insert/asset";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account and asset data
-    await fetch("/api/revalidate/tag?tag=account");
-    await fetch("/api/revalidate/tag?tag=asset");
-
+    await submitAsset(values, defaultValues, assetData);
     setIsLoading(false);
     router.push(`/accounts/view/${accountID}`);
   };
@@ -78,6 +46,12 @@ export const AssetForm = ({
   const onCancel = () => {
     router.back();
   };
+
+  const productFilterOptions = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) => `${option.name} ${option.code}`,
+  });
+  
   return (
     <>
       <Backdrop
@@ -123,6 +97,7 @@ export const AssetForm = ({
                       </li>
                     );
                   },
+                  filterOptions: productFilterOptions,
                   size: "small",
                 }}
                 options={menuOptions.Product}

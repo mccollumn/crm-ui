@@ -8,13 +8,13 @@ export const dynamic = "force-dynamic";
 
 const ContactHistory = async ({ contactID }: ContactHistoryProps) => {
   const contactData = await getContactData(contactID);
-  const rows = contactData?.CaseHistory || [];
+  // const rows = contactData?.CaseHistory || [];
 
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
         <React.Suspense fallback={<>Loading contact history...</>}>
-          <DataTable rows={rows} columnDefType="contactHistory" />
+          <DataTable rows={[]} columnDefType="contactHistory" />
         </React.Suspense>
       </div>
     </>

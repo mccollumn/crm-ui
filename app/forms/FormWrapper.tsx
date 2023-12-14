@@ -1,6 +1,6 @@
 "use client";
 
-import { FormContainer } from "react-hook-form-mui";
+import { FormContainer, UseFormReturn, useForm } from "react-hook-form-mui";
 import { Box, Typography } from "@mui/material";
 import { FormButtonRow } from "./FormButtonRow";
 import { styled } from "@mui/material/styles";
@@ -18,10 +18,15 @@ export const FormWrapper = ({
   resetButtonText,
   title,
   description,
+  formContext,
   children,
 }: FormWrapperProps) => {
   return (
-    <FormContainer onSuccess={onSuccess} defaultValues={defaultValues}>
+    <FormContainer
+      onSuccess={onSuccess}
+      defaultValues={defaultValues}
+      formContext={formContext}
+    >
       <FormWrapperStyled className="form-wrapper-container">
         <FormTitle title={title} />
         <FormDescription description={description} />
@@ -42,6 +47,14 @@ export const FormWrapper = ({
       </FormWrapperStyled>
     </FormContainer>
   );
+};
+
+export const useFormWrapper = (defaultValues: any) => {
+  const formContext = useForm({ defaultValues });
+  return {
+    formContext,
+    FormWrapper,
+  };
 };
 
 const FormWrapperStyled = styled(Box)(({ theme }: any) => {
@@ -132,4 +145,9 @@ export interface FormWrapperProps {
    * All child components and form elements
    */
   children?: ReactNode;
+  /**
+   * react-hook-form context
+   * https://react-hook-form.com/docs/useformcontext
+   */
+  formContext?: UseFormReturn<any>;
 }

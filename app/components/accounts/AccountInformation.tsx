@@ -16,6 +16,7 @@ import {
   formatCurrency,
   formatCheckbox,
   formatNumber,
+  unEscape,
 } from "@/app/utils/utils";
 
 export const fetchCache = "force-no-store";
@@ -272,11 +273,13 @@ const getAccountInfo = async (accountID: string) => {
         { label: "Account Owner", value: accountData.AccountDetail.OwnerName },
         {
           label: "Account Name",
-          value: accountData.AccountDetail.Accounts_Name,
+          value: unEscape(accountData.AccountDetail.Accounts_Name),
         },
         {
           label: "Alternate Account Name",
-          value: accountData.AccountDetail.Accounts_AlternateAccountName,
+          value: unEscape(
+            accountData.AccountDetail.Accounts_AlternateAccountName || ""
+          ),
         },
         {
           label: "Account ID",
@@ -357,19 +360,21 @@ const getAccountInfo = async (accountID: string) => {
           label: "Billing Address",
           value: (
             <Address
-              street={
+              street={unEscape(
                 accountData.AddressInformation.AccountsAddress_BillingStreet
-              }
-              city={accountData.AddressInformation.AccountsAddress_BillingCity}
-              state={
+              )}
+              city={unEscape(
+                accountData.AddressInformation.AccountsAddress_BillingCity
+              )}
+              state={unEscape(
                 accountData.AddressInformation.AccountsAddress_BillingState
-              }
-              postalCode={
+              )}
+              postalCode={unEscape(
                 accountData.AddressInformation.AccountsAddress_BillingPostalCode
-              }
-              country={
+              )}
+              country={unEscape(
                 accountData.AddressInformation.AccountsAddress_BillingCountry
-              }
+              )}
             />
           ),
         },
@@ -379,20 +384,22 @@ const getAccountInfo = async (accountID: string) => {
           label: "Shipping Address",
           value: (
             <Address
-              street={
+              street={unEscape(
                 accountData.AddressInformation.AccountsAddress_ShippingStreet
-              }
-              city={accountData.AddressInformation.AccountsAddress_ShippingCity}
-              state={
+              )}
+              city={unEscape(
+                accountData.AddressInformation.AccountsAddress_ShippingCity
+              )}
+              state={unEscape(
                 accountData.AddressInformation.AccountsAddress_ShippingState
-              }
-              postalCode={
+              )}
+              postalCode={unEscape(
                 accountData.AddressInformation
                   .AccountsAddress_ShippingPostalCode
-              }
-              country={
+              )}
+              country={unEscape(
                 accountData.AddressInformation.AccountsAddress_ShippingCountry
-              }
+              )}
             />
           ),
         },
@@ -429,7 +436,9 @@ const getAccountInfo = async (accountID: string) => {
         },
         {
           label: "Auto Renewal Notes",
-          value: accountData.AccountCreditStatus.AccountsCredit_AutoRenewNotes,
+          value: unEscape(
+            accountData.AccountCreditStatus.AccountsCredit_AutoRenewNotes
+          ),
         },
       ],
       right: [
@@ -445,11 +454,13 @@ const getAccountInfo = async (accountID: string) => {
         },
         {
           label: "PO Required Notes",
-          value: accountData.AccountCreditStatus.AccountsCredit_PORequiredNotes,
+          value: unEscape(
+            accountData.AccountCreditStatus.AccountsCredit_PORequiredNotes
+          ),
         },
         {
           label: "Credit Notes",
-          value: accountData.AccountCreditStatus.AccountsCredit_Notes,
+          value: unEscape(accountData.AccountCreditStatus.AccountsCredit_Notes),
         },
         // { label: "No Accounting Communication", value: "" },
         {
@@ -496,7 +507,9 @@ const getAccountInfo = async (accountID: string) => {
         },
         {
           label: "Collections Correspondence",
-          value: accountData.Collections.AccountsCollection_Correspondence,
+          value: unEscape(
+            accountData.Collections.AccountsCollection_Correspondence
+          ),
         },
       ],
       right: [
@@ -517,8 +530,9 @@ const getAccountInfo = async (accountID: string) => {
         },
         {
           label: "Last Conversation Note",
-          value:
-            accountData.Collections.AccountsCollection_LastConversationNote,
+          value: unEscape(
+            accountData.Collections.AccountsCollection_LastConversationNote
+          ),
         },
       ],
     },

@@ -52,21 +52,33 @@ export const SalesInvoiceForm = ({
             <AutocompleteElement
               label="Account"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* End Customer Account */}
             <AutocompleteElement
               label="End Customer Account"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Opportunity */}
             <AutocompleteElement
               label="Opportunity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Document Number */}
@@ -107,7 +119,11 @@ export const SalesInvoiceForm = ({
             <AutocompleteElement
               label="Owner"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* State */}
@@ -124,21 +140,33 @@ export const SalesInvoiceForm = ({
             <AutocompleteElement
               label="Currency"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Intacct Entity */}
             <AutocompleteElement
               label="Intacct Entity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Parent Entity */}
             <AutocompleteElement
               label="Parent Entity"
               name=""
-              autocompleteProps={{ size: "small" }}
+              autocompleteProps={{
+                autoSelect: true,
+                autoHighlight: true,
+                size: "small",
+              }}
               options={[]}
             />
             {/* Subtotal */}

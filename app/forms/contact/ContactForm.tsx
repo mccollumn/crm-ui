@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { FormProps } from "@/app/types/types";
 import { useContactForm } from "./useContactForm";
 import { ContactData } from "@/app/types/contacts";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import { StyledPopper, VirtualizedListbox } from "../VirtualizedListbox";
 // import DateFnsProvider from "../providers/DateFnsProvider";
 
 interface ContactFormProps extends FormProps {
@@ -33,42 +33,22 @@ export const ContactForm = ({
   ...props
 }: ContactFormProps) => {
   const router = useRouter();
-  const {
-    menuOptions,
-    setIsLoading,
-    isLoading,
-    createContactFormSubmissionData,
-  } = useContactForm({ menuItems });
+  const { menuOptions, setIsLoading, isLoading, submitContact } =
+    useContactForm({ menuItems });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createContactFormSubmissionData(values, contactData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
+    const responseData = await submitContact(
+      values,
+      defaultValues,
+      contactData
+    );
+
     let id = defaultValues.contactID;
-    const url = id ? "/api/contacts/update" : "/api/contacts/insert";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
     if (!id) {
-      const responseData = await response.json();
       id = responseData?.res?.ID;
     }
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account data
-    await fetch("/api/revalidate/tag?tag=contact");
+
     setIsLoading(false);
     router.push(`/contacts/view/${id}`);
   };
@@ -104,6 +84,8 @@ export const ContactForm = ({
                 required
                 loading={menuOptions.Owner.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -151,12 +133,21 @@ export const ContactForm = ({
                 required
                 loading={menuOptions.Account.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  disableListWrap: true,
+                  ListboxComponent: VirtualizedListbox,
+                  PopperComponent: StyledPopper,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
                       <li {...props} key={option.id}>
                         <b>{option.name}</b>
-                        <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
+                        <pre style={{ margin: 0 }}>{`${
+                          option.site ? ` - ${option.site}` : ""
+                        }${
+                          option.description ? ` (${option.description})` : ""
+                        }`}</pre>
                       </li>
                     );
                   },
@@ -178,14 +169,22 @@ export const ContactForm = ({
                 label="Job Role"
                 name="jobRole"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.JobRole}
               />
               {/* Contact Role */}
               <AutocompleteElement
                 label="Contact Role"
                 name="contactRole"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.ContactRole}
               />
               {/* Email */}
@@ -253,7 +252,11 @@ export const ContactForm = ({
               <AutocompleteElement
                 label="Contact Status"
                 name="contactStatus"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.ContactStatus}
               />
               {/* MQL Date */}
@@ -516,7 +519,11 @@ export const ContactForm = ({
               <AutocompleteElement
                 label="Preferred Language"
                 name="demographic.preferredLanguage"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.PreferredLanguage}
               />
             </Stack>
@@ -527,7 +534,11 @@ export const ContactForm = ({
               <AutocompleteElement
                 label="Time Zone"
                 name="demographic.timezone"
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.TimeZone}
               />
             </Stack>

@@ -2,12 +2,17 @@
 
 import React from "react";
 import { FormWrapper } from "../FormWrapper";
-import { Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Stack,
+  createFilterOptions,
+} from "@mui/material";
 import { AutocompleteElement, TextFieldElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
-import { OpportunityData, Product } from "@/app/types/opportunities";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import { OpportunityData } from "@/app/types/opportunities";
 import { useProductForm } from "./useProductForm";
 
 interface ProductFormProps extends FormProps {
@@ -27,41 +32,18 @@ export const ProductForm = ({
     setIsLoading,
     isLoading,
     setProductSelected,
-    productSelected,
     listPrice,
     FormatNumber,
     FormatCurrency,
     FormatPercent,
-    createProductFormSubmissionData,
+    submitProduct,
   } = useProductForm({
     menuItems,
-    // accountID,
   });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createProductFormSubmissionData(values, opportunityData);
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const url = "/api/opportunities/update";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account data
-    await fetch("/api/revalidate/tag?tag=opportunity");
+    await submitProduct(values, opportunityData);
     setIsLoading(false);
     const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
     router.push(`/opportunities/view/${opportunityID}`);
@@ -70,6 +52,11 @@ export const ProductForm = ({
   const onCancel = () => {
     router.back();
   };
+
+  const productFilterOptions = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) => `${option.name} ${option.code}`,
+  });
 
   return (
     <>
@@ -97,6 +84,8 @@ export const ProductForm = ({
                 required
                 loading={menuOptions.Product.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -108,6 +97,7 @@ export const ProductForm = ({
                       </li>
                     );
                   },
+                  filterOptions: productFilterOptions,
                   size: "small",
                   onChange: (_, value) => {
                     setProductSelected(value);

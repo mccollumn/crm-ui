@@ -26,10 +26,18 @@ const Cases = async ({
   return (
     <>
       {!noTitle && <Title title="Cases" />}
-      <ButtonNav path="/cases/new">New</ButtonNav>
+      {contactID ? (
+        <ButtonNav path={`/cases/new/?contactID=${contactID}`}>New</ButtonNav>
+      ) : (
+        <ButtonNav path="/cases/new">New</ButtonNav>
+      )}
       <div style={{ width: "100%" }}>
         <React.Suspense fallback={<>Loading cases...</>}>
-          <DataTable rows={rows} columnDefType="casesList" />
+          <DataTable
+            rows={rows}
+            columnDefType="casesList"
+            sortModel={[{ field: "Cases_LastModifiedDate", sort: "desc" }]}
+          />
         </React.Suspense>
       </div>
     </>

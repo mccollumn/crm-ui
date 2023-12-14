@@ -8,7 +8,6 @@ import { CheckboxElement, TextareaAutosizeElement } from "react-hook-form-mui";
 import { useRouter } from "next/navigation";
 import { useCaseCommentForm } from "./useCaseCommentForm";
 import { CaseComment, CaseData } from "@/app/types/cases";
-import { isSuccessfulResponse } from "@/app/utils/utils";
 
 export const CaseCommentForm = ({
   formTitle,
@@ -18,44 +17,18 @@ export const CaseCommentForm = ({
   ...props
 }: CaseCommentFormProps) => {
   const router = useRouter();
-  const { setIsLoading, isLoading, createCaseCommentFormSubmissionData } =
-    useCaseCommentForm();
+  const { setIsLoading, isLoading, submitCaseComment } = useCaseCommentForm();
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    let id = caseData?.CaseInformation.Cases_ID;
-    const data = await createCaseCommentFormSubmissionData(
+    const responseData = await submitCaseComment(
       values,
-      id,
+      caseData,
       caseCommentData
     );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const url = caseCommentData
-      ? "/api/cases/update/comment"
-      : "/api/cases/insert/comment";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
 
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
+    const id = caseData?.CaseInformation.Cases_ID || defaultValues.caseID;
 
-    if (!id) {
-      const responseData = await response.json();
-      id = responseData?.res?.ID;
-    }
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached case data
-    await fetch("/api/revalidate/tag?tag=case");
     setIsLoading(false);
     router.push(`/cases/view/${id}`);
   };

@@ -1,28 +1,26 @@
 import { Home } from "@mui/icons-material";
-import SearchInput from "./SearchInput";
 import AccountMenu from "./AccountMenu";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import GroupIcon from "@mui/icons-material/Group";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
+import Search from "../search/Search";
+import SearchPopover from "../search/SearchPopover";
 
 export const navigationActions: NavigationAction[] = [
-  // TODO: Reenable once search API and results page are ready
-  // {
-  //   key: "Search",
-  //   label: "Search",
-  //   ariaLabel: "Search",
-  //   authFilter: "authorized",
-  //   position: "top",
-  //   Component: (
-  //     <SearchInput
-  //       searchHandler={() => console.log("Search")}
-  //       label="Search"
-  //       variant="outlined"
-  //     />
-  //   ),
-  //   snapPosition: "right",
-  // },
+  {
+    key: "Search",
+    label: "Search",
+    ariaLabel: "Search",
+    authFilter: "authorized",
+    position: "top",
+    Component: (
+      <SearchPopover>
+        <Search />
+      </SearchPopover>
+    ),
+    snapPosition: "right",
+  },
   {
     key: "AccountMenu",
     label: "Account Menu",

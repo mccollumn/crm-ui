@@ -22,7 +22,7 @@ const EditOpportunity = async ({
   const opportunityName = unEscape(
     opportunityData.OpportunityDetail.Opportunities_Name
   );
-  const values = await createOpportunityFormData(opportunityData);
+  const values = await createOpportunityFormData({ opportunityData });
 
   return (
     <OpportunityForm

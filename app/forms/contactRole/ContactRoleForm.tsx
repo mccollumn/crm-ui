@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { FormProps } from "../../types/types";
 import { useContactRoleForm } from "./useContactRoleForm";
 import { ContactRole, OpportunityData } from "@/app/types/opportunities";
-import { isSuccessfulResponse } from "@/app/utils/utils";
+import { VirtualizedListbox, StyledPopper } from "../VirtualizedListbox";
 
 interface ContactRoleFormProps extends FormProps {
   opportunityData: OpportunityData;
@@ -30,46 +30,17 @@ export const ContactRoleForm = ({
 }: ContactRoleFormProps) => {
   const router = useRouter();
   const accountID = opportunityData.OpportunityDetail.Opportunities_AccountId;
-  const {
-    menuOptions,
-    setIsLoading,
-    isLoading,
-    createContactRoleFormSubmissionData,
-  } = useContactRoleForm({
-    menuItems,
-    accountID,
-  });
+  const { menuOptions, setIsLoading, isLoading, submitContactRole } =
+    useContactRoleForm({
+      menuItems,
+      accountID,
+    });
 
   const onSuccess = async (values: any) => {
     setIsLoading(true);
-    const data = await createContactRoleFormSubmissionData(
-      values,
-      opportunityData
-    );
-    console.log("Success values", values);
-    console.log("Submitted Data:", data);
-    const url = "/api/opportunities/update";
-    const request = new Request(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const response = await fetch(request);
-
-    if (!(await isSuccessfulResponse(response))) {
-      setIsLoading(false);
-      router.push("/error");
-      return;
-    }
-
-    // Refresh the page cache
-    React.startTransition(() => {
-      router.refresh();
-    });
-    // Invalidate cached account data
-    await fetch("/api/revalidate/tag?tag=opportunity");
+    await submitContactRole(values, opportunityData);
     setIsLoading(false);
-    const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
-    router.push(`/opportunities/view/${opportunityID}`);
+    router.back();
   };
 
   const onCancel = () => {
@@ -108,6 +79,11 @@ export const ContactRoleForm = ({
                 required
                 loading={menuOptions.Contact.length === 0}
                 autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  disableListWrap: true,
+                  ListboxComponent: VirtualizedListbox,
+                  PopperComponent: StyledPopper,
                   getOptionLabel: (option) => option.name || "",
                   renderOption: (props, option) => {
                     return (
@@ -139,7 +115,11 @@ export const ContactRoleForm = ({
                 label="Role"
                 name="role.name"
                 required
-                autocompleteProps={{ size: "small" }}
+                autocompleteProps={{
+                  autoSelect: true,
+                  autoHighlight: true,
+                  size: "small",
+                }}
                 options={menuOptions.ContactRole}
               />
             </Stack>

@@ -12,3 +12,11 @@ export interface FormProps {
   defaultValues: any;
   menuItems: MenuItem[];
 }
+
+export interface DeleteItemProps {
+  open: boolean;
+  item: {
+    [key: string]: string | null;
+  };
+  handleClose: () => void;
+}
