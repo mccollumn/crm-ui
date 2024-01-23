@@ -181,9 +181,6 @@ export const DataTable = ({
         field: "CreatedBy_Name",
         headerName: "User",
         width: 150,
-        // renderCell: (params) => {
-        //   return <Link href="\contacts">{params.value}</Link>;
-        // },
       },
       {
         field: "CaseComments_IsPublic",
@@ -416,13 +413,6 @@ export const DataTable = ({
         field: "Assets_Name",
         headerName: "Asset Name",
         flex: 1,
-        // renderCell: (params) => {
-        //   return (
-        //     <Link href={`/accounts/view/asset/${params.id}`}>
-        //       {params.value}
-        //     </Link>
-        //   );
-        // },
       },
       {
         field: "Assets_SerialNumber",
@@ -480,13 +470,6 @@ export const DataTable = ({
         field: "LicenseKeys_Name",
         headerName: "License Key",
         flex: 1,
-        // renderCell: (params) => {
-        //   return (
-        //     <Link href={`/accounts/view/license-key/${params.value}`}>
-        //       {params.value}
-        //     </Link>
-        //   );
-        // },
       },
       { field: "LicenseKeys_KeyType", headerName: "Type" },
       { field: "LicenseKeys_Status", headerName: "Status" },
@@ -783,10 +766,6 @@ export const DataTable = ({
         headerName: "Role",
         width: 200,
       },
-      // {
-      //   field: "title",
-      //   headerName: "Title",
-      // },
       {
         field: "OpportunityContactRoles_IsPrimary",
         headerName: "Primary",
@@ -804,10 +783,6 @@ export const DataTable = ({
         headerName: "Email",
         width: 200,
       },
-      // {
-      //   field: "accountName",
-      //   headerName: "Account Name",
-      // },
       {
         field: "editLink",
         headerName: "Edit",
@@ -1124,20 +1099,12 @@ export const DataTable = ({
           return data?.LicenseKeyDetail?.LicenseKeys_Name || "";
         },
       },
-      // {
-      //   field: "",
-      //   headerName: "Contract",
-      // },
       {
         field: "QuoteFulfillment_FulfillmentDate",
         headerName: "Fulfillment Date",
         type: "date",
         valueGetter: displayDate,
       },
-      // {
-      //   field: "",
-      //   headerName: "Created By",
-      // },
       {
         field: "editLink",
         headerName: "Edit",
@@ -1256,7 +1223,6 @@ export const DataTable = ({
       <DeleteItemDialog deleteStatus={deleteStatus} />
       <DataGrid
         rows={rows}
-        // columns={columns}
         columns={columnDefs[columnDefType]}
         slots={{ toolbar: GridToolbar }}
         slotProps={{

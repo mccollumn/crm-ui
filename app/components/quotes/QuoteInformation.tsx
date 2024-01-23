@@ -218,18 +218,10 @@ const getQuoteInfo = async (
           label: "Status",
           value: quoteData.QuoteDetail.Quotes_Status,
         },
-        // {
-        //   label: "Quote Office Location",
-        //   value: "",
-        // },
         {
           label: "Currency Code",
           value: quoteData.QuoteDetail.Quotes_CurrencyCode,
         },
-        // {
-        //   label: "Currency Symbol",
-        //   value: quoteData.QuoteDetail.Quotes_CurrencySymbol,
-        // },
         {
           label: "Valid Through",
           value: formatDate(quoteData.QuoteDetail.Quotes_ValidThrough),

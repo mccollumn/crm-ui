@@ -12,7 +12,6 @@ const StyledItem = styled(Box)(({ theme }) => ({
   width: "100%",
   justifyContent: "left",
   position: "relative",
-  //   padding: theme.spacing(1),
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(1),
   textTransform: "none",

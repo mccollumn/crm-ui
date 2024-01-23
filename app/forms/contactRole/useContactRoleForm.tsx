@@ -71,8 +71,6 @@ export const useContactRoleForm = ({
       OpportunityContactRoles_ID: values.id,
       OpportunityContactRoles_ContactId: values.contact.id,
       Contacts_Name: values.contact.name,
-      // "Contacts_Email": "carol.tacconi@nsmtp.kp.org",
-      // "Contacts_Phone": "(925) 924-7541",
       OpportunityContactRoles_IsPrimary: convertBooleanToString(
         values.contact.isPrimary
       ),

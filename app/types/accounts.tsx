@@ -31,7 +31,6 @@ interface AccountDetail {
   Accounts_Super_Region?: string | null;
   Accounts_Type?: string | null;
   AccountsType_Description: string | null;
-  // Accounts_Vertical?: string | null;
   Accounts_Website?: string | null;
 }
 

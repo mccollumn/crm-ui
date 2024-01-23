@@ -238,19 +238,23 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, caseData);
 
-    // Add the case ID back in
+    // Add the case IDs back in
     if (caseData) {
       newFormData = {
         ...newFormData,
         CaseInformation: {
           ...newFormData.CaseInformation,
           Cases_ID: caseData.CaseInformation.Cases_ID,
+          Cases_AccountID: caseData.CaseInformation.Cases_AccountID,
+          Cases_ContactId: caseData.CaseInformation.Cases_ContactId,
+          Contacts_FullName: caseData.CaseInformation.Contacts_FullName,
         },
         SubmissionDetails: {
           ...newFormData.SubmissionDetails,
           CaseID: caseData.CaseInformation.Cases_ID || null,
           AccountID: caseData.CaseInformation.Cases_AccountID || null,
           OwnerID: caseData.CaseInformation.Cases_OwnerId || null,
+          ContactID: caseData.CaseInformation.Cases_ContactId || null,
         },
       };
     }

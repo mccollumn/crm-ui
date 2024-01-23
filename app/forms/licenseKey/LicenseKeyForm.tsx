@@ -121,13 +121,6 @@ export const LicenseKeyForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
-              {/* Events */}
-              {/* <TextFieldElement
-              label="Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
               {/* Maintenance Expiration Date */}
               <DateFnsProvider>
                 <DatePickerElement
@@ -183,12 +176,6 @@ export const LicenseKeyForm = ({
                 rows={3}
                 size="small"
               />
-              {/* Migration External ID */}
-              {/* <TextFieldElement
-              label="Migration External ID"
-              name=""
-              size="small"
-            /> */}
             </Stack>
           </Grid>
           <FormDivider>Auth Key Related Info</FormDivider>

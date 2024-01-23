@@ -45,21 +45,6 @@ const ContactInformation = async ({ contactID }: ContactInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="contact-social-section-content"
-          id="contact-social-section-header"
-        >
-          <Typography variant="h6">Social Media Presence</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="contact-social-section-content">
-          <InformationSection
-            itemsLeft={contactInfo.social.left}
-            itemsRight={contactInfo.social.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -75,48 +60,6 @@ const ContactInformation = async ({ contactID }: ContactInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="contact-adr_isr-section-content"
-          id="contact-adr_isr-section-header"
-        >
-          <Typography variant="h6">ADR/ISR Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="contact-adr_isr-section-content">
-          <InformationSection
-            itemsLeft={contactInfo.adr_isr.left}
-            itemsRight={contactInfo.adr_isr.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="contact-description-section-content"
-          id="contact-description-section-header"
-        >
-          <Typography variant="h6">Description Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="contact-description-section-content">
-          <InformationSection itemsLeft={contactInfo.description.fullWidth} />
-        </AccordionDetails>
-      </Accordion> */}
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="contact-marketing-section-content"
-          id="contact-marketing-section-header"
-        >
-          <Typography variant="h6">Marketing Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="contact-marketing-section-content">
-          <InformationSection
-            itemsLeft={contactInfo.marketing.left}
-            itemsRight={contactInfo.marketing.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -190,7 +133,6 @@ const getContactInfo = async (contactID: string) => {
   return {
     info: {
       left: [
-        // { label: "Contact Owner", value: "" },
         {
           label: "Name",
           value: `${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}`,
@@ -209,7 +151,6 @@ const getContactInfo = async (contactID: string) => {
           label: "Title",
           value: unEscape(contactData.ContactDetail.Contacts_Title),
         },
-        // { label: "Reports To", value: "" },
         {
           label: "Job Role",
           value: contactData.ContactDetail.Contacts_JobRole,
@@ -232,13 +173,6 @@ const getContactInfo = async (contactID: string) => {
             contactData.ContactDetail.Contacts_UnconfirmedEmail
           ),
         },
-        // { label: "Most Recent Product Interest", value: "" },
-        // { label: "Interest", value: "" },
-        // { label: "Do Not Send Support Survey", value: "" },
-        // { label: "Webtrends OC", value: "" },
-        // { label: "HTML Login", value: "" },
-        // { label: "Flash Login", value: "" },
-        // { label: "EOL Product", value: "" },
       ],
       right: [
         {
@@ -249,8 +183,6 @@ const getContactInfo = async (contactID: string) => {
           label: "Contact Status",
           value: contactData.ContactDetail.Contacts_ContactStatus,
         },
-        // { label: "MQL Date", value: "" },
-        // { label: "Lead Source", value: "" },
         { label: "Phone", value: contactData.ContactDetail.Contacts_Phone },
         {
           label: "Mobile",
@@ -273,8 +205,6 @@ const getContactInfo = async (contactID: string) => {
             contactData.ContactDetail.Contacts_SupportContactAdministrator
           ),
         },
-        // { label: "Sync to Intacct", value: "" },
-        // { label: "Account Territory", value: "" },
         {
           label: "Account Super Region",
           value: accountData.AccountDetail.Accounts_Super_Region,
@@ -283,20 +213,8 @@ const getContactInfo = async (contactID: string) => {
           label: "Account Type",
           value: accountData.AccountDetail.AccountsType_Description,
         },
-        // { label: "Target Account Type", value: "" },
-        // { label: "WTOD Most Recent Login", value: "" },
       ],
     },
-    // social: {
-    //   left: [
-    //     { label: "LinkedIn Profile", value: "" },
-    //     { label: "Social Media Properties", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Marked for Deletion", value: "" },
-    //     { label: "Twitter ID", value: "" },
-    //   ],
-    // },
     address: {
       left: [
         {
@@ -347,43 +265,8 @@ const getContactInfo = async (contactID: string) => {
         },
       ],
     },
-    // adr_isr: {
-    //   left: [
-    //     { label: "ADR/ISR Generated", value: "" },
-    //     { label: "Meeting Scheduled Date", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Meeting Rescheduled Date", value: "" },
-    //     { label: "Meeting Occurred Date", value: "" },
-    //   ],
-    // },
-    // description: {
-    //   fullWidth: [
-    //     { label: "Product Interest", value: "" },
-    //     { label: "Comments", value: "" },
-    //     { label: "Lead Notes", value: "" },
-    //   ],
-    // },
-    // marketing: {
-    //   left: [
-    //     { label: "Lead Source Details", value: "" },
-    //     { label: "Lead Source Original", value: "" },
-    //     { label: "Lead Source Details Original", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Email Remarketing Lead Date", value: "" },
-    //     { label: "Most Recent Activity", value: "" },
-    //     { label: "Most Recent Response Type", value: "" },
-    //     { label: "SharePoint Contact", value: "" },
-    //   ],
-    // },
     links: {
       left: [
-        // {
-        //   label: "18 Character Contact ID",
-        //   value:
-        //     "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018LuX&eid=0031W00002d6IULQA2&ic=1",
-        // },
         {
           label: "Trial Manager",
           value: (
@@ -451,7 +334,6 @@ const getContactInfo = async (contactID: string) => {
             contactData.ContactCommunicationsPreferences.Contacts_DoNotCall
           ),
         },
-        // { label: "No Install Admin Newsletter", value: "" },
       ],
       right: [
         {
@@ -467,14 +349,10 @@ const getContactInfo = async (contactID: string) => {
               .Contacts_DoNotSendPostalMail
           ),
         },
-        // { label: "Double Opt-In", value: "" },
-        // { label: "Double Opt-In Timestamp", value: "" },
       ],
     },
     system: {
       left: [
-        // { label: "NPS Score", value: "" },
-        // { label: "NPS Reason", value: "" },
         {
           label: "Created By",
           value: contactData.ContactSystemInformation.Users_Name,
@@ -485,11 +363,8 @@ const getContactInfo = async (contactID: string) => {
             contactData.ContactSystemInformation.Contacts_CreatedDate
           ),
         },
-        // { label: "Default Account", value: "" },
       ],
       right: [
-        // { label: "NPS Comments", value: "" },
-        // { label: "NPS Reason Detractor", value: "" },
         {
           label: "Last Modified By",
           value: contactData.ContactSystemInformation.Contacts_LastModifiedById,

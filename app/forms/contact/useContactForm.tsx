@@ -16,12 +16,10 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
   const initialMenuOptions = {
     Owner: [],
     Account: [],
-    // Salutation: [],
     JobRole: [],
     ContactRole: [],
     RelationshipToWebtrends: [],
     ContactStatus: [],
-    // SuperRegion: [],
     TimeZone: [],
     PreferredLanguage: [],
   };
@@ -82,12 +80,10 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     setOwners();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    // setMenuOptions("Salutation");
     setMenuOptions("JobRole");
     setMenuOptions("ContactRole");
     setMenuOptions("RelationshipToWebtrends");
     setMenuOptions("ContactStatus");
-    // setMenuOptions("SuperRegion");
     setMenuOptions("TimeZone");
     setMenuOptions("PreferredLanguage");
   }, [setCustomMenuOptions, setMenuOptions]);
@@ -107,14 +103,8 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
           values.doNotSendSupportSurvey
         ),
         Contacts_Email: values.email,
-        // Contacts_EmailBouncedDate: null,
-        // Contacts_EmailBouncedReason: null,
-        // Contacts_EmailDomain: "kp.org",
-        // Contacts_Fax: "(510) 267-2601",
         Contacts_FirstName: values.firstName,
         Contacts_LastName: values.lastName,
-        // Contacts_FullName: `${values.firstName} ${values.lastName}`,
-        // Contacts_HomePhone: null,
         Contacts_JobRole: values.jobRole,
         Contacts_MobilePhone: values.mobile,
         Contacts_NamedSupportContact: convertBooleanToString(
@@ -148,10 +138,8 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
       },
       ContactDemographicInformation: {
         Contacts_ID: values.contactID,
-        // Contacts_IndustryContact: "Healthcare",
         Contacts_PreferredLanguage: values.demographic.preferredLanguage,
         Contacts_TimeZone: values.demographic.timeZone,
-        // Contacts_VerticalContact: "Health Care",
       },
       ContactCommunicationsPreferences: {
         Contacts_ID: values.contactID,
@@ -172,12 +160,6 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         Contacts_ID: values.contactID,
         Contacts_CreatedById: values.owner.id,
         Users_Name: values.owner.name,
-        // Contacts_CreatedDate: "2016-10-04 18:00:20.0000000",
-        // Contacts_LastActivityDate: "2023-08-09 00:00:00.0000000",
-        // Contacts_LastModifiedById: "33271",
-        // Contacts_LastModifiedDate: "2023-08-08 15:56:18.0000000",
-        // Contacts_LastReferencedDate: null,
-        // Contacts_LastViewedDate: null,
       },
       SubmissionDetails: {
         UserID: user?.id || null,

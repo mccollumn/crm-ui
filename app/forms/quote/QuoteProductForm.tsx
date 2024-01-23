@@ -72,21 +72,9 @@ export const QuoteProductForm = ({
     const opportunityID = quoteData.QuoteDetail.Quotes_OpportunityID;
     const quoteID = quoteData.QuoteDetail.Quotes_ID;
 
-    console.log("Quote Product - Submitting");
-    console.log("Quote Product - Submitting - values:", values);
-    console.log("Quote Product - Submitting - defaultValues:", defaultValues);
-    console.log(
-      "Quote Product - Submitting - quoteProductData:",
-      quoteProductData
-    );
-
     await submitQuoteProduct(values, defaultValues, quoteProductData);
 
-    console.log("Quote Product - Submitted");
-
     // Quote data needs to be updated when a quote product is added/updated.
-    console.log("Quote Product - Fetching Quote:", quoteID);
-
     const quoteNewDataResponse = await fetch(`/api/quotes/${quoteID}`);
     const { data: quoteNewData }: { data: QuoteData } =
       await quoteNewDataResponse.json();
@@ -254,14 +242,6 @@ export const QuoteProductForm = ({
                 }}
                 options={menuOptions.Product}
               />
-              {/* Parent Quote Product ID */}
-              {/* <TextFieldElement
-                label="Parent Quote Product ID"
-                name="parentQuoteProductId"
-                size="small"
-              /> */}
-              {/* QM Editable */}
-              {/* <CheckboxElement label="QM Editable" name="" size="small" /> */}
               {/* Quote Fulfillment */}
               <AutocompleteElement
                 label="Quote Fulfillment"
@@ -294,13 +274,6 @@ export const QuoteProductForm = ({
                 }}
                 options={menuOptions.ProductFamily}
               />
-              {/* One Year Amount */}
-              {/* <TextFieldElement
-                label="One Year Amount"
-                name="oneYearAmount"
-                size="small"
-                InputProps={{ inputComponent: FormatCurrency as any }}
-              /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -342,27 +315,8 @@ export const QuoteProductForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatPercent as any }}
               />
-              {/* Total-Net-Price Discount */}
-              {/* <TextFieldElement
-                label="Total-Net-Price Discount"
-                name="totalNetPriceDiscount"
-                size="small"
-                InputProps={{ inputComponent: FormatPercent as any }}
-              /> */}
             </Stack>
           </Grid>
-          {/* <FormDivider>CPM Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* CPM Volume */}
-          {/* <TextFieldElement
-                label="CPM Volume"
-                name=""
-                size="small"
-                InputProps={{ inputComponent: FormatNumber as any }}
-              /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
           <FormDivider>Product Information</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -403,8 +357,6 @@ export const QuoteProductForm = ({
           <FormDivider>Entitlement Information</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* Entitlement ID */}
-              {/* <TextFieldElement label="Entitlement ID" name="" size="small" /> */}
               {/* Fulfillment Status */}
               <AutocompleteElement
                 label="Fulfillment Status"
@@ -418,10 +370,6 @@ export const QuoteProductForm = ({
               />
             </Stack>
           </Grid>
-          {/* <Grid item xs={6}>
-            <Stack spacing={1}>
-            </Stack>
-          </Grid> */}
         </Grid>
       </FormWrapper>
     </>

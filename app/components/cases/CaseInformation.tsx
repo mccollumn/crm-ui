@@ -61,21 +61,6 @@ const CaseInformation = async ({ caseID }: CaseInformationProps) => {
           />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="case-escalation-section-content"
-          id="case-escalation-section-header"
-        >
-          <Typography variant="h6">Case Escalation Details</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="case-escalation-section-content">
-          <InformationSection
-            itemsLeft={caseInfo.escalation.left}
-            itemsRight={caseInfo.escalation.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -227,24 +212,8 @@ const getCaseInfo = async (caseID: string) => {
           label: "Description",
           value: unEscape(caseData.CaseProfile.Cases_Description || ""),
         },
-        // { label: "Internal Comments", value: "" },
-        // { label: "Visible in Self-Service Portal", value: "" },
       ],
     },
-    // escalation: {
-    //   left: [
-    //     { label: "Escalation Status", value: "" },
-    //     { label: "Escalation Source", value: "" },
-    //     { label: "Web Company", value: "" },
-    //     { label: "Web Name", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Escalation Type", value: "" },
-    //     { label: "Escalation Flag", value: "" },
-    //     { label: "Web Phone", value: "" },
-    //     { label: "Web Email", value: "" },
-    //   ],
-    // },
     system: {
       left: [
         {

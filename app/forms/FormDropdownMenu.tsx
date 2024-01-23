@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteProps, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { SyntheticEvent } from "react";
 
 export const FormDropdownMenu = ({
@@ -15,7 +15,6 @@ export const FormDropdownMenu = ({
     <Autocomplete
       size="small"
       options={options}
-      // value={value}
       defaultValue={value}
       multiple={multiple}
       renderInput={(params) => (
@@ -43,7 +42,6 @@ interface FormDropdownMenuProps {
   /**
    * onChange event handler
    */
-  // onChange: (event: any, value: string | null) => void;
   onChange: (
     event: SyntheticEvent<Element, Event>,
     value: string | string[] | null

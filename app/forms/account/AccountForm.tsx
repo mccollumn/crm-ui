@@ -114,32 +114,6 @@ export const AccountForm = ({
                 name="alternateName"
                 size="small"
               />
-              {/* Parent Account */}
-              {/* <AutocompleteElement
-              label="Parent Account"
-              name="parentAccount"
-              autocompleteProps={{
-                getOptionLabel: (option) => option.name || "",
-                renderOption: (props, option) => {
-                  return (
-                    <li {...props} key={option.id}>
-                      <b>{option.name}</b>
-                      <pre style={{ margin: 0 }}>{` - ${option.site}`}</pre>
-                    </li>
-                  );
-                },
-                size: "small",
-              }}
-              options={menuOptions.ParentAccount}
-            /> */}
-              {/* Account Record Type */}
-              {/* <AutocompleteElement
-              label="Account Record Type"
-              name="type"
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
               {/* Account Type */}
               <AutocompleteElement
                 label="Account Type"
@@ -171,78 +145,12 @@ export const AccountForm = ({
                 options={menuOptions.Region}
                 required
               />
-              {/* Type Last Change Date */}
-              {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Type Last Change Date"
-                name="type.lastChangeDate"
-                inputProps={{ size: "small" }}
-              />
-            </DateFnsProvider> */}
-              {/* Vertical */}
-              {/* <AutocompleteElement
-              label="Vertical"
-              name=""
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-              {/* Website */}
-              {/* <TextFieldElement label="Website" name="" size="small" /> */}
-              {/* Misc. Info */}
-              {/* <TextFieldElement label="Misc. Info" name="miscInfo" size="small" /> */}
-              {/* Migrate to New Org */}
-              {/* <AutocompleteElement
-              label="Migrate to New Org"
-              name="migrateToNewOrg"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.MigrateToNewOrg}
-            /> */}
-              {/* Migration External ID */}
-              {/* <TextFieldElement
-              label="Migration External ID"
-              name="migrationExternalID"
-              size="small"
-            /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* Client Health */}
-              {/* <AutocompleteElement
-              label="Client Health"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-              {/* Client Unhealthy Reason */}
-              {/* <AutocompleteElement
-              label="Client Unhealthy Reason"
-              name=""
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-              {/* Client Unhealthy Reason Other */}
-              {/* <TextareaAutosizeElement
-              label="Client Unhealthy Reason Other"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-              {/* Fax */}
-              {/* <TextFieldElement label="Fax" name="" size="small" /> */}
               {/* Phone */}
               <TextFieldElement label="Phone" name="phone" size="small" />
-              {/* Target Account Type */}
-              {/* <AutocompleteElement
-              label="Target Account Type"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-              {/* Global Account */}
-              {/* <CheckboxElement label="Global Account" name="" size="small" /> */}
               {/* USD Total Order Value */}
               <TextFieldElement
                 label="USD Total Order Value"
@@ -262,31 +170,8 @@ export const AccountForm = ({
                 name="governmentType"
                 size="small"
               />
-              {/* Is State */}
-              {/* <CheckboxElement label="Is State" name="isState" size="small" /> */}
-              {/* Territory */}
-              {/* <AutocompleteElement
-              label="Territory"
-              name="territory"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.Territory}
-            /> */}
-              {/* Region */}
-              {/* <AutocompleteElement
-              label="Region"
-              name="region"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.Region}
-            /> */}
               {/* MSA */}
               <CheckboxElement label="MSA" name="msa" size="small" />
-              {/* Partner Status */}
-              {/* <AutocompleteElement
-              label="Partner Status"
-              name="partnerStatus"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.PartnerStatus}
-            /> */}
             </Stack>
           </Grid>
           <FormDivider>Address Information</FormDivider>
@@ -366,92 +251,6 @@ export const AccountForm = ({
               />
             </Stack>
           </Grid>
-          {/* <FormDivider>Account Credit Status</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Credit Last Modified */}
-          {/* <DateFnsProvider>
-              <DatePickerElement label="Credit Last Modified" name="" />
-            </DateFnsProvider> */}
-          {/* Credit Status */}
-          {/* <AutocompleteElement
-              label="Credit Status"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* Credit Denied Reason */}
-          {/* <TextFieldElement
-              label="Credit Denied Reason"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* Credit Global Fortune 500 */}
-          {/* <CheckboxElement
-              label="Credit Global Fortune 500"
-              name=""
-              size="small"
-            /> */}
-          {/* Auto Renew */}
-          {/* <CheckboxElement
-              label="Credit Global Fortune 500"
-              name=""
-              size="small"
-            /> */}
-          {/* Cancellation Notice */}
-          {/* <TextFieldElement
-              label="Cancellation Notice"
-              name=""
-              size="small"
-            /> */}
-          {/* Auto Renew Notes */}
-          {/* <TextareaAutosizeElement
-              label="Auto Renew Notes"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Credit Limit */}
-          {/* <TextFieldElement
-              label="Credit Limit"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* PO required */}
-          {/* <AutocompleteElement
-              label="PO required"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* PO required Notes */}
-          {/* <TextareaAutosizeElement
-              label="PO required Notes"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* Credit Notes */}
-          {/* <TextareaAutosizeElement
-              label="Credit Notes"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* No Accounting Communication */}
-          {/* <CheckboxElement
-              label="No Accounting Communication"
-              name=""
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
           <FormDivider>Collections</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -533,12 +332,6 @@ export const AccountForm = ({
                 name="collections.noSupport"
                 size="small"
               />
-              {/* Service Suspended */}
-              {/* <CheckboxElement
-              label="Service Suspended"
-              name="collections.serviceSuspended"
-              size="small"
-            /> */}
               {/* Services to be Suspended */}
               <TextFieldElement
                 label="Services to be Suspended"
@@ -562,65 +355,6 @@ export const AccountForm = ({
               />
             </Stack>
           </Grid>
-          {/* <FormDivider>Additional Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Analytics Vendor */}
-          {/* <AutocompleteElement
-              label="Analytics Vendor"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* Optimize Vendor */}
-          {/* <AutocompleteElement
-              label="Optimize Vendor"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* Big Data Connector */}
-          {/* <TextFieldElement label="Big Data Connector" name="" size="small" /> */}
-          {/* Email Vendor */}
-          {/* <AutocompleteElement
-              label="Email Vendor"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* Description */}
-          {/* <TextareaAutosizeElement
-              label="Description"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Analytics Vendor Contract End */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Analytics Vendor Contract End"
-                name=""
-              />
-            </DateFnsProvider> */}
-          {/* Optimize Vendor Contract End */}
-          {/* <DateFnsProvider>
-              <DatePickerElement label="Optimize Vendor Contract End" name="" />
-            </DateFnsProvider> */}
-          {/* Health Check */}
-          {/* <TextareaAutosizeElement
-              label="Health Check"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-          {/* SharePoint Site */}
-          {/* <CheckboxElement label="SharePoint Site" name="" size="small" /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
           <FormDivider>Total Order Value of Products Owned</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -631,20 +365,6 @@ export const AccountForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatCurrency as any }}
               />
-              {/* USD Total VDM */}
-              {/* <TextFieldElement
-              label="USD Total VDM"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* USD Total Optimize */}
-              {/* <TextFieldElement
-              label="USD Total Optimize"
-              name=""
-              type="number"
-              size="small"
-            /> */}
               {/* USD Total Consulting */}
               <TextFieldElement
                 label="USD Total Consulting"
@@ -663,20 +383,6 @@ export const AccountForm = ({
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* USD Total Ads */}
-              {/* <TextFieldElement
-              label="USD Total Ads"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* USD Total Apps */}
-              {/* <TextFieldElement
-              label="USD Total Apps"
-              name=""
-              type="number"
-              size="small"
-            /> */}
               {/* USD Total Training */}
               <TextFieldElement
                 label="USD Total Training"
@@ -700,204 +406,6 @@ export const AccountForm = ({
               />
             </Stack>
           </Grid>
-          {/* <FormDivider>Additional Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* OP Customer */}
-          {/* <CheckboxElement label="OP Customer" name="" size="small" /> */}
-          {/* Annual Server Calls */}
-          {/* <AutocompleteElement
-              label="Annual Server Calls"
-              name="annualServerCalls"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.AnnualServerCalls}
-            /> */}
-          {/* Alexa Ranking */}
-          {/* <TextFieldElement
-              label="Alexa Ranking"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* Alexa Ranking Top 10,000 */}
-          {/* <CheckboxElement
-              label="Alexa Ranking Top 10,000"
-              name=""
-              size="small"
-            /> */}
-          {/* eCommerce */}
-          {/* <CheckboxElement label="eCommerce" name="eCommerce" size="small" /> */}
-          {/* Monthly Ad Spend */}
-          {/* <TextFieldElement
-              label="Monthly Ad Spend"
-              name="monthlyAdSpend"
-              type="number"
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* comScore Annual Page Views */}
-          {/* <TextFieldElement
-              label="comScore Annual Page Views"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* comScore Daily Visitors */}
-          {/* <TextFieldElement
-              label="comScore Daily Visitors"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* comScore Ranking */}
-          {/* <TextFieldElement
-              label="comScore Ranking"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* comScore Unique Monthly Visitors */}
-          {/* <TextFieldElement
-              label="comScore Unique Monthly Visitors"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <FormDivider>Corporate Demographics</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Legal Name */}
-          {/* <TextFieldElement
-              label="Legal Name"
-              name="demographics.legalName"
-              type="number"
-              size="small"
-            /> */}
-          {/* Industry */}
-          {/* <AutocompleteElement
-              label="Industry"
-              name="demographics.industry"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.Industry}
-            /> */}
-          {/* Annual Revenue */}
-          {/* <TextFieldElement
-              label="Annual Revenue"
-              name="demographics.annualRevenue"
-              type="number"
-              size="small"
-            /> */}
-          {/* Employees */}
-          {/* <TextFieldElement
-              label="Employees"
-              name="demographics.employees"
-              type="number"
-              size="small"
-            /> */}
-          {/* Location Type */}
-          {/* <TextFieldElement
-              label="Location Type"
-              name="demographics.locationType"
-              size="small"
-            /> */}
-          {/* Ownership */}
-          {/* <AutocompleteElement
-              label="Ownership"
-              name="demographics.ownership"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.Ownership}
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Tax Exempt */}
-          {/* <CheckboxElement
-              label="Tax Exempt"
-              name="demographics.taxExpemt"
-              size="small"
-            /> */}
-          {/* Tax Exempt ID */}
-          {/* <TextFieldElement
-              label="Tax Exempt ID"
-              name="demographics.taxExemptID"
-              size="small"
-            /> */}
-          {/* Ticker Symbol */}
-          {/* <TextFieldElement
-              label="Ticker Symbol"
-              name="demographics.tickerSymbol"
-              size="small"
-            /> */}
-          {/* SIC Code */}
-          {/* <TextFieldElement
-              label="SIC Code"
-              name="demographics.sicCode"
-              size="small"
-            /> */}
-          {/* SIC Description */}
-          {/* <TextFieldElement
-              label="SIC Description"
-              name="demographics.sicDescription"
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <FormDivider>Customer Contract Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* On Demand Max Contract End Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="On Demand Max Contract End Date"
-                name=""
-                inputProps={{ size: "small" }}
-              />
-            </DateFnsProvider> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Ads Max Contract End Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Ads Max Contract End Date"
-                name=""
-                inputProps={{ size: "small" }}
-              />
-            </DateFnsProvider> */}
-          {/* Optimize Max Contract End Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Optimize Max Contract End Date"
-                name=""
-              />
-            </DateFnsProvider> */}
-          {/* Streams Max Contract End Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Streams Max Contract End Date"
-                name=""
-              />
-            </DateFnsProvider> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <FormDivider>MyWebtrends</FormDivider> */}
-          {/* <Grid item xs={12}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Support Override for Entitlement */}
-          {/* <CheckboxElement
-              label="Support Override for Entitlement"
-              name=""
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
           <FormDivider>Software Entitlement Info</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -908,13 +416,6 @@ export const AccountForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
-              {/* Software Entitled Events */}
-              {/* <TextFieldElement
-              label="Software Entitled Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
               {/* Software Installations */}
               <TextFieldElement
                 label="Software Installations"
@@ -964,57 +465,6 @@ export const AccountForm = ({
               </DateFnsProvider>
             </Stack>
           </Grid>
-          {/* <FormDivider>Other Product Details</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* EPS Customer */}
-          {/* <CheckboxElement label="EPS Customer" name="" size="small" /> */}
-          {/* EPS Assigned TAM */}
-          {/* <AutocompleteElement
-              label="EPS Assigned TAM"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* EPS Hours Per Week */}
-          {/* <TextFieldElement
-              label="EPS Hours Per Week"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* EPS Contract End */}
-          {/* <DateFnsProvider>
-              <DatePickerElement label="EPS Contract End" name="" />
-            </DateFnsProvider> */}
-          {/* EPS Contract Start */}
-          {/* <DateFnsProvider>
-              <DatePickerElement label="EPS Contract Start" name="" />
-            </DateFnsProvider> */}
-          {/* EPS Hours Per Month */}
-          {/* <TextFieldElement
-              label="EPS Hours Per Month"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <FormDivider>System Information</FormDivider> */}
-          {/* <Grid item xs={12}> */}
-          {/* <Stack spacing={1}> */}
-          {/* ODUI Notification Processed */}
-          {/* <CheckboxElement
-              label="ODUI Notification Processed"
-              name=""
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
         </Grid>
       </FormWrapper>
     </>

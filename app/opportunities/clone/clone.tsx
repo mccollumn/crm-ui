@@ -104,7 +104,6 @@ export const cloneQuote = async (
       Quotes_ID: null,
       Quotes_Name: null,
       Quotes_OpportunityID: opportunityID,
-      //   Quotes_ValidThrough: addYear(quoteData.QuoteDetail.Quotes_ValidThrough),
     }),
     QuotePaymentInfo: removeNullsFromObject({
       ...quoteData.QuotePaymentInfo,
@@ -173,12 +172,6 @@ export const cloneQuoteProduct = async (
     }),
     ProductInfo: removeNullsFromObject({
       ...quoteProductData.ProductInfo,
-      //   QuoteProducts_StartDate: addYear(
-      //     quoteProductData.ProductInfo.QuoteProducts_StartDate
-      //   ),
-      //   QuoteProducts_EndDate: addYear(
-      //     quoteProductData.ProductInfo.QuoteProducts_EndDate
-      //   ),
     }),
     SubmissionDetails: {
       UserID: user?.id || null,

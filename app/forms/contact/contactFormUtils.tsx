@@ -15,7 +15,6 @@ const generateInitialContactFormData = async (
   const initialContactFormData: ContactFormData = {
     contactID: null,
     owner: defaultOwner,
-    // salutation: null,
     firstName: null,
     lastName: null,
     account: {
@@ -64,7 +63,6 @@ const generateInitialContactFormData = async (
         postalCode: null,
         country: null,
       },
-      // superRegion: null,
     },
     demographic: {
       timeZone: null,
@@ -99,7 +97,6 @@ export const createContactFormData = async ({
       id: contactData.ContactSystemInformation.Contacts_CreatedById,
       name: contactData.ContactSystemInformation.Users_Name,
     },
-    // salutation: null,
     firstName: contactData.ContactDetail.Contacts_FirstName,
     lastName: contactData.ContactDetail.Contacts_LastName,
     account: {
@@ -161,7 +158,6 @@ export const createContactFormData = async ({
           contactData.ContactAddressInformation.Contacts_OtherPostalCode,
         country: contactData.ContactAddressInformation.Contacts_OtherCountry,
       },
-      // superRegion: null,
     },
     demographic: {
       timeZone: contactData.ContactDemographicInformation.Contacts_TimeZone,

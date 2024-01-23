@@ -7,7 +7,6 @@ const InfoList = ({ items }: InfoListProps) => {
       sx={{
         ml: "2rem",
         mr: "2rem",
-        // height: "100vh",
       }}
     >
       {[...items].map((item) => (

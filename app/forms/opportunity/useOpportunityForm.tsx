@@ -36,10 +36,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
     Interest: [],
     RenewalStatus: [],
     Resell: [],
-    // OriginatingPartner: [],
-    // FulfillingPartner: [],
-    // ReferringPartner: [],
-    // InfluencingPartner: [],
     CustomerType: [],
     TerritoryOverride: [],
   };
@@ -75,10 +71,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
           };
         });
         setCustomMenuOptions("Account", options);
-        // setCustomMenuOptions("OriginatingPartner", options);
-        // setCustomMenuOptions("FulfillingPartner", options);
-        // setCustomMenuOptions("ReferringPartner", options);
-        // setCustomMenuOptions("InfluencingPartner", options);
       } catch {
         console.error("Could not retrieve list of accounts");
       }
@@ -231,7 +223,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_ContainsNewBusiness: convertBooleanToString(
           values.newBusiness
         ),
-        // Opportunities_ExpectedRevenue: "6437.84",
         Opportunities_FastNotesNextSteps: values.fastNotes,
         Opportunities_FirstYrContractAmt: firstYearContractAmount,
         Opportunities_FirstYrExpectedAmt: firstYearExpectedAmount,
@@ -240,23 +231,17 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_MultiYearYear1Amount: usdOneYearAmount,
         Opportunities_Name: values.name,
         Opportunities_OpportunityType: values.opportunityType,
-        // Opportunities_OpsAudit: "0",
-        // Opportunities_OrderException: "0",
-        // Opportunities_OrderExceptionNotes: null,
         Opportunities_OwnerID: values.owner.id,
         Owners_Name: values.owner.name,
         Opportunities_Probability: convertNumberToString(values.probability),
         Opportunities_Product: values.product.name,
         Opportunities_ProductFamily: values.product.family,
-        // Opportunities_QuarterBank: "0",
-        // Opportunities_SplitOpportunity: "0",
         Opportunities_StageName: values.stage.name,
         Opportunities_Term: values.term,
         Opportunities_Territory: territory,
         Opportunities_Type: values.type,
       },
       OpportunitySolutionsOverview: {
-        //   Opportunities_ID: values.id,
         Opportunities_PFConsulting: pfConsulting,
         Opportunities_PFDigitalIntelligence: pfDigitalIntelligence,
         Opportunities_PFEPS: pfEPS,
@@ -282,23 +267,6 @@ export const useOpportunityForm = ({ menuItems }: useOpportunityFormProps) => {
         Opportunities_RenewalGrowthResults: renewalGrowthResults,
         Opportunities_Resell: values.renewal.resell,
       },
-      // OpportunityAdditonalInfo: {
-      //   Opportunities_ID: values.id,
-      //   Opportunities_OpportunityNotes: null,
-      //   Opportunities_CPCompellingEvent: null,
-      // },
-      // OpportunityWinLossDetail: {
-      //   Opportunities_ID: values.id,
-      //   Opportunities_BusinessValueofSolutionToCustomer: null,
-      //   Opportunities_ChangeFromRenewalBaselineReason: null,
-      //   Opportunities_PriorWAVendor: null,
-      //   Opportunities_PrimaryWinLossDetail: null,
-      //   Opportunities_PrimaryWinLossReason: null,
-      //   Opportunities_SecondaryWinLossDetail: null,
-      //   Opportunities_SecondaryWinLossReason: null,
-      //   Opportunities_Winner: null,
-      //   Opportunities_WinType: "N/A",
-      // },
       OpportunityPartnerDetail: {
         Opportunities_ID: values.id,
         Opportunities_ChannelDeal: convertBooleanToString(

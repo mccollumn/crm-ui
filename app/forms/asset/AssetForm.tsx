@@ -3,7 +3,13 @@
 import React from "react";
 import { FormWrapper } from "../FormWrapper";
 import { FormDivider } from "../FormDivider";
-import { Backdrop, CircularProgress, Grid, Stack, createFilterOptions } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Stack,
+  createFilterOptions,
+} from "@mui/material";
 import {
   AutocompleteElement,
   CheckboxElement,
@@ -51,7 +57,7 @@ export const AssetForm = ({
     matchFrom: "any",
     stringify: (option: any) => `${option.name} ${option.code}`,
   });
-  
+
   return (
     <>
       <Backdrop
@@ -147,14 +153,6 @@ export const AssetForm = ({
                 }}
                 options={menuOptions.Opportunity}
               />
-              {/* Contact */}
-              {/* <AutocompleteElement
-              label="Contact"
-              name=""
-              required
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -187,14 +185,6 @@ export const AssetForm = ({
                   inputProps={{ size: "small" }}
                 />
               </DateFnsProvider>
-              {/* Has Master */}
-              {/* <CheckboxElement label="Has Master" name="" size="small" /> */}
-              {/* Migration External ID */}
-              {/* <TextFieldElement
-              label="Migration External ID"
-              name=""
-              size="small"
-            /> */}
             </Stack>
           </Grid>
           <Grid item xs={12}>

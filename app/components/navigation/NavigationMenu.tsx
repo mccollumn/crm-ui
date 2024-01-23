@@ -10,8 +10,6 @@ import { Box } from "@mui/material";
 
 const NavigationMenu = ({
   label,
-  // navigationActions = [],
-  // navigationClick = () => {},
   topNavHeight = 64,
   leftNavMinWidth = 64,
   leftNavMaxWidth = 240,
@@ -28,13 +26,11 @@ const NavigationMenu = ({
 
   const navClickHandler = (action: NavigationAction) => {
     setSelectedNav(action);
-    // navigationClick(action);
     router.push(action.path || "");
   };
 
   const { topNavActions, leftNavActions, leftNavCount } = getNavigationActions(
     navigationActions,
-    // isAuthorized
     true
   );
 

@@ -11,25 +11,13 @@ import { useForm } from "../useForm";
 import { removeNullsFromObject, getChangedValues } from "@/app/utils/utils";
 import { AccountData, AccountFormData } from "@/app/types/accounts";
 
-export const useAccountForm = ({
-  menuItems,
-}: //   defaultValues,
-useAccountFormProps) => {
+export const useAccountForm = ({ menuItems }: useAccountFormProps) => {
   const router = useRouter();
   const initialMenuOptions = {
     Owner: [],
-    // ParentAccount: [],
-    // AccountRecordType: [],
     AccountType: [],
-    // MigrateToNewOrg: [],
-    // Territory: [],
     Region: [],
-    // SuperRegion: [],
-    // PartnerStatus: [],
     CollectionsContact: [],
-    // AnnualServerCalls: [],
-    // Industry: [],
-    // Ownership: [],
   };
 
   const {
@@ -68,16 +56,8 @@ useAccountFormProps) => {
     setOwners();
 
     // Set menu options that are already known (i.e. aren't based on user input)
-    // setMenuOptions("AccountRecordType");
     setMenuOptions("AccountType", "", "object");
-    // setMenuOptions("MigrateToNewOrg");
-    // setMenuOptions("Territory");
     setMenuOptions("Region");
-    // setMenuOptions("SuperRegion");
-    // setMenuOptions("PartnerStatus");
-    // setMenuOptions("AnnualServerCalls");
-    // setMenuOptions("Industry");
-    // setMenuOptions("Ownership");
   }, [appendMenuOptions, menuItems, setCustomMenuOptions, setMenuOptions]);
 
   const createAccountFormSubmissionData = (
@@ -249,8 +229,4 @@ interface useAccountFormProps {
    * Array of all possible menu options.
    */
   menuItems: MenuItem[];
-  /**
-   * Default values that will be used to populate the form.
-   */
-  //   defaultValues?: any;
 }

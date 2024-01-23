@@ -135,10 +135,8 @@ const AppBarStyled = styled(AppBar)(({ theme, ...props }: any) => {
 
     ".top-nav-left": {
       display: "flex",
-      // flexGrow: 1,
       justifyContent: "flex-start",
       alignItems: "center",
-      // gap: theme.spacing(8),
     },
     ".top-nav-center": {
       display: "flex",

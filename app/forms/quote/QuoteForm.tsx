@@ -50,36 +50,15 @@ export const QuoteForm = ({
     setIsLoading(true);
     const opportunityID = opportunityData.OpportunityDetail.Opportunities_ID;
 
-    console.log("Quote - Submitting");
-    console.log("Quote - Submitting - values:", values);
-    console.log("Quote - Submitting - defaultValues:", defaultValues);
-    console.log("Quote - Submitting - quoteData:", quoteData);
-
     await submitQuote(values, defaultValues, quoteData);
 
-    console.log("Quote - Submitted");
-
     // Opportunity data needs to be updated if this is the primary quote
-    console.log("Quote - Is Primary:", values.isPrimary);
-
     if (!!Number(values.isPrimary)) {
-      console.log("Quote - Fetching Opportunity:", opportunityID);
-
       const opportunityNewDataResponse = await fetch(
         `/api/opportunities/${opportunityID}`
       );
       const { data: opportunityNewData }: { data: OpportunityData } =
         await opportunityNewDataResponse.json();
-
-      console.log("Quote - Submitting Opportunity");
-      console.log(
-        "Quote - Submitting Opportunity - opportunityValues:",
-        opportunityValues
-      );
-      console.log(
-        "Quote - Submitting Opportunity - opportunityNewData:",
-        opportunityNewData
-      );
 
       await submitOpportunity(
         opportunityValues,
@@ -87,12 +66,9 @@ export const QuoteForm = ({
         opportunityNewData,
         "auto"
       );
-
-      console.log("Quote - Submitted Opportunity");
     }
     setIsLoading(false);
 
-    console.log("Quote - Routing");
     router.back();
   };
 
@@ -196,14 +172,6 @@ export const QuoteForm = ({
                   size: "small",
                 }}
               />
-              {/* Quote Office Location */}
-              {/* <AutocompleteElement
-                label="Quote Office Location"
-                name="officeLocation"
-                // required
-                autocompleteProps={{ size: "small" }}
-                options={menuOptions.OfficeLocation}
-              /> */}
               {/* Currency */}
               <AutocompleteElement
                 label="Currency"
@@ -228,29 +196,6 @@ export const QuoteForm = ({
               <CheckboxElement label="Primary" name="isPrimary" size="small" />
             </Stack>
           </Grid>
-          {/* <FormDivider>Audit Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Audit Status */}
-          {/* <AutocompleteElement
-              label="Audit Status"
-              name="audit.status"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.AuditStatus}
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Audit Notes */}
-          {/* <TextareaAutosizeElement
-              label="Audit Notes"
-              name="audit.notes"
-              rows={3}
-              size="small"
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
           <FormDivider>Payment Information</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
@@ -271,12 +216,6 @@ export const QuoteForm = ({
                 name="payment.docNumber"
                 size="small"
               />
-              {/* Migration External ID */}
-              {/* <TextFieldElement
-              label="Migration External ID"
-              name=""
-              size="small"
-            /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -303,13 +242,6 @@ export const QuoteForm = ({
                 }}
                 options={menuOptions.PaymentTerms}
               />
-              {/* Terms Audit */}
-              {/* <AutocompleteElement
-              label="Terms Audit"
-              name="payment.termsAudit"
-              autocompleteProps={{ size: "small" }}
-              options={menuOptions.TermsAudit}
-            /> */}
             </Stack>
           </Grid>
           <FormDivider>Send Quote</FormDivider>
@@ -331,20 +263,6 @@ export const QuoteForm = ({
           <FormDivider>Comments</FormDivider>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* Sales Notes to OM */}
-              {/* <TextareaAutosizeElement
-              label="Sales Notes to OM"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
-              {/* Order Management Comments */}
-              {/* <TextareaAutosizeElement
-              label="Order Management Comments"
-              name=""
-              rows={3}
-              size="small"
-            /> */}
               {/* Current Financial Exchange Rate to USD */}
               <TextFieldElement
                 label="Current Financial Exchange Rate to USD"
@@ -384,40 +302,6 @@ export const QuoteForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
-              {/* Analytics Server Calls */}
-              {/* <TextFieldElement
-              label="Analytics Server Calls"
-              name="entitlements.serverCalls"
-              type="number"
-              size="small"
-            /> */}
-              {/* Segment Events */}
-              {/* <TextFieldElement
-              label="Segment Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* Spotimize Events */}
-              {/* <TextFieldElement
-              label="Spotimize Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* Streams Events */}
-              {/* <TextFieldElement
-              label="Streams Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* Refresh Entitlement Data */}
-              {/* <CheckboxElement
-              label="Refresh Entitlement Data"
-              name="entitlements.refreshData"
-              size="small"
-            /> */}
             </Stack>
           </Grid>
           <Grid item xs={6}>
@@ -429,60 +313,8 @@ export const QuoteForm = ({
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
               />
-              {/* Analytics Server Calls */}
-              {/* <TextFieldElement
-              label="Existing Analytics Server Calls"
-              name="entitlements.existingServerCalls"
-              type="number"
-              size="small"
-            /> */}
-              {/* Segment Events */}
-              {/* <TextFieldElement
-              label="Existing Segment Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* Spotimize Events */}
-              {/* <TextFieldElement
-              label="Existing Spotimize Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
-              {/* Streams Events */}
-              {/* <TextFieldElement
-              label="Existing Streams Events"
-              name=""
-              type="number"
-              size="small"
-            /> */}
             </Stack>
           </Grid>
-          {/* <FormDivider>Intacct Information</FormDivider> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Intacct Entity */}
-          {/* <AutocompleteElement
-              label="Intacct Entity"
-              name=""
-              autocompleteProps={{ size: "small" }}
-              options={[]}
-            /> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
-          {/* <Grid item xs={6}> */}
-          {/* <Stack spacing={1}> */}
-          {/* Order Date */}
-          {/* <DateFnsProvider>
-              <DatePickerElement
-                label="Order Date"
-                name=""
-                inputProps={{ size: "small" }}
-              />
-            </DateFnsProvider> */}
-          {/* </Stack> */}
-          {/* </Grid> */}
         </Grid>
       </FormWrapper>
     </>

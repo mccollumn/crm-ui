@@ -157,66 +157,6 @@ const OpportunityInformation = async ({
           />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-se-section-content"
-          id="opportunity-se-section-header"
-        >
-          <Typography variant="h6">Solutions engineering</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-se-section-content">
-          <InformationSection
-            itemsLeft={opportunityInfo.se.left}
-            itemsRight={opportunityInfo.se.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-clarizen-section-content"
-          id="opportunity-clarizen-section-header"
-        >
-          <Typography variant="h6">Clarizen Project Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-clarizen-section-content">
-          <InformationSection
-            itemsLeft={opportunityInfo.clarizen.left}
-            itemsRight={opportunityInfo.clarizen.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-marketing-section-content"
-          id="opportunity-marketing-section-header"
-        >
-          <Typography variant="h6">Marketing Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-marketing-section-content">
-          <InformationSection
-            itemsLeft={opportunityInfo.marketing.left}
-            itemsRight={opportunityInfo.marketing.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
-      {/* <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="opportunity-commission-section-content"
-          id="opportunity-commission-section-header"
-        >
-          <Typography variant="h6">Commission Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails id="opportunity-commission-section-content">
-          <InformationSection
-            itemsLeft={opportunityInfo.commission.left}
-            itemsRight={opportunityInfo.commission.right}
-          />
-        </AccordionDetails>
-      </Accordion> */}
       <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -333,11 +273,8 @@ const getOpportunityInfo = async (
             opportunityData.OpportunityDetail.Opportunities_QuarterBank
           ),
         },
-        // { label: "Optimize Product Type", value: "" },
-        // { label: "Migration External ID", value: "" },
       ],
       right: [
-        // { label: "Opportunity Record Type", value: "" },
         {
           label: "Amount",
           value: formatCurrency(
@@ -364,12 +301,6 @@ const getOpportunityInfo = async (
           label: "Forecast Status",
           value: opportunityData.OpportunityDetail.Opportunities_ForecastStatus,
         },
-        // {
-        //   label: "Expected Revenue",
-        //   value: formatCurrency(
-        //     opportunityData.OpportunityDetail.Opportunities_ExpectedRevenue
-        //   ),
-        // },
         {
           label: "Term (months)",
           value: opportunityData.OpportunityDetail.Opportunities_Term,
@@ -404,14 +335,10 @@ const getOpportunityInfo = async (
             opportunityData.OpportunityDetail.Opportunities_FastNotesNextSteps
           ),
         },
-        // { label: "1st Year Contract Amount", value: "" },
-        // { label: "1st Year Expected Amount", value: "" },
-        // { label: "CHAMPP", value: "" },
       ],
     },
     overview: {
       left: [
-        // { label: "PF Analytics On Demand", value: "" },
         {
           label: "PF Analytics On Premises",
           value: formatCurrency(
@@ -419,10 +346,6 @@ const getOpportunityInfo = async (
               .Opportunities_PFLICAnalytics
           ),
         },
-        // { label: "PF VDM / Segments", value: "" },
-        // { label: "PF Optimize", value: "" },
-        // { label: "PF Streams", value: "" },
-        // { label: "PF Ads", value: "" },
         {
           label: "PF Services",
           value: formatCurrency(
@@ -446,12 +369,6 @@ const getOpportunityInfo = async (
         },
       ],
       right: [
-        // { label: "PF Site analytics", value: "" },
-        // { label: "PF SharePoint Site", value: "" },
-        // { label: "PF SharePoint Intranet", value: "" },
-        // { label: "PF Mobile", value: "" },
-        // { label: "PF Facebook", value: "" },
-        // { label: "PF Social Analytics", value: "" },
         {
           label: "PF EPS",
           value: formatCurrency(
@@ -471,7 +388,6 @@ const getOpportunityInfo = async (
             opportunityData.OpportunitySolutionsOverview.Opportunities_PFOther
           ),
         },
-        // { label: "PF SAP", value: "" },
       ],
     },
     renewal: {
@@ -577,7 +493,6 @@ const getOpportunityInfo = async (
           label: "Win Type",
           value: opportunityData.OpportunityWinLossDetail.Opportunities_WinType,
         },
-        // { label: "Competitors", value: "" },
         {
           label: "Business Value of Solution to Customer",
           value:
@@ -617,7 +532,6 @@ const getOpportunityInfo = async (
             opportunityData.OpportunityWinLossDetail
               .Opportunities_SecondaryWinLossDetail,
         },
-        // { label: "Additional Win/Loss Details", value: "" },
       ],
     },
     partner: {
@@ -658,11 +572,6 @@ const getOpportunityInfo = async (
     },
     links: {
       left: [
-        // {
-        //   label: "18 Character Contact ID",
-        //   value:
-        //     "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018LuX&eid=0031W00002d6IULQA2&ic=1",
-        // },
         {
           label: "Trial Manager",
           value: (
@@ -675,63 +584,10 @@ const getOpportunityInfo = async (
           ),
         },
       ],
-      right: [
-        // {
-        //   label: "Old Quote Manager",
-        //   value:
-        //     "https://webtrends.lightning.force.com/servlet/servlet.Integration?lid=00b400000018I7S&eid=0068Z00001VJmTkQAL&ic=1",
-        // },
-      ],
+      right: [],
     },
-    // se: {
-    //   left: [
-    //     { label: "SE Involved", value: "" },
-    //     { label: "Product Fit", value: "" },
-    //     { label: "SE Engagement", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "SE Next Steps", value: "" },
-    //     { label: "SE Comments", value: "" },
-    //   ],
-    // },
-    // clarizen: {
-    //   left: [
-    //     { label: "Project Trigger Type", value: "" },
-    //     { label: "Parent Project ID", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Order Number", value: "" },
-    //     { label: "Order Date", value: "" },
-    //   ],
-    // },
-    // marketing: {
-    //   left: [
-    //     { label: "Lead Source", value: "" },
-    //     { label: "Initial Contact Email", value: "" },
-    //     { label: "Original Campaign Source", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Primary Campaign Source", value: "" },
-    //     { label: "Marketing Generated", value: "" },
-    //     { label: "Sourced from Data.com", value: "" },
-    //   ],
-    // },
-    // commission: {
-    //   left: [
-    //     { label: "Sales Rep ID", value: "" },
-    //     { label: "Commission Category", value: "" },
-    //     { label: "SharePoint Overlay Contributor", value: "" },
-    //     { label: "Exception", value: "" },
-    //   ],
-    //   right: [
-    //     { label: "Commission Comments", value: "" },
-    //     { label: "OD Switcher", value: "" },
-    //     { label: "Multi-Year Uplift", value: "" },
-    //   ],
-    // },
     stage: {
       left: [
-        // { label: "Converted from Lead ID", value: "" },
         {
           label: "Stage 1 Date",
           value: formatDate(
@@ -764,7 +620,6 @@ const getOpportunityInfo = async (
         },
       ],
       right: [
-        // { label: "Conversion Date", value: "" },
         {
           label: "Most Recent Stage 1",
           value: formatDate(
@@ -804,25 +659,16 @@ const getOpportunityInfo = async (
     },
     system: {
       left: [
-        // { label: "Holdover Expiration", value: "" },
         {
           label: "Type",
           value: opportunityData.OpportunityDetail.Opportunities_Type,
         },
-        // { label: "Refresh Product Family", value: "" },
-        // { label: "Created By", value: "" },
       ],
       right: [
         {
           label: "Opportunity Territory",
           value: opportunityData.OpportunityDetail.Opportunities_Territory,
         },
-        // { label: "Territory Override", value: "" },
-        // { label: "Territory Tracker", value: "" },
-        // { label: "Deal Alert Sent", value: "" },
-        // { label: "Quote Submitted", value: "" },
-        // { label: "Do Not Run Trigger Test", value: "" },
-        // { label: "Last Modified By", value: "" },
       ],
     },
   };
