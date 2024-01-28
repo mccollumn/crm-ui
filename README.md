@@ -1,5 +1,17 @@
 # CRM User Interface
 
+A SalesForce replacement for the management of customer accounts, contacts, sales opportunities, and support cases.
+
+Quickly locate records:
+![Accounts List](./images/accounts_list.png)
+![Search](./images/search.png)
+
+Create new records with an intuitive interface:
+![New Case](./images/new_case.png)
+
+Easily view and edit existing records:
+![Account](./images/account.png)
+
 ## Setup - Dev
 
 Update environment variables:
