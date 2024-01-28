@@ -7,8 +7,8 @@ import NavigationMenu from "./components/navigation/NavigationMenu";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Webtrends CRM",
-  description: "Webtrends customer relationship management",
+  title: "CRM",
+  description: "Customer relationship management",
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

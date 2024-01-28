@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Setup - Production
 
-The CRM UI is currently hosted on `usw2wtcrm01w` in `C:\WebtrendsCRM\crm-ui`. Use the following steps to deploy.
+Use the following steps to deploy.
 
 ### Install Node.js
 
@@ -35,18 +35,18 @@ Download and install Node.js 20.9.0
 
 #### Download
 
-Download the [wt-crm-ui](https://github.com/wt-business-apps/wt-crm-ui) repo to a temporary location on the server that will host the UI. The project must be built from a location with access to the CRM API.
+Download the [crm-ui](https://github.com/mccollumn/crm-ui) repo to a temporary location on the server that will host the UI. The project must be built from a location with access to the CRM API.
 
 #### Environment Variables
 
 Edit the `.env.production` file and provide the `NEXTAUTH_SECRET` and `OKTA_CLIENT_SECRET` values.
 
-- `NEXTAUTH_SECRET` - Found in [Passwordstate](https://secrets.webtrends.io/). Search for `crm`.
+- `NEXTAUTH_SECRET`
 - `OKTA_CLIENT_SECRET` - Found in the Okta application configuration for CRM.
 
 #### Run Build Script
 
-Open an elevated command prompt, navigate to the location where the [wt-crm-ui](https://github.com/wt-business-apps/wt-crm-ui) repo files where saved, and run:
+Open an elevated command prompt, navigate to the location where the [crm-ui](https://github.com/mccollumn/crm-ui) repo files where saved, and run:
 
 ```bat
 build.cmd
@@ -64,7 +64,7 @@ Copy the files output from the standalone build to the location where they will 
 
 - Source: `\.next\standalone\`
 
-- Destination: `C:\WebtrendsCRM\crm-ui\`
+- Destination: `C:\crm-ui\`
 
 Now that the project is built, the source code is no longer needed and can be deleted.
 
@@ -92,8 +92,8 @@ Configure the website and application pool using Information Services (IIS) Mana
 Create a new IIS website:
 
 - In the Connections pane, navigate to Sites and click _Add Website_.
-- Provide a name for the site (e.g. Webtrends CRM UI).
-- Provide the physical path to the UI (e.g. C:\WebtrendsCRM\crm-ui).
+- Provide a name for the site (e.g. CRM UI).
+- Provide the physical path to the UI (e.g. C:\crm-ui).
 - Ensure Binding Type is `http` and Port is `80`.
 - Click OK to create the website.
 
@@ -132,9 +132,9 @@ nssm.exe install
 Create the service:
 
 - Set the _Path_ to the location of the `start_server.cmd` file.
-  - e.g. C:\WebtrendsCRM\crm-ui\start_server.cmd
+  - e.g. C:\crm-ui\start_server.cmd
 - Set the _Service Name_. This is what will appear in the Windows services list.
-  - e.g. Webtrends CRM UI
+  - e.g. CRM UI
 - Click the _Details_ tab.
 - Set a description for the service.
 - Ensure that _Startup Type_ is set to _Automatic_.
@@ -144,8 +144,8 @@ Create the service:
 - Ensure that the _Restart_ option is set to _Restart Application_.
 - Click the _I/O_ tab.
 - Provide _Output_ and _Error_ log paths.
-  - e.g. C:\WebtrendsCRM\crm-ui\logs\service.log
-  - e.g. C:\WebtrendsCRM\crm-ui\logs\service-error.log
+  - e.g. C:\crm-ui\logs\service.log
+  - e.g. C:\crm-ui\logs\service-error.log
 - Click the _Install Service_ button.
 
 Configure the service:
@@ -159,16 +159,16 @@ Configure the service:
 - Click _OK_.
 - Start the service if it is not already running.
 
-> Note: If you need to unistall the service, you can do so by running `nssm.exe remove "Webtrends CRM UI"` from an elevated command prompt.
+> Note: If you need to unistall the service, you can do so by running `nssm.exe remove "CRM UI"` from an elevated command prompt.
 
 ## Updating
 
 To update the app after it has already been deployed:
 
 - Download and build the new app per the instructions [above](#build-the-app).
-- Stop the _Webtrends CRM UI_ service.
+- Stop the _CRM UI_ service.
 - Replace the existing app files with new ones.
-- Start the _Webtrends CRM UI_ service.
+- Start the _CRM UI_ service.
 
 ## Versioning
 

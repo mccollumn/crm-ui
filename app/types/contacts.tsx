@@ -26,7 +26,7 @@ interface ContactDetail {
   Contacts_NamedSupportContact: "0" | "1";
   Contacts_OtherPhone?: string | null;
   Contacts_Phone?: string | null;
-  Contacts_RelationshipToWebtrends?: string | null;
+  Contacts_Relationship?: string | null;
   Contacts_SupportContactAdministrator: "0" | "1";
   Contacts_Title?: string | null;
   Contacts_UnconfirmedEmail: "0" | "1";

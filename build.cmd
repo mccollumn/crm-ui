@@ -24,4 +24,4 @@ mkdir .\.next\standalone\logs
 :Done
 echo.
 echo *** Build Complete ***
-echo Copy .\.next\standalone\*.* to the appropriate location (e.g. C:\WebtrendsCRM\crm-ui\).
+echo Copy .\.next\standalone\*.* to the appropriate location (e.g. C:\crm-ui\).

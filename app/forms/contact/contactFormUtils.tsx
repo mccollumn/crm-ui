@@ -111,7 +111,7 @@ export const createContactFormData = async ({
       contactData.ContactDetail.Contacts_UnconfirmedEmail
     ),
     relationship: convertStringToArray(
-      contactData.ContactDetail.Contacts_RelationshipToWebtrends
+      contactData.ContactDetail.Contacts_Relationship
     ),
     contactStatus: contactData.ContactDetail.Contacts_ContactStatus,
     phone: contactData.ContactDetail.Contacts_Phone,

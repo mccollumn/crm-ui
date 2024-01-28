@@ -74,7 +74,7 @@ const OpportunityInformation = async ({
           aria-controls="opportunity-overview-section-content"
           id="opportunity-overview-section-header"
         >
-          <Typography variant="h6">Webtrends Solution Overview</Typography>
+          <Typography variant="h6">Solution Overview</Typography>
         </AccordionSummary>
         <AccordionDetails id="opportunity-overview-section-content">
           <InformationSection
@@ -576,7 +576,7 @@ const getOpportunityInfo = async (
           label: "Trial Manager",
           value: (
             <Link
-              href={`https://crm.webtrends.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectType=Account&objectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectname=${opportunityData.OpportunityDetail.Accounts_Name}`}
+              href={`https://crm.example.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectType=Account&objectid=${opportunityData.OpportunityDetail.Opportunities_AccountId}&objectname=${opportunityData.OpportunityDetail.Accounts_Name}`}
               target="_blank"
             >
               Trial Manager

@@ -18,7 +18,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     Account: [],
     JobRole: [],
     ContactRole: [],
-    RelationshipToWebtrends: [],
+    Relationship: [],
     ContactStatus: [],
     TimeZone: [],
     PreferredLanguage: [],
@@ -82,7 +82,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("JobRole");
     setMenuOptions("ContactRole");
-    setMenuOptions("RelationshipToWebtrends");
+    setMenuOptions("Relationship");
     setMenuOptions("ContactStatus");
     setMenuOptions("TimeZone");
     setMenuOptions("PreferredLanguage");
@@ -112,9 +112,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         ),
         Contacts_OtherPhone: values.otherPhone,
         Contacts_Phone: values.phone,
-        Contacts_RelationshipToWebtrends: convertArrayToString(
-          values.relationship
-        ),
+        Contacts_Relationship: convertArrayToString(values.relationship),
         Contacts_SupportContactAdministrator: convertBooleanToString(
           values.supportContactAdmin
         ),

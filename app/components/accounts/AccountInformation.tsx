@@ -398,7 +398,7 @@ const getAccountInfo = async (accountID: string) => {
           label: "Trial Manager",
           value: (
             <Link
-              href={`https://crm.webtrends.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${accountData.AccountDetail.Accounts_AccountID}&objectType=Account&objectid=${accountData.AccountDetail.Accounts_AccountID}&objectname=${accountData.AccountDetail.Accounts_Name}`}
+              href={`https://crm.example.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${accountData.AccountDetail.Accounts_AccountID}&objectType=Account&objectid=${accountData.AccountDetail.Accounts_AccountID}&objectname=${accountData.AccountDetail.Accounts_Name}`}
               target="_blank"
             >
               Trial Manager

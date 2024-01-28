@@ -190,14 +190,14 @@ export const ContactForm = ({
           </Grid>
           <Grid item xs={6}>
             <Stack spacing={1}>
-              {/* Relationship to Webtrends */}
+              {/* Relationship */}
               <MultiSelectElement
-                label="Relationship to Webtrends"
+                label="Relationship"
                 name="relationship"
                 preserveOrder
                 showChips
                 size="small"
-                options={menuOptions.RelationshipToWebtrends}
+                options={menuOptions.Relationship}
               />
               {/* Contact Status */}
               <AutocompleteElement

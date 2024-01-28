@@ -176,8 +176,8 @@ const getContactInfo = async (contactID: string) => {
       ],
       right: [
         {
-          label: "Relationship to Webtrends",
-          value: contactData.ContactDetail.Contacts_RelationshipToWebtrends,
+          label: "Relationship",
+          value: contactData.ContactDetail.Contacts_Relationship,
         },
         {
           label: "Contact Status",
@@ -271,7 +271,7 @@ const getContactInfo = async (contactID: string) => {
           label: "Trial Manager",
           value: (
             <Link
-              href={`https://crm.webtrends.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${contactData.ContactDetail.Contacts_AccountId}&objectType=Account&objectid=${contactData.ContactDetail.Contacts_AccountId}&objectname=${contactData.ContactDetail.Accounts_Name}`}
+              href={`https://crm.example.io/trialmanager/tm.aspx?trialobject=Account&trialobjectid=${contactData.ContactDetail.Contacts_AccountId}&objectType=Account&objectid=${contactData.ContactDetail.Contacts_AccountId}&objectname=${contactData.ContactDetail.Accounts_Name}`}
               target="_blank"
             >
               Trial Manager
@@ -284,7 +284,7 @@ const getContactInfo = async (contactID: string) => {
           label: "System Sent Email History",
           value: (
             <Link
-              href={`https://crm.webtrends.io/EmailHistory/default.aspx?email=${contactData.ContactDetail.Contacts_Email}&name=${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}&object=Contact&id=${contactData.ContactDetail.Contacts_ID}`}
+              href={`https://crm.example.io/EmailHistory/default.aspx?email=${contactData.ContactDetail.Contacts_Email}&name=${contactData.ContactDetail.Contacts_FirstName} ${contactData.ContactDetail.Contacts_LastName}&object=Contact&id=${contactData.ContactDetail.Contacts_ID}`}
               target="_blank"
             >
               System Sent Email History
