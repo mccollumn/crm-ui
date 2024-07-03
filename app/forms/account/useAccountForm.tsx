@@ -8,7 +8,7 @@ import {
   isSuccessfulResponse,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
-import { removeNullsFromObject, getChangedValues } from "@/app/utils/utils";
+import { cleanObject, getChangedValues } from "@/app/utils/utils";
 import { AccountData, AccountFormData } from "@/app/types/accounts";
 
 export const useAccountForm = ({ menuItems }: useAccountFormProps) => {
@@ -156,7 +156,7 @@ export const useAccountForm = ({ menuItems }: useAccountFormProps) => {
         UserID: user?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, accountData);

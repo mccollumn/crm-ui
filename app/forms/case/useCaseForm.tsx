@@ -6,7 +6,7 @@ import {
   convertDateToISOString,
   getChangedValues,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { CaseData, CaseFormData } from "@/app/types/cases";
@@ -233,7 +233,7 @@ export const useCaseForm = ({ menuItems, defaultValues }: useCaseFormProps) => {
         OwnerID: values?.owner?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, caseData);

@@ -1,7 +1,7 @@
 import { OpportunityData } from "@/app/types/opportunities";
 import { QuoteData, QuoteProductData } from "@/app/types/quotes";
 import { getUser } from "@/app/utils/clientUtils";
-import { addYear, removeNullsFromObject, unEscape } from "@/app/utils/utils";
+import { addYear, cleanObject, unEscape } from "@/app/utils/utils";
 
 /**
  * Clones an existing opportunity.
@@ -21,7 +21,7 @@ export const cloneOpportunity = async (opportunityData: OpportunityData) => {
   );
   const defaultStage = "04 Commit";
   const newOpportunity = {
-    OpportunityDetail: removeNullsFromObject({
+    OpportunityDetail: cleanObject({
       ...opportunityData.OpportunityDetail,
       Opportunities_ID: null,
       Opportunities_Name: unEscape(
@@ -33,40 +33,40 @@ export const cloneOpportunity = async (opportunityData: OpportunityData) => {
       Opportunities_Probability: null,
       Opportunities_StageName: defaultStage,
     }),
-    OpportunitySolutionsOverview: removeNullsFromObject({
+    OpportunitySolutionsOverview: cleanObject({
       ...opportunityData.OpportunitySolutionsOverview,
       Opportunities_ID: null,
     }),
-    OpportunityRenewalInfo: removeNullsFromObject({
+    OpportunityRenewalInfo: cleanObject({
       ...opportunityData.OpportunityRenewalInfo,
       Opportunities_ID: null,
       Opportunities_BaselineRenewalDate: newBaselineRenewalDate,
       Opportunities_RenewalStatus: null,
     }),
-    OpportunityAdditonalInfo: removeNullsFromObject({
+    OpportunityAdditonalInfo: cleanObject({
       ...opportunityData.OpportunityAdditonalInfo,
       Opportunities_ID: null,
     }),
-    OpportunityWinLossDetail: removeNullsFromObject({
+    OpportunityWinLossDetail: cleanObject({
       ...opportunityData.OpportunityWinLossDetail,
       Opportunities_ID: null,
     }),
-    OpportunityPartnerDetail: removeNullsFromObject({
+    OpportunityPartnerDetail: cleanObject({
       ...opportunityData.OpportunityPartnerDetail,
       Opportunities_ID: null,
     }),
     OpportunityQuoteContactRoles:
       opportunityData.OpportunityQuoteContactRoles.map((role) => {
         delete role.OpportunityContactRoles_ID;
-        return removeNullsFromObject(role);
+        return cleanObject(role);
       }),
     OpportunityAmounts: opportunityData.OpportunityAmounts.map((amount) => {
       delete amount.OpportunityAmounts_ID;
-      return removeNullsFromObject(amount);
+      return cleanObject(amount);
     }),
     OpportunityProducts: opportunityData.OpportunityProducts.map((product) => {
       delete product.OpportunityLineItems_ID;
-      return removeNullsFromObject(product);
+      return cleanObject(product);
     }),
     SubmissionDetails: {
       UserID: user?.id || null,
@@ -99,29 +99,29 @@ export const cloneQuote = async (
 ) => {
   const user = await getUser();
   const newQuote = {
-    QuoteDetail: removeNullsFromObject({
+    QuoteDetail: cleanObject({
       ...quoteData.QuoteDetail,
       Quotes_ID: null,
       Quotes_Name: null,
       Quotes_OpportunityID: opportunityID,
     }),
-    QuotePaymentInfo: removeNullsFromObject({
+    QuotePaymentInfo: cleanObject({
       ...quoteData.QuotePaymentInfo,
       Quotes_ID: null,
     }),
-    QuoteTotals: removeNullsFromObject({
+    QuoteTotals: cleanObject({
       ...quoteData.QuoteTotals,
       Quotes_ID: null,
     }),
-    QuoteProductTotals: removeNullsFromObject({
+    QuoteProductTotals: cleanObject({
       ...quoteData.QuoteProductTotals,
       Quotes_ID: null,
     }),
-    QuoteDiscounts: removeNullsFromObject({
+    QuoteDiscounts: cleanObject({
       ...quoteData.QuoteDiscounts,
       Quotes_ID: null,
     }),
-    QuoteEntitlements: removeNullsFromObject({
+    QuoteEntitlements: cleanObject({
       ...quoteData.QuoteEntitlements,
       Quotes_ID: null,
     }),
@@ -157,7 +157,7 @@ export const cloneQuoteProduct = async (
 ) => {
   const user = await getUser();
   const newQuoteProduct = {
-    QuoteProductDetail: removeNullsFromObject({
+    QuoteProductDetail: cleanObject({
       ...quoteProductData.QuoteProductDetail,
       QuoteProducts_ID: null,
       QuoteProducts_CreatedByID: null,
@@ -170,7 +170,7 @@ export const cloneQuoteProduct = async (
       QuoteProducts_QuoteID: quoteID,
       Quotes_Name: null,
     }),
-    ProductInfo: removeNullsFromObject({
+    ProductInfo: cleanObject({
       ...quoteProductData.ProductInfo,
     }),
     SubmissionDetails: {

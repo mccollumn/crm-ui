@@ -1,6 +1,6 @@
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { numericFormatter } from "react-number-format";
+import { NumericFormatProps, numericFormatter } from "react-number-format";
 import { add } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 
@@ -93,11 +93,16 @@ export const formatCheckbox = (
 /**
  * Formats a number for display.
  * @param value The number to format.
+ * @param options Options for formatting the number.
  * @returns Formatted string.
  */
-export const formatNumber = (value: number | string | null | undefined) => {
+export const formatNumber = (
+  value: number | string | null | undefined,
+  options?: NumericFormatProps
+) => {
   if (!value) return value;
-  return numericFormatter(value.toString(), { thousandSeparator: true });
+  const defaultOptions = { thousandSeparator: true };
+  return numericFormatter(value.toString(), { ...defaultOptions, ...options });
 };
 
 /**
@@ -105,12 +110,13 @@ export const formatNumber = (value: number | string | null | undefined) => {
  * @param value The number to format.
  * @returns Formatted string.
  */
-export const formatPercent = (value: number | string | null | undefined) => {
+export const formatPercent = (
+  value: number | string | null | undefined,
+  options?: NumericFormatProps
+) => {
   if (!value) return value;
-  return numericFormatter(value.toString(), {
-    thousandSeparator: true,
-    suffix: "%",
-  });
+  const defaultOptions = { thousandSeparator: true, suffix: "%" };
+  return numericFormatter(value.toString(), { ...defaultOptions, ...options });
 };
 
 /**
@@ -219,30 +225,61 @@ export const appendToDelimitedString = (
 };
 
 /**
- * Returns an object with all keys with null values removed.
- * The object can have one level of nesting.
- * @param obj Object to iterate over.
- * @returns Object with no nulls.
+ * Removes empty objects from the given object recursively.
+ * @param obj - The object to remove empty objects from.
+ * @returns The object with empty objects removed.
  */
-export const removeNullsFromObject = (obj: any) => {
-  let result = {};
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] && typeof obj[key] === "object") {
-      const subObj = obj[key];
-      let subResult = {};
-      Object.keys(subObj).forEach((subKey) => {
-        if (subObj[subKey] !== null) {
-          subResult = { ...subResult, [subKey]: subObj[subKey] };
-        }
-      });
-      if (!isObjectEmpty(subResult)) {
-        result = { ...result, [key]: { ...subResult } };
-      }
-    } else if (obj[key] !== null) {
-      result = { ...result, [key]: obj[key] };
+const removeEmptyObjects = (obj: any): object => {
+  return Object.keys(obj).reduce((previous, current) => {
+    if (!obj[current]) return previous;
+
+    // If the value is an object and has no keys, don't include it.
+    if (isObjectEmpty(obj[current])) {
+      return previous;
     }
-  });
-  return result;
+
+    // We need to go one level deeper if the value is an object
+    if (typeof obj[current] === "object") {
+      return {
+        ...previous,
+        [current]: removeEmptyObjects(obj[current]),
+      };
+    }
+
+    return {
+      ...previous,
+      [current]: obj[current],
+    };
+  }, {});
+};
+
+/**
+ * Removes empty objects, null / undefined values, and sanitizes string values from the given object recursively.
+ * @param obj - The object to clean.
+ * @returns The cleaned object.
+ */
+export const cleanObject = (obj: any): object => {
+  const result: any = Object.keys(obj).reduce((previous, current) => {
+    if (!obj[current]) return previous;
+    // We need to go one level deeper if the value is an object.
+    if (typeof obj[current] === "object") {
+      return {
+        ...previous,
+        [current]: cleanObject(obj[current]),
+      };
+    }
+    // If the value is not a string, don't sanitize it.
+    if (typeof obj[current] !== "string") {
+      return { ...previous, [current]: obj[current] };
+    }
+    // Sanitize the string value.
+    return {
+      ...previous,
+      [current]: sanitizeString(obj[current]),
+    };
+  }, {});
+
+  return removeEmptyObjects(result);
 };
 
 /**
@@ -266,7 +303,10 @@ export const getChangedValues = (formData: any, origData: any) => {
       let subResult = {};
       Object.keys(subObj).forEach((subKey) => {
         if (!origData[key] || subObj[subKey] !== origData[key][subKey]) {
-          subResult = { ...subResult, [subKey]: subObj[subKey] };
+          subResult = {
+            ...subResult,
+            [subKey]: subObj[subKey],
+          };
         }
       });
       if (!isObjectEmpty(subResult)) {
@@ -289,4 +329,17 @@ export const addYear = (currentDateStr: string | null) => {
     return add(new Date(), { years: 1 }).toISOString();
   }
   return add(new Date(currentDateStr), { years: 1 }).toISOString();
+};
+
+/**
+ * Sanitizes a string by removing extra whitespace and line breaks.
+ * @param str - The string to sanitize.
+ * @returns The sanitized string.
+ */
+export const sanitizeString = (str: string) => {
+  if (!str || typeof str !== "string") return str;
+  return str
+    .trim()
+    .replace(/[\t\n\r]+/g, " ")
+    .replace(/\s{2,}/g, " ");
 };

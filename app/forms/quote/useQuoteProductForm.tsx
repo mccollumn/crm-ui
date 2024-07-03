@@ -6,7 +6,7 @@ import {
   getChangedValues,
   isObjectEmpty,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import {
@@ -219,7 +219,7 @@ export const useQuoteProductForm = ({
         QuoteID: values?.quote?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, quoteProductData);

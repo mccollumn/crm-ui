@@ -5,7 +5,7 @@ import {
   convertBooleanToString,
   getChangedValues,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import {
@@ -76,7 +76,7 @@ export const useContactRoleForm = ({
       ),
       OpportunityContactRoles_Role: values.role.name,
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     const contactRoleData = opportunityData?.OpportunityQuoteContactRoles.find(

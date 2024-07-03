@@ -7,7 +7,7 @@ import {
   convertNumberToString,
   getChangedValues,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { AssetData, AssetFormData } from "@/app/types/assets";
@@ -159,7 +159,7 @@ export const useAssetForm = ({ menuItems }: useAssetFormProps) => {
         OpportunityID: values?.opportunity?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, assetData);

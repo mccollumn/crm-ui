@@ -6,7 +6,7 @@ import {
   convertBooleanToString,
   getChangedValues,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { ContactData, ContactFormData } from "@/app/types/contacts";
@@ -164,7 +164,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
         AccountID: values?.account?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, contactData);

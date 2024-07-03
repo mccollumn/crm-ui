@@ -4,7 +4,7 @@ import {
   convertBooleanToString,
   getChangedValues,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { CaseComment, CaseCommentFormData, CaseData } from "@/app/types/cases";
 import { useForm } from "../useForm";
@@ -29,7 +29,7 @@ export const useCaseCommentForm = () => {
         CaseID: values?.caseID || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, caseCommentData);

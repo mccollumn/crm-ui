@@ -5,7 +5,7 @@ import {
   getChangedValues,
   isObjectEmpty,
   isSuccessfulResponse,
-  removeNullsFromObject,
+  cleanObject,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { OpportunityData, ProductFormData } from "@/app/types/opportunities";
@@ -96,7 +96,7 @@ export const useProductForm = ({ menuItems }: useProductFormProps) => {
         UserID: user?.id || null,
       },
     };
-    let newFormData: any = removeNullsFromObject(data);
+    let newFormData: any = cleanObject(data);
 
     // We only want to submit form values that were modified
     const productData = opportunityData?.OpportunityProducts.find(
