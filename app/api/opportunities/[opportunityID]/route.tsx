@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOpportunityData } from "@/app/utils/getData";
+import {
+  getOpportunityData,
+  revalidateOpportunityCache,
+} from "@/app/utils/getData";
 
 // GET opportunity data
 export async function GET(
@@ -7,6 +10,7 @@ export async function GET(
   { params }: { params: { opportunityID: string } }
 ) {
   const opportunityID = params.opportunityID;
+  await revalidateOpportunityCache();
   const data = await getOpportunityData(opportunityID);
 
   return NextResponse.json({ data });
