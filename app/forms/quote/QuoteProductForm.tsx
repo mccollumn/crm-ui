@@ -297,6 +297,7 @@ export const QuoteProductForm = ({
                 InputProps={{
                   inputComponent: FormatCurrency as any,
                 }}
+                inputProps={{ decimalScale: 2 }}
               />
               {/* Quantity */}
               <TextFieldElement
@@ -305,6 +306,7 @@ export const QuoteProductForm = ({
                 required
                 size="small"
                 InputProps={{ inputComponent: FormatNumber as any }}
+                inputProps={{ decimalScale: 0 }}
               />
               {/* Term */}
               <TextFieldElement label="Term" name="term" size="small" />
@@ -314,6 +316,7 @@ export const QuoteProductForm = ({
                 name="discount"
                 size="small"
                 InputProps={{ inputComponent: FormatPercent as any }}
+                inputProps={{ decimalScale: 2 }}
               />
             </Stack>
           </Grid>

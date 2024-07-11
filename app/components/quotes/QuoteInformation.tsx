@@ -266,19 +266,27 @@ const getQuoteInfo = async (
       left: [
         {
           label: "Total List Price",
-          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalListPrice),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalListPrice, {
+            decimalScale: 2,
+          }),
         },
         {
           label: "Total Price",
-          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPrice),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPrice, {
+            decimalScale: 2,
+          }),
         },
         {
           label: "Total Price - Products",
-          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPriceProducts),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalPriceProducts, {
+            decimalScale: 2,
+          }),
         },
         {
           label: "Total One Year Amount",
-          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalOneYearAmount),
+          value: formatNumber(quoteData.QuoteTotals.Quotes_TotalOneYearAmount, {
+            decimalScale: 2,
+          }),
         },
       ],
       right: [
@@ -329,13 +337,18 @@ const getQuoteInfo = async (
         {
           label: "Highest Product Discount",
           value: formatPercent(
-            quoteData.QuoteDiscounts.Quotes_HighestProductDiscount
+            quoteData.QuoteDiscounts.Quotes_HighestProductDiscount,
+            { decimalScale: 2 }
           ),
         },
         {
           label: "Net Quote Discount",
           value: formatPercent(
-            quoteData.QuoteDiscounts.Quotes_NetQuoteDiscount
+            // Convert to percentage
+            String(
+              Number(quoteData.QuoteDiscounts.Quotes_NetQuoteDiscount) * 100
+            ),
+            { decimalScale: 2 }
           ),
         },
       ],
@@ -343,7 +356,8 @@ const getQuoteInfo = async (
         {
           label: "Highest Services Discount",
           value: formatPercent(
-            quoteData.QuoteDiscounts.Quotes_HighestServicesDiscount
+            quoteData.QuoteDiscounts.Quotes_HighestServicesDiscount,
+            { decimalScale: 2 }
           ),
         },
         {
