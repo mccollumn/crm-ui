@@ -757,7 +757,11 @@ export const DataTable = ({
         flex: 1,
         renderCell: (params) => {
           return (
-            <Link href={`/contacts/view/${params.id}`}>{params.value}</Link>
+            <Link
+              href={`/contacts/view/${params.row.OpportunityContactRoles_ContactId}`}
+            >
+              {params.value}
+            </Link>
           );
         },
       },
@@ -978,6 +982,8 @@ export const DataTable = ({
       {
         field: "QuoteProducts_Quantity",
         headerName: "Quantity",
+        type: "number",
+        valueFormatter: (params) => Number(params.value),
       },
       {
         field: "QuoteProducts_UOM",
