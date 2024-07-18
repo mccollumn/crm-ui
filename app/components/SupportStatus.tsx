@@ -32,9 +32,10 @@ export const SupportStatus = ({ accountID }: SupportStatusProps) => {
 
   React.useEffect(() => {
     const getAccountData = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/accounts/${accountID}`
-      );
+      // Invalidate cached account data
+      await fetch("/api/revalidate/tag?tag=account");
+
+      const response = await fetch(`/api/accounts/${accountID}`);
       const accountData: { data: AccountData } = await response.json();
       const accountStatusSummary = accountData.data?.AccountStatusSummary;
       setSupportType(
