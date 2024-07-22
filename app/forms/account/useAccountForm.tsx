@@ -16,7 +16,7 @@ export const useAccountForm = ({ menuItems }: useAccountFormProps) => {
   const initialMenuOptions = {
     Owner: [],
     AccountType: [],
-    Region: [],
+    SuperRegion: [],
     CollectionsContact: [],
   };
 
@@ -57,7 +57,7 @@ export const useAccountForm = ({ menuItems }: useAccountFormProps) => {
 
     // Set menu options that are already known (i.e. aren't based on user input)
     setMenuOptions("AccountType", "", "object");
-    setMenuOptions("Region");
+    setMenuOptions("SuperRegion");
   }, [appendMenuOptions, menuItems, setCustomMenuOptions, setMenuOptions]);
 
   const createAccountFormSubmissionData = (

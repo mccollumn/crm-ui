@@ -142,7 +142,7 @@ export const AccountForm = ({
                   autoHighlight: true,
                   size: "small",
                 }}
-                options={menuOptions.Region}
+                options={menuOptions.SuperRegion}
                 required
               />
             </Stack>
