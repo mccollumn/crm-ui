@@ -41,7 +41,7 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
     const setAccounts = async () => {
       try {
         const results = await fetch(
-          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts/type/active`
+          `${process.env.NEXT_PUBLIC_CRM_API_ENDPOINT}/account/list/accounts`
         );
         const accounts = await results.json();
         if (!Array.isArray(accounts)) return;
