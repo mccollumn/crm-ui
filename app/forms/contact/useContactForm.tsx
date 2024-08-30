@@ -7,6 +7,7 @@ import {
   getChangedValues,
   isSuccessfulResponse,
   cleanObject,
+  sanitizeString,
 } from "@/app/utils/utils";
 import { useForm } from "../useForm";
 import { ContactData, ContactFormData } from "@/app/types/contacts";
@@ -168,6 +169,25 @@ export const useContactForm = ({ menuItems }: useContactFormProps) => {
 
     // We only want to submit form values that were modified
     newFormData = getChangedValues(newFormData, contactData);
+
+    // Send both first and last name if either one was updated.
+    if (
+      newFormData.ContactDetail?.Contacts_LastName ||
+      newFormData.ContactDetail?.Contacts_FirstName
+    ) {
+      newFormData = {
+        ...newFormData,
+        ContactDetail: {
+          ...newFormData.ContactDetail,
+          Contacts_FirstName:
+            newFormData.ContactDetail?.Contacts_FirstName ||
+            sanitizeString(values.firstName || ""),
+          Contacts_LastName:
+            newFormData.ContactDetail?.Contacts_LastName ||
+            sanitizeString(values.lastName || ""),
+        },
+      };
+    }
 
     // Add the contact and account IDs back in
     if (contactData) {
